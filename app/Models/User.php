@@ -76,8 +76,9 @@ class User  extends Authenticatable implements JWTSubject
     public static function checkLogin($phone, $password)
     {
         $user = self::wherePhone($phone)->first();
-        if( ! Hash::check($password, $user->password) )
+        if( ! Hash::check($password, $user->password) ) {
             throw new Exception('账号密码错误');
+        }
 
         return $user;
     }

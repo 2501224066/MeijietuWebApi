@@ -31,12 +31,12 @@ class Captcha extends Base
                 break;
 
             case 'getImgCode':
-                $rules['token'] = 'required';
+                $rules['imgToken'] = 'required';
                 break;
 
             case 'checkImgCode':
-                $rules['token'] = 'required';
-                $rules['code'] = 'required';
+                $rules['imgToken'] = 'required';
+                $rules['imgCode'] = 'required';
                 break;
         }
 
@@ -52,8 +52,8 @@ class Captcha extends Base
             'phone.required' => '手机号不得为空',
             'phone.regex' => '手机号无效',
             'code_type.required' => '请求验证码类型不得为空',
-            'token.required' => '令牌不得为空',
-            'code.required' => '验证码不得为空',
+            'imgToken.required' => '令牌不得为空',
+            'imgCode.required' => '验证码不得为空',
         ]; 
     }
 }

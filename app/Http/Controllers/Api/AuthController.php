@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\LogLogin;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
 use App\Models\Captcha;
@@ -32,7 +33,7 @@ class AuthController extends BaseController
      */
     public function checkPhone(AuthRequests $request)
     {
-        Captcha::checkCode($request->code, $request->phone, 'checkPhone');
+        Captcha::checkCode($request->smsCode, $request->phone, 'checkPhone');
         $token = Captcha::createAndKeepCode('checkPhone', $request->phone, true);
 
         return $this->success(['token' => $token]);
@@ -49,19 +50,38 @@ class AuthController extends BaseController
         return $this->success([
             'phone' => $user->phone,
             'email' => $user->email,
-            'nickname' => $user->nickname
+            'nickname' => $user->nickname,
         ]);
         
     }
 
-    //登录
+    //账密登录
     public function signIn(AuthRequests $request)
     {
-        Captcha::checkCode($request->code, $request->token, 'imgCode');
+        $logId = LogLogin::write($request->phone, 1);
+        Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
         $user = User::checkLogin($request->phone, $request->password);
         $token = JWTAuth::fromUser($user);
+        LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);
+
         return $this->respondWithToken($token,[
-            'nickname' => $user->nickname
+            'nickname' => $user->nickname,
+            'identity' => $user->identity
+        ]);
+    }
+
+    //动态登录
+    public function codeSignIn(AuthRequests $request)
+    {
+        $logId = LogLogin::write($request->phone, 2);
+        Captcha::checkCode($request->smsCode, $request->phone, 'codeSignIn');
+        $user = User::wherePhone($request->phone)->first();
+        $token = JWTAuth::fromUser($user);
+        LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);
+
+        return $this->respondWithToken($token,[
+            'nickname' => $user->nickname,
+            'identity' => $user->identity
         ]);
     }
 

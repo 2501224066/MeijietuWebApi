@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -15,6 +14,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\Event' => [
             'App\Listeners\EventListener',
+        ],
+        // 使用框架自带DB事件
+        'Illuminate\Database\Events\QueryExecuted' => [
+            'App\Listeners\SqlListener', // 监听SQL
         ],
     ];
 

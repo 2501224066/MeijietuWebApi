@@ -40,7 +40,7 @@ class CaptchaController extends BaseController
         $builder->build(100, 40);
         $code = $builder->getPhrase();
         
-        $key = 'imgCode:'.$request->token;
+        $key = 'imgCode:'.$request->imgToken;
         Cache::put($key, $code, 5);
        
         $output = $builder->output();
@@ -54,7 +54,7 @@ class CaptchaController extends BaseController
      */
     public function checkImgCode(CaptchaRequests $request)
     {
-        Captcha::checkCode($request->code, $request->token, 'imgCode');
+        Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
 
         return $this->success();
     }

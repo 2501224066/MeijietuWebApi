@@ -22,7 +22,7 @@ class Auth extends Base
         {
             case 'checkPhone':
                 $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','unique:user,phone'];
-                $rules['code'] = 'required';
+                $rules['smsCode'] = 'required|numeric';
                 break;
 
             case 'register':
@@ -37,16 +37,21 @@ class Auth extends Base
             case 'signIn':
                 $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
                 $rules['password'] = 'required|between:6,18';
-                $rules['code'] = 'required';
-                $rules['token'] = 'required';
+                $rules['imgCode'] = 'required';
+                $rules['imgToken'] = 'required';
                 break;
 
-            case 'resetPass':
+            case 'codeSignIn':
+                $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
+                $rules['smsCode'] = 'required|numeric';
+                break;
+
+           /* case 'resetPass':
                 $rules['email'] = 'required|email|exists:user,email';
                 $rules['password'] = 'required|between:6,18';
                 $rules['password_confirmation'] = 'required|same:password';
                 $rules['code'] = 'required';
-                break;
+                break;*/
         }
 
         return $rules;
@@ -70,9 +75,11 @@ class Auth extends Base
             'password.between' => '密码长度需大于'. ':min' . '位，小于' . ':max'. '位',
             'nickname.required' => '昵称不得为空',
             'nickname.between' => '昵称长度需大于'. ':min' . '位，小于' . ':max'. '位',
-            'code.required' => '验证码不得为空',
-            'code.between' => '验证码长度需大于'. ':min' . '位，小于' . ':max'. '位',
-            'token.required' => '令牌不得为空'
+            'smsCode.required' => '验证码不得为空',
+            'imgCode.required' => '验证码不得为空',
+            'smsCode.numeric' => '验证码必须为数字',
+            'token.required' => '令牌不得为空',
+            'imgToken.required' => '令牌不得为空',
         ]; 
     }
 }

@@ -8,7 +8,8 @@ $api->group(['version' => 'v1'], function ($api) {
         //注册登录
         $api->post('checkPhone', 'AuthController@checkPhone');  // 检查手机号
         $api->post('register', 'AuthController@register');      // 注册
-        $api->post('signIn', 'AuthController@signIn');          // 登录
+        $api->post('signIn', 'AuthController@signIn');          // 账密登录
+        $api->post('codeSignIn', 'AuthController@codeSignIn');  // 动态登录
         $api->post('signOut', 'AuthController@signOut');        // 退出登录
         $api->post('resetPass', 'AuthController@resetPass');    // 重置密码
         $api->post('refresh', 'AuthController@refresh');        // 刷新token

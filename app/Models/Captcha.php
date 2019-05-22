@@ -13,7 +13,8 @@ class Captcha
     //请求验证码类型
     const CODETYPE = [
         'checkPhone' => '检查手机号',
-        'resetPassCode' => '重置密码'
+        'codeSignIn' => '动态登录',
+        'resetPassCode' => '重置密码',
     ];
 
     //检查请求验证码类型
