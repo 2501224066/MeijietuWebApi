@@ -35,7 +35,7 @@ class Auth extends Base
                 break;
 
             case 'signIn':
-                //$rules['phone'] = ['reuired','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
+                $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
                 $rules['password'] = 'required|between:6,18';
                 $rules['code'] = 'required';
                 $rules['token'] = 'required';
@@ -62,8 +62,7 @@ class Auth extends Base
             'email.required' => '邮箱不得为空',
             'email.email' => '邮箱格式错误',
             'email.unique'  => '邮箱已被使用',
-
-            //'phone.exists' => '手机号不存在',
+            'phone.exists' => '手机号未注册',
 
             'password.required' => '密码不得为空',
             'password_confirmation.required' =>'重复密码不得为空',

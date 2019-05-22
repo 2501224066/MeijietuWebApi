@@ -42,7 +42,7 @@ class User  extends Authenticatable implements JWTSubject
 
     public $incrementing = false;
 
-    public $fillable = ['uid','email','password','nickname'];
+    public $fillable = ['uid','phone','email','password','nickname','ip'];
 
     //JWTauth
     public function getJWTIdentifier()
@@ -69,13 +69,13 @@ class User  extends Authenticatable implements JWTSubject
         if(! $re)
             throw new Exception('注册失败');
 
-        return true; 
+        return $re;
     }
 
     //验证账号密码
-    public static function checkLogin($email, $password)
+    public static function checkLogin($phone, $password)
     {
-        $user = self::whereEmail($email)->first();
+        $user = self::wherePhone($phone)->first();
         if( ! Hash::check($password, $user->password) )
             throw new Exception('账号密码错误');
 

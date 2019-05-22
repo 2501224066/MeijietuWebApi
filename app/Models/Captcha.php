@@ -41,14 +41,15 @@ class Captcha
     //验证验证码
     public static function checkCode($code, $parm, $codeType)
     {
-        //return true;
+        // 测试使用
+        // return true;
         
         $key = $codeType.":".$parm;
         if( ! Cache::has($key) )
-            throw new Exception('验证码过期');
+            throw new Exception('【验证码/令牌】过期');
         
         if(Cache::get($key) !== $code)
-            throw new Exception('验证码错误');
+            throw new Exception('【验证码/令牌】错误');
 
         return true;
 

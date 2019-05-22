@@ -44,9 +44,13 @@ class AuthController extends BaseController
     public function register(AuthRequests $request)
     {
         Captcha::checkCode($request->token, $request->phone, 'checkPhone');
-        User::add($request->phone, $request->email, $request->password, $request->nickname, $request->getClientIp());
+        $user = User::add($request->phone, $request->email, $request->password, $request->nickname, $request->getClientIp());
 
-        return $this->success();
+        return $this->success([
+            'phone' => $user->phone,
+            'email' => $user->email,
+            'nickname' => $user->nickname
+        ]);
         
     }
 
@@ -54,7 +58,7 @@ class AuthController extends BaseController
     public function signIn(AuthRequests $request)
     {
         Captcha::checkCode($request->code, $request->token, 'imgCode');
-        $user = User::checkLogin($request->email, $request->password);
+        $user = User::checkLogin($request->phone, $request->password);
         $token = JWTAuth::fromUser($user);
         return $this->respondWithToken($token,[
             'nickname' => $user->nickname
