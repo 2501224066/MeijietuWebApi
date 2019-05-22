@@ -13,6 +13,7 @@ class Captcha
     //请求验证码类型
     const CODETYPE = [
         'checkPhone' => '检查手机号',
+        'nextToken' => '下一步令牌',
         'codeSignIn' => '动态登录',
         'resetPassCode' => '重置密码',
     ];
@@ -30,7 +31,6 @@ class Captcha
     public static function createAndKeepCode($codeType, $parm, $randstr = false)
     {
         self::checkCodeType($codeType);
-
 
         $code = $randstr ? md5(uniqid()) : rand(111111, 999999);
         $key = $codeType.':'. $parm;

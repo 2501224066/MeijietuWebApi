@@ -63,7 +63,7 @@ class AuthController extends BaseController
     public function signIn(AuthRequests $request)
     {
         $logId = LogLogin::write($request->phone, 1);
-        Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
+        //Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
         $user = User::checkLogin($request->phone, $request->password);
         $token = JWTAuth::fromUser($user);
         LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);

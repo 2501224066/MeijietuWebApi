@@ -21,7 +21,9 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('smsVerifCode', 'CaptchaController@smsVerifCode');        // 获取短信验证码
     
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
-            
+            $api->get('s', function (){
+                return 1;
+            });
         });
     });
 });
