@@ -34,9 +34,9 @@ class AuthController extends BaseController
     public function checkPhone(AuthRequests $request)
     {
         Captcha::checkCode($request->smsCode, $request->phone, 'checkPhone');
-        $token = Captcha::createAndKeepCode('checkPhone', $request->phone, true);
+        $nextToken = Captcha::createAndKeepCode('nextToken', $request->phone, true);
 
-        return $this->success(['token' => $token]);
+        return $this->success(['nextToken' => $nextToken]);
     }
 
     /**
@@ -44,7 +44,7 @@ class AuthController extends BaseController
      */
     public function register(AuthRequests $request)
     {
-        Captcha::checkCode($request->token, $request->phone, 'checkPhone');
+        Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
         $user = User::add($request->phone, $request->email, $request->password, $request->nickname, $request->getClientIp());
 
         return $this->success([
@@ -55,7 +55,11 @@ class AuthController extends BaseController
         
     }
 
-    //账密登录
+    /**
+     * 账密登录
+     * @param AuthRequests $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function signIn(AuthRequests $request)
     {
         $logId = LogLogin::write($request->phone, 1);
@@ -70,7 +74,11 @@ class AuthController extends BaseController
         ]);
     }
 
-    //动态登录
+    /**
+     * 动态登录
+     * @param AuthRequests $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function codeSignIn(AuthRequests $request)
     {
         $logId = LogLogin::write($request->phone, 2);
@@ -85,11 +93,15 @@ class AuthController extends BaseController
         ]);
     }
 
-    //重置密码
+    /**
+     * 重置密码
+     * @param AuthRequests $request
+     * @return mixed
+     */
     public function resetPass(AuthRequests $request)
     {
-        Captcha::checkCode($request->code, $request->email,  'resetPassCode');
-        User::saveInfo($request->email, 'password', Hash::make($request->password) );
+        Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
+        User::saveInfo($request->phone, 'password', Hash::make($request->password) );
 
         return $this->success();
     }

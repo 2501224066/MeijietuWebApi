@@ -9,29 +9,6 @@ use Emadadly\LaravelUuid\Uuids;
 use Hash;
 use Mockery\Exception;
 
-/**
- * App\Models\User
- *
- * @property string $id
- * @property int $uid
- * @property string $email 账号
- * @property string $password 密码
- * @property string|null $nickname 昵称
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User uuid($uuid, $first = true)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNickname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- * @mixin \Eloquent
- */
 class User  extends Authenticatable implements JWTSubject 
 {
     use Notifiable, Uuids;
@@ -84,9 +61,9 @@ class User  extends Authenticatable implements JWTSubject
     }
 
     //修改信息
-    public static function saveInfo($email ,$field, $value)
+    public static function saveInfo($phone ,$field, $value)
     {
-        $re = self::whereEmail($email)->update([
+        $re = self::wherePhone($phone)->update([
             $field => $value
         ]);
         if( ! $re )

@@ -31,7 +31,7 @@ class Auth extends Base
                 $rules['password'] = 'required|between:6,18';
                 $rules['password_confirmation'] = 'required|same:password';
                 $rules['nickname'] = 'required|between:3,10';
-                $rules['token'] = 'required';
+                $rules['nextToken'] = 'required';
                 break;
 
             case 'signIn':
@@ -46,12 +46,12 @@ class Auth extends Base
                 $rules['smsCode'] = 'required|numeric';
                 break;
 
-           /* case 'resetPass':
-                $rules['email'] = 'required|email|exists:user,email';
+            case 'resetPass':
+                $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
                 $rules['password'] = 'required|between:6,18';
                 $rules['password_confirmation'] = 'required|same:password';
-                $rules['code'] = 'required';
-                break;*/
+                $rules['nextToken'] = 'required';
+                break;
         }
 
         return $rules;
@@ -73,12 +73,14 @@ class Auth extends Base
             'password_confirmation.required' =>'重复密码不得为空',
             'password_confirmation.same' => '两次输入密码不一致',
             'password.between' => '密码长度需大于'. ':min' . '位，小于' . ':max'. '位',
+
             'nickname.required' => '昵称不得为空',
             'nickname.between' => '昵称长度需大于'. ':min' . '位，小于' . ':max'. '位',
+
             'smsCode.required' => '验证码不得为空',
             'imgCode.required' => '验证码不得为空',
             'smsCode.numeric' => '验证码必须为数字',
-            'token.required' => '令牌不得为空',
+            'nextToken.required' => '令牌不得为空',
             'imgToken.required' => '令牌不得为空',
         ]; 
     }
