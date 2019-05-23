@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class File
 {
-    const UPLOAD_TYPE = [
-
-    ];
+    const UPLOAD_TYPE = [];
 
     // 检查图片格式
     public static function checkImgExt($img)
