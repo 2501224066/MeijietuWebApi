@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class File
 {
-    // 上传类型
-    const UPLOAD_TYPE = [];
-
     // 检查图片格式
     public static function checkImgExt($img)
     {
@@ -28,7 +25,7 @@ class File
     //检查上传类型
     public static function checkUploadType($upload_type)
     {
-        if (!in_array($upload_type, self::UPLOAD_TYPE) )
+        if (!in_array($upload_type, type("UPLOAD_TYPE") ) )
             throw new Exception('上传类型不合规');
 
         return true;

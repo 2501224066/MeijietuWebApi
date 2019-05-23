@@ -10,18 +10,10 @@ use Mrgoon\AliSms\AliSms;
 
 class Captcha
 {
-    //请求验证码类型
-    const CODETYPE = [
-        'checkPhone' => '检查手机号',
-        'nextToken' => '下一步令牌',
-        'codeSignIn' => '动态登录',
-        'resetPassCode' => '重置密码',
-    ];
-
     //检查请求验证码类型
     public static function checkCodeType($codeType)
     {
-        if( ! in_array($codeType, array_keys(self::CODETYPE) ) )
+        if( ! in_array($codeType, array_keys(type("CODE_TYPE")) ) )
             throw new Exception('请求验证码类型错误');
             
         return true;
@@ -61,7 +53,7 @@ class Captcha
     {
         $re = Mail::to($email)
             ->cc(ENV('MAIL_FROM_ADDRESS'))
-            ->send(new emailVerifCode(self::CODETYPE[$code_type], $code));
+            ->send(new emailVerifCode(type("CODE_TYPE")[$code_type], $code));
         if ( ! $re)
             throw new Exception('邮箱验证码发送失败');
 
