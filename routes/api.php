@@ -20,10 +20,9 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('checkImgCode', 'CaptchaController@checkImgCode');        // 验证图形验证码
         $api->get('smsVerifCode', 'CaptchaController@smsVerifCode');        // 获取短信验证码
 
-        $api->post('uploadImg', 'FileController@uploadImg');        // 图片上传
-
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
             //文件处理
+            $api->post('uploadImg', 'FileController@uploadImg');        // 图片上传
         });
     });
 });

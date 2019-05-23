@@ -32,7 +32,7 @@ class Captcha
     {
         self::checkCodeType($codeType);
 
-        $code = $randstr ? md5(uniqid()) : rand(111111, 999999);
+        $code = $randstr ? str_random(30) : rand(100000, 999999);
         $key = $codeType.':'. $parm;
         Cache::put($key, $code, 5);
 

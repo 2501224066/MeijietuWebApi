@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class File
 {
+    // 上传类型
     const UPLOAD_TYPE = [];
 
     // 检查图片格式
@@ -27,7 +28,7 @@ class File
     //检查上传类型
     public static function checkUploadType($upload_type)
     {
-        if (!in_array($upload_type, self::UPLOAD_TYPE))
+        if (!in_array($upload_type, self::UPLOAD_TYPE) )
             throw new Exception('上传类型不合规');
 
         return true;
@@ -36,8 +37,8 @@ class File
     // 图片上传
     public static function uploadImg($img)
     {
-        $path = "temporary/" . md5(uniqid()) . "." . $img->guessExtension();
-        $re = Storage::put($path, $img);
+        $path = "temporary/" . str_random(30) . "." . $img->guessExtension();
+        $re = Storage::put($path, file_get_contents($img->getRealPath() ) );
         if (!$re)
             throw new Exception('上传失败');
 
@@ -49,7 +50,7 @@ class File
     {
         $prefix = 'images/';
 
-        if (Storage::get($path))
+        if (Storage::exists($path))
             Storage::delete($prefix . $path);
 
         return true;
