@@ -1,5 +1,7 @@
 <?php
 
+use Jacobcyl\AliOSS\AliOssServiceProvider;
+
 return [
 
     /*
@@ -189,6 +191,8 @@ return [
         Mrgoon\AliSms\ServiceProvider::class,
         // LogViewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        //AliOSS
+        Jacobcyl\AliOSS\AliOssServiceProvider::class
     ],
 
     /*
