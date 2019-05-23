@@ -3,18 +3,27 @@
 
 namespace App\Http\Controllers\Api;
 
-
-use App\Http\Controllers\Controller;
 use App\Service\File;
-use Illuminate\Http\Request;
+use App\Http\Requests\File as FileRequest;
+use Illuminate\Support\Facades\Storage;
 
-class FileController extends Controller
+class FileController extends BaseController
 {
-    public function upload(Request $request)
+    /**
+     * 图片上传
+     * @param FileRequest $request
+     * @return mixed
+     */
+    public function uploadImg(FileRequest $request)
     {
-        $file = $request->file('image');
-        $ext = $file->getClientOriginalExtension();
-        File::checkExt($ext);
+        $request = $request->all();
 
+        $img = $request['image'];
+        File::checkImgExt($img); // 检查图片格式
+        File::checkUploadType($request['upload_type']); //检查上传类型
+        $path = File::uploadImg($img);
+
+        return $this->success(['path' =>  $path]);
     }
+
 }
