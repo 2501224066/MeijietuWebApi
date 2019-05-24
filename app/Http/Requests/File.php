@@ -22,6 +22,7 @@ class File extends Base
 
         switch ($this->getFunName())
         {
+            // 图片上传
             case 'uploadImg':
                 $rules['image'] = 'required';
                 $rules['upload_type'] = 'required';

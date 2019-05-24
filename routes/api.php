@@ -10,8 +10,8 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->post('register', 'AuthController@register');      // 注册
         $api->post('signIn', 'AuthController@signIn');          // 账密登录
         $api->post('codeSignIn', 'AuthController@codeSignIn');  // 动态登录
-        $api->post('signOut', 'AuthController@signOut');        // 退出登录
         $api->post('resetPass', 'AuthController@resetPass');    // 重置密码
+        $api->post('signOut', 'AuthController@signOut');        // 退出登录
         $api->post('refresh', 'AuthController@refresh');        // 刷新token
         
         // 验证码
@@ -22,6 +22,10 @@ $api->group(['version' => 'v1'], function ($api) {
 
         //身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
+            // 个人信息
+            $api->post('realnamePeople', 'UserInfoController@realnamePeople');          // 个人实名认证
+            $api->post('realnameEnterprise', 'UserInfoController@realnameEnterprise');  // 企业实名认证
+
             // 文件处理
             $api->post('uploadImg', 'FileController@uploadImg');        // 图片上传
         });

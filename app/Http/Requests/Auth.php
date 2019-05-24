@@ -22,20 +22,22 @@ class Auth extends Base
 
         switch ($this->getFunName())
         {
+            // 检查手机号
             case 'checkPhone':
                 $rules['type'] = 'required';
                 $rules['smsCode'] = 'required|numeric';
                 switch ( Request::input('type') ){
-                    case 1: // 注册
+                    case 1: // 手机号必须未注册【注册】
                         $rules['phone'] = ['required', 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/', 'unique:user,phone'];
                         break;
 
-                    case 2: // 重置密码
+                    case 2: // 手机号必须已注册【重置密码】
                         $rules['phone'] = ['required', 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/', 'exists:user,phone'];
                         break;
                 }
                 break;
 
+            // 注册
             case 'register':
                 $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','unique:user,phone'];
                 $rules['email'] = 'required|email|unique:user,email';
@@ -45,6 +47,7 @@ class Auth extends Base
                 $rules['nextToken'] = 'required';
                 break;
 
+            // 登录
             case 'signIn':
                 $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
                 $rules['password'] = 'required|between:6,18';
@@ -52,11 +55,13 @@ class Auth extends Base
                 $rules['imgToken'] = 'required';
                 break;
 
+            // 动态登录
             case 'codeSignIn':
                 $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
                 $rules['smsCode'] = 'required|numeric';
                 break;
 
+            // 重置密码
             case 'resetPass':
                 $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
                 $rules['password'] = 'required|between:6,18';
