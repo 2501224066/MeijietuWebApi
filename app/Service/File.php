@@ -25,18 +25,18 @@ class File
     //检查上传类型
     public static function checkUploadType($upload_type)
     {
-        if (!in_array($upload_type, type("UPLOAD_TYPE") ) )
+        if ( ! in_array($upload_type, array_key(type("UPLOAD_TYPE")) ) )
             throw new Exception('上传类型不合规');
 
         return true;
     }
 
     // 图片上传
-    public static function uploadImg($img)
+    public static function uploadImg($img, $upload_type)
     {
-        $path = "temporary/" . str_random(30) . "." . $img->guessExtension();
+        $path = "images/".$upload_type."/". str_random(30) . "." . $img->guessExtension();
         $re = Storage::put($path, file_get_contents($img->getRealPath() ) );
-        if (!$re)
+        if ( ! $re)
             throw new Exception('上传失败');
 
         return $path;

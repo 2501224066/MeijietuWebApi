@@ -8,11 +8,15 @@ function type($parm){
         'nextToken' => '下一步令牌',
         'codeSignIn' => '动态登录',
         'resetPassCode' => '重置密码',
+        'realnamePeople' => '个人实名认证',
+        'realnameEnterprise' => '企业实名认证'
     ];
 
     // 上传类型
-    $UPLOAD_TYPE = [];
-
+    $UPLOAD_TYPE = [
+        "IDcard" => '身份证',
+        "headPortrait" => '头像'
+    ];
 
     switch ($parm){
         case "CODE_TYPE":
