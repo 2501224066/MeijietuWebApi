@@ -18,13 +18,13 @@ class Usalesman extends Model
     {
         // 位置不存在设置初始值
         if ( ! Cache::has('salesman_tag'))
-            Cache::put('salesman_tag', 1000000);
+            Cache::put('salesman_tag', 1000000, 60);
 
         $id = self::where('salesman_id', '>', Cache::get('salesman_tag'))->value('salesman_id');
 
         // 位置超出回归初始值
         if ( ! $id)
-            Cache::put('salesman_tag', 1000000);
+            Cache::put('salesman_tag', 1000000, 60);
 
         Cache::increment('salesman_tag', $id);
 
