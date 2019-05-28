@@ -45,6 +45,7 @@ class Auth extends Base
                 $rules['password_confirmation'] = 'required|same:password';
                 $rules['nickname'] = 'required|between:3,10';
                 $rules['nextToken'] = 'required';
+                $rules['identity'] = 'required|numeric';
                 break;
 
             // 登录
@@ -92,6 +93,8 @@ class Auth extends Base
 
             'nickname.required' => '昵称不得为空',
             'nickname.between' => '昵称长度需大于'. ':min' . '位，小于' . ':max'. '位',
+            'identity.required' => '身份不得为空',
+            'identity.numeric' => '身份不合规',
 
             'smsCode.required' => '验证码不得为空',
             'imgCode.required' => '验证码不得为空',

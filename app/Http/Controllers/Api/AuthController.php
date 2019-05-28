@@ -45,7 +45,7 @@ class AuthController extends BaseController
     public function register(AuthRequests $request)
     {
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
-        $user = User::add($request->phone, $request->email, $request->password, $request->nickname, $request->getClientIp());
+        $user = User::add($request->phone, $request->email, $request->password, $request->nickname, $request->identity, $request->getClientIp());
 
         return $this->success([
             'phone' => $user->phone,
@@ -107,13 +107,23 @@ class AuthController extends BaseController
     }
 
     /**
+     * 获取用户信息
      * Get the authenticated User.
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function me()
     {
-        return response()->json(auth('api')->user());
+        $user = auth('api')->user();
+        return $this->success([
+            "head_portrait" => $user->head_portrait,
+            "nickname" => $user->nickname,
+            "sex" =>$user->sex,
+            "email" => $user->email,
+            "phone" => $user->phone,
+            "birth" => $user->birth,
+            "qq_ID" => $user->qq_ID,
+            "weixin_ID" => $user->weixin_ID,
+        ]);
     }
 
     /**

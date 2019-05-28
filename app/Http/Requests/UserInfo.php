@@ -43,6 +43,7 @@ class UserInfo extends Base
                 $rules['social_credit_code'] = 'required';
                 $rules['business_license'] = 'required';
                 $rules['bank_deposit'] = 'required';
+                $rules['bank_branch'] = 'required';
                 $rules['bank_porv'] = 'required';
                 $rules['bank_city'] = 'required';
                 $rules['bank_card'] = 'required';

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class File
 {
+    const PREFIX = 'images/';
+
     // 检查图片格式
     public static function checkImgExt($img)
     {
@@ -42,7 +44,7 @@ class File
     // 图片上传
     public static function uploadImg($img, $upload_type)
     {
-        $path = "images/".$upload_type."/". str_random(30) . "." . $img->guessExtension();
+        $path = self::PREFIX. $upload_type. "/". str_random(30). ".". $img->guessExtension();
         $re = Storage::put($path, file_get_contents($img->getRealPath() ) );
         if ( ! $re)
             throw new Exception('上传失败');
@@ -53,12 +55,9 @@ class File
     // 删除图片
     public static function deleteImg($path)
     {
-        $prefix = 'images/';
-
         if (Storage::exists($path))
-            Storage::delete($prefix . $path);
+            Storage::delete(self::PREFIX . $path);
 
         return true;
     }
-
 }

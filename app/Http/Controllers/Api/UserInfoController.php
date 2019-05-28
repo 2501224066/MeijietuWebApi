@@ -8,6 +8,7 @@ use App\Http\Requests\UserInfo as UserInfoRequests;
 use App\Models\Captcha;
 use App\Models\RealnameEnterprise;
 use App\Models\RealnamePeople;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserInfoController extends BaseController
 {
@@ -42,4 +43,5 @@ class UserInfoController extends BaseController
 
         return $this->success('企业实名认证成功');
     }
+
 }

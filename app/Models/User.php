@@ -76,13 +76,14 @@ class User  extends Authenticatable implements JWTSubject
     }
 
     //添加用户
-    public static function add($phone, $email, $password, $nickname, $ip)
+    public static function add($phone, $email, $password, $nickname, $identity, $ip)
     {
         $re = self::create([
             'phone' => htmlspecialchars($phone),
             'email' => htmlspecialchars($email),
             'password' => Hash::make(htmlspecialchars($password)),
             'nickname' => htmlspecialchars($nickname),
+            'identity' => htmlspecialchars($identity),
             'ip' => $ip
         ]);
         if(! $re)
