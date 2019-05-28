@@ -22,13 +22,21 @@ class File
         return true;
     }
 
-    //检查上传类型
+    // 检查上传类型
     public static function checkUploadType($upload_type)
     {
         if ( ! in_array($upload_type, array_keys(type("UPLOAD_TYPE")) ) )
             throw new Exception('上传类型不合规');
 
         return true;
+    }
+
+    // 检查图片大小
+    public static function checkImgSize($img)
+    {
+        $maxSize = SystemSetting::whereSettingName('img_size')->value('value');
+        if (Storage::size($img) > $maxSize)
+            throw new Exception('图片大小不合格');
     }
 
     // 图片上传

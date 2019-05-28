@@ -20,8 +20,13 @@ class FileController extends BaseController
 
         $img = $request['image'];
         $upload_type = htmlspecialchars($request['upload_type']);
-        File::checkImgExt($img); // 检查图片格式
-        File::checkUploadType($upload_type); //检查上传类型
+        // 检查图片格式
+        File::checkImgExt($img);
+        // 检查上传类型
+        File::checkUploadType($upload_type);
+        // 检查图片大小
+        File::checkImgSize($img);
+        // 上传
         $path = File::uploadImg($img, $upload_type);
 
         return $this->success(['path' =>  $path]);
