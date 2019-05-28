@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\LogLogin;
+use App\Models\Usalesman;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
 use App\Models\Captcha;
@@ -44,7 +45,9 @@ class AuthController extends BaseController
      */
     public function register(AuthRequests $request)
     {
+        // 检查令牌
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
+        // 数据添加到数据库
         $user = User::add($request->phone, $request->email, $request->password, $request->nickname, $request->identity, $request->getClientIp());
 
         return $this->success([

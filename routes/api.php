@@ -12,7 +12,6 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->post('codeSignIn', 'AuthController@codeSignIn');  // 动态登录
         $api->post('resetPass', 'AuthController@resetPass');    // 重置密码
 
-        
         // 验证码
         $api->get('emailVerifCode', 'CaptchaController@emailVerifCode');    // 获取邮箱验证码
         $api->get('getImgCode', 'CaptchaController@getImgCode');            // 获取图形验证码

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -78,18 +79,32 @@ class User  extends Authenticatable implements JWTSubject
     //添加用户
     public static function add($phone, $email, $password, $nickname, $identity, $ip)
     {
-        $re = self::create([
-            'phone' => htmlspecialchars($phone),
-            'email' => htmlspecialchars($email),
-            'password' => Hash::make(htmlspecialchars($password)),
-            'nickname' => htmlspecialchars($nickname),
-            'identity' => htmlspecialchars($identity),
-            'ip' => $ip
-        ]);
-        if(! $re)
-            throw new Exception('注册失败');
+        // 获取客服
+        $salesman_id = Usalesman::getSalesman();
 
-        return $re;
+        DB::transaction(function () use ($phone, $email, $password, $nickname, $identity, $ip, $salesman_id) {
+            // 添加user
+            $user = DB::table('user')
+                ->insert([
+                    'phone' => htmlspecialchars($phone),
+                    'email' => htmlspecialchars($email),
+                    'password' => Hash::make(htmlspecialchars($password)),
+                    'nickname' => htmlspecialchars($nickname),
+                    'identity' => htmlspecialchars($identity),
+                    'ip' => $ip
+                ]);
+
+            // 分配客服
+            DB::table('user_usalesman')
+                ->insert([
+                    'uid' => $user->uid,
+                    'salesman' => $salesman_id
+                ]);
+
+            return $user;
+        });
+
+        throw new Exception('注册失败');
     }
 
     //验证账号密码
