@@ -35,7 +35,7 @@ class Captcha
     public static function checkCode($code, $parm, $codeType)
     {
         // 测试使用
-        //return true;
+        // return true;
         
         $key = $codeType.":".$parm;
         if( ! Cache::has($key) )
