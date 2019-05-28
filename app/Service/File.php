@@ -25,7 +25,7 @@ class File
     //检查上传类型
     public static function checkUploadType($upload_type)
     {
-        if ( ! in_array($upload_type, array_key(type("UPLOAD_TYPE")) ) )
+        if ( ! in_array($upload_type, array_keys(type("UPLOAD_TYPE")) ) )
             throw new Exception('上传类型不合规');
 
         return true;
