@@ -26,7 +26,7 @@ class Usalesman extends Model
         if ( ! $id)
             Cache::put('salesman_tag', 1000000, 60);
 
-        Cache::increment('salesman_tag', $id);
+        Cache::increment('salesman_tag', intval($id));
 
         return $id;
     }

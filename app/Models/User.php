@@ -79,13 +79,8 @@ class User  extends Authenticatable implements JWTSubject
     //添加用户
     public static function add($phone, $email, $password, $nickname, $identity, $ip)
     {
-        // 获取客服
-        $salesman_id = Usalesman::getSalesman();
-
-        DB::transaction(function () use ($phone, $email, $password, $nickname, $identity, $ip, $salesman_id) {
             // 添加user
-            $uid = DB::table('user')
-                ->insert([
+            $user =self::create([
                     'phone' => htmlspecialchars($phone),
                     'email' => htmlspecialchars($email),
                     'password' => Hash::make(htmlspecialchars($password)),
@@ -94,17 +89,26 @@ class User  extends Authenticatable implements JWTSubject
                     'ip' => $ip
                 ]);
 
-            // 分配客服
-            DB::table('user_usalesman')
-                ->insert([
-                    'uid' => $uid,
-                    'salesman' => $salesman_id
-                ]);
+            if ( ! $user)
+                throw new Exception('注册失败');
 
-            return true;
-        });
+            return self::whereId($user->id)->value('uid');
+    }
 
-        throw new Exception('注册失败');
+    // 分配客服
+    public static function withUsalesman($uid)
+    {
+        // 获取客服
+        $salesman_id = Usalesman::getSalesman();
+        // 分配客服
+        $re = UserUsalesman::create([
+            'uid' => $uid,
+            'salesman_id' => $salesman_id
+        ]);
+        if ( ! $re)
+            throw new Exception('分配客服失败');
+
+        return true;
     }
 
     //验证账号密码

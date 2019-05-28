@@ -48,7 +48,9 @@ class AuthController extends BaseController
         // 检查令牌
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
         // 数据添加到数据库
-        User::add($request->phone, $request->email, $request->password, $request->nickname, $request->identity, $request->getClientIp());
+        $uid = User::add($request->phone, $request->email, $request->password, $request->nickname, $request->identity, $request->getClientIp());
+        // 分配客服
+        User::withUsalesman($uid);
 
         return $this->success();
         
