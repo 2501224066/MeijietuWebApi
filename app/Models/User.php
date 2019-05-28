@@ -84,7 +84,7 @@ class User  extends Authenticatable implements JWTSubject
 
         DB::transaction(function () use ($phone, $email, $password, $nickname, $identity, $ip, $salesman_id) {
             // 添加user
-            $user = DB::table('user')
+            $uid = DB::table('user')
                 ->insert([
                     'phone' => htmlspecialchars($phone),
                     'email' => htmlspecialchars($email),
@@ -97,11 +97,11 @@ class User  extends Authenticatable implements JWTSubject
             // 分配客服
             DB::table('user_usalesman')
                 ->insert([
-                    'uid' => $user->uid,
+                    'uid' => $uid,
                     'salesman' => $salesman_id
                 ]);
 
-            return $user;
+            return true;
         });
 
         throw new Exception('注册失败');
