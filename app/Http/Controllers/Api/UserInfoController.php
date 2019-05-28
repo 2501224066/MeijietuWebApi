@@ -44,4 +44,12 @@ class UserInfoController extends BaseController
         return $this->success('企业实名认证成功');
     }
 
+    /**
+     * 修改用户信息
+     */
+    public function saveUserInfo()
+    {
+
+    }
+
 }

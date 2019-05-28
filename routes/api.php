@@ -27,7 +27,7 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('realnamePeople', 'UserInfoController@realnamePeople');          // 个人实名认证
             $api->post('realnameEnterprise', 'UserInfoController@realnameEnterprise');  // 企业实名认证\
             $api->post('me', 'AuthController@me');                                      // 获取用户信息
-            $api->post('saveInfo', 'UserInfoController@saveInfo');                      // 修改用户信息
+            $api->post('saveUserInfo', 'UserUserInfoController@saveInfo');                      // 修改用户信息
 
             // 文件处理
             $api->post('uploadImg', 'FileController@uploadImg');   // 图片上传

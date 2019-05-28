@@ -128,12 +128,13 @@ class AuthController extends BaseController
             "birth" => $user->birth,
             "qq_ID" => $user->qq_ID,
             "weixin_ID" => $user->weixin_ID,
+            "realname_status" => $user->realname_status
         ]);
     }
 
     /**
+     * 注销登录
      * Log the user out (Invalidate the token).
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function signOut()
