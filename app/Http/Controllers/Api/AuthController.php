@@ -31,6 +31,8 @@ class AuthController extends BaseController
 
     /**
      * 检查手机号
+     * @param AuthRequests $request
+     * @return mixed
      */
     public function checkPhone(AuthRequests $request)
     {
@@ -42,6 +44,8 @@ class AuthController extends BaseController
 
     /**
      * 注册
+     * @param AuthRequests $request
+     * @return mixed
      */
     public function register(AuthRequests $request)
     {
