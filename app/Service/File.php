@@ -35,7 +35,7 @@ class File
     public static function checkImgSize($img)
     {
         $maxSize = SystemSetting::whereSettingName('img_size')->value('value');
-        if (Storage::size($img) > $maxSize)
+        if ($img->getClientSize() > $maxSize)
             throw new Exception('图片大小不合格');
     }
 
