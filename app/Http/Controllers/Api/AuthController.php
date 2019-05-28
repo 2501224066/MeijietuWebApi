@@ -67,10 +67,14 @@ class AuthController extends BaseController
      */
     public function signIn(AuthRequests $request)
     {
+        // 登录log(初始为失败状态)
         $logId = LogLogin::write($request->phone, 1);
+        // 检查图形验证码
         Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
+        // 验证账号密码
         $user = User::checkLogin($request->phone, $request->password);
         $token = JWTAuth::fromUser($user);
+        // 修改登录log为成功状态
         LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);
 
         return $this->respondWithToken($token,[
@@ -86,10 +90,13 @@ class AuthController extends BaseController
      */
     public function codeSignIn(AuthRequests $request)
     {
+        // 登录log(初始为失败状态)
         $logId = LogLogin::write($request->phone, 2);
+        // 检查短信验证码
         Captcha::checkCode($request->smsCode, $request->phone, 'codeSignIn');
         $user = User::wherePhone($request->phone)->first();
         $token = JWTAuth::fromUser($user);
+        // 修改登录log为成功状态
         LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);
 
         return $this->respondWithToken($token,[
@@ -105,8 +112,10 @@ class AuthController extends BaseController
      */
     public function resetPass(AuthRequests $request)
     {
+        // 检查下一步令牌
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
-        User::saveInfo($request->phone, 'password', Hash::make($request->password) );
+        // 修改密码
+        User::savePass($request->phone, Hash::make($request->password) );
 
         return $this->success();
     }

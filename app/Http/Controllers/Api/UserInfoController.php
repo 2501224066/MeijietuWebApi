@@ -8,7 +8,7 @@ use App\Http\Requests\UserInfo as UserInfoRequests;
 use App\Models\Captcha;
 use App\Models\RealnameEnterprise;
 use App\Models\RealnamePeople;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Models\User;
 
 class UserInfoController extends BaseController
 {
@@ -47,9 +47,14 @@ class UserInfoController extends BaseController
     /**
      * 修改用户信息
      */
-    public function saveUserInfo()
+    public function saveInfo(UserInfoRequests $request)
     {
+        // 检查图形验证码
+        Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
+        // 修改信息
+        User::saveInfo($request);
 
+        return $this->success();
     }
 
 }

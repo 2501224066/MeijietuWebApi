@@ -50,6 +50,18 @@ class UserInfo extends Base
                 $rules['bank_band_phone'] = ['required','Numeric','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
                 $rules['smsCode'] = 'required|numeric';
                 break;
+
+                // 修改用户信息
+            case 'saveInfo':
+                $rules['head_portrait'] = 'present';
+                $rules['nickname'] = 'required';
+                $rules['sex'] = 'present';
+                $rules['birth'] = 'present';
+                $rules['qq_ID'] = 'present';
+                $rules['weixin_ID'] = 'present';
+                $rules['imgCode'] = 'required';
+                $rules['imgToken'] = 'required';
+                break;
         }
 
         return $rules;
@@ -77,6 +89,12 @@ class UserInfo extends Base
             'bank_band_phone.regex' => "手机号不合规",
             'smsCode.required' => "验证码不得为空",
             'smsCode.numeric' => "验证码必须为数字",
+
+            "nickname.required" => "昵称不得为空",
+            "sex.numeric" => "性别不合规",
+            "qq_ID.numeric" => "QQ号不合规",
+            'imgCode.required' => '验证码不得为空',
+            'imgToken.required' => '令牌不得为空',
         ];
     }
 }

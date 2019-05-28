@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Emadadly\LaravelUuid\Uuids;
 use Hash;
 use Mockery\Exception;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * App\Models\User
@@ -111,7 +111,7 @@ class User  extends Authenticatable implements JWTSubject
         return true;
     }
 
-    //验证账号密码
+    // 验证账号密码
     public static function checkLogin($phone, $password)
     {
         $user = self::wherePhone($phone)->first();
@@ -122,12 +122,31 @@ class User  extends Authenticatable implements JWTSubject
         return $user;
     }
 
-    //修改信息
-    public static function saveInfo($phone ,$field, $value)
+    // 修改密码
+    public static function savePass($phone , $value)
     {
         $re = self::wherePhone($phone)->update([
-            $field => $value
+            'password' => $value
         ]);
+        if( ! $re )
+            throw new Exception('保存失败');
+
+        return true;
+    }
+
+    // 修改信息
+    public static function saveInfo($data)
+    {
+        $uid = JWTAuth::user()->uid;
+        $re = self::whereUid($uid)
+            ->update([
+                'head_portrait' => htmlspecialchars($data->head_portrait),
+                'nickname' => htmlspecialchars($data->nickname),
+                'sex' => htmlspecialchars($data->sex),
+                'birth' => htmlspecialchars($data->birth),
+                'qq_ID' => htmlspecialchars($data->qq_ID),
+                'weixin_ID' => htmlspecialchars($data->weixin_ID),
+            ]);
         if( ! $re )
             throw new Exception('保存失败');
 
