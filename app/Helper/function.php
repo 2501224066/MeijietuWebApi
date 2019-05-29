@@ -15,6 +15,7 @@ function type($parm){
     // 上传类型
     $UPLOAD_TYPE = [
         "ID_card" => '身份证',
+        "business_license" => '营业执照',
         "head_portrait" => '头像',
     ];
 

@@ -3,22 +3,32 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Weixin\Theme;
 
 class GoodsAttributeController extends BaseController
 {
     /**
-     * 商品属性
+     * 微信商品属性
+     * @return mixed
      */
     public function weixinGoodsAttribute()
     {
-        $re = Theme::with('filed')
-            ->with('fansnumlevel')
-            ->with('readlevel')
-            ->with('likelevel')
+        $re = \App\Models\Weixin\Theme::with('filed')
             ->with('priceclassify')
-            ->get()
-            ->toArray();
+            ->get();
+
+        return $this->success($re);
+    }
+
+    /**
+     * 微博商品属性
+     * @return mixed
+     */
+    public function weiboGoodsAttribute()
+    {
+        $re = \App\Models\Weibo\Theme::with('filed')
+            ->with('authtype')
+            ->with('priceclassify')
+            ->get();
 
         return $this->success($re);
     }
