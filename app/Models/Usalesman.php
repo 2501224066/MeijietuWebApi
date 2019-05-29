@@ -32,6 +32,12 @@ use Mockery\Exception;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $account 账号
+ * @property string $password 密码
+ * @property string $true_pass 真实密码
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereAccount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereTruePass($value)
  */
 class Usalesman extends Model
 {

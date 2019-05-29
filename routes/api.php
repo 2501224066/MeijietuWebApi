@@ -37,6 +37,10 @@ $api->group(['version' => 'v1'], function ($api) {
 
             // 文件处理
             $api->post('uploadImg', 'FileController@uploadImg');   // 图片上传
+
+            // 商品属性
+            $api->post('weixinGoodsAttribute', 'GoodsAttributeController@weixinGoodsAttribute');         // 微信商品属性
+
         });
     });
 });

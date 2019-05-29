@@ -51,7 +51,7 @@ class UserInfo extends Base
                 $rules['smsCode'] = 'required|numeric';
                 break;
 
-                // 修改用户信息
+            // 修改用户信息
             case 'saveInfo':
                 $rules['head_portrait'] = 'present';
                 $rules['nickname'] = 'required';
