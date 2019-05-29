@@ -51,6 +51,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereWeixinID($value)
  * @mixin \Eloquent
+ * @property string|null $head_portrait 头像
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereHeadPortrait($value)
  */
 class User  extends Authenticatable implements JWTSubject 
 {
@@ -86,7 +88,8 @@ class User  extends Authenticatable implements JWTSubject
                     'password' => Hash::make(htmlspecialchars($password)),
                     'nickname' => htmlspecialchars($nickname),
                     'identity' => htmlspecialchars($identity),
-                    'ip' => $ip
+                    'ip' => $ip,
+                    'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('value')
                 ]);
 
             if ( ! $user)
@@ -98,15 +101,27 @@ class User  extends Authenticatable implements JWTSubject
     // 分配客服
     public static function withUsalesman($uid)
     {
+        // 检查用户是否已经分配客服
+        self::checkUserHasUsalesman($uid);
         // 获取客服
         $salesman_id = Usalesman::getSalesman();
-        // 分配客服
+        // 将客服id与用户id存入它们的关联表
         $re = UserUsalesman::create([
             'uid' => $uid,
             'salesman_id' => $salesman_id
         ]);
         if ( ! $re)
             throw new Exception('分配客服失败');
+
+        return true;
+    }
+
+    // 检查用户是否已经分配客服
+    public static function checkUserHasUsalesman($uid)
+    {
+        $count = UserUsalesman::whereUid($uid)->count();
+        if ($count)
+            throw new Exception('已有专属客服');
 
         return true;
     }

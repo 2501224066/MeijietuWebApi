@@ -17,6 +17,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SystemSetting whereSettingName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SystemSetting whereValue($value)
  * @mixin \Eloquent
+ * @property int $id
+ * @property string $about 解释
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SystemSetting whereAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SystemSetting whereId($value)
  */
 class SystemSetting extends Model
 {

@@ -30,6 +30,15 @@ class UserInfoController extends BaseController
     }
 
     /**
+     * 获取个人实名认证信息
+     */
+    public function realnamePeopleInfo()
+    {
+        $re = RealnamePeople::info();
+        return $this->success($re);
+    }
+
+    /**
      * 企业实名认证
      */
     public function realnameEnterprise(UserInfoRequests $request)
@@ -54,7 +63,6 @@ class UserInfoController extends BaseController
         // 修改信息
         User::saveInfo($request);
 
-        return $this->success();
+        return $this->success('修改完成');
     }
-
 }

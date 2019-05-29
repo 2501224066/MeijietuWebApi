@@ -10,6 +10,40 @@ use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Models\RealnameEnterprise
+ *
+ * @property int $uid
+ * @property string $enterprise_name 公司名称
+ * @property string $social_credit_code 统一社会信用代码
+ * @property string $business_license 营业执照图片
+ * @property string $bank_deposit 开户银行
+ * @property string $bank_branch 开户支行
+ * @property string $bank_porv 开户省
+ * @property string $bank_city 开户城市
+ * @property string $bank_card 银行卡号
+ * @property string $bank_band_phone 绑定手机号
+ * @property int $verify_status 审核状态 0=失败 1=成功
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankBandPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankBranch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankCard($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankDeposit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankPorv($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBusinessLicense($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereEnterpriseName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereSocialCreditCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereVerifyStatus($value)
+ * @mixin \Eloquent
+ */
 class RealnameEnterprise extends Model
 {
     protected $table = 'realname_enterprise';
@@ -73,4 +107,24 @@ class RealnameEnterprise extends Model
 
         throw new Exception("保存失败");
     }
+
+    // 获取企业认证信息
+    public static function info()
+    {
+        $uid = JWTAuth::user()->uid;
+        $data = self::whereUid($uid)->first();
+        if( ! $data)
+            throw new Exception("未查询到认证信息");
+
+        return [
+            'enterprise_name' =>  $data->enterprise_name,
+            'social_credit_code' => preg_replace("/(.{4}).{9}(.{5})/", "\$1*********\$2", $data->social_credit_code),
+            'bank_band_phone' => preg_replace("/(\d{3})\d{4}(\d{4})/", "\$1****\$2", $data->bank_band_phone),
+            'bank_deposit' => $data->bank_deposit,
+            'bank_branch' => $data->bank_branch,
+            'bank_where' => $data->bank_prov.$data->bank_city,
+            'bank_card' => preg_replace("/(\d{4})\d{12}(\d{3})/", "\$1 **** **** **** \$2", $data->bank_card)
+        ];
+    }
+
 }

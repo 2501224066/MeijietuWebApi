@@ -23,11 +23,17 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('refresh', 'AuthController@refresh');        // 刷新token
             $api->post('signOut', 'AuthController@signOut');        // 退出登录
 
+            // 客服
+            $api->post('usalsesmanInfo', 'UsalesmanController@usalsesmanInfo');                  // 用户专属客服信息
+            $api->post('distributionUsalsesman', 'UsalesmanController@distributionUsalsesman');  // 分配客服
+
             // 个人信息
-            $api->post('realnamePeople', 'UserInfoController@realnamePeople');          // 个人实名认证
-            $api->post('realnameEnterprise', 'UserInfoController@realnameEnterprise');  // 企业实名认证\
-            $api->post('me', 'AuthController@me');                                      // 获取用户信息
-            $api->post('saveInfo', 'UserInfoController@saveInfo');                      // 修改用户信息
+            $api->post('realnamePeople', 'UserInfoController@realnamePeople');                  // 个人实名认证
+            $api->post('realnamePeopleInfo', 'UserInfoController@realnamePeopleInfo');          // 获取个人实名认证信息
+            $api->post('realnameEnterprise', 'UserInfoController@realnameEnterprise');          // 企业实名认证
+            $api->post('realnameEnterpriseInfo', 'UserInfoController@realnameEnterpriseInfo');  // 获取企业实名认证信息
+            $api->post('me', 'AuthController@me');                                              // 获取用户信息
+            $api->post('saveInfo', 'UserInfoController@saveInfo');                              // 修改用户信息
 
             // 文件处理
             $api->post('uploadImg', 'FileController@uploadImg');   // 图片上传

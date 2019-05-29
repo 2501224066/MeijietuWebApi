@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\LogLogin;
-use App\Models\Usalesman;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
 use App\Models\Captcha;

@@ -10,6 +10,44 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Models\RealnamePeople
+ *
+ * @property int $uid
+ * @property string $truename 真实姓名
+ * @property string $identity_card_ID 身份证号
+ * @property string $identity_card_face 身份证正面图片
+ * @property string $identity_card_back 身份证背面图片
+ * @property string|null $identity_card_hold 手持身份证图片
+ * @property string $bank_deposit 开户银行
+ * @property string $bank_branch 支行名称
+ * @property string $bank_prov 开户省
+ * @property string $bank_city 开户城市
+ * @property string $bank_card 银行卡号
+ * @property string $bank_band_phone 绑定手机号
+ * @property int $verify_status 审核状态 0=失败 1=成功
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankBandPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankBranch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankCard($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankDeposit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankProv($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereIdentityCardBack($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereIdentityCardFace($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereIdentityCardHold($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereIdentityCardID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereTruename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereVerifyStatus($value)
+ * @mixin \Eloquent
+ */
 class RealnamePeople extends Model
 {
     protected $table = 'realname_people';
@@ -75,7 +113,7 @@ class RealnamePeople extends Model
                     'bank_deposit' => htmlspecialchars($request->bank_deposit),
                     'bank_branch' => htmlspecialchars($request->bank_branch),
                     'bank_prov' => htmlspecialchars($request->bank_prov),
-                    'bank_city' => htmlspecialchars($request->bank_cit),
+                    'bank_city' => htmlspecialchars($request->bank_city),
                     'bank_card' => htmlspecialchars($request->bank_card),
                     'bank_band_phone' => htmlspecialchars($request->bank_band_phone),
                     'verify_status' => 1 // 审核状态 0=未通过 1=审核通过
@@ -92,6 +130,25 @@ class RealnamePeople extends Model
         });
 
         throw new Exception("保存失败");
+    }
+
+    // 获取个人认证信息
+    public static function info()
+    {
+        $uid = JWTAuth::user()->uid;
+        $data = self::whereUid($uid)->first();
+        if( ! $data)
+            throw new Exception("未查询到认证信息");
+
+        return [
+            'truename' =>  $data->truename,
+            'identity_card_ID' => preg_replace("/(\d{3})\d{11}(\d{3}.{1})/", "\$1***********\$2", $data->identity_card_ID),
+            'bank_band_phone' => preg_replace("/(\d{3})\d{4}(\d{4})/", "\$1****\$2", $data->bank_band_phone),
+            'bank_deposit' => $data->bank_deposit,
+            'bank_branch' => $data->bank_branch,
+            'bank_where' => $data->bank_prov.$data->bank_city,
+            'bank_card' => preg_replace("/(\d{4})\d{12}(\d{3})/", "\$1 **** **** **** \$2", $data->bank_card)
+        ];
     }
 
 }
