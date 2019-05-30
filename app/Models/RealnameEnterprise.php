@@ -58,12 +58,10 @@ class RealnameEnterprise extends Model
 
         // 营业执照图片转base64编码
         $img_content = file_get_contents(env('ALIOSS_URL').$business_license);
-        $img_base64 = base64_encode($img_content);
+        $img_base64 = urlencode(base64_encode($img_content));
 
         // 请求营业执照信息外部接口
         $data = businessLicense_API($img_base64);
-        print_r($data);
-        exit();
         if ($data->name != $enterprise_name)
             throw new Exception("企业名称与营业执照上信息不符");
         if ($data->credit != $social_credit_code)

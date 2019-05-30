@@ -20,7 +20,7 @@ function API_CURL($host, $url, $method, $headers, $bodys)
     }
 
     $re = curl_exec($curl);
-    if ( ! $re)
+    if ( ! json_decode($re))
         throw new Exception("请求失败");
 
     return json_decode($re); // 字符串转为JSON格式
