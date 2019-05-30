@@ -18,6 +18,11 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('checkImgCode', 'CaptchaController@checkImgCode');        // 验证图形验证码
         $api->get('smsVerifCode', 'CaptchaController@smsVerifCode');        // 获取短信验证码
 
+        // 商品属性
+        $api->get('weixinGoodsAttribute', 'GoodsAttributeController@weixinGoodsAttribute');    // 微信商品属性
+        $api->get('weiboGoodsAttribute', 'GoodsAttributeController@weiboGoodsAttribute');      // 微博商品属性
+        $api->get('videoGoodsAttribute', 'GoodsAttributeController@videoGoodsAttribute');      // 视频商品属性
+
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
             $api->post('refresh', 'AuthController@refresh');        // 刷新token
@@ -39,11 +44,6 @@ $api->group(['version' => 'v1'], function ($api) {
 
             // 文件处理
             $api->post('uploadImg', 'FileController@uploadImg');   // 图片上传
-
-            // 商品属性
-            $api->post('weixinGoodsAttribute', 'GoodsAttributeController@weixinGoodsAttribute');    // 微信商品属性
-            $api->post('weiboGoodsAttribute', 'GoodsAttributeController@weiboGoodsAttribute');      // 微博商品属性
-            // ...
         });
     });
 });

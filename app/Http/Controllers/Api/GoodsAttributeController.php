@@ -32,4 +32,15 @@ class GoodsAttributeController extends BaseController
 
         return $this->success($re);
     }
+
+    public function videoGoodsAttribute()
+    {
+        $re = \App\Models\Video\Theme::with('filed')
+            ->with('fansnumlevel')
+            ->with('platform')
+            ->with('priceclassify')
+            ->get();
+
+        return $this->success($re);
+    }
 }
