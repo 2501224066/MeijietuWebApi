@@ -66,6 +66,10 @@ class GoodsAttributeController extends BaseController
         return $this->success($re);
     }
 
+    /**
+     * 软文商品属性
+     * @return mixed
+     */
     public function softarticleGoodsAttribute()
     {
         $re = \App\Models\Softarticle\Theme::with('filed')

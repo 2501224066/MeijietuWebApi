@@ -46,6 +46,9 @@ $api->group(['version' => 'v1'], function ($api) {
 
             // 文件处理
             $api->post('uploadImg', 'FileController@uploadImg');   // 图片上传
+
+            // 创建商品
+            $api->post('createWeixinGoods', 'CreateGoodsController@createWeixinGoods');   // 创建微信商品
         });
     });
 });

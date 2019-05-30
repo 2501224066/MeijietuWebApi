@@ -239,4 +239,13 @@ class User  extends Authenticatable implements JWTSubject
         return true;
     }
 
+    // 检查是否已经认证
+    public static function checkRealnameStatus()
+    {
+        $realnameStatus = JWTAuth::user()->realname_status;
+        if ($realnameStatus != 0)
+            throw new Exception('已有认证');
+
+        return true;
+    }
 }

@@ -18,6 +18,8 @@ class UserInfoController extends BaseController
      */
     public function realnamePeople(UserInfoRequests $request)
     {
+        // 检查是否已经认证
+        User::checkRealnameStatus();
         // 绑定手机号检验
         Captcha::checkCode($request->smsCode, $request->bank_band_phone, 'realnamePeople');
         // 检查银行卡信息
@@ -44,6 +46,8 @@ class UserInfoController extends BaseController
      */
     public function realnameEnterprise(UserInfoRequests $request)
     {
+        // 检查是否已经认证
+        User::checkRealnameStatus();
         // 绑定手机号检验
         Captcha::checkCode($request->smsCode, $request->bank_band_phone, 'realnameEnterprise');
         // 检查营业执照信息
