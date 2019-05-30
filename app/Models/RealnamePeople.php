@@ -123,7 +123,6 @@ class RealnamePeople extends Model
             if ( ! $reOne)
                 throw new Exception('保存失败');
 
-
             // 修改用户表中实名认证状态
             $reTwo = DB::table('user')
                 ->where('uid', $uid)
