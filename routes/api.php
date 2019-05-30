@@ -34,6 +34,8 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('realnameEnterpriseInfo', 'UserInfoController@realnameEnterpriseInfo');  // 获取企业实名认证信息
             $api->post('me', 'AuthController@me');                                              // 获取用户信息
             $api->post('saveInfo', 'UserInfoController@saveInfo');                              // 修改用户信息
+            $api->post('savePhone', 'UserInfoController@savePhone');                            // 修改手机号
+            $api->post('savePass', 'UserInfoController@savePass');                              // 修改密码
 
             // 文件处理
             $api->post('uploadImg', 'FileController@uploadImg');   // 图片上传
@@ -41,7 +43,7 @@ $api->group(['version' => 'v1'], function ($api) {
             // 商品属性
             $api->post('weixinGoodsAttribute', 'GoodsAttributeController@weixinGoodsAttribute');    // 微信商品属性
             $api->post('weiboGoodsAttribute', 'GoodsAttributeController@weiboGoodsAttribute');      // 微博商品属性
-
+            // ...
         });
     });
 });

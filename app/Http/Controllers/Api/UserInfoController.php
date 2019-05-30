@@ -60,8 +60,23 @@ class UserInfoController extends BaseController
     {
         // 检查图形验证码
         Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
-        // 修改信息
+        // 修改信息并记录
         User::saveInfo($request);
+
+        return $this->success('修改完成');
+    }
+
+    /**
+     * 修改手机号
+     */
+    public function savePhone(UserInfoRequests $request)
+    {
+        // 检查短信验证码
+        Captcha::checkCode($request->smsCode, $request->phone, 'savePhone');
+        // 检查手机号是否为当前用户手机号
+        User::checkUserPhone($request->phone);
+        // 修改手机号并记录
+        User::savePhoneAndLog($request->phone, $request->new_phone);
 
         return $this->success('修改完成');
     }

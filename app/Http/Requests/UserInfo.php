@@ -62,6 +62,14 @@ class UserInfo extends Base
                 $rules['imgCode'] = 'required';
                 $rules['imgToken'] = 'required';
                 break;
+
+            // 修改手机号
+            case 'savePhone':
+                $rules['phone'] = ['required','numeric','exists:user,phone','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
+                $rules['smsCode'] = 'required|numeric';
+                $rules['new_phone'] = ['required','confirmed','numeric','unique:user,phone','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
+                $rules['new_phone_confirmation'] = 'required';
+                break;
         }
 
         return $rules;
@@ -95,6 +103,17 @@ class UserInfo extends Base
             "qq_ID.numeric" => "QQ号不合规",
             'imgCode.required' => '验证码不得为空',
             'imgToken.required' => '令牌不得为空',
+
+            'phone.required' => "手机号不得为空",
+            'phone.numeric' => "手机号必须是数字",
+            'phone.exists' => "手机号未注册",
+            'phone.regex' => "手机号不合规",
+            'new_phone.required' => "新手机号不得为空",
+            'new_phone.confirmed' => "两次输入新手机号不一致",
+            'new_phone.numeric' => "新手机号必须是数字",
+            'new_phone.unique' => "新手机号已被注册",
+            'new_phone.regex' => "新手机号不合规",
+            'new_phone_confirmation.required' => "重复新手机号不得为空",
         ];
     }
 }

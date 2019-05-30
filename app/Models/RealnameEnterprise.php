@@ -79,8 +79,8 @@ class RealnameEnterprise extends Model
         DB::transaction(function () use ($request) {
             $uid = JWTAuth::user()->uid;
 
-            // 添加个人实名认证数据
-            DB::table('realname_enterprise')
+            // 添加企业实名认证数据
+            $reOne = DB::table('realname_enterprise')
                 ->insert([
                     'uid' => $uid,
                     'enterprise_name' => htmlspecialchars($request->enterprise_name),
@@ -94,18 +94,20 @@ class RealnameEnterprise extends Model
                     'bank_band_phone' => htmlspecialchars($request->bank_band_phone),
                     'verify_status' => 1 // 审核状态 0=未通过 1=审核通过
                 ]);
+            if ( ! $reOne)
+                throw new Exception('保存失败');
 
             // 修改用户表中实名认证状态
-            DB::table('user')
+            $reTwo = DB::table('user')
                 ->where('uid', $uid)
                 ->update([
                     'realname_status' => 2 // 实名认证状态 0=未认证 1=个人认证 2=企业认证
                 ]);
-
-            return true;
+            if ( ! $reTwo)
+                throw new Exception('保存失败');
         });
 
-        throw new Exception("保存失败");
+        return true;
     }
 
     // 获取企业认证信息

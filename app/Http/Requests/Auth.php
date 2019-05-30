@@ -65,8 +65,8 @@ class Auth extends Base
             // 重置密码
             case 'resetPass':
                 $rules['phone'] = ['required','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/','exists:user,phone'];
-                $rules['password'] = 'required|between:6,18';
-                $rules['password_confirmation'] = 'required|same:password';
+                $rules['password'] = 'required|between:6,18|confirmed';
+                $rules['password_confirmation'] = 'required';
                 $rules['nextToken'] = 'required';
                 break;
         }
@@ -87,9 +87,9 @@ class Auth extends Base
             'email.unique'  => '邮箱已被使用',
 
             'password.required' => '密码不得为空',
-            'password_confirmation.required' =>'重复密码不得为空',
-            'password_confirmation.same' => '两次输入密码不一致',
+            'password.confirmed' => '两次输入密码不一致',
             'password.between' => '密码长度需大于'. ':min' . '位，小于' . ':max'. '位',
+            'password_confirmation.required' =>'重复密码不得为空',
 
             'nickname.required' => '昵称不得为空',
             'nickname.between' => '昵称长度需大于'. ':min' . '位，小于' . ':max'. '位',

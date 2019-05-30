@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Log\LogLogin;
+use App\Models\Log\LogSaveuserinfo;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -138,10 +141,10 @@ class User  extends Authenticatable implements JWTSubject
     }
 
     // 修改密码
-    public static function savePass($phone , $value)
+    public static function savePass($phone , $new_pass)
     {
         $re = self::wherePhone($phone)->update([
-            'password' => $value
+            'password' => $new_pass
         ]);
         if( ! $re )
             throw new Exception('保存失败');
@@ -152,21 +155,90 @@ class User  extends Authenticatable implements JWTSubject
     // 修改信息
     public static function saveInfo($data)
     {
-        $uid = JWTAuth::user()->uid;
-        $re = self::whereUid($uid)
-            ->update([
-                'head_portrait' => htmlspecialchars($data->head_portrait),
-                'nickname' => htmlspecialchars($data->nickname),
-                'sex' => htmlspecialchars($data->sex),
-                'birth' => htmlspecialchars($data->birth),
-                'qq_ID' => htmlspecialchars($data->qq_ID),
-                'weixin_ID' => htmlspecialchars($data->weixin_ID),
-            ]);
-        if( ! $re )
-            throw new Exception('保存失败');
+        $user = JWTAuth::user();
+        $old_info = [
+            'head_portrait' => $user->head_portrait,
+            'nickname' =>  $user->nickname,
+            'sex' =>  $user->sex,
+            'birth' =>  $user->birth,
+            'qq_ID' =>  $user->qq_ID,
+            'weixin_ID' =>  $user->weixin_ID,
+        ];
+        $new_info = [
+            'head_portrait' => htmlspecialchars($data->head_portrait),
+            'nickname' => htmlspecialchars($data->nickname),
+            'sex' => htmlspecialchars($data->sex),
+            'birth' => htmlspecialchars($data->birth),
+            'qq_ID' => htmlspecialchars($data->qq_ID),
+            'weixin_ID' => htmlspecialchars($data->weixin_ID),
+        ];
+
+        DB::transaction(function () use ($user, $old_info, $new_info){
+            // 修改信息
+            $reOne = DB::table('user', $old_info, $new_info)
+                ->where('uid', $user->uid)
+                ->update($new_info);
+            if( ! $reOne )
+                throw new Exception('保存失败');
+
+            // 记录
+            $reTwo = DB::table('log_saveuserinfo')
+                ->insert([
+                    'uid' => JWTAuth::user()->uid,
+                    'ip' => \Request::getClientIp(),
+                    'old_info' => json_encode($old_info),
+                    'new_info' => json_encode($new_info),
+                    'time_at' => date('Y-m-d H:i:s')
+                ]);
+            if ( ! $reTwo)
+                throw new Exception('保存失败');
+        });
 
         return true;
     }
 
+    // 检查手机号是否为当前用户手机号
+    public static function checkUserPhone($phone)
+    {
+        if ( ! (JWTAuth::user()->phone == $phone) )
+            throw new Exception('违法，非自身手机号');
+
+        return true;
+    }
+
+
+    // 修改手机号并记录
+    public static function savePhoneAndLog($phone, $new_phone)
+    {
+        $old_info = [
+            'phone' => $phone
+        ];
+        $new_info = [
+            'phone' => $new_phone
+        ];
+
+        DB::transaction(function () use ($phone, $old_info, $new_info){
+            // 修改手机号
+            $reOne = DB::table('user')
+                ->where('phone', $phone)
+                ->update($new_info);
+            if ( ! $reOne)
+                throw new Exception('保存失败');
+
+            // 记录
+            $reTwo = DB::table('log_saveuserinfo')
+                ->insert([
+                    'uid' => JWTAuth::user()->uid,
+                    'ip' => \Request::getClientIp(),
+                    'old_info' => json_encode($old_info),
+                    'new_info' => json_encode($new_info),
+                    'time_at' => date('Y-m-d H:i:s')
+                ]);
+            if ( ! $reTwo)
+                throw new Exception('保存失败');
+        });
+
+        return true;
+    }
 
 }

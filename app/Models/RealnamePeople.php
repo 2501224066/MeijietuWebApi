@@ -103,7 +103,7 @@ class RealnamePeople extends Model
             $uid = JWTAuth::user()->uid;
 
             // 添加个人实名认证数据
-            DB::table('realname_people')
+            $reOne = DB::table('realname_people')
                 ->insert([
                     'uid' => $uid,
                     'truename' => htmlspecialchars($request->truename),
@@ -118,18 +118,22 @@ class RealnamePeople extends Model
                     'bank_band_phone' => htmlspecialchars($request->bank_band_phone),
                     'verify_status' => 1 // 审核状态 0=未通过 1=审核通过
                 ]);
+            if ( ! $reOne)
+                throw new Exception('保存失败');
+
 
             // 修改用户表中实名认证状态
-            DB::table('user')
+            $reTwo = DB::table('user')
                 ->where('uid', $uid)
                 ->update([
                     'realname_status' => 1 // 实名认证状态 0=未认证 1=个人认证 2=企业认证
                 ]);
+            if ( ! $reTwo)
+                throw new Exception('保存失败');
 
-            return true;
         });
 
-        throw new Exception("保存失败");
+        return true;
     }
 
     // 获取个人认证信息
