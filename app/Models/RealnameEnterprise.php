@@ -62,8 +62,6 @@ class RealnameEnterprise extends Model
 
         // 请求营业执照信息外部接口
         $data = businessLicense_API($img_base64);
-        print_r($data);
-        exit();
         if ($data->name != $enterprise_name)
             throw new Exception("企业名称与营业执照上信息不符");
         if ($data->credit != $social_credit_code)
