@@ -10,7 +10,8 @@ function type($parm){
         'resetPassCode' => '重置密码',
         'realnamePeople' => '个人实名认证',
         'realnameEnterprise' => '企业实名认证',
-        'savePhone' => '修改手机号'
+        'savePhone' => '修改手机号',
+        'savePass' => '修改密码'
     ];
 
     // 上传类型

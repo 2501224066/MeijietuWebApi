@@ -71,7 +71,7 @@ class AuthController extends BaseController
         // 检查图形验证码
         Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
         // 验证账号密码
-        $user = User::checkLogin($request->phone, $request->password);
+        $user = User::checkPass($request->phone, $request->password);
         $token = JWTAuth::fromUser($user);
         // 修改登录log为成功状态
         LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);

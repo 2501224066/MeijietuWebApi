@@ -9,6 +9,7 @@ use App\Models\Captcha;
 use App\Models\RealnameEnterprise;
 use App\Models\RealnamePeople;
 use App\Models\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserInfoController extends BaseController
 {
@@ -71,12 +72,28 @@ class UserInfoController extends BaseController
      */
     public function savePhone(UserInfoRequests $request)
     {
-        // 检查短信验证码
-        Captcha::checkCode($request->smsCode, $request->phone, 'savePhone');
         // 检查手机号是否为当前用户手机号
         User::checkUserPhone($request->phone);
+        // 检查短信验证码
+        Captcha::checkCode($request->smsCode, $request->phone, 'savePhone');
         // 修改手机号并记录
         User::savePhoneAndLog($request->phone, $request->new_phone);
+
+        return $this->success('修改完成');
+    }
+
+    /**
+     * 修改密码
+     */
+    public function savePass(UserInfoRequests $request)
+    {
+        $phone = JWTAuth::user()->phone;
+        // 检查短信验证码
+        Captcha::checkCode($request->smsCode, $phone, 'savePhone');
+        // 检查密码
+        User::checkPass($phone, $request->password);
+        // 修改密码
+        User::savePass($phone, $request->new_pass);
 
         return $this->success('修改完成');
     }

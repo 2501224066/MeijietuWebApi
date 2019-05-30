@@ -70,6 +70,14 @@ class UserInfo extends Base
                 $rules['new_phone'] = ['required','confirmed','numeric','unique:user,phone','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
                 $rules['new_phone_confirmation'] = 'required';
                 break;
+
+            // 修改密码
+            case 'savePass':
+                $rules['password'] = 'required|between:6,18';
+                $rules['smsCode'] = 'required|numeric';
+                $rules['new_pass'] = 'required|between:6,18|confirmed';
+                $rules['new_pass_confirmation'] = 'required';
+                break;
         }
 
         return $rules;
@@ -114,6 +122,13 @@ class UserInfo extends Base
             'new_phone.unique' => "新手机号已被注册",
             'new_phone.regex' => "新手机号不合规",
             'new_phone_confirmation.required' => "重复新手机号不得为空",
+
+            'password.required' => "密码不得为空",
+            'password.between' => '密码长度需大于'. ':min' . '位，小于' . ':max'. '位',
+            'new_pass.required' => "新密码不得为空",
+            'new_pass.between:6,18' => '新密码长度需大于'. ':min' . '位，小于' . ':max'. '位',
+            'new_pass.confirmed' => "两次输入新密码不一致",
+            'new_pass_confirmation.required' => '重复新密码不得为空'
         ];
     }
 }

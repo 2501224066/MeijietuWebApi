@@ -84,21 +84,20 @@ class User  extends Authenticatable implements JWTSubject
     //添加用户
     public static function add($phone, $email, $password, $nickname, $identity, $ip)
     {
-            // 添加user
-            $user =self::create([
-                    'phone' => htmlspecialchars($phone),
-                    'email' => htmlspecialchars($email),
-                    'password' => Hash::make(htmlspecialchars($password)),
-                    'nickname' => htmlspecialchars($nickname),
-                    'identity' => htmlspecialchars($identity),
-                    'ip' => $ip,
-                    'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('value')
-                ]);
+        // 添加user
+        $user =self::create([
+            'phone' => htmlspecialchars($phone),
+            'email' => htmlspecialchars($email),
+            'password' => Hash::make(htmlspecialchars($password)),
+            'nickname' => htmlspecialchars($nickname),
+            'identity' => htmlspecialchars($identity),
+            'ip' => $ip,
+            'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('value')
+        ]);
+        if ( ! $user)
+            throw new Exception('注册失败');
 
-            if ( ! $user)
-                throw new Exception('注册失败');
-
-            return self::whereId($user->id)->value('uid');
+        return self::whereId($user->id)->value('uid');
     }
 
     // 分配客服
@@ -129,13 +128,12 @@ class User  extends Authenticatable implements JWTSubject
         return true;
     }
 
-    // 验证账号密码
-    public static function checkLogin($phone, $password)
+    // 验证密码
+    public static function checkPass($phone, $password)
     {
         $user = self::wherePhone($phone)->first();
-        if( ! Hash::check($password, $user->password) ) {
-            throw new Exception('账号密码错误');
-        }
+        if( ! Hash::check($password, $user->password) )
+            throw new Exception('账号/密码错误');
 
         return $user;
     }
@@ -144,7 +142,7 @@ class User  extends Authenticatable implements JWTSubject
     public static function savePass($phone , $new_pass)
     {
         $re = self::wherePhone($phone)->update([
-            'password' => $new_pass
+            'password' => Hash::make($new_pass)
         ]);
         if( ! $re )
             throw new Exception('保存失败');
