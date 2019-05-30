@@ -37,8 +37,7 @@ class UserInfoController extends BaseController
      */
     public function realnamePeopleInfo()
     {
-        $re = RealnamePeople::info();
-        return $this->success($re);
+        return $this->success(RealnamePeople::info());
     }
 
     /**
