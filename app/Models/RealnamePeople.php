@@ -116,7 +116,9 @@ class RealnamePeople extends Model
                     'bank_city' => htmlspecialchars($request->bank_city),
                     'bank_card' => htmlspecialchars($request->bank_card),
                     'bank_band_phone' => htmlspecialchars($request->bank_band_phone),
-                    'verify_status' => 1 // 审核状态 0=未通过 1=审核通过
+                    'verify_status' => 1, // 审核状态 0=未通过 1=审核通过
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
                 ]);
             if ( ! $reOne)
                 throw new Exception('保存失败');
