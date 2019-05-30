@@ -44,7 +44,7 @@ class UserInfo extends Base
                 $rules['business_license'] = 'required';
                 $rules['bank_deposit'] = 'required';
                 $rules['bank_branch'] = 'required';
-                $rules['bank_porv'] = 'required';
+                $rules['bank_prov'] = 'required';
                 $rules['bank_city'] = 'required';
                 $rules['bank_card'] = 'required';
                 $rules['bank_band_phone'] = ['required','numeric','regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
