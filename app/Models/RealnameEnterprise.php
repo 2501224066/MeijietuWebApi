@@ -43,6 +43,8 @@ use Illuminate\Support\Facades\DB;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereVerifyStatus($value)
  * @mixin \Eloquent
+ * @property string $bank_prov 开户省
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankProv($value)
  */
 class RealnameEnterprise extends Model
 {

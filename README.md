@@ -76,4 +76,5 @@
 4. `videoGoodsAttribute` 视频商品属性  
 5. `selfmediaGoodsAttribute` 自媒体商品属性  
 6. `softarticleGoodsAttribute` 软文商品属性  
-7. `个人实名认证` ,`企业实名认证` 接口校对
+7. `个人实名认证` ,`企业实名认证` 接口校对  
+8. 添加 `上传日志`  

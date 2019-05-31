@@ -4,6 +4,10 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Models\Currency\Pricelevel;
+use App\Models\Currency\Region;
+use App\Models\Currency\Weightlevel;
+
 class GoodsAttributeController extends BaseController
 {
     /**
@@ -81,5 +85,18 @@ class GoodsAttributeController extends BaseController
             ->get();
 
         return $this->success($re);
+    }
+
+    /**
+     * 公共商品属性
+     * @return mixed
+     */
+    public function currencyGoodsAttribute()
+    {
+        return $this->success([
+            'region' => Region::get(),
+            'pricelevel' => Pricelevel::get(),
+            'weightlevel' => Weightlevel::get()
+        ]);
     }
 }

@@ -24,6 +24,7 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('videoGoodsAttribute', 'GoodsAttributeController@videoGoodsAttribute');             // 视频商品属性
         $api->get('selfmediaGoodsAttribute', 'GoodsAttributeController@selfmediaGoodsAttribute');     // 自媒体商品属性
         $api->get('softarticleGoodsAttribute', 'GoodsAttributeController@softarticleGoodsAttribute'); // 软文商品属性
+        $api->get('currencyGoodsAttribute', 'GoodsAttributeController@currencyGoodsAttribute'); // 公共商品属性
 
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {

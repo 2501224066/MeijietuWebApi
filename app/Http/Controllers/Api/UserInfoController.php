@@ -58,7 +58,7 @@ class UserInfoController extends BaseController
     }
 
     /**
-     * 获取个人实名认证信息
+     * 获取企业实名认证信息
      */
     public function realnameEnterpriseInfo()
     {

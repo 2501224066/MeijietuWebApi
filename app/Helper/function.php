@@ -33,3 +33,9 @@ function type($parm){
 
     return $type; //返回类型数据
 }
+
+// 生存商品编号
+function createGoodsNnm()
+{
+    return date('d'). strtoupper(uniqid()). date('Y').mt_rand(1000000, 9999999).date('m');
+}

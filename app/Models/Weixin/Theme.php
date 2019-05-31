@@ -19,6 +19,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereThemeName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereThemeStatus($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weixin\Fansnumlevel[] $fansnumlevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weixin\Filed[] $filed
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weixin\Likelevel[] $likelevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weixin\Priceclassify[] $priceclassify
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weixin\Readlevel[] $readlevel
  */
 class Theme extends Model
 {

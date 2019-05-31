@@ -6,6 +6,24 @@ namespace App\Models\Weibo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Weibo\Theme
+ *
+ * @property int $theme_id
+ * @property string $theme_name 主题名称
+ * @property int $theme_status 主题状态 0=禁用 1=启用
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weibo\Authtype[] $authtype
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weibo\Fansnumlevel[] $fansnumlevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weibo\Filed[] $filed
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Weibo\Priceclassify[] $priceclassify
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\Theme newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\Theme newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\Theme query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\Theme whereThemeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\Theme whereThemeName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\Theme whereThemeStatus($value)
+ * @mixin \Eloquent
+ */
 class Theme extends Model
 {
     protected $table = 'weibo_theme';

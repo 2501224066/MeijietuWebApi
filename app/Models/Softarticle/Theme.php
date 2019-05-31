@@ -6,6 +6,26 @@ namespace App\Models\Softarticle;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Softarticle\Theme
+ *
+ * @property int $theme_id 主题id
+ * @property string $theme_name 主题名称
+ * @property int $theme_status 主题状态 0=禁用 1=启用
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Softarticle\Entryclassify[] $entryclassify
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Softarticle\Filed[] $filed
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Softarticle\Industry[] $industry
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Softarticle\Platform[] $platform
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Softarticle\Pricelevel[] $pricelevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Softarticle\Sendspeed[] $sendspeed
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Softarticle\Theme newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Softarticle\Theme newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Softarticle\Theme query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Softarticle\Theme whereThemeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Softarticle\Theme whereThemeName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Softarticle\Theme whereThemeStatus($value)
+ * @mixin \Eloquent
+ */
 class Theme extends Model
 {
     protected $table = 'softarticle_theme';

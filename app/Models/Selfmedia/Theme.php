@@ -6,6 +6,23 @@ namespace App\Models\Selfmedia;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Selfmedia\Theme
+ *
+ * @property int $theme_id 主题id
+ * @property string $theme_name 主题名称
+ * @property int $theme_status 主题状态 0=禁用 1=启用
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Selfmedia\Fansnumlevel[] $fansnumlevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Selfmedia\Filed[] $filed
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Selfmedia\Platform[] $platform
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\Theme newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\Theme newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\Theme query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\Theme whereThemeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\Theme whereThemeName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\Theme whereThemeStatus($value)
+ * @mixin \Eloquent
+ */
 class Theme extends Model
 {
     protected $table = 'selfmedia_theme';

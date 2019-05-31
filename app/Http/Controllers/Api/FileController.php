@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Log\LogUpload;
 use App\Service\File;
 use App\Http\Requests\File as FileRequest;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +29,8 @@ class FileController extends BaseController
         File::checkImgSize($img);
         // 上传
         $path = File::uploadImg($img, $upload_type);
+        // 记录
+        LogUpload::add($path, $upload_type);
 
         return $this->success(['path' =>  $path]);
     }
