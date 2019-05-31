@@ -1,23 +1,23 @@
 <?php
 
 
-namespace App\Models\Weibo;
+namespace App\Models\Weixin;
 
 
 use Emadadly\LaravelUuid\Uuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Models\Weixin\Theme;
-use App\Models\Weixin\Filed;
 use App\Models\Currency\Region;
-use App\Models\Weixin\Priceclassify;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+
 /**
- * App\Models\Weibo\GoodsWeixin
+ * App\Models\Weixin\GoodsWeixin
  *
- * @property int $goods_weixin_id 商品id UUID
+ * @property int $goods_weixin_id 商品id
+ * @property int $uid 用户id
+ * @property string $goods_num 商品编号
  * @property int $theme_id 主题id
  * @property string $theme_name 主题名称
  * @property string $goods_title 商品名称（微信名称）
@@ -29,29 +29,34 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property int $region_id 面向地区id
  * @property string $region_name 面向地区
  * @property int $reserve_status 是否需要预约 0=否 1=是
- * @property string|null $remarks 备注
  * @property int $qq_ID 联系qq
+ * @property int $status 状态 0=下架 1=上架
+ * @property string|null $remarks 备注
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereFansNum($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereFiledId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereFiledName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereGoodsTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereGoodsTitleAbout($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereGoodsWeixinId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereQqID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereRegionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereRegionName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereRemarks($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereReserveStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereThemeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereThemeName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeixin whereWeixinID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin uuid($uuid, $first = true)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereFansNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereFiledId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereFiledName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereGoodsNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereGoodsTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereGoodsTitleAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereGoodsWeixinId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereQqID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereRegionName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereRemarks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereReserveStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereThemeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereThemeName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereWeixinID($value)
  * @mixin \Eloquent
  */
 class GoodsWeixin extends Model
@@ -65,6 +70,16 @@ class GoodsWeixin extends Model
     public $guarded = [];
 
     public $incrementing = false;
+
+    const STATUS_ON = 1; // 上架
+
+    const STATUS_OFF = 0; // 下架
+
+    const VERIFY_STATUS_WAIT = 0; // 审核中
+
+    const VERIFY_STATUS_SUCC = 1; // 审核通过
+
+    const VERIFY_STATUS_FAIL = 2; // 审核不通过
 
     // 添加商品
     public static function add($data)
@@ -87,8 +102,10 @@ class GoodsWeixin extends Model
                     'region_id' => htmlspecialchars($data->region_id),
                     'region_name' => Region::whereRegionId($data->region_id)->value('region_name'),
                     'reserve_status' => htmlspecialchars($data->reserve_status),
-                    'remarks' =>  htmlspecialchars($data->remarks),
                     'qq_ID' => htmlspecialchars($data->qq_ID),
+                    'verify_status' => self::VERIFY_STATUS_WAIT,
+                    'status' => self::STATUS_OFF,
+                    'remarks' =>  htmlspecialchars($data->remarks),
                     'created_at' => $date,
                     'updated_at' => $date,
                 ]);

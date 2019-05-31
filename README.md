@@ -78,3 +78,7 @@
 6. `softarticleGoodsAttribute` 软文商品属性  
 7. `个人实名认证` ,`企业实名认证` 接口校对  
 8. 添加 `上传日志`  
+
+## 2019/5/31
+1. `createWeixinGoods` 添加微信商品接口  
+2. `currencyGoodsAttribute` 公共商品属性  

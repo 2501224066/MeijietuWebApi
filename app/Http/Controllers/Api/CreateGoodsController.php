@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\CreateGoods as CreateGoodsRequests;
-use App\Models\Weibo\GoodsWeixin;
+use App\Models\Weixin\GoodsWeixin;
 
 class CreateGoodsController extends BaseController
 {
