@@ -8,7 +8,7 @@ use App\Jobs\getWeixinGongZhongHaoBasicData;
 use App\Models\Weixin\GoodsWeixin;
 use App\Models\Weixin\Theme;
 use App\Models\Weibo\GoodsWeibo;
-use App\Models\Video\GoodsVideo;
+use App\Models\Softarticle\GoodsSoftarticle;
 use App\Models\Selfmedia\GoodsSelfmedia;
 
 class CreateGoodsController extends BaseController
@@ -54,7 +54,7 @@ class CreateGoodsController extends BaseController
     public function createVideoGoods(CreateGoodsRequests $request)
     {
         // 数据入库
-        $goods_video_id = GoodsVideo::add($request);
+        $goods_video_id = GoodsSoftarticle::add($request);
 
         return $this->success();
     }
@@ -68,6 +68,19 @@ class CreateGoodsController extends BaseController
     {
         // 数据入库
         $goods_selfmedia_id = GoodsSelfmedia::add($request);
+
+        return $this->success();
+    }
+
+    /**
+     * 添加软文商品
+     * @param CreateGoodsRequests $request
+     * @return mixed
+     */
+    public function createSoftarticleGoods(CreateGoodsRequests $request)
+    {
+        // 数据入库
+        $goods_softarticle_id = GoodsSoftarticle::add($request);
 
         return $this->success();
     }

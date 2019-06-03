@@ -94,3 +94,5 @@
 
 ## 2019/6/3
 1. `createSelfmediaGoods` 添加自媒体商品接口
+2. `goods_softarticle` 软文商品表  
+2. `createSoftarticleGoods` 添加软文商品接口

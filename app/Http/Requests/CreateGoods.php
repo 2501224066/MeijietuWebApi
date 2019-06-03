@@ -24,60 +24,77 @@ class CreateGoods extends Base
         {
             // 创建微信商品
             case 'createWeixinGoods':
-                $rules['theme_id'] = 'required|numeric';
                 $rules['goods_title'] = 'required';
                 $rules['goods_title_about'] = 'required';
                 $rules['weixin_ID'] = 'required|unique:goods_weixin,weixin_ID';
+                $rules['theme_id'] = 'required|numeric';
                 $rules['filed_id'] = 'required|numeric';
                 $rules['fans_num'] = 'required|numeric';
                 $rules['region_id'] = 'required|numeric';
                 $rules['reserve_status'] = 'required|numeric';
-                $rules['remarks'] = 'present';
                 $rules['qq_ID'] = 'required|numeric';
                 $rules['price_data'] = 'required';
+                $rules['remarks'] = 'present';
                 break;
 
             // 创建微博商品
             case 'createWeiboGoods':
-                $rules['theme_id'] = 'required|numeric';
                 $rules['goods_title'] = 'required';
                 $rules['goods_title_about'] = 'required';
                 $rules['weibo_link'] = 'required|unique:goods_weibo,weibo_link';
+                $rules['theme_id'] = 'required|numeric';
                 $rules['filed_id'] = 'required|numeric';
                 $rules['region_id'] = 'required|numeric';
                 $rules['reserve_status'] = 'required|numeric';
-                $rules['remarks'] = 'present';
                 $rules['qq_ID'] = 'required|numeric';
                 $rules['price_data'] = 'required';
+                $rules['remarks'] = 'present';
                 break;
 
             // 创建视频商品
             case 'createVideoGoods':
-                $rules['theme_id'] = 'required|numeric';
                 $rules['goods_title'] = 'required';
                 $rules['goods_title_about'] = 'required';
                 $rules['room_num'] = 'required|unique:goods_video,room_num';
                 $rules['fans_num'] = 'required|numeric';
+                $rules['theme_id'] = 'required|numeric';
                 $rules['platform_id'] = 'required|numeric';
                 $rules['filed_id'] = 'required|numeric';
                 $rules['region_id'] = 'required|numeric';
-                $rules['remarks'] = 'present';
                 $rules['qq_ID'] = 'required|numeric';
                 $rules['price_data'] = 'required';
+                $rules['remarks'] = 'present';
                 break;
 
             // 创建自媒体商品
             case 'createSelfmediaGoods':
-                $rules['theme_id'] = 'required|numeric';
                 $rules['goods_title'] = 'required';
                 $rules['goods_title_about'] = 'required';
                 $rules['reserve_status'] = 'required|numeric';
+                $rules['theme_id'] = 'required|numeric';
                 $rules['platform_id'] = 'required|numeric';
                 $rules['filed_id'] = 'required|numeric';
                 $rules['region_id'] = 'required|numeric';
-                $rules['remarks'] = 'present';
                 $rules['qq_ID'] = 'required|numeric';
                 $rules['price'] = 'required';
+                $rules['remarks'] = 'present';
+                break;
+
+            // 创建软文商品
+            case 'createSoftarticleGoods':
+                $rules['theme_id'] = 'required|numeric';
+                $rules['goods_title'] = 'required';
+                $rules['goods_title_about'] = 'required';
+                $rules['web_link'] = 'required';
+                $rules['weekend_send'] = 'required|numeric';
+                $rules['news_source'] = 'required|numeric';
+                $rules['platform_id'] = 'required|numeric';
+                $rules['filed_id'] = 'required|numeric';
+                $rules['sendspeed_id'] = 'required|numeric';
+                $rules['industry_id'] = 'required|numeric';
+                $rules['qq_ID'] = 'required|numeric';
+                $rules['price'] = 'required';
+                $rules['remarks'] = 'present';
                 break;
         }
 
@@ -113,6 +130,16 @@ class CreateGoods extends Base
             'room_num.unique' => '房间号已被使用',
 
             'price.required' => '价格不得为空',
+
+            'sendspeed_id.required'=> '发稿速度不得为空',
+            'sendspeed_id.numeric' => '发稿速度需为数字',
+            'industry_id.required' => '平台不得为空',
+            'industry_id.numeric' => '平台需为数字',
+            'web_link.required' => '链接网址不得为空',
+            'weekend_send.required' => '周末是否发稿不得为空',
+            'weekend_send.numeric' => '周末是否发稿需为数字',
+            'news_source.required' => '新闻源不得为空',
+            'news_source.numeric' => '新闻源需为数字',
 
         ];
     }
