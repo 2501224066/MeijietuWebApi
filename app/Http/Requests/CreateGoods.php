@@ -92,6 +92,7 @@ class CreateGoods extends Base
                 $rules['filed_id'] = 'required|numeric';
                 $rules['sendspeed_id'] = 'required|numeric';
                 $rules['industry_id'] = 'required|numeric';
+                $rules['entryclassify_id'] = 'required|numeric';
                 $rules['qq_ID'] = 'required|numeric';
                 $rules['price'] = 'required';
                 $rules['remarks'] = 'present';
@@ -140,6 +141,8 @@ class CreateGoods extends Base
             'weekend_send.numeric' => '周末是否发稿需为数字',
             'news_source.required' => '新闻源不得为空',
             'news_source.numeric' => '新闻源需为数字',
+            'entryclassify.required' => '入口种类不得为空',
+            'entryclassify.numeric' => '入口种类需为数字',
 
         ];
     }

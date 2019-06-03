@@ -58,6 +58,8 @@ class GoodsSoftarticle extends Model
                 'sendspeed_name' => Sendspeed::whereSendspeedId($data->sendspeed_id)->value('sendspeed_name'),
                 'industry_id' => htmlspecialchars($data->industry_id),
                 'industry_name' => Industry::whereIndustryId($data->industry_id)->value('industry_name'),
+                'entryclassify_id' => htmlspecialchars($data->entryclassify_id),
+                'entryclassify_name' => Entryclassify::whereEntryclassifyId($data->entryclassify_id)->value('entryclassify_name'),
                 'qq_ID' => htmlspecialchars($data->qq_ID),
                 'price' => htmlspecialchars($data->price),
                 'verify_status' => self::VERIFY_STATUS_WAIT,
