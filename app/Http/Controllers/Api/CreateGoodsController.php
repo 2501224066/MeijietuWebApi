@@ -25,11 +25,8 @@ class CreateGoodsController extends BaseController
         $goods_weixin_id = GoodsWeixin::add($request);
 
         // 【队列】 如果主题为公众号放入队列查询微信公众号基本信息
-        switch (Theme::whereThemeId($request->theme_id)->value('theme_name')) {
-            case '微信公众号':
-                getWeixinGongZhongHaoBasicData::dispatch($goods_weixin_id, $request->weixin_ID)->onQueue('getWeixinGongZhongHaoBasicData');
-                break;
-        }
+        if(Theme::whereThemeId($request->theme_id)->value('theme_name') == '微信公众号')
+            getWeixinGongZhongHaoBasicData::dispatch($goods_weixin_id, $request->weixin_ID)->onQueue('getWeixinGongZhongHaoBasicData');
 
         return $this->success();
     }
