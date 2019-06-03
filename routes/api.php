@@ -49,7 +49,10 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('uploadImg', 'FileController@uploadImg');   // 图片上传
 
             // 创建商品
-            $api->post('createWeixinGoods', 'CreateGoodsController@createWeixinGoods');   // 创建微信商品
+            $api->post('createWeixinGoods', 'CreateGoodsController@createWeixinGoods'); // 创建微信商品
+            $api->post('createWeiboGoods', 'CreateGoodsController@createWeiboGoods');   // 创建微博商品
+            $api->post('createVideoGoods', 'CreateGoodsController@createVideoGoods');   // 创建视频商品
+            $api->post('createSelfmediaGoods', 'CreateGoodsController@createSelfmediaGoods');   // 创建自媒体商品
         });
     });
 });

@@ -4,7 +4,6 @@
 namespace App\Models\Weixin;
 
 
-use Emadadly\LaravelUuid\Uuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Currency\Region;
@@ -61,15 +60,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  */
 class GoodsWeixin extends Model
 {
-    use Uuids;
 
     protected $table = 'goods_weixin';
 
     protected $primaryKey = 'goods_weixin_id';
 
     public $guarded = [];
-
-    public $incrementing = false;
 
     const STATUS_ON = 1; // 上架
 
@@ -85,7 +81,8 @@ class GoodsWeixin extends Model
     public static function add($data)
     {
         $date = date('Y-m-d H:i:s');
-        DB::transaction(function () use ($data, $date){
+        $goods_weixin_id = null;
+        DB::transaction(function () use ($data, $date, &$goods_weixin_id){
             // 添加微信商品
             $goods_weixin_id = DB::table('goods_weixin')
                 ->insertGetId([
@@ -129,6 +126,6 @@ class GoodsWeixin extends Model
             }
         });
 
-        return true;
+        return $goods_weixin_id;
     }
 }

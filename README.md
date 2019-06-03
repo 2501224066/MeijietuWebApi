@@ -80,5 +80,17 @@
 8. 添加 `上传日志`  
 
 ## 2019/5/31
-1. `createWeixinGoods` 添加微信商品接口  
-2. `currencyGoodsAttribute` 公共商品属性  
+1. `createWeixinGoods` 添加微信商品接口
+2. `currencyGoodsAttribute` 公共商品属性 
+3. 联调测试 添加微信商品 及 商品价格种类  
+4. 讨论 `交易流程`，`赔偿保证金`， `基础数据接口`
+
+## 2019/6/1
+1. 安装，项目连接 `maogoDB`  
+2. 构建队列执行查询，从 `maogoDB` 中获取微信公众号基础信息  
+3. `createWeiboGoods` 添加微博商品接口  
+4. `createVideoGoods` 添加视频商品接口  
+5. `goods_selfmedia` 自媒体商品表  
+
+## 2019/6/3
+1. `createSelfmediaGoods` 添加自媒体商品接口
