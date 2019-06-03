@@ -10,6 +10,7 @@ use App\Models\Weixin\Theme;
 use App\Models\Weibo\GoodsWeibo;
 use App\Models\Softarticle\GoodsSoftarticle;
 use App\Models\Selfmedia\GoodsSelfmedia;
+use App\Models\Video\GoodsVideo;
 
 class CreateGoodsController extends BaseController
 {
@@ -54,7 +55,7 @@ class CreateGoodsController extends BaseController
     public function createVideoGoods(CreateGoodsRequests $request)
     {
         // 数据入库
-        $goods_video_id = GoodsSoftarticle::add($request);
+        $goods_video_id = GoodsVideo::add($request);
 
         return $this->success();
     }

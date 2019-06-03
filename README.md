@@ -95,4 +95,6 @@
 ## 2019/6/3
 1. `createSelfmediaGoods` 添加自媒体商品接口
 2. `goods_softarticle` 软文商品表  
-2. `createSoftarticleGoods` 添加软文商品接口
+3. `createSoftarticleGoods` 添加软文商品接口  
+4. 线上安装 `php_mongodb` 扩展  
+5. 调证扩展依赖适应本地与线上php版本不同（7.2.0 | 7.0.0）  
