@@ -12,6 +12,60 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 
+/**
+ * App\Models\Video\GoodsVideo
+ *
+ * @property int $goods_video_id 商品id
+ * @property int $uid 用户id
+ * @property string $goods_num 商品编号
+ * @property string $goods_title 商品名称
+ * @property string $goods_title_about 商品名称简介
+ * @property string $room_num 房间号
+ * @property int $fans_num 粉丝数
+ * @property int $theme_id 主题id
+ * @property string $theme_name 主题名称
+ * @property int $platform_id 平台id
+ * @property string $platform_name 平台名称
+ * @property string $logo_path 平台图标
+ * @property int $filed_id 领域id
+ * @property string $filed_name 领域名称
+ * @property int $region_id 面向地区id
+ * @property string $region_name 面向地区
+ * @property string $qq_ID 联系qq
+ * @property int $verify_status 审核状态 0=审核中 1=审核不通过 2=审核通过
+ * @property int $status 状态 0=下架 1=上架
+ * @property string|null $remarks 备注
+ * @property string|null $basic_data 基础数据
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereBasicData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereFansNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereFiledId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereFiledName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsTitleAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsVideoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereLogoPath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo wherePlatformId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo wherePlatformName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereQqID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereRegionName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereRemarks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereRoomNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereThemeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereThemeName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereVerifyStatus($value)
+ * @mixin \Eloquent
+ */
 class GoodsVideo extends Model
 {
 

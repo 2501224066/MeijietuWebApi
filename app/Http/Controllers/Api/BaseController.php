@@ -13,7 +13,7 @@ class BaseController extends Controller
     {
         $data = array();
         $message = "success";
-        is_array($parm) ? $data = $parm : $message = $parm ;
+        is_string($parm) ? $message = $parm :  $data = $parm;
 
         return $this->response->array([
             'status_code' => $responseCode,

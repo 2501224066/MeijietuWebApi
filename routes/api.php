@@ -54,6 +54,9 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('createVideoGoods', 'CreateGoodsController@createVideoGoods');             // 创建视频商品
             $api->post('createSelfmediaGoods', 'CreateGoodsController@createSelfmediaGoods');     // 创建自媒体商品
             $api->post('createSoftarticleGoods', 'CreateGoodsController@createSoftarticleGoods'); // 创建软文商品
+
+            // 搜索商品
+            $api->post('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods'); // 搜索微信商品
         });
     });
 });

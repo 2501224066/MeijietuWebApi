@@ -9,6 +9,54 @@ use App\Models\Currency\Region;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+/**
+ * App\Models\Weibo\GoodsWeibo
+ *
+ * @property int $goods_weibo_id 商品id
+ * @property int $uid 用户id
+ * @property string $goods_num 商品编号
+ * @property string $goods_title 商品名称（微博名称）
+ * @property string $goods_title_about 商品名称简介
+ * @property string $weibo_link 微博链接
+ * @property int $theme_id 主题id
+ * @property string $theme_name 主题名称
+ * @property int $filed_id 主题id
+ * @property string $filed_name 领域名称
+ * @property int $region_id 面向地区id
+ * @property string $region_name 面向地区
+ * @property int $reserve_status 是否需要预约 0=否 1=是
+ * @property string $qq_ID 联系qq
+ * @property int $verify_status 审核状态 0=审核中 1=审核不通过 2=审核通过
+ * @property int $status 状态 0=下架 1=上架
+ * @property string|null $remarks 备注
+ * @property string|null $basic_data 基础数据
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereBasicData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereFiledId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereFiledName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereGoodsNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereGoodsTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereGoodsTitleAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereGoodsWeiboId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereQqID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereRegionName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereRemarks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereReserveStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereThemeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereThemeName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereVerifyStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereWeiboLink($value)
+ * @mixin \Eloquent
+ */
 class GoodsWeibo extends Model
 {
     protected $table = 'goods_weibo';

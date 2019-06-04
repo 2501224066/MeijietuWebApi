@@ -57,6 +57,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereWeixinID($value)
  * @mixin \Eloquent
+ * @property int $verify_status 审核状态 0=审核中 1=审核不通过 2=审核通过
+ * @property string|null $basic_data 基础数据
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereBasicData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereVerifyStatus($value)
  */
 class GoodsWeixin extends Model
 {
@@ -127,5 +131,37 @@ class GoodsWeixin extends Model
         });
 
         return $goods_weixin_id;
+    }
+
+    // 拼装条件并查询
+    public static function select($data, $idArr)
+    {
+        $query = self::whereIn('goods_weixin_id', $idArr)
+            ->where('theme_id', $data->theme_id);
+
+        if ($data->filed_id)
+            $query->where('filed_id', $data->filed_id);
+
+        if ($data->fansnumlevel_min)
+            $query->where('fans_num', '>', $data->fansnumlevel_min);
+
+        if ($data->fansnumlevel_max)
+            $query->where('fans_num', '<=', $data->fansnumlevel_max);
+
+        if ($data->readlevel_min)
+            $query->where('read_num', '>', $data->readlevel_min);
+
+        if ($data->readleve_max)
+            $query->where('read_num', '<=', $data->readleve_max);
+
+        if ($data->region_id)
+            $query->where('region_id', '=', $data->region_id);
+
+        if ($data->keyword)
+            $query->where('good_title', 'like', '%'. $data->keyword. '%');
+
+        $re = $query->paginate();
+
+        return $re;
     }
 }
