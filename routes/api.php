@@ -26,6 +26,9 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('softarticleGoodsAttribute', 'GoodsAttributeController@softarticleGoodsAttribute'); // 软文商品属性
         $api->get('currencyGoodsAttribute', 'GoodsAttributeController@currencyGoodsAttribute');       // 公共商品属性
 
+        // 搜索商品
+        $api->post('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods'); // 搜索微信商品
+
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
             $api->post('refresh', 'AuthController@refresh'); // 刷新token
@@ -54,9 +57,6 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('createVideoGoods', 'CreateGoodsController@createVideoGoods');             // 创建视频商品
             $api->post('createSelfmediaGoods', 'CreateGoodsController@createSelfmediaGoods');     // 创建自媒体商品
             $api->post('createSoftarticleGoods', 'CreateGoodsController@createSoftarticleGoods'); // 创建软文商品
-
-            // 搜索商品
-            $api->post('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods'); // 搜索微信商品
         });
     });
 });
