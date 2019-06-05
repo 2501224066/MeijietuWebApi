@@ -24,7 +24,7 @@ class CreateGoodsController extends BaseController
         // 数据入库
         $goods_weixin_id = GoodsWeixin::add($request);
 
-        // 【队列】 如果主题为公众号放入队列查询微信公众号基本信息
+        // 【队列】 公众号->插入基础信息
         if(Theme::whereThemeId($request->theme_id)->value('theme_name') == '微信公众号')
             getWeixinGongZhongHaoBasicData::dispatch($goods_weixin_id, $request->weixin_ID)->onQueue('getWeixinGongZhongHaoBasicData');
 
@@ -41,6 +41,9 @@ class CreateGoodsController extends BaseController
         // 数据入库
         $goods_weibo_id = GoodsWeibo::add($request);
 
+        // 【队列】  插入基础信息
+        // TODO...
+
         return $this->success();
     }
 
@@ -52,7 +55,7 @@ class CreateGoodsController extends BaseController
     public function createVideoGoods(CreateGoodsRequests $request)
     {
         // 数据入库
-        $goods_video_id = GoodsVideo::add($request);
+        GoodsVideo::add($request);
 
         return $this->success();
     }
@@ -65,7 +68,7 @@ class CreateGoodsController extends BaseController
     public function createSelfmediaGoods(CreateGoodsRequests $request)
     {
         // 数据入库
-        $goods_selfmedia_id = GoodsSelfmedia::add($request);
+        GoodsSelfmedia::add($request);
 
         return $this->success();
     }
@@ -78,7 +81,7 @@ class CreateGoodsController extends BaseController
     public function createSoftarticleGoods(CreateGoodsRequests $request)
     {
         // 数据入库
-        $goods_softarticle_id = GoodsSoftarticle::add($request);
+        GoodsSoftarticle::add($request);
 
         return $this->success();
     }

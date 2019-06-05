@@ -93,6 +93,8 @@ class GoodsWeibo extends Model
                     'weibo_link' => htmlspecialchars($data->weibo_link),
                     'filed_id' => htmlspecialchars($data->filed_id),
                     'filed_name' => Filed::whereFiledId($data->filed_id)->value('filed_name'),
+                    'authtype_id' => htmlspecialchars($data->authtype_id),
+                    'authtype_name' => Authtype::whereAuthtypeId($data->authtype_id)->value('authtype_name'),
                     'region_id' => htmlspecialchars($data->region_id),
                     'region_name' => Region::whereRegionId($data->region_id)->value('region_name'),
                     'reserve_status' => htmlspecialchars($data->reserve_status),
@@ -124,5 +126,34 @@ class GoodsWeibo extends Model
         });
 
         return $goods_weibo_id;
+    }
+
+    // 拼装条件并查询
+    public static function select($data, $idArr)
+    {
+        $query = self::whereIn('goods_weibo_id', $idArr)
+            ->where('theme_id', $data->theme_id);
+
+        if ($data->filed_id)
+            $query->where('filed_id', $data->filed_id);
+
+        if ($data->fansnumlevel_min)
+            $query->where('fans_num', '>', $data->fansnumlevel_min);
+
+        if ($data->fansnumlevel_max)
+            $query->where('fans_num', '<=', $data->fansnumlevel_max);
+
+        if ($data->authtype_id)
+            $query->where('authtype_id', '=', $data->authtype_id);
+
+        if ($data->region_id)
+            $query->where('region_id', '=', $data->region_id);
+
+        if ($data->keyword)
+            $query->where('good_title', 'like', '%'. $data->keyword. '%');
+
+        $re = $query->paginate();
+
+        return $re;
     }
 }

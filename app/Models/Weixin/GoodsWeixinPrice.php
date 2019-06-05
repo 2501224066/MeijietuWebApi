@@ -35,11 +35,10 @@ class GoodsWeixinPrice extends Model
     // 筛选价格
     public static function screenPrice($data)
     {
-        if ($data->pricelevel_min > $data->pricelevel_max)
+        if ( ! ($data->pricelevel_min || $data->pricelevel_max))
             return false;
 
-        $query =  GoodsWeixinPrice::wherePriceclassifyId($data->priceclassify_id)
-            ->where('priceclassify_id', $data->priceclassify_id);
+        $query =  self::wherePriceclassifyId($data->priceclassify_id);
 
         if ($data->pricelevel_min)
             $query->where('price', '>', $data->pricelevel_min);

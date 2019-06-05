@@ -97,4 +97,12 @@
 2. `goods_softarticle` 软文商品表  
 3. `createSoftarticleGoods` 添加软文商品接口  
 4. 线上安装 `php_mongodb` 扩展  
-5. 调证扩展依赖适应本地与线上php版本不同（7.2.0 | 7.0.0）  
+5. 调证扩展依赖适应本地与线上php版本不同（7.2.0 | 7.0.0）
+
+## 2019/6/4
+1. `Xdebug` 调试
+2. `selectWeixinGoods` 搜索微信商品 
+
+## 2019/6/5
+1. 创建商品表单验证增加表内存在 `exists` 验证
+2. `selectWeiboGoods` 搜索微信商品 

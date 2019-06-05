@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class getWeixinGongZhongHaoBasicData implements ShouldQueue
 {
@@ -37,9 +38,8 @@ class getWeixinGongZhongHaoBasicData implements ShouldQueue
     {
         // 查询自库数据
         $re = DB::connection('mongodb')
-            ->collection('WeiXin_OfficialAccount')
-            ->where('Account_id', $this->weixin_ID)
-            ->orderBy('Updated_at', 'DESC')
+            ->collection('WeiXin_OfficialAccount_Analysis')
+            ->where('OfficialAccount_ID', $this->weixin_ID)
             ->first();
 
         // 存入微信商品表中
@@ -47,7 +47,11 @@ class getWeixinGongZhongHaoBasicData implements ShouldQueue
             DB::table('goods_weixin')
                 ->where('goods_weixin_id', $this->goods_weixin_id)
                 ->update([
-                    'basic_data' => json_encode($re)
+                    'avg_read_num' => $re['Avg_Read_Num'],
+                    'avg_like_num' => $re['Avg_Like_Num'],
+                    'avg_comment_num' => $re['Avg_Comment_Num'],
+                    'avatar_url' => $re['BasicInfo']['Avatar_Url'],
+                    'qrcode_url' => $re['BasicInfo']['Qrcode_Url']
                 ]);
     }
 }
