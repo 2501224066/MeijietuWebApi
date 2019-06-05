@@ -27,9 +27,10 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('currencyGoodsAttribute', 'GoodsAttributeController@currencyGoodsAttribute');       // 公共商品属性
 
         // 搜索商品
-        $api->get('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods'); // 搜索微信商品
-        $api->get('selectWeiboGoods', 'SelectGoodsController@selectWeiboGoods');   // 搜索微博商品
-        $api->get('selectVideoGoods', 'SelectGoodsController@selectVideoGoods');   // 搜索视频商品
+        $api->get('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods');       // 搜索微信商品
+        $api->get('selectWeiboGoods', 'SelectGoodsController@selectWeiboGoods');         // 搜索微博商品
+        $api->get('selectVideoGoods', 'SelectGoodsController@selectVideoGoods');         // 搜索视频商品
+        $api->get('selectSelfmediaGoods', 'SelectGoodsController@selectSelfmediaGoods'); // 搜索自媒体商品
 
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {

@@ -4,10 +4,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\SelectGoods as SelectGoodsRequests;
-use App\Models\Weibo\GoodsWeibo;
 use App\Models\Weixin\GoodsWeixin;
 use App\Models\Weixin\GoodsWeixinPrice;
+use App\Models\Weibo\GoodsWeibo;
 use App\Models\Weibo\GoodsWeiboPrice;
+use App\Models\Video\GoodsVideo;
+use App\Models\Video\GoodsVideoPrice;
+use App\Models\Selfmedia\GoodsSelfmedia;
 
 class SelectGoodsController extends BaseController
 {
@@ -56,6 +59,28 @@ class SelectGoodsController extends BaseController
      */
     public function selectVideoGoods(SelectGoodsRequests $request)
     {
-        //
+        //// 价格筛选
+        $idArr = GoodsVideoPrice::screenPrice($request);
+
+        // 拼装条件并查询
+        $data = GoodsVideo::select($request, $idArr);
+
+        // 插入价格信息
+        $re = GoodsVideoPrice::withPriceInfo($data);
+
+        return $this->success($re);
+    }
+
+    /**
+     * 搜索自媒体商品
+     * @param SelectGoodsRequests $request
+     * @return mixed
+     */
+    public function selectSelfmediaGoods(SelectGoodsRequests $request)
+    {
+        // 拼装条件并查询
+        $re = GoodsSelfmedia::select($request);
+
+        return $this->success($re);
     }
 }

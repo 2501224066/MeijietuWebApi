@@ -54,14 +54,27 @@ class SelectGoods extends Base
                 break;
 
             // 搜索视频商品
-            case 'selectVidoeGoods':
-                $rules['theme_id'] = 'required|numeric|exists:weibo_theme,theme_id';
+            case 'selectVideoGoods':
+                $rules['theme_id'] = 'required|numeric|exists:video_theme,theme_id';
                 $rules['keyword'] = 'present';
                 $rules['filed_id'] = 'present';
                 $rules['platform_id'] = 'present';
                 $rules['fansnumlevel_min'] = 'present';
                 $rules['fansnumlevel_max'] = 'present';
                 $rules['priceclassify_id'] = 'required|numeric|exists:video_priceclassify,priceclassify_id';
+                $rules['pricelevel_min'] = 'present';
+                $rules['pricelevel_max'] = 'present';
+                $rules['region_id'] = 'present';
+                break;
+
+            // 搜索自媒体商品
+            case 'selectSelfmediaGoods':
+                $rules['theme_id'] = 'required|numeric|exists:selfmedia_theme,theme_id';
+                $rules['keyword'] = 'present';
+                $rules['filed_id'] = 'present';
+                $rules['platform_id'] = 'present';
+                $rules['fansnumlevel_min'] = 'present';
+                $rules['fansnumlevel_max'] = 'present';
                 $rules['pricelevel_min'] = 'present';
                 $rules['pricelevel_max'] = 'present';
                 $rules['region_id'] = 'present';

@@ -71,6 +71,7 @@ class CreateGoods extends Base
             case 'createSelfmediaGoods':
                 $rules['goods_title'] = 'required';
                 $rules['goods_title_about'] = 'required';
+                $rules['fans_num'] = 'required|numeric';
                 $rules['reserve_status'] = 'required|numeric';
                 $rules['theme_id'] = 'required|numeric|exists:selfmedia_theme,theme_id';
                 $rules['filed_id'] = 'required|numeric|exists:selfmedia_filed,filed_id';

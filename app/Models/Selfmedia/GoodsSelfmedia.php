@@ -95,6 +95,7 @@ class GoodsSelfmedia extends Model
                 'uid' => JWTAuth::user()->uid,
                 'goods_title' => htmlspecialchars($data->goods_title),
                 'goods_title_about' => htmlspecialchars($data->goods_title_about),
+                'fans_num' => htmlspecialchars($data->fans_num),
                 'theme_id' => htmlspecialchars($data->theme_id),
                 'theme_name' => Theme::whereThemeId($data->theme_id)->value('theme_name'),
                 'platform_id' => htmlspecialchars($data->platform_id),
@@ -115,5 +116,39 @@ class GoodsSelfmedia extends Model
             throw new Exception('保存失败');
 
         return $goods_selfmedia_id;
+    }
+
+    // 拼装条件并查询
+    public static function select($data)
+    {
+        $query = self::whereThemeId($data->theme_id);
+
+        if ($data->pricelevel_min)
+            $query->where('price', '>', $data->pricelevel_min);
+
+        if ($data->pricelevel_max)
+            $query->where('price', '<=', $data->pricelevel_max);
+
+        if ($data->filed_id)
+            $query->where('filed_id', $data->filed_id);
+
+        if ($data->platform_id)
+            $query->where('platform_id', '=', $data->platform_id);
+
+        if ($data->fansnumlevel_min)
+            $query->where('fans_num', '>', $data->fansnumlevel_min);
+
+        if ($data->fansnumlevel_max)
+            $query->where('fans_num', '<=', $data->fansnumlevel_max);
+
+        if ($data->region_id)
+            $query->where('region_id', '=', $data->region_id);
+
+        if ($data->keyword)
+            $query->where('good_title', 'like', '%'. $data->keyword. '%');
+
+        $re = $query->paginate();
+
+        return $re;
     }
 }

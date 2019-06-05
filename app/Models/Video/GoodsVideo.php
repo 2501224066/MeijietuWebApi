@@ -140,4 +140,33 @@ class GoodsVideo extends Model
 
         return $goods_video_id;
     }
+
+    // 拼装条件并查询
+    public static function select($data, $idArr)
+    {
+        $query = self::whereIn('goods_video_id', $idArr)
+            ->where('theme_id', $data->theme_id);
+
+        if ($data->filed_id)
+            $query->where('filed_id', $data->filed_id);
+
+        if ($data->platform_id)
+            $query->where('platform_id', '=', $data->platform_id);
+
+        if ($data->fansnumlevel_min)
+            $query->where('fans_num', '>', $data->fansnumlevel_min);
+
+        if ($data->fansnumlevel_max)
+            $query->where('fans_num', '<=', $data->fansnumlevel_max);
+
+        if ($data->region_id)
+            $query->where('region_id', '=', $data->region_id);
+
+        if ($data->keyword)
+            $query->where('good_title', 'like', '%'. $data->keyword. '%');
+
+        $re = $query->paginate();
+
+        return $re;
+    }
 }

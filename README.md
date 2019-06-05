@@ -105,4 +105,6 @@
 
 ## 2019/6/5
 1. 创建商品表单验证增加表内存在 `exists` 验证
-2. `selectWeiboGoods` 搜索微信商品 
+2. `selectWeiboGoods` 搜索微信商品
+3. `selectVideoGoods` 搜索视频商品
+4. `selectSelfmediaGoods` 搜索自媒体商品
