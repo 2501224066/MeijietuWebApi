@@ -56,6 +56,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereVerifyStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereWeiboLink($value)
  * @mixin \Eloquent
+ * @property int|null $authtype_id 认证类型id
+ * @property string $authtype_name 认证类型
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereAuthtypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeibo whereAuthtypeName($value)
  */
 class GoodsWeibo extends Model
 {
@@ -153,6 +157,17 @@ class GoodsWeibo extends Model
             $query->where('good_title', 'like', '%'. $data->keyword. '%');
 
         $re = $query->paginate();
+
+        return $re;
+    }
+
+    // 用户商品
+    public static function userGoods($uid)
+    {
+        $goods = self::whereUid($uid)->orderBy('created_at', 'DESC')->get();
+
+        // 插入价格信息
+        $re = GoodsWeiboPrice::withPriceInfo($goods);
 
         return $re;
     }

@@ -63,6 +63,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereVerifyStatus($value)
  * @mixin \Eloquent
+ * @property int $fans_num 粉丝数量
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereFansNum($value)
  */
 class GoodsSelfmedia extends Model
 {
@@ -150,5 +152,13 @@ class GoodsSelfmedia extends Model
         $re = $query->paginate();
 
         return $re;
+    }
+
+    // 用户商品
+    public static function userGoods($uid)
+    {
+        $goods = self::whereUid($uid)->orderBy('created_at', 'DESC')->get();
+
+        return $goods;
     }
 }

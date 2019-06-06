@@ -6,6 +6,26 @@ namespace App\Models\Weibo;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Weibo\GoodsWeiboPrice
+ *
+ * @property string $goods_weibo_id 商品id
+ * @property int $priceclassify_id 价格种类id
+ * @property string $priceclassify_name 价格种类名称
+ * @property float $price 价格
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice whereGoodsWeiboId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice wherePriceclassifyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice wherePriceclassifyName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weibo\GoodsWeiboPrice whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class GoodsWeiboPrice extends Model
 {
     protected $table = 'goods_weibo_price';

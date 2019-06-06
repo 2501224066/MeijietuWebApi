@@ -61,6 +61,16 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $basic_data 基础数据
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereBasicData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereVerifyStatus($value)
+ * @property string|null $avatar_url 头像
+ * @property string|null $qrcode_url 二维码
+ * @property int|null $avg_read_num 平均阅读数
+ * @property int|null $avg_like_num 平均点赞数
+ * @property int|null $avg_comment_num 平均评论数
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereAvatarUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereAvgCommentNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereAvgLikeNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereAvgReadNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixin whereQrcodeUrl($value)
  */
 class GoodsWeixin extends Model
 {
@@ -161,6 +171,17 @@ class GoodsWeixin extends Model
             $query->where('good_title', 'like', '%'. $data->keyword. '%');
 
         $re = $query->paginate();
+
+        return $re;
+    }
+
+    // 用户微信商品
+    public static function userGoods($uid)
+    {
+        $goods = self::whereUid($uid)->orderBy('created_at', 'DESC')->get();
+
+        // 插入价格信息
+        $re = GoodsWeixinPrice::withPriceInfo($goods);
 
         return $re;
     }

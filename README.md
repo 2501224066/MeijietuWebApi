@@ -108,3 +108,5 @@
 2. `selectWeiboGoods` 搜索微信商品
 3. `selectVideoGoods` 搜索视频商品
 4. `selectSelfmediaGoods` 搜索自媒体商品
+5. `selectSoftarticleGoods` 搜索软文商品
+6. 后台 `软文套餐` 功能

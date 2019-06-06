@@ -27,10 +27,11 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('currencyGoodsAttribute', 'GoodsAttributeController@currencyGoodsAttribute');       // 公共商品属性
 
         // 搜索商品
-        $api->get('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods');       // 搜索微信商品
-        $api->get('selectWeiboGoods', 'SelectGoodsController@selectWeiboGoods');         // 搜索微博商品
-        $api->get('selectVideoGoods', 'SelectGoodsController@selectVideoGoods');         // 搜索视频商品
-        $api->get('selectSelfmediaGoods', 'SelectGoodsController@selectSelfmediaGoods'); // 搜索自媒体商品
+        $api->get('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods');           // 搜索微信商品
+        $api->get('selectWeiboGoods', 'SelectGoodsController@selectWeiboGoods');             // 搜索微博商品
+        $api->get('selectVideoGoods', 'SelectGoodsController@selectVideoGoods');             // 搜索视频商品
+        $api->get('selectSelfmediaGoods', 'SelectGoodsController@selectSelfmediaGoods');     // 搜索自媒体商品
+        $api->get('selectSoftarticleGoods', 'SelectGoodsController@selectSoftarticleGoods'); // 搜索软文商品
 
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
@@ -60,6 +61,9 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('createVideoGoods', 'CreateGoodsController@createVideoGoods');             // 创建视频商品
             $api->post('createSelfmediaGoods', 'CreateGoodsController@createSelfmediaGoods');     // 创建自媒体商品
             $api->post('createSoftarticleGoods', 'CreateGoodsController@createSoftarticleGoods'); // 创建软文商品
+
+            // 搜索用户创建的全部商品
+            $api->post('userGoods', 'SelectGoodsController@userGoods');
         });
     });
 });

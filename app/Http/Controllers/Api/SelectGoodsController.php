@@ -11,6 +11,8 @@ use App\Models\Weibo\GoodsWeiboPrice;
 use App\Models\Video\GoodsVideo;
 use App\Models\Video\GoodsVideoPrice;
 use App\Models\Selfmedia\GoodsSelfmedia;
+use App\Models\Softarticle\GoodsSoftarticle;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class SelectGoodsController extends BaseController
 {
@@ -80,6 +82,42 @@ class SelectGoodsController extends BaseController
     {
         // 拼装条件并查询
         $re = GoodsSelfmedia::select($request);
+
+        return $this->success($re);
+    }
+
+    /**
+     * 搜索软文商品
+     * @param SelectGoodsRequests $request
+     * @return mixed
+     */
+    public function selectSoftarticleGoods(SelectGoodsRequests $request)
+    {
+        // 拼装条件并查询
+        $re = GoodsSoftarticle::select($request);
+
+        return $this->success($re);
+    }
+
+    /**
+     * 搜索用户创建的全部商品
+     * @return mixed
+     */
+    public function userGoods()
+    {
+        $uid = JWTAuth::user()->uid;
+        $re = [];
+
+        // 微信商品
+        $re['weixin'] = GoodsWeixin::userGoods($uid);
+        // 微博商品
+        $re['weibo'] = GoodsWeibo::userGoods($uid);
+        // 视频商品
+        $re['video'] = GoodsVideo::userGoods($uid);
+        // 自媒体商品
+        $re['selfmedia'] = GoodsSelfmedia::userGoods($uid);
+        // 软文商品
+        $re['softarticle'] = GoodsSoftarticle::userGoods($uid);
 
         return $this->success($re);
     }

@@ -129,6 +129,7 @@ class GoodsVideo extends Model
                         'goods_video_id' => $goods_video_id,
                         'priceclassify_id' => $k,
                         'priceclassify_name' => Priceclassify::wherePriceclassifyId($k)->value('priceclassify_name'),
+                        'tag' => Priceclassify::wherePriceclassifyId($k)->value('tag'),
                         'price' => $v,
                         'created_at' => $date,
                         'updated_at' => $date,
@@ -166,6 +167,17 @@ class GoodsVideo extends Model
             $query->where('good_title', 'like', '%'. $data->keyword. '%');
 
         $re = $query->paginate();
+
+        return $re;
+    }
+
+    // 用户商品
+    public static function userGoods($uid)
+    {
+        $goods = self::whereUid($uid)->orderBy('created_at', 'DESC')->get();
+
+        // 插入价格信息
+        $re = GoodsVideoPrice::withPriceInfo($goods);
 
         return $re;
     }

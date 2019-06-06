@@ -15,6 +15,8 @@ class UserInfoController extends BaseController
 {
     /**
      * 个人实名认证
+     * @param UserInfoRequests $request
+     * @return mixed
      */
     public function realnamePeople(UserInfoRequests $request)
     {
@@ -34,6 +36,7 @@ class UserInfoController extends BaseController
 
     /**
      * 获取个人实名认证信息
+     * @return mixed
      */
     public function realnamePeopleInfo()
     {
@@ -42,6 +45,8 @@ class UserInfoController extends BaseController
 
     /**
      * 企业实名认证
+     * @param UserInfoRequests $request
+     * @return mixed
      */
     public function realnameEnterprise(UserInfoRequests $request)
     {
@@ -59,6 +64,7 @@ class UserInfoController extends BaseController
 
     /**
      * 获取企业实名认证信息
+     * @return mixed
      */
     public function realnameEnterpriseInfo()
     {
@@ -67,6 +73,8 @@ class UserInfoController extends BaseController
 
     /**
      * 修改用户信息
+     * @param UserInfoRequests $request
+     * @return mixed
      */
     public function saveInfo(UserInfoRequests $request)
     {
@@ -80,6 +88,8 @@ class UserInfoController extends BaseController
 
     /**
      * 修改手机号
+     * @param UserInfoRequests $request
+     * @return mixed
      */
     public function savePhone(UserInfoRequests $request)
     {
@@ -95,6 +105,8 @@ class UserInfoController extends BaseController
 
     /**
      * 修改密码
+     * @param UserInfoRequests $request
+     * @return mixed
      */
     public function savePass(UserInfoRequests $request)
     {

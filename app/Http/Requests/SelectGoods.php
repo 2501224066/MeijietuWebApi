@@ -79,6 +79,20 @@ class SelectGoods extends Base
                 $rules['pricelevel_max'] = 'present';
                 $rules['region_id'] = 'present';
                 break;
+
+            // 搜索软文商品
+            case 'selectSoftarticleGoods':
+                $rules['theme_id'] = 'required|numeric|exists:softarticle_theme,theme_id';
+                $rules['keyword'] = 'present';
+                $rules['filed_id'] = 'present';
+                $rules['platform_id'] = 'present';
+                $rules['sendspeed_id'] = 'present';
+                $rules['industry_id'] = 'present';
+                $rules['entryclassify_id'] = 'present';
+                $rules['pricelevel_min'] = 'present';
+                $rules['pricelevel_max'] = 'present';
+                $rules['region_id'] = 'present';
+                break;
         }
 
         return $rules;

@@ -141,4 +141,49 @@ class GoodsSoftarticle extends Model
 
         return $goods_softarticle_id;
     }
+
+    // 拼装条件并查询
+    public static function select($data)
+    {
+        $query = self::whereThemeId($data->theme_id);
+
+        if ($data->pricelevel_min)
+            $query->where('price', '>', $data->pricelevel_min);
+
+        if ($data->pricelevel_max)
+            $query->where('price', '<=', $data->pricelevel_max);
+
+        if ($data->filed_id)
+            $query->where('filed_id', $data->filed_id);
+
+        if ($data->platform_id)
+            $query->where('platform_id', '=', $data->platform_id);
+
+        if ($data->sendspeed_id)
+            $query->where('sendspeed_id', '=', $data->sendspeed_id);
+
+        if ($data->industry_id)
+            $query->where('industry_id', '=', $data->industry_id);
+
+        if ($data->entryclassify_id)
+            $query->where('entryclassify_id', '=', $data->entryclassify_id);
+
+        if ($data->region_id)
+            $query->where('region_id', '=', $data->region_id);
+
+        if ($data->keyword)
+            $query->where('good_title', 'like', '%'. $data->keyword. '%');
+
+        $re = $query->paginate();
+
+        return $re;
+    }
+
+    // 用户商品
+    public static function userGoods($uid)
+    {
+        $goods = self::whereUid($uid)->orderBy('created_at', 'DESC')->get();
+
+        return $goods;
+    }
 }
