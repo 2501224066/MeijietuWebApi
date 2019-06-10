@@ -82,8 +82,9 @@ class GoodsWeibo extends Model
     // 添加商品
     public static function add($data)
     {
+        $now      = date('Y-m-d H:i:s');
         $goods_id = null;
-        DB::transaction(function () use ($data, &$goods_id) {
+        DB::transaction(function () use ($data, $now,&$goods_id) {
 
             // 添加商品
             $goods_id = self::insertGetId([
@@ -103,6 +104,8 @@ class GoodsWeibo extends Model
                 'reserve_status'    => htmlspecialchars($data->reserve_status),
                 'qq_ID'             => htmlspecialchars($data->qq_ID),
                 'remarks'           => htmlspecialchars($data->remarks),
+                'created_at'         => $now,
+                'updated_at'         => $now
             ]);
             if (!$goods_id)
                 throw new Exception('保存失败');

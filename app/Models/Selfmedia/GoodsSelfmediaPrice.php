@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Models\Selfmeida;
+namespace App\Models\Selfmedia;
 
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Selfmeida\GoodsSelfmeidaPrice
+ * App\Models\Selfmedia\GoodsSelfmediaPrice
  *
  * @property string $goods_id
  * @property int $priceclassify_id
@@ -16,19 +16,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice whereGoodsId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice wherePriceclassifyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice wherePriceclassifyName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice whereTag($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmeida\GoodsSelfmeidaPrice whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice whereGoodsId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice wherePriceclassifyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice wherePriceclassifyName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice whereTag($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmediaPrice whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class GoodsSelfmeidaPrice extends Model
+class GoodsSelfmediaPrice extends Model
 {
     protected $table = 'goods_selfmedia_price';
 

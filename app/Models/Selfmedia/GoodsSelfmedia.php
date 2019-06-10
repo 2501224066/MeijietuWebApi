@@ -4,8 +4,6 @@
 namespace App\Models\Selfmedia;
 
 
-use App\Models\Selfmeida\GoodsSelfmeidaPrice;
-use App\Models\Selfmeida\Priceclassify;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Currency\Region;
@@ -89,8 +87,9 @@ class GoodsSelfmedia extends Model
     // 添加商品
     public static function add($data)
     {
+        $now      = date('Y-m-d H:i:s');
         $goods_id = null;
-        DB::transaction(function () use ($data, &$goods_id) {
+        DB::transaction(function () use ($data, $now, &$goods_id) {
 
             // 添加商品
             $goods_id = self::insertGetId([
@@ -109,6 +108,8 @@ class GoodsSelfmedia extends Model
                 'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
                 'qq_ID'             => htmlspecialchars($data->qq_ID),
                 'remarks'           => htmlspecialchars($data->remarks),
+                'created_at'         => $now,
+                'updated_at'         => $now
             ]);
             if (!$goods_id)
                 throw new Exception('保存失败');
@@ -116,7 +117,7 @@ class GoodsSelfmedia extends Model
             // 添加商品价格
             $price_data = json_decode($data->price_data);
             foreach ($price_data as $k => $v) {
-                $reTwo = GoodsSelfmeidaPrice::create([
+                $reTwo = GoodsSelfmediaPrice::create([
                     'goods_id'           => $goods_id,
                     'priceclassify_id'   => $k,
                     'priceclassify_name' => Priceclassify::wherePriceclassifyId($k)->value('priceclassify_name'),

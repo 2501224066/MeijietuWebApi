@@ -87,8 +87,9 @@ class GoodsVideo extends Model
     // 添加商品
     public static function add($data)
     {
+        $now      = date('Y-m-d H:i:s');
         $goods_id = null;
-        DB::transaction(function () use ($data,  &$goods_id) {
+        DB::transaction(function () use ($data, $now, &$goods_id) {
             $platfrom = Platform::wherePlatformId($data->platform_id)->first();
 
             // 添加商品
@@ -110,6 +111,8 @@ class GoodsVideo extends Model
                 'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
                 'qq_ID'             => htmlspecialchars($data->qq_ID),
                 'remarks'           => htmlspecialchars($data->remarks),
+                'created_at'         => $now,
+                'updated_at'         => $now
             ]);
             if (!$goods_id)
                 throw new Exception('保存失败');

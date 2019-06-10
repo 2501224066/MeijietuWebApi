@@ -107,8 +107,9 @@ class GoodsSoftarticle extends Model
     // 添加商品
     public static function add($data)
     {
+        $now      = date('Y-m-d H:i:s');
         $goods_id = null;
-        DB::transaction(function () use ($data, &$goods_id) {
+        DB::transaction(function () use ($data, $now, &$goods_id) {
 
             // 添加商品
             $goods_id = self::insertGetId([
@@ -135,6 +136,8 @@ class GoodsSoftarticle extends Model
                 'entryclassify_name' => Entryclassify::whereEntryclassifyId($data->entryclassify_id)->value('entryclassify_name'),
                 'qq_ID'              => htmlspecialchars($data->qq_ID),
                 'remarks'            => htmlspecialchars($data->remarks),
+                'created_at'         => $now,
+                'updated_at'         => $now
             ]);
             if (!$goods_id)
                 throw new Exception('保存失败');

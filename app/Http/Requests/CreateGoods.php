@@ -23,7 +23,7 @@ class CreateGoods extends Base
         switch ($this->getFunName()) {
             // 创建微信商品
             case 'createWeixinGoods':
-                $rules['goods_title']       = 'required';
+                $rules['goods_title']       = 'required|unique:goods_weixin,goods_title';
                 $rules['goods_title_about'] = 'required';
                 $rules['fans_num']          = 'required|numeric';
                 $rules['weixin_ID']         = 'required|unique:goods_weixin,weixin_ID';
@@ -38,7 +38,7 @@ class CreateGoods extends Base
 
             // 创建微博商品
             case 'createWeiboGoods':
-                $rules['goods_title']       = 'required';
+                $rules['goods_title']       = 'required|unique:goods_weibo,goods_title';
                 $rules['goods_title_about'] = 'required';
                 $rules['weibo_link']        = 'required|unique:goods_weibo,weibo_link';
                 $rules['theme_id']          = 'required|numeric|exists:weibo_theme,theme_id';
@@ -53,7 +53,7 @@ class CreateGoods extends Base
 
             // 创建视频商品
             case 'createVideoGoods':
-                $rules['goods_title']       = 'required';
+                $rules['goods_title']       = 'required|unique:goods_video,goods_title';
                 $rules['goods_title_about'] = 'required';
                 $rules['room_num']          = 'required|unique:goods_video,room_num';
                 $rules['fans_num']          = 'required|numeric';
@@ -68,7 +68,7 @@ class CreateGoods extends Base
 
             // 创建自媒体商品
             case 'createSelfmediaGoods':
-                $rules['goods_title']       = 'required';
+                $rules['goods_title']       = 'required|unique:goods_selfmedia,goods_title';
                 $rules['goods_title_about'] = 'required';
                 $rules['fans_num']          = 'required|numeric';
                 $rules['reserve_status']    = 'required|numeric';
@@ -83,9 +83,9 @@ class CreateGoods extends Base
 
             // 创建软文商品
             case 'createSoftarticleGoods':
-                $rules['goods_title']       = 'required';
+                $rules['goods_title']       = 'required|unique:goods_softarticle,goods_title';
                 $rules['goods_title_about'] = 'required';
-                $rules['web_link']          = 'required';
+                $rules['web_link']          = 'required|unique:goods_softarticle,web_link';
                 $rules['weekend_send']      = 'required|numeric';
                 $rules['news_source']       = 'required|numeric';
                 $rules['theme_id']          = 'required|numeric|exists:softarticle_theme,theme_id';
@@ -108,6 +108,7 @@ class CreateGoods extends Base
     {
         return [
             'goods_title.required'       => '商品标题不得为空',
+            'goods_title.unique'         => '商品标题已存在',
             'goods_title_about.required' => '标题简介不得为空',
 
             'weixin_ID.required' => '微信号不得为空',
@@ -159,6 +160,7 @@ class CreateGoods extends Base
             'industry_id.exists'   => '行业不存在',
 
             'web_link.required' => '链接网址不得为空',
+            'web_link.unique'   => '链接网址已存在',
 
             'weekend_send.required' => '周末是否发稿不得为空',
             'weekend_send.numeric'  => '周末是否发稿需为数字',
