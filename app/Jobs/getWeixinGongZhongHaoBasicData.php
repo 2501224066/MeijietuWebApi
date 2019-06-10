@@ -14,7 +14,7 @@ class getWeixinGongZhongHaoBasicData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $goods_weixin_id; // 微信商品id
+    protected $goods_id; // 微信商品id
 
     protected $weixin_ID; // 微信名
 
@@ -23,9 +23,9 @@ class getWeixinGongZhongHaoBasicData implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($goods_weixin_id, $weixin_ID)
+    public function __construct($goods_id, $weixin_ID)
     {
-        $this->goods_weixin_id = htmlspecialchars($goods_weixin_id);
+        $this->goods_id = htmlspecialchars($goods_id);
         $this->weixin_ID = htmlspecialchars($weixin_ID);
     }
 
@@ -45,7 +45,7 @@ class getWeixinGongZhongHaoBasicData implements ShouldQueue
         // 存入微信商品表中
         if($re)
             DB::table('goods_weixin')
-                ->where('goods_weixin_id', $this->goods_weixin_id)
+                ->where('goods_id', $this->goods_id)
                 ->update([
                     'avg_read_num' => $re['Avg_Read_Num'],
                     'avg_like_num' => $re['Avg_Like_Num'],

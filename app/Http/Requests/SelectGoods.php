@@ -92,12 +92,6 @@ class SelectGoods extends Base
                 $rules['pricelevel_max']   = 'present';
                 $rules['region_id']        = 'present';
                 break;
-
-            // 商品信息
-            case 'goodsInfo':
-                $rules['goods_id'] = 'required|numeric';
-                $rules['modular_type']     = 'required';
-                break;
         }
 
         return $rules;
@@ -109,10 +103,6 @@ class SelectGoods extends Base
             'theme_id.required' => '主题不得为空',
             'theme_id.numeric'  => '主题需为数字',
             'theme_id.exists'   => '主题不存在',
-
-            'goods_id.required' => "商品不得为空",
-            'goods_id.numeric'  => "商品需为数字",
-            'modular_type'      => "模块类型不得为空",
         ];
     }
 }

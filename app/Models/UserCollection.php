@@ -97,4 +97,16 @@ class UserCollection extends Model
 
         return true;
     }
+
+    // 对应模块收藏信息
+    public static function modularTypeCollectionInfo($modularType)
+    {
+        $uid = JWTAuth::user()->uid;
+        $goodsIdArr = UserCollection::whereUid($uid)
+            ->where('modular_type',$modularType)
+            ->pluck('goods_id');
+        $re = ModularData::goodsInfo($modularType, $goodsIdArr, 'goods_id_arr');
+
+        return $re;
+    }
 }

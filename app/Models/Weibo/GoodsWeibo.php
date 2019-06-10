@@ -65,7 +65,7 @@ class GoodsWeibo extends Model
 {
     protected $table = 'goods_weibo';
 
-    protected $primaryKey = 'goods_weibo_id';
+    protected $primaryKey = 'goods_id';
 
     public $guarded = [];
 
@@ -83,10 +83,10 @@ class GoodsWeibo extends Model
     public static function add($data)
     {
         $date           = date('Y-m-d H:i:s');
-        $goods_weibo_id = null;
-        DB::transaction(function () use ($data, $date, &$goods_weibo_id) {
+        $goods_id = null;
+        DB::transaction(function () use ($data, $date, &$goods_id) {
             // 添加商品
-            $goods_weibo_id = DB::table('goods_weibo')
+            $goods_id = DB::table('goods_weibo')
                 ->insertGetId([
                     'goods_num'         => createGoodsNnm(),
                     'theme_id'          => htmlspecialchars($data->theme_id),
@@ -103,13 +103,11 @@ class GoodsWeibo extends Model
                     'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
                     'reserve_status'    => htmlspecialchars($data->reserve_status),
                     'qq_ID'             => htmlspecialchars($data->qq_ID),
-                    'verify_status'     => self::VERIFY_STATUS_WAIT,
-                    'status'            => self::STATUS_OFF,
                     'remarks'           => htmlspecialchars($data->remarks),
                     'created_at'        => $date,
                     'updated_at'        => $date,
                 ]);
-            if (!$goods_weibo_id)
+            if (!$goods_id)
                 throw new Exception('保存失败');
 
             // 添加商品价格
@@ -117,7 +115,7 @@ class GoodsWeibo extends Model
             foreach ($price_data as $k => $v) {
                 $reTwo = DB::table('goods_weibo_price')
                     ->insert([
-                        'goods_weibo_id'     => $goods_weibo_id,
+                        'goods_id'     => $goods_id,
                         'priceclassify_id'   => $k,
                         'priceclassify_name' => Priceclassify::wherePriceclassifyId($k)->value('priceclassify_name'),
                         'price'              => $v,
@@ -129,13 +127,13 @@ class GoodsWeibo extends Model
             }
         });
 
-        return $goods_weibo_id;
+        return $goods_id;
     }
 
     // 拼装条件并查询
     public static function select($data, $idArr)
     {
-        $query = self::whereIn('goods_weibo_id', $idArr)
+        $query = self::whereIn('goods_id', $idArr)
             ->where('theme_id', $data->theme_id)
             ->where('status', self::STATUS_ON);
 

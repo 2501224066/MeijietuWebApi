@@ -49,17 +49,20 @@ class ModularData extends Model
     }
 
 
-    // 查询商品信息
+    // 查询对应模块商品信息
     public static function goodsInfo($modularType, $parm, $attr)
     {
         $tableClass = self::modularTypeToGetGoodsTableClass($modularType);
 
         switch ($attr) {
-            case 'uid': // 根据 uid 查询
+            // 根据 uid 查询
+            case 'uid':
                 $goods = $tableClass->whereUid($parm)->orderBy('created_at', 'DESC')->get();
                 break;
-            case 'goods_id': // 根据 goods_id 查询
-                $goods = $tableClass->whereGoodsId($parm)->get();
+
+            // 根据 goods_id数组 查询
+            case 'goods_id_arr':
+                $goods = $tableClass->whereIn('goods_id', $parm)->get();
                 break;
         }
 

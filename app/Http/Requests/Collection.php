@@ -4,7 +4,7 @@
 namespace App\Http\Requests;
 
 
-class GoodsOperation extends Base
+class Collection extends Base
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,6 +31,11 @@ class GoodsOperation extends Base
             case 'delCollection':
                 $rules['goods_id'] = 'required|numeric';
                 $rules['modular_type']     = 'required';
+                break;
+
+            // 获取收藏
+            case 'getCollection':
+                $rules['modular_type']     = 'present';
                 break;
         }
 

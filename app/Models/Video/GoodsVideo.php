@@ -70,7 +70,7 @@ class GoodsVideo extends Model
 
     protected $table = 'goods_video';
 
-    protected $primaryKey = 'goods_video_id';
+    protected $primaryKey = 'goods_id';
 
     public $guarded = [];
 
@@ -88,12 +88,12 @@ class GoodsVideo extends Model
     public static function add($data)
     {
         $date           = date('Y-m-d H:i:s');
-        $goods_video_id = null;
-        DB::transaction(function () use ($data, $date, &$goods_video_id) {
+        $goods_id = null;
+        DB::transaction(function () use ($data, $date, &$goods_id) {
             $platfrom = Platform::wherePlatformId($data->platform_id)->first();
 
             // 添加商品
-            $goods_video_id = DB::table('goods_video')
+            $goods_id = DB::table('goods_video')
                 ->insertGetId([
                     'goods_num'         => createGoodsNnm(),
                     'theme_id'          => htmlspecialchars($data->theme_id),
@@ -111,13 +111,11 @@ class GoodsVideo extends Model
                     'region_id'         => htmlspecialchars($data->region_id),
                     'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
                     'qq_ID'             => htmlspecialchars($data->qq_ID),
-                    'verify_status'     => self::VERIFY_STATUS_WAIT,
-                    'status'            => self::STATUS_OFF,
                     'remarks'           => htmlspecialchars($data->remarks),
                     'created_at'        => $date,
                     'updated_at'        => $date,
                 ]);
-            if (!$goods_video_id)
+            if (!$goods_id)
                 throw new Exception('保存失败');
 
             // 添加商品价格
@@ -125,7 +123,7 @@ class GoodsVideo extends Model
             foreach ($price_data as $k => $v) {
                 $reTwo = DB::table('goods_video_price')
                     ->insert([
-                        'goods_video_id'     => $goods_video_id,
+                        'goods_id'     => $goods_id,
                         'priceclassify_id'   => $k,
                         'priceclassify_name' => Priceclassify::wherePriceclassifyId($k)->value('priceclassify_name'),
                         'tag'                => Priceclassify::wherePriceclassifyId($k)->value('tag'),
@@ -138,13 +136,13 @@ class GoodsVideo extends Model
             }
         });
 
-        return $goods_video_id;
+        return $goods_id;
     }
 
     // 拼装条件并查询
     public static function select($data, $idArr)
     {
-        $query = self::whereIn('goods_video_id', $idArr)
+        $query = self::whereIn('goods_id', $idArr)
             ->where('theme_id', $data->theme_id)
             ->where('status', self::STATUS_ON);
 

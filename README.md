@@ -118,3 +118,6 @@
 4. `collectionGoods` 收藏商品
 5. `delCollection` 删除收藏
 6. `goodsInfo` 商品信息-兼容所有模块
+
+## 2019/6/10
+1. 整合模块信息搜索 通过 `modular_type` 进行区分检索

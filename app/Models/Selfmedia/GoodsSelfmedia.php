@@ -70,7 +70,7 @@ class GoodsSelfmedia extends Model
 
     protected $table = 'goods_selfmedia';
 
-    protected $primaryKey = 'goods_selfmedia_id';
+    protected $primaryKey = 'goods_id';
 
     public $guarded = [];
 
@@ -90,7 +90,7 @@ class GoodsSelfmedia extends Model
         $date = date('Y-m-d H:i:s');
 
         // 添加商品
-        $goods_selfmedia_id = DB::table('goods_selfmedia')
+        $goods_id = DB::table('goods_selfmedia')
             ->insertGetId([
                 'goods_num'         => createGoodsNnm(),
                 'uid'               => JWTAuth::user()->uid,
@@ -107,16 +107,14 @@ class GoodsSelfmedia extends Model
                 'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
                 'qq_ID'             => htmlspecialchars($data->qq_ID),
                 'price'             => htmlspecialchars($data->price),
-                'verify_status'     => self::VERIFY_STATUS_WAIT,
-                'status'            => self::STATUS_OFF,
                 'remarks'           => htmlspecialchars($data->remarks),
                 'created_at'        => $date,
                 'updated_at'        => $date,
             ]);
-        if (!$goods_selfmedia_id)
+        if (!$goods_id)
             throw new Exception('保存失败');
 
-        return $goods_selfmedia_id;
+        return $goods_id;
     }
 
     // 拼装条件并查询

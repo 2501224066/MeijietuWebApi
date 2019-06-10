@@ -57,7 +57,7 @@ class GoodsVideoPrice extends Model
     {
         foreach ($data as &$value)
         {
-            $value->price_info = self::whereGoodsVideoId($value->goods_video_id)->get();
+            $value->price_info = self::whereGoodsId($value->goods_id)->get();
         }
 
         return $data;

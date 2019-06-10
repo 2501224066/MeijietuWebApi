@@ -22,11 +22,11 @@ class CreateGoodsController extends BaseController
     public function createWeixinGoods(CreateGoodsRequests $request)
     {
         // 数据入库
-        $goods_weixin_id = GoodsWeixin::add($request);
+        $goods_id = GoodsWeixin::add($request);
 
         // 【队列】 公众号->插入基础信息
         if(Theme::whereThemeId($request->theme_id)->value('theme_name') == '微信公众号')
-            getWeixinGongZhongHaoBasicData::dispatch($goods_weixin_id, $request->weixin_ID)->onQueue('getWeixinGongZhongHaoBasicData');
+            getWeixinGongZhongHaoBasicData::dispatch($goods_id, $request->weixin_ID)->onQueue('getWeixinGongZhongHaoBasicData');
 
         return $this->success();
     }
@@ -39,7 +39,7 @@ class CreateGoodsController extends BaseController
     public function createWeiboGoods(CreateGoodsRequests $request)
     {
         // 数据入库
-        $goods_weibo_id = GoodsWeibo::add($request);
+        $goods_id = GoodsWeibo::add($request);
 
         // 【队列】  插入基础信息
         // TODO...

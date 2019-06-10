@@ -123,16 +123,4 @@ class SelectGoodsController extends BaseController
 
         return $this->success($re);
     }
-
-    /**
-     * 商品信息
-     * @param SelectGoodsRequests $request
-     * @return mixed
-     */
-    public function goodsInfo(SelectGoodsRequests $request)
-    {
-        $re = ModularData::goodsInfo($request->modular_type, $request->goods_id, 'goods_id');
-
-        return $this->success($re);
-    }
 }

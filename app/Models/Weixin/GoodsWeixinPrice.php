@@ -55,7 +55,7 @@ class GoodsWeixinPrice extends Model
     {
         foreach ($data as &$value)
         {
-            $value->price_info = self::whereGoodsWeixinId($value->goods_weixin_id)->get();
+            $value->price_info = self::whereGoodsId($value->goods_id)->get();
         }
 
         return $data;

@@ -23,11 +23,11 @@ function type($parm){
 
     // 模块类型
     $MODULAR_TYPE = [
-        'WEIXIN'      => '微信',
-        'WEIBO'       => '微博',
-        'VIDEO'       => '视频',
-        'SELFMODEL'   => '自媒体',
-        'SOFTARTICLE' => '软文',
+        'WEIXIN'      => '微信营销',
+        'WEIBO'       => '微博营销',
+        'VIDEO'       => '视频营销',
+        'SELFMODEL'   => '自媒体营销',
+        'SOFTARTICLE' => '软文营销',
     ];
 
     switch ($parm){

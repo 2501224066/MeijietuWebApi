@@ -32,7 +32,6 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('selectVideoGoods', 'SelectGoodsController@selectVideoGoods');             // 搜索视频商品
         $api->get('selectSelfmediaGoods', 'SelectGoodsController@selectSelfmediaGoods');     // 搜索自媒体商品
         $api->get('selectSoftarticleGoods', 'SelectGoodsController@selectSoftarticleGoods'); // 搜索软文商品
-        $api->get('goodsInfo', 'SelectGoodsController@goodsInfo');                           // 商品信息
 
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
@@ -66,9 +65,10 @@ $api->group(['version' => 'v1'], function ($api) {
             // 搜索用户创建的全部商品
             $api->post('userGoods', 'SelectGoodsController@userGoods');
 
-            // 用户商品操作
-            $api->post('collectionGoods', 'GoodsOperationController@collectionGoods'); // 收藏商品
-            $api->post('delCollection', 'GoodsOperationController@delCollection');     // 删除收藏
+            // 商品收藏
+            $api->post('collectionGoods', 'CollectionController@collectionGoods'); // 收藏商品
+            $api->post('delCollection', 'CollectionController@delCollection');     // 删除收藏
+            $api->post('getCollection', 'CollectionController@getCollection');     // 获取收藏
         });
     });
 });
