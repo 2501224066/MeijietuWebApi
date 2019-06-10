@@ -66,9 +66,9 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('userGoods', 'SelectGoodsController@userGoods');
 
             // 商品收藏
-            $api->post('collectionGoods', 'CollectionController@collectionGoods'); // 收藏商品
-            $api->post('delCollection', 'CollectionController@delCollection');     // 删除收藏
-            $api->post('getCollection', 'CollectionController@getCollection');     // 获取收藏
+            $api->post('collectionGoods', 'UserCollectionController@collectionGoods'); // 收藏商品
+            $api->post('delCollection', 'UserCollectionController@delCollection');     // 删除收藏
+            $api->post('getCollection', 'UserCollectionController@getCollection');     // 获取收藏
         });
     });
 });

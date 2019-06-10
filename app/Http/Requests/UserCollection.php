@@ -4,7 +4,7 @@
 namespace App\Http\Requests;
 
 
-class Collection extends Base
+class UserCollection extends Base
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -3,17 +3,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Collection as CollectionRequests;
+use App\Http\Requests\UserCollection as UserCollectionRequests;
 use App\Models\UserCollection;
 
-class CollectionController extends BaseController
+class UserCollectionController extends BaseController
 {
     /**
      * 收藏商品
-     * @param CollectionRequests $request
+     * @param UserCollectionRequests $request
      * @return mixed
      */
-    public function collectionGoods(CollectionRequests $request)
+    public function collectionGoods(UserCollectionRequests $request)
     {
         // 判断用户身份
         UserCollection::checkIdentity();
@@ -31,10 +31,10 @@ class CollectionController extends BaseController
 
     /**
      * 删除收藏
-     * @param CollectionRequests $request
+     * @param UserCollectionRequests $request
      * @return mixed
      */
-    public function delCollection(CollectionRequests $request)
+    public function delCollection(UserCollectionRequests $request)
     {
         // 检查模块类型
         UserCollection::checkModularType($request->modular_type);
@@ -46,8 +46,10 @@ class CollectionController extends BaseController
 
     /**
      * 获取收藏
+     * @param UserCollectionRequests $request
+     * @return mixed
      */
-    public function getCollection(CollectionRequests $request)
+    public function getCollection(UserCollectionRequests $request)
     {
         if ($request->modular_type) { // 查询对应模块收藏
 
