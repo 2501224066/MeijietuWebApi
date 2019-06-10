@@ -82,46 +82,40 @@ class GoodsWeibo extends Model
     // 添加商品
     public static function add($data)
     {
-        $date           = date('Y-m-d H:i:s');
         $goods_id = null;
-        DB::transaction(function () use ($data, $date, &$goods_id) {
+        DB::transaction(function () use ($data, &$goods_id) {
+
             // 添加商品
-            $goods_id = DB::table('goods_weibo')
-                ->insertGetId([
-                    'goods_num'         => createGoodsNnm(),
-                    'theme_id'          => htmlspecialchars($data->theme_id),
-                    'uid'               => JWTAuth::user()->uid,
-                    'theme_name'        => Theme::whereThemeId($data->theme_id)->value('theme_name'),
-                    'goods_title'       => htmlspecialchars($data->goods_title),
-                    'goods_title_about' => htmlspecialchars($data->goods_title_about),
-                    'weibo_link'        => htmlspecialchars($data->weibo_link),
-                    'filed_id'          => htmlspecialchars($data->filed_id),
-                    'filed_name'        => Filed::whereFiledId($data->filed_id)->value('filed_name'),
-                    'authtype_id'       => htmlspecialchars($data->authtype_id),
-                    'authtype_name'     => Authtype::whereAuthtypeId($data->authtype_id)->value('authtype_name'),
-                    'region_id'         => htmlspecialchars($data->region_id),
-                    'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
-                    'reserve_status'    => htmlspecialchars($data->reserve_status),
-                    'qq_ID'             => htmlspecialchars($data->qq_ID),
-                    'remarks'           => htmlspecialchars($data->remarks),
-                    'created_at'        => $date,
-                    'updated_at'        => $date,
-                ]);
+            $goods_id = self::insertGetId([
+                'goods_num'         => createGoodsNnm(),
+                'theme_id'          => htmlspecialchars($data->theme_id),
+                'uid'               => JWTAuth::user()->uid,
+                'theme_name'        => Theme::whereThemeId($data->theme_id)->value('theme_name'),
+                'goods_title'       => htmlspecialchars($data->goods_title),
+                'goods_title_about' => htmlspecialchars($data->goods_title_about),
+                'weibo_link'        => htmlspecialchars($data->weibo_link),
+                'filed_id'          => htmlspecialchars($data->filed_id),
+                'filed_name'        => Filed::whereFiledId($data->filed_id)->value('filed_name'),
+                'authtype_id'       => htmlspecialchars($data->authtype_id),
+                'authtype_name'     => Authtype::whereAuthtypeId($data->authtype_id)->value('authtype_name'),
+                'region_id'         => htmlspecialchars($data->region_id),
+                'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
+                'reserve_status'    => htmlspecialchars($data->reserve_status),
+                'qq_ID'             => htmlspecialchars($data->qq_ID),
+                'remarks'           => htmlspecialchars($data->remarks),
+            ]);
             if (!$goods_id)
                 throw new Exception('保存失败');
 
             // 添加商品价格
             $price_data = json_decode($data->price_data);
             foreach ($price_data as $k => $v) {
-                $reTwo = DB::table('goods_weibo_price')
-                    ->insert([
-                        'goods_id'     => $goods_id,
-                        'priceclassify_id'   => $k,
-                        'priceclassify_name' => Priceclassify::wherePriceclassifyId($k)->value('priceclassify_name'),
-                        'price'              => $v,
-                        'created_at'         => $date,
-                        'updated_at'         => $date,
-                    ]);
+                $reTwo = GoodsWeiboPrice::create([
+                    'goods_id'           => $goods_id,
+                    'priceclassify_id'   => $k,
+                    'priceclassify_name' => Priceclassify::wherePriceclassifyId($k)->value('priceclassify_name'),
+                    'price'              => $v,
+                ]);
                 if (!$reTwo)
                     throw new Exception('保存失败');
             }

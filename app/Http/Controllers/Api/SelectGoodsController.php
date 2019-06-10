@@ -4,6 +4,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\SelectGoods as SelectGoodsRequests;
+use App\Models\Selfmeida\GoodsSelfmeidaPrice;
+use App\Models\Softarticle\GoodsSoftarticlePrice;
 use App\Models\Weixin\GoodsWeixin;
 use App\Models\Weixin\GoodsWeixinPrice;
 use App\Models\Weibo\GoodsWeibo;
@@ -62,7 +64,7 @@ class SelectGoodsController extends BaseController
      */
     public function selectVideoGoods(SelectGoodsRequests $request)
     {
-        //// 价格筛选
+        // 价格筛选
         $idArr = GoodsVideoPrice::screenPrice($request);
 
         // 拼装条件并查询
@@ -81,8 +83,14 @@ class SelectGoodsController extends BaseController
      */
     public function selectSelfmediaGoods(SelectGoodsRequests $request)
     {
+        // 价格筛选
+        $idArr = GoodsSelfmeidaPrice::screenPrice($request);
+
         // 拼装条件并查询
-        $re = GoodsSelfmedia::select($request);
+        $data = GoodsSelfmedia::select($request, $idArr);
+
+        // 插入价格信息
+        $re = GoodsSelfmeidaPrice::withPriceInfo($data);
 
         return $this->success($re);
     }
@@ -94,8 +102,15 @@ class SelectGoodsController extends BaseController
      */
     public function selectSoftarticleGoods(SelectGoodsRequests $request)
     {
+
+        // 价格筛选
+        $idArr = GoodsSoftarticlePrice::screenPrice($request);
+
         // 拼装条件并查询
-        $re = GoodsSoftarticle::select($request);
+        $data = GoodsSoftarticle::select($request, $idArr);
+
+        // 插入价格信息
+        $re = GoodsSoftarticlePrice::withPriceInfo($data);
 
         return $this->success($re);
     }

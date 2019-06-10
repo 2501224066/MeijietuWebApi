@@ -4,6 +4,8 @@
 namespace App\Models\Selfmedia;
 
 
+use App\Models\Selfmeida\GoodsSelfmeidaPrice;
+use App\Models\Selfmeida\Priceclassify;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Currency\Region;
@@ -87,11 +89,11 @@ class GoodsSelfmedia extends Model
     // 添加商品
     public static function add($data)
     {
-        $date = date('Y-m-d H:i:s');
+        $goods_id = null;
+        DB::transaction(function () use ($data, &$goods_id) {
 
-        // 添加商品
-        $goods_id = DB::table('goods_selfmedia')
-            ->insertGetId([
+            // 添加商品
+            $goods_id = self::insertGetId([
                 'goods_num'         => createGoodsNnm(),
                 'uid'               => JWTAuth::user()->uid,
                 'goods_title'       => htmlspecialchars($data->goods_title),
@@ -106,21 +108,33 @@ class GoodsSelfmedia extends Model
                 'region_id'         => htmlspecialchars($data->region_id),
                 'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
                 'qq_ID'             => htmlspecialchars($data->qq_ID),
-                'price'             => htmlspecialchars($data->price),
                 'remarks'           => htmlspecialchars($data->remarks),
-                'created_at'        => $date,
-                'updated_at'        => $date,
             ]);
-        if (!$goods_id)
-            throw new Exception('保存失败');
+            if (!$goods_id)
+                throw new Exception('保存失败');
+
+            // 添加商品价格
+            $price_data = json_decode($data->price_data);
+            foreach ($price_data as $k => $v) {
+                $reTwo = GoodsSelfmeidaPrice::create([
+                    'goods_id'           => $goods_id,
+                    'priceclassify_id'   => $k,
+                    'priceclassify_name' => Priceclassify::wherePriceclassifyId($k)->value('priceclassify_name'),
+                    'price'              => $v,
+                ]);
+                if (!$reTwo)
+                    throw new Exception('保存失败');
+            }
+        });
 
         return $goods_id;
     }
 
     // 拼装条件并查询
-    public static function select($data)
+    public static function select($data,  $idArr)
     {
-        $query = self::whereThemeId($data->theme_id)
+        $query = self::whereIn('goods_id', $idArr)
+            ->where('theme_id', $data->theme_id)
             ->where('status', self::STATUS_ON);
 
         if ($data->pricelevel_min)

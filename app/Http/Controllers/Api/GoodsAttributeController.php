@@ -65,6 +65,7 @@ class GoodsAttributeController extends BaseController
         $re = \App\Models\Selfmedia\Theme::with('filed')
             ->with('fansnumlevel')
             ->with('platform')
+            ->with('priceclassify')
             ->get();
 
         return $this->success($re);
@@ -82,6 +83,7 @@ class GoodsAttributeController extends BaseController
             ->with('entryclassify')
             ->with('industry')
             ->with('sendspeed')
+            ->with('priceclassify')
             ->get();
 
         return $this->success($re);

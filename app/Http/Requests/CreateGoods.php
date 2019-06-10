@@ -77,7 +77,7 @@ class CreateGoods extends Base
                 $rules['region_id']         = 'required|numeric|exists:currency_region,region_id';
                 $rules['platform_id']       = 'required|numeric|exists:selfmedia_platform,platform_id';
                 $rules['qq_ID']             = 'required|numeric';
-                $rules['price']             = 'required';
+                $rules['price_data']        = 'required';
                 $rules['remarks']           = 'present';
                 break;
 
@@ -96,7 +96,7 @@ class CreateGoods extends Base
                 $rules['industry_id']       = 'required|numeric|exists:softarticle_industry,industry_id';
                 $rules['entryclassify_id']  = 'required|numeric|exists:softarticle_entryclassify,entryclassify_id';
                 $rules['qq_ID']             = 'required|numeric';
-                $rules['price']             = 'required';
+                $rules['price_data']        = 'required';
                 $rules['remarks']           = 'present';
                 break;
         }
@@ -149,8 +149,6 @@ class CreateGoods extends Base
 
             'room_num.required' => '房间号不得为空',
             'room_num.unique'   => '房间号已被使用',
-
-            'price.required' => '价格不得为空',
 
             'sendspeed_id.required' => '发稿速度不得为空',
             'sendspeed_id.numeric'  => '发稿速度需为数字',

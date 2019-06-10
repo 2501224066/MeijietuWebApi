@@ -65,4 +65,9 @@ class Theme extends Model
     {
         return $this->belongsToMany(Sendspeed::class, "softarticle_theme_sendspeed", 'theme_id', 'sendspeed_id');
     }
+
+    public function priceclassify() : BelongsToMany
+    {
+        return $this->belongsToMany(Priceclassify::class, "softarticle_theme_priceclassify", 'theme_id', 'priceclassify_id');
+    }
 }

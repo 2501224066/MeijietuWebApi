@@ -47,4 +47,9 @@ class Theme extends Model
     {
         return $this->belongsToMany(Platform::class, "selfmedia_theme_platform", 'theme_id', 'platform_id');
     }
+
+    public function priceclassify() : BelongsToMany
+    {
+        return $this->belongsToMany(Priceclassify::class, "selfmedia_theme_priceclassify", 'theme_id', 'priceclassify_id');
+    }
 }
