@@ -13,7 +13,6 @@ use App\Models\Video\GoodsVideoPrice;
 use App\Models\Selfmedia\GoodsSelfmedia;
 use App\Models\Softarticle\GoodsSoftarticle;
 use App\Service\ModularData;
-use PhpParser\Node\Expr\AssignOp\Mod;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class SelectGoodsController extends BaseController

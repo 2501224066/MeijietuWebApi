@@ -47,7 +47,7 @@ class GoodsWeixinPrice extends Model
         if ($data->pricelevel_max)
             $query->where('price', '<=', $data->pricelevel_max);
 
-        return $query->pluck('goods_weixin_id');
+        return $query->pluck('goods_id');
     }
 
     // 插入价格信息
