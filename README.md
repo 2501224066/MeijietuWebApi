@@ -121,3 +121,10 @@
 
 ## 2019/6/10
 1. 整合模块信息搜索 通过 `modular_type` 进行区分检索
+2. `user_wallet` 用户钱包表设计
+3. 修改 `自媒体` `软文` 价格设计，添加
+ `selfmedia_priceclassify` ,
+ `selfmedia_theme_priceclassify` , 
+ `softarticle_priceclassify` ,
+ `softarticle_theme_priceclassify` , 
+ 表与后台功能

@@ -111,32 +111,31 @@ class GoodsSoftarticle extends Model
         DB::transaction(function () use ($data, &$goods_id) {
 
             // 添加商品
-            $goods_id = DB::table('goods_softarticle')
-                ->insertGetId([
-                    'goods_num'          => createGoodsNnm(),
-                    'uid'                => JWTAuth::user()->uid,
-                    'goods_title'        => htmlspecialchars($data->goods_title),
-                    'goods_title_about'  => htmlspecialchars($data->goods_title_about),
-                    'web_link'           => htmlspecialchars($data->web_link),
-                    'weekend_send'       => htmlspecialchars($data->weekend_send),
-                    'news_source'        => htmlspecialchars($data->news_source),
-                    'theme_id'           => htmlspecialchars($data->theme_id),
-                    'theme_name'         => Theme::whereThemeId($data->theme_id)->value('theme_name'),
-                    'platform_id'        => htmlspecialchars($data->platform_id),
-                    'platform_name'      => Platform::wherePlatformId($data->platform_id)->value('platform_name'),
-                    'filed_id'           => htmlspecialchars($data->filed_id),
-                    'filed_name'         => Filed::whereFiledId($data->filed_id)->value('filed_name'),
-                    'region_id'          => htmlspecialchars($data->region_id),
-                    'region_name'        => Region::whereRegionId($data->region_id)->value('region_name'),
-                    'sendspeed_id'       => htmlspecialchars($data->sendspeed_id),
-                    'sendspeed_name'     => Sendspeed::whereSendspeedId($data->sendspeed_id)->value('sendspeed_name'),
-                    'industry_id'        => htmlspecialchars($data->industry_id),
-                    'industry_name'      => Industry::whereIndustryId($data->industry_id)->value('industry_name'),
-                    'entryclassify_id'   => htmlspecialchars($data->entryclassify_id),
-                    'entryclassify_name' => Entryclassify::whereEntryclassifyId($data->entryclassify_id)->value('entryclassify_name'),
-                    'qq_ID'              => htmlspecialchars($data->qq_ID),
-                    'remarks'            => htmlspecialchars($data->remarks),
-                ]);
+            $goods_id = self::insertGetId([
+                'goods_num'          => createGoodsNnm(),
+                'uid'                => JWTAuth::user()->uid,
+                'goods_title'        => htmlspecialchars($data->goods_title),
+                'goods_title_about'  => htmlspecialchars($data->goods_title_about),
+                'web_link'           => htmlspecialchars($data->web_link),
+                'weekend_send'       => htmlspecialchars($data->weekend_send),
+                'news_source'        => htmlspecialchars($data->news_source),
+                'theme_id'           => htmlspecialchars($data->theme_id),
+                'theme_name'         => Theme::whereThemeId($data->theme_id)->value('theme_name'),
+                'platform_id'        => htmlspecialchars($data->platform_id),
+                'platform_name'      => Platform::wherePlatformId($data->platform_id)->value('platform_name'),
+                'filed_id'           => htmlspecialchars($data->filed_id),
+                'filed_name'         => Filed::whereFiledId($data->filed_id)->value('filed_name'),
+                'region_id'          => htmlspecialchars($data->region_id),
+                'region_name'        => Region::whereRegionId($data->region_id)->value('region_name'),
+                'sendspeed_id'       => htmlspecialchars($data->sendspeed_id),
+                'sendspeed_name'     => Sendspeed::whereSendspeedId($data->sendspeed_id)->value('sendspeed_name'),
+                'industry_id'        => htmlspecialchars($data->industry_id),
+                'industry_name'      => Industry::whereIndustryId($data->industry_id)->value('industry_name'),
+                'entryclassify_id'   => htmlspecialchars($data->entryclassify_id),
+                'entryclassify_name' => Entryclassify::whereEntryclassifyId($data->entryclassify_id)->value('entryclassify_name'),
+                'qq_ID'              => htmlspecialchars($data->qq_ID),
+                'remarks'            => htmlspecialchars($data->remarks),
+            ]);
             if (!$goods_id)
                 throw new Exception('保存失败');
 
