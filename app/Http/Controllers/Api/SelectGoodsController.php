@@ -12,6 +12,8 @@ use App\Models\Video\GoodsVideo;
 use App\Models\Video\GoodsVideoPrice;
 use App\Models\Selfmedia\GoodsSelfmedia;
 use App\Models\Softarticle\GoodsSoftarticle;
+use App\Service\ModularData;
+use PhpParser\Node\Expr\AssignOp\Mod;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class SelectGoodsController extends BaseController
@@ -106,18 +108,30 @@ class SelectGoodsController extends BaseController
     public function userGoods()
     {
         $uid = JWTAuth::user()->uid;
-        $re = [];
+        $re  = [];
 
         // 微信商品
-        $re['weixin'] = GoodsWeixin::userGoods($uid);
+        $re['weixin']       = ModularData::goodsInfo('WEIXIN', $uid, 'uid');
         // 微博商品
-        $re['weibo'] = GoodsWeibo::userGoods($uid);
+        $re['weibo']        = ModularData::goodsInfo('WEIBO', $uid, 'uid');
         // 视频商品
-        $re['video'] = GoodsVideo::userGoods($uid);
+        $re['video']        = ModularData::goodsInfo('VIDEO', $uid, 'uid');
         // 自媒体商品
-        $re['selfmedia'] = GoodsSelfmedia::userGoods($uid);
+        $re['selfmedia']    = ModularData::goodsInfo('SELFMEDIA', $uid, 'uid');
         // 软文商品
-        $re['softarticle'] = GoodsSoftarticle::userGoods($uid);
+        $re['softarticle']  = ModularData::goodsInfo('SOFTARTICLE', $uid, 'uid');
+
+        return $this->success($re);
+    }
+
+    /**
+     * 商品信息
+     * @param SelectGoodsRequests $request
+     * @return mixed
+     */
+    public function goodsInfo(SelectGoodsRequests $request)
+    {
+        $re = ModularData::goodsInfo($request->modular_type, $request->goods_id, 'goods_id');
 
         return $this->success($re);
     }

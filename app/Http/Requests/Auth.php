@@ -26,7 +26,7 @@ class Auth extends Base
             case 'checkPhone':
                 $rules['type'] = 'required';
                 $rules['smsCode'] = 'required|numeric';
-                switch ( Request::input('type') ){
+                switch (Request::input('type') ){
                     case 1: // 手机号必须未注册【注册】
                         $rules['phone'] = ['required', 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/', 'unique:user,phone'];
                         break;

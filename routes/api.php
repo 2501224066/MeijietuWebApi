@@ -4,7 +4,7 @@ $api = app('Dingo\Api\Routing\Router');
 $api->group(['version' => 'v1'], function ($api) {
 
     $api->group(['namespace' => '\App\Http\Controllers\Api'], function ($api) {
-        
+
         // 注册登录
         $api->post('checkPhone', 'AuthController@checkPhone'); // 检查手机号
         $api->post('register', 'AuthController@register');     // 注册
@@ -32,6 +32,7 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('selectVideoGoods', 'SelectGoodsController@selectVideoGoods');             // 搜索视频商品
         $api->get('selectSelfmediaGoods', 'SelectGoodsController@selectSelfmediaGoods');     // 搜索自媒体商品
         $api->get('selectSoftarticleGoods', 'SelectGoodsController@selectSoftarticleGoods'); // 搜索软文商品
+        $api->get('goodsInfo', 'SelectGoodsController@goodsInfo');                           // 商品信息
 
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
@@ -64,6 +65,10 @@ $api->group(['version' => 'v1'], function ($api) {
 
             // 搜索用户创建的全部商品
             $api->post('userGoods', 'SelectGoodsController@userGoods');
+
+            // 用户商品操作
+            $api->post('collectionGoods', 'GoodsOperationController@collectionGoods'); // 收藏商品
+            $api->post('delCollection', 'GoodsOperationController@delCollection');     // 删除收藏
         });
     });
 });

@@ -11,11 +11,11 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-
 /**
  * App\Models\Video\GoodsVideo
  *
- * @property int $goods_video_id 商品id
+ * @property int $goods_id 商品id
+ * @property string $modular_name 模块名称
  * @property int $uid 用户id
  * @property string $goods_num 商品编号
  * @property string $goods_title 商品名称
@@ -35,22 +35,21 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property int $verify_status 审核状态 0=审核中 1=审核不通过 2=审核通过
  * @property int $status 状态 0=下架 1=上架
  * @property string|null $remarks 备注
- * @property string|null $basic_data 基础数据
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereBasicData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereFansNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereFiledId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereFiledName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsTitleAbout($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereGoodsVideoId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereLogoPath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereModularName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo wherePlatformId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo wherePlatformName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideo whereQqID($value)
@@ -88,37 +87,37 @@ class GoodsVideo extends Model
     // 添加商品
     public static function add($data)
     {
-        $date = date('Y-m-d H:i:s');
+        $date           = date('Y-m-d H:i:s');
         $goods_video_id = null;
-        DB::transaction(function () use ($data, $date, &$goods_video_id){
+        DB::transaction(function () use ($data, $date, &$goods_video_id) {
             $platfrom = Platform::wherePlatformId($data->platform_id)->first();
 
             // 添加商品
             $goods_video_id = DB::table('goods_video')
                 ->insertGetId([
-                    'goods_num' => createGoodsNnm(),
-                    'theme_id' => htmlspecialchars($data->theme_id),
-                    'uid' => JWTAuth::user()->uid,
-                    'theme_name' => Theme::whereThemeId($data->theme_id)->value('theme_name'),
-                    'goods_title' => htmlspecialchars($data->goods_title),
+                    'goods_num'         => createGoodsNnm(),
+                    'theme_id'          => htmlspecialchars($data->theme_id),
+                    'uid'               => JWTAuth::user()->uid,
+                    'theme_name'        => Theme::whereThemeId($data->theme_id)->value('theme_name'),
+                    'goods_title'       => htmlspecialchars($data->goods_title),
                     'goods_title_about' => htmlspecialchars($data->goods_title_about),
-                    'room_num' => htmlspecialchars($data->room_num),
-                    'fans_num' => htmlspecialchars($data->fans_num),
-                    'platform_id' => htmlspecialchars($data->platform_id),
-                    'platform_name' =>  $platfrom->platform_name,
-                    'logo_path' => $platfrom->logo_path,
-                    'filed_id' => htmlspecialchars($data->filed_id),
-                    'filed_name' => Filed::whereFiledId($data->filed_id)->value('filed_name'),
-                    'region_id' => htmlspecialchars($data->region_id),
-                    'region_name' => Region::whereRegionId($data->region_id)->value('region_name'),
-                    'qq_ID' => htmlspecialchars($data->qq_ID),
-                    'verify_status' => self::VERIFY_STATUS_WAIT,
-                    'status' => self::STATUS_OFF,
-                    'remarks' =>  htmlspecialchars($data->remarks),
-                    'created_at' => $date,
-                    'updated_at' => $date,
+                    'room_num'          => htmlspecialchars($data->room_num),
+                    'fans_num'          => htmlspecialchars($data->fans_num),
+                    'platform_id'       => htmlspecialchars($data->platform_id),
+                    'platform_name'     => $platfrom->platform_name,
+                    'logo_path'         => $platfrom->logo_path,
+                    'filed_id'          => htmlspecialchars($data->filed_id),
+                    'filed_name'        => Filed::whereFiledId($data->filed_id)->value('filed_name'),
+                    'region_id'         => htmlspecialchars($data->region_id),
+                    'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
+                    'qq_ID'             => htmlspecialchars($data->qq_ID),
+                    'verify_status'     => self::VERIFY_STATUS_WAIT,
+                    'status'            => self::STATUS_OFF,
+                    'remarks'           => htmlspecialchars($data->remarks),
+                    'created_at'        => $date,
+                    'updated_at'        => $date,
                 ]);
-            if ( ! $goods_video_id)
+            if (!$goods_video_id)
                 throw new Exception('保存失败');
 
             // 添加商品价格
@@ -126,15 +125,15 @@ class GoodsVideo extends Model
             foreach ($price_data as $k => $v) {
                 $reTwo = DB::table('goods_video_price')
                     ->insert([
-                        'goods_video_id' => $goods_video_id,
-                        'priceclassify_id' => $k,
+                        'goods_video_id'     => $goods_video_id,
+                        'priceclassify_id'   => $k,
                         'priceclassify_name' => Priceclassify::wherePriceclassifyId($k)->value('priceclassify_name'),
-                        'tag' => Priceclassify::wherePriceclassifyId($k)->value('tag'),
-                        'price' => $v,
-                        'created_at' => $date,
-                        'updated_at' => $date,
+                        'tag'                => Priceclassify::wherePriceclassifyId($k)->value('tag'),
+                        'price'              => $v,
+                        'created_at'         => $date,
+                        'updated_at'         => $date,
                     ]);
-                if ( ! $reTwo)
+                if (!$reTwo)
                     throw new Exception('保存失败');
             }
         });
@@ -146,7 +145,8 @@ class GoodsVideo extends Model
     public static function select($data, $idArr)
     {
         $query = self::whereIn('goods_video_id', $idArr)
-            ->where('theme_id', $data->theme_id);
+            ->where('theme_id', $data->theme_id)
+            ->where('status', self::STATUS_ON);
 
         if ($data->filed_id)
             $query->where('filed_id', $data->filed_id);
@@ -164,20 +164,9 @@ class GoodsVideo extends Model
             $query->where('region_id', '=', $data->region_id);
 
         if ($data->keyword)
-            $query->where('good_title', 'like', '%'. $data->keyword. '%');
+            $query->where('good_title', 'like', '%' . $data->keyword . '%');
 
         $re = $query->paginate();
-
-        return $re;
-    }
-
-    // 用户商品
-    public static function userGoods($uid)
-    {
-        $goods = self::whereUid($uid)->orderBy('created_at', 'DESC')->get();
-
-        // 插入价格信息
-        $re = GoodsVideoPrice::withPriceInfo($goods);
 
         return $re;
     }

@@ -6,10 +6,11 @@ namespace App\Models\Weixin;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 /**
  * App\Models\Weixin\GoodsWeixinPrice
  *
- * @property int $goods_weixin_id
+ * @property int $goods_id
  * @property int $priceclassify_id 价格种类id
  * @property string $priceclassify_name 价格种类名称
  * @property float $price 价格
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixinPrice newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixinPrice query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixinPrice whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixinPrice whereGoodsWeixinId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixinPrice whereGoodsId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixinPrice wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixinPrice wherePriceclassifyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Weixin\GoodsWeixinPrice wherePriceclassifyName($value)
@@ -35,7 +36,7 @@ class GoodsWeixinPrice extends Model
     // 筛选价格
     public static function screenPrice($data)
     {
-        if ( ! ($data->pricelevel_min || $data->pricelevel_max))
+        if ( ! $data->priceclassify_id)
             return false;
 
         $query =  self::wherePriceclassifyId($data->priceclassify_id);

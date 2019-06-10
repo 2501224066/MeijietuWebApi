@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Video\GoodsVideoPrice
  *
- * @property string $goods_video_id
+ * @property string $goods_id
  * @property int $priceclassify_id
  * @property string $priceclassify_name
+ * @property string $tag 标记
  * @property float $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -19,10 +20,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice whereGoodsVideoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice whereGoodsId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice wherePriceclassifyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice wherePriceclassifyName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice whereTag($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\GoodsVideoPrice whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -36,7 +38,7 @@ class GoodsVideoPrice extends Model
     // 筛选价格
     public static function screenPrice($data)
     {
-        if ( ! ($data->pricelevel_min || $data->pricelevel_max))
+        if ( ! $data->priceclassify_id)
             return false;
 
         $query =  self::wherePriceclassifyId($data->priceclassify_id);

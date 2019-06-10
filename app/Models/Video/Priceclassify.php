@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\Priceclassify wherePriceclassifyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\Priceclassify wherePriceclassifyName($value)
  * @mixin \Eloquent
+ * @property string $tag 标记
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Video\Priceclassify whereTag($value)
  */
 class Priceclassify extends Model
 {

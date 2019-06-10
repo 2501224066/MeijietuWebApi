@@ -20,11 +20,10 @@ class File extends Base
     {
         $rules = [];
 
-        switch ($this->getFunName())
-        {
+        switch ($this->getFunName()) {
             // 图片上传
             case 'uploadImg':
-                $rules['image'] = 'required';
+                $rules['image']       = 'required';
                 $rules['upload_type'] = 'required';
                 break;
         }
@@ -34,8 +33,8 @@ class File extends Base
 
     public function messages()
     {
-        return  [
-            'image.required' => '图片不得为空',
+        return [
+            'image.required'       => '图片不得为空',
             'upload_type.required' => '上传类型不得为空',
         ];
     }

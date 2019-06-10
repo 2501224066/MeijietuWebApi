@@ -4,21 +4,30 @@
 function type($parm){
     // 请求验证码类型
     $CODE_TYPE = [
-        'checkPhone' => '检查手机号',
-        'nextToken' => '下一步令牌',
-        'codeSignIn' => '动态登录',
-        'resetPassCode' => '重置密码',
-        'realnamePeople' => '个人实名认证',
+        'checkPhone'         => '检查手机号',
+        'nextToken'          => '下一步令牌',
+        'codeSignIn'         => '动态登录',
+        'resetPassCode'      => '重置密码',
+        'realnamePeople'     => '个人实名认证',
         'realnameEnterprise' => '企业实名认证',
-        'savePhone' => '修改手机号',
-        'savePass' => '修改密码'
+        'savePhone'          => '修改手机号',
+        'savePass'           => '修改密码'
     ];
 
     // 上传类型
     $UPLOAD_TYPE = [
-        "ID_card" => '身份证',
+        "ID_card"          => '身份证',
         "business_license" => '营业执照',
-        "head_portrait" => '头像',
+        "head_portrait"    => '头像',
+    ];
+
+    // 模块类型
+    $MODULAR_TYPE = [
+        'WEIXIN'      => '微信',
+        'WEIBO'       => '微博',
+        'VIDEO'       => '视频',
+        'SELFMODEL'   => '自媒体',
+        'SOFTARTICLE' => '软文',
     ];
 
     switch ($parm){
@@ -28,6 +37,10 @@ function type($parm){
 
         case "UPLOAD_TYPE":
             $type = $UPLOAD_TYPE;
+            break;
+
+        case "MODULAR_TYPE":
+            $type = $MODULAR_TYPE;
             break;
     }
 

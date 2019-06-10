@@ -11,15 +11,16 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-
 /**
  * App\Models\Selfmedia\GoodsSelfmedia
  *
- * @property int $goods_selfmedia_id 商品id
+ * @property int $goods_id 商品id
+ * @property string $modular_name 模块名称
  * @property int $uid 用户id
  * @property string $goods_num 商品编号
  * @property string $goods_title 商品名称
  * @property string $goods_title_about 商品名称简介
+ * @property int $fans_num 粉丝数量
  * @property int $theme_id 主题id
  * @property string $theme_name 主题名称
  * @property int $filed_id 领域id
@@ -34,20 +35,20 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property int $verify_status 审核状态 0=审核中 1=审核不通过 2=审核通过
  * @property int $status 状态 0=下架 1=上架
  * @property string|null $remarks 备注
- * @property string|null $basic_data 基础数据
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereBasicData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereFansNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereFiledId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereFiledName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereGoodsId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereGoodsNum($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereGoodsSelfmediaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereGoodsTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereGoodsTitleAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereModularName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia wherePlatformId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia wherePlatformName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia wherePrice($value)
@@ -63,8 +64,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereVerifyStatus($value)
  * @mixin \Eloquent
- * @property int $fans_num 粉丝数量
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\GoodsSelfmedia whereFansNum($value)
  */
 class GoodsSelfmedia extends Model
 {
@@ -93,28 +92,28 @@ class GoodsSelfmedia extends Model
         // 添加商品
         $goods_selfmedia_id = DB::table('goods_selfmedia')
             ->insertGetId([
-                'goods_num' => createGoodsNnm(),
-                'uid' => JWTAuth::user()->uid,
-                'goods_title' => htmlspecialchars($data->goods_title),
+                'goods_num'         => createGoodsNnm(),
+                'uid'               => JWTAuth::user()->uid,
+                'goods_title'       => htmlspecialchars($data->goods_title),
                 'goods_title_about' => htmlspecialchars($data->goods_title_about),
-                'fans_num' => htmlspecialchars($data->fans_num),
-                'theme_id' => htmlspecialchars($data->theme_id),
-                'theme_name' => Theme::whereThemeId($data->theme_id)->value('theme_name'),
-                'platform_id' => htmlspecialchars($data->platform_id),
-                'platform_name' => Platform::wherePlatformId($data->platform_id)->value('platform_name'),
-                'filed_id' => htmlspecialchars($data->filed_id),
-                'filed_name' => Filed::whereFiledId($data->filed_id)->value('filed_name'),
-                'region_id' => htmlspecialchars($data->region_id),
-                'region_name' => Region::whereRegionId($data->region_id)->value('region_name'),
-                'qq_ID' => htmlspecialchars($data->qq_ID),
-                'price' => htmlspecialchars($data->price),
-                'verify_status' => self::VERIFY_STATUS_WAIT,
-                'status' => self::STATUS_OFF,
-                'remarks' =>  htmlspecialchars($data->remarks),
-                'created_at' => $date,
-                'updated_at' => $date,
+                'fans_num'          => htmlspecialchars($data->fans_num),
+                'theme_id'          => htmlspecialchars($data->theme_id),
+                'theme_name'        => Theme::whereThemeId($data->theme_id)->value('theme_name'),
+                'platform_id'       => htmlspecialchars($data->platform_id),
+                'platform_name'     => Platform::wherePlatformId($data->platform_id)->value('platform_name'),
+                'filed_id'          => htmlspecialchars($data->filed_id),
+                'filed_name'        => Filed::whereFiledId($data->filed_id)->value('filed_name'),
+                'region_id'         => htmlspecialchars($data->region_id),
+                'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
+                'qq_ID'             => htmlspecialchars($data->qq_ID),
+                'price'             => htmlspecialchars($data->price),
+                'verify_status'     => self::VERIFY_STATUS_WAIT,
+                'status'            => self::STATUS_OFF,
+                'remarks'           => htmlspecialchars($data->remarks),
+                'created_at'        => $date,
+                'updated_at'        => $date,
             ]);
-        if ( ! $goods_selfmedia_id)
+        if (!$goods_selfmedia_id)
             throw new Exception('保存失败');
 
         return $goods_selfmedia_id;
@@ -123,7 +122,8 @@ class GoodsSelfmedia extends Model
     // 拼装条件并查询
     public static function select($data)
     {
-        $query = self::whereThemeId($data->theme_id);
+        $query = self::whereThemeId($data->theme_id)
+            ->where('status', self::STATUS_ON);
 
         if ($data->pricelevel_min)
             $query->where('price', '>', $data->pricelevel_min);
@@ -147,18 +147,10 @@ class GoodsSelfmedia extends Model
             $query->where('region_id', '=', $data->region_id);
 
         if ($data->keyword)
-            $query->where('good_title', 'like', '%'. $data->keyword. '%');
+            $query->where('good_title', 'like', '%' . $data->keyword . '%');
 
         $re = $query->paginate();
 
         return $re;
-    }
-
-    // 用户商品
-    public static function userGoods($uid)
-    {
-        $goods = self::whereUid($uid)->orderBy('created_at', 'DESC')->get();
-
-        return $goods;
     }
 }

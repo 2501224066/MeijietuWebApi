@@ -57,7 +57,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $head_portrait 头像
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereHeadPortrait($value)
  */
-class User  extends Authenticatable implements JWTSubject 
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, Uuids;
 
@@ -67,7 +67,13 @@ class User  extends Authenticatable implements JWTSubject
 
     public $incrementing = false;
 
-    public $fillable = ['uid','phone','email','password','nickname','ip'];
+    public $fillable = ['uid', 'phone', 'email', 'password', 'nickname', 'ip'];
+
+    const IDENTIDY = [
+        '广告主' => 1,
+        '媒体主' => 2,
+        '代理'  => 3
+    ];
 
     //JWTauth
     public function getJWTIdentifier()
@@ -85,16 +91,16 @@ class User  extends Authenticatable implements JWTSubject
     public static function add($phone, $email, $password, $nickname, $identity, $ip)
     {
         // 添加user
-        $user =self::create([
-            'phone' => htmlspecialchars($phone),
-            'email' => htmlspecialchars($email),
-            'password' => Hash::make(htmlspecialchars($password)),
-            'nickname' => htmlspecialchars($nickname),
-            'identity' => htmlspecialchars($identity),
-            'ip' => $ip,
+        $user = self::create([
+            'phone'         => htmlspecialchars($phone),
+            'email'         => htmlspecialchars($email),
+            'password'      => Hash::make(htmlspecialchars($password)),
+            'nickname'      => htmlspecialchars($nickname),
+            'identity'      => htmlspecialchars($identity),
+            'ip'            => $ip,
             'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('value')
         ]);
-        if ( ! $user)
+        if (!$user)
             throw new Exception('注册失败');
 
         return self::whereId($user->id)->value('uid');
@@ -109,10 +115,10 @@ class User  extends Authenticatable implements JWTSubject
         $salesman_id = Usalesman::getSalesman();
         // 将客服id与用户id存入它们的关联表
         $re = UserUsalesman::create([
-            'uid' => $uid,
+            'uid'         => $uid,
             'salesman_id' => $salesman_id
         ]);
-        if ( ! $re)
+        if (!$re)
             throw new Exception('分配客服失败');
 
         return true;
@@ -132,19 +138,19 @@ class User  extends Authenticatable implements JWTSubject
     public static function checkPass($phone, $password)
     {
         $user = self::wherePhone($phone)->first();
-        if( ! Hash::check($password, $user->password) )
+        if (!Hash::check($password, $user->password))
             throw new Exception('账号/密码错误');
 
         return $user;
     }
 
     // 修改密码
-    public static function savePass($phone , $new_pass)
+    public static function savePass($phone, $new_pass)
     {
         $re = self::wherePhone($phone)->update([
             'password' => Hash::make($new_pass)
         ]);
-        if( ! $re )
+        if (!$re)
             throw new Exception('保存失败');
 
         return true;
@@ -153,42 +159,42 @@ class User  extends Authenticatable implements JWTSubject
     // 修改信息
     public static function saveInfo($data)
     {
-        $user = JWTAuth::user();
+        $user     = JWTAuth::user();
         $old_info = [
             'head_portrait' => $user->head_portrait,
-            'nickname' =>  $user->nickname,
-            'sex' =>  $user->sex,
-            'birth' =>  $user->birth,
-            'qq_ID' =>  $user->qq_ID,
-            'weixin_ID' =>  $user->weixin_ID,
+            'nickname'      => $user->nickname,
+            'sex'           => $user->sex,
+            'birth'         => $user->birth,
+            'qq_ID'         => $user->qq_ID,
+            'weixin_ID'     => $user->weixin_ID,
         ];
         $new_info = [
             'head_portrait' => htmlspecialchars($data->head_portrait),
-            'nickname' => htmlspecialchars($data->nickname),
-            'sex' => htmlspecialchars($data->sex),
-            'birth' => htmlspecialchars($data->birth),
-            'qq_ID' => htmlspecialchars($data->qq_ID),
-            'weixin_ID' => htmlspecialchars($data->weixin_ID),
+            'nickname'      => htmlspecialchars($data->nickname),
+            'sex'           => htmlspecialchars($data->sex),
+            'birth'         => htmlspecialchars($data->birth),
+            'qq_ID'         => htmlspecialchars($data->qq_ID),
+            'weixin_ID'     => htmlspecialchars($data->weixin_ID),
         ];
 
-        DB::transaction(function () use ($user, $old_info, $new_info){
+        DB::transaction(function () use ($user, $old_info, $new_info) {
             // 修改信息
             $reOne = DB::table('user', $old_info, $new_info)
                 ->where('uid', $user->uid)
                 ->update($new_info);
-            if( ! $reOne )
+            if (!$reOne)
                 throw new Exception('保存失败');
 
             // 记录
             $reTwo = DB::table('log_saveuserinfo')
                 ->insert([
-                    'uid' => JWTAuth::user()->uid,
-                    'ip' => \Request::getClientIp(),
+                    'uid'      => JWTAuth::user()->uid,
+                    'ip'       => \Request::getClientIp(),
                     'old_info' => json_encode($old_info),
                     'new_info' => json_encode($new_info),
-                    'time_at' => date('Y-m-d H:i:s')
+                    'time_at'  => date('Y-m-d H:i:s')
                 ]);
-            if ( ! $reTwo)
+            if (!$reTwo)
                 throw new Exception('保存失败');
         });
 
@@ -198,7 +204,7 @@ class User  extends Authenticatable implements JWTSubject
     // 检查手机号是否为当前用户手机号
     public static function checkUserPhone($phone)
     {
-        if ( ! (JWTAuth::user()->phone == $phone) )
+        if (!(JWTAuth::user()->phone == $phone))
             throw new Exception('违法，非自身手机号');
 
         return true;
@@ -215,24 +221,24 @@ class User  extends Authenticatable implements JWTSubject
             'phone' => $new_phone
         ];
 
-        DB::transaction(function () use ($phone, $old_info, $new_info){
+        DB::transaction(function () use ($phone, $old_info, $new_info) {
             // 修改手机号
             $reOne = DB::table('user')
                 ->where('phone', $phone)
                 ->update($new_info);
-            if ( ! $reOne)
+            if (!$reOne)
                 throw new Exception('保存失败');
 
             // 记录
             $reTwo = DB::table('log_saveuserinfo')
                 ->insert([
-                    'uid' => JWTAuth::user()->uid,
-                    'ip' => \Request::getClientIp(),
+                    'uid'      => JWTAuth::user()->uid,
+                    'ip'       => \Request::getClientIp(),
                     'old_info' => json_encode($old_info),
                     'new_info' => json_encode($new_info),
-                    'time_at' => date('Y-m-d H:i:s')
+                    'time_at'  => date('Y-m-d H:i:s')
                 ]);
-            if ( ! $reTwo)
+            if (!$reTwo)
                 throw new Exception('保存失败');
         });
 

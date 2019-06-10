@@ -110,3 +110,11 @@
 4. `selectSelfmediaGoods` 搜索自媒体商品
 5. `selectSoftarticleGoods` 搜索软文商品
 6. 后台 `软文套餐` 功能
+
+## 2019/6/6
+1. `userGoods` 用户创建的商品
+2. 模块设定
+3. 商品状态设定
+4. `collectionGoods` 收藏商品
+5. `delCollection` 删除收藏
+6. `goodsInfo` 商品信息-兼容所有模块

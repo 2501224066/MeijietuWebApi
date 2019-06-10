@@ -55,12 +55,12 @@ class RealnameEnterprise extends Model
     // 检查营业执照信息
     public static function checkBusinessLicense($business_license, $enterprise_name, $social_credit_code)
     {
-        if( ! Storage::exists($business_license) )
+        if (!Storage::exists($business_license))
             throw new Exception("获取营业执照图片失败");
 
         // 营业执照图片转base64编码
-        $img_content = file_get_contents(env('ALIOSS_URL').$business_license);
-        $img_base64 = urlencode(base64_encode($img_content));
+        $img_content = file_get_contents(env('ALIOSS_URL') . $business_license);
+        $img_base64  = urlencode(base64_encode($img_content));
 
         // 请求营业执照信息外部接口
         $data = businessLicense_API($img_base64);
@@ -75,7 +75,7 @@ class RealnameEnterprise extends Model
     // 添加企业认证信息
     public static function add($request)
     {
-        if( ! Storage::exists($request->business_license) )
+        if (!Storage::exists($request->business_license))
             throw new Exception("获取营业执照图片失败");
 
         DB::transaction(function () use ($request) {
@@ -84,21 +84,21 @@ class RealnameEnterprise extends Model
             // 添加企业实名认证数据
             $reOne = DB::table('realname_enterprise')
                 ->insert([
-                    'uid' => $uid,
-                    'enterprise_name' => htmlspecialchars($request->enterprise_name),
+                    'uid'                => $uid,
+                    'enterprise_name'    => htmlspecialchars($request->enterprise_name),
                     'social_credit_code' => htmlspecialchars($request->social_credit_code),
-                    'business_license' => htmlspecialchars($request->business_license),
-                    'bank_deposit' => htmlspecialchars($request->bank_deposit),
-                    'bank_branch' => htmlspecialchars($request->bank_branch),
-                    'bank_prov' => htmlspecialchars($request->bank_prov),
-                    'bank_city' => htmlspecialchars($request->bank_city),
-                    'bank_card' => htmlspecialchars($request->bank_card),
-                    'bank_band_phone' => htmlspecialchars($request->bank_band_phone),
-                    'verify_status' => 1, // 审核状态 0=未通过 1=审核通过
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'business_license'   => htmlspecialchars($request->business_license),
+                    'bank_deposit'       => htmlspecialchars($request->bank_deposit),
+                    'bank_branch'        => htmlspecialchars($request->bank_branch),
+                    'bank_prov'          => htmlspecialchars($request->bank_prov),
+                    'bank_city'          => htmlspecialchars($request->bank_city),
+                    'bank_card'          => htmlspecialchars($request->bank_card),
+                    'bank_band_phone'    => htmlspecialchars($request->bank_band_phone),
+                    'verify_status'      => 1, // 审核状态 0=未通过 1=审核通过
+                    'created_at'         => date('Y-m-d H:i:s'),
+                    'updated_at'         => date('Y-m-d H:i:s')
                 ]);
-            if ( ! $reOne)
+            if (!$reOne)
                 throw new Exception('保存失败');
 
             // 修改用户表中实名认证状态
@@ -107,7 +107,7 @@ class RealnameEnterprise extends Model
                 ->update([
                     'realname_status' => 2 // 实名认证状态 0=未认证 1=个人认证 2=企业认证
                 ]);
-            if ( ! $reTwo)
+            if (!$reTwo)
                 throw new Exception('保存失败');
         });
 
@@ -117,19 +117,19 @@ class RealnameEnterprise extends Model
     // 获取企业认证信息
     public static function info()
     {
-        $uid = JWTAuth::user()->uid;
+        $uid  = JWTAuth::user()->uid;
         $data = self::whereUid($uid)->first();
-        if( ! $data)
+        if (!$data)
             throw new Exception("未查询到认证信息");
 
         return [
-            'enterprise_name' =>  $data->enterprise_name,
+            'enterprise_name'    => $data->enterprise_name,
             'social_credit_code' => preg_replace("/(.{4}).{9}(.{5})/", "\$1*********\$2", $data->social_credit_code),
-            'bank_band_phone' => preg_replace("/(\d{3})\d{4}(\d{4})/", "\$1****\$2", $data->bank_band_phone),
-            'bank_deposit' => $data->bank_deposit,
-            'bank_branch' => $data->bank_branch,
-            'bank_where' => $data->bank_prov.$data->bank_city,
-            'bank_card' => preg_replace("/(\d{4})\d{12}(\d{3})/", "\$1 **** **** **** \$2", $data->bank_card)
+            'bank_band_phone'    => preg_replace("/(\d{3})\d{4}(\d{4})/", "\$1****\$2", $data->bank_band_phone),
+            'bank_deposit'       => $data->bank_deposit,
+            'bank_branch'        => $data->bank_branch,
+            'bank_where'         => $data->bank_prov . $data->bank_city,
+            'bank_card'          => preg_replace("/(\d{4})\d{12}(\d{3})/", "\$1 **** **** **** \$2", $data->bank_card)
         ];
     }
 

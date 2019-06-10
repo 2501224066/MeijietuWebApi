@@ -13,9 +13,9 @@ class Captcha
     //检查请求验证码类型
     public static function checkCodeType($codeType)
     {
-        if( ! in_array($codeType, array_keys(type("CODE_TYPE")) ) )
+        if (!in_array($codeType, array_keys(type("CODE_TYPE"))))
             throw new Exception('请求验证码类型错误');
-            
+
         return true;
     }
 
