@@ -254,4 +254,11 @@ class User extends Authenticatable implements JWTSubject
 
         return true;
     }
+
+    // 判断用户身份
+    public static function checkIdentity()
+    {
+        if (JWTAuth::user()->identity != User::IDENTIDY['广告主'])
+            throw new Exception('只有广告主拥有此功能');
+    }
 }

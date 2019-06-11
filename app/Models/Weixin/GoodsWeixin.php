@@ -114,8 +114,8 @@ class GoodsWeixin extends Model
                 'reserve_status'    => htmlspecialchars($data->reserve_status),
                 'qq_ID'             => htmlspecialchars($data->qq_ID),
                 'remarks'           => htmlspecialchars($data->remarks),
-                'created_at'         => $now,
-                'updated_at'         => $now
+                'created_at'        => $now,
+                'updated_at'        => $now
             ]);
             if (!$goods_id)
                 throw new Exception('保存失败');

@@ -120,11 +120,19 @@
 6. `goodsInfo` 商品信息-兼容所有模块
 
 ## 2019/6/10
-1. 整合模块信息搜索 通过 `modular_type` 进行区分检索
-2. `user_wallet` 用户钱包表设计
-3. 修改 `自媒体` `软文` 价格设计，添加
+1. `getCollectio` 获取收藏信息
+2. 整合模块信息搜索 通过 `modular_type` 进行区分检索，  
+统一方法获取模块信息
+3. `user_wallet` 用户钱包表设计
+4. 修改 `自媒体` `软文` 价格设计，添加
  `selfmedia_priceclassify` ,
  `selfmedia_theme_priceclassify` , 
  `softarticle_priceclassify` ,
- `softarticle_theme_priceclassify` , 
- 表与后台功能
+ `softarticle_theme_priceclassify`
+ 表与  
+ 后台 `价格种类` 功能
+ 
+ ## 2019/6/11
+ 1. 加入购物车 `joinShopcart`
+ 2. 从购物车删除 `ShopcartDel`
+ 3. 购物车数据 `getShopcart`

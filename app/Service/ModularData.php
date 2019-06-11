@@ -5,7 +5,9 @@ namespace App\Service;
 
 
 use App\Models\Selfmedia\GoodsSelfmedia;
+use App\Models\Selfmedia\GoodsSelfmediaPrice;
 use App\Models\Softarticle\GoodsSoftarticle;
+use App\Models\Softarticle\GoodsSoftarticlePrice;
 use App\Models\Video\GoodsVideo;
 use App\Models\Video\GoodsVideoPrice;
 use App\Models\Weibo\GoodsWeibo;
@@ -13,6 +15,7 @@ use App\Models\Weibo\GoodsWeiboPrice;
 use App\Models\Weixin\GoodsWeixin;
 use App\Models\Weixin\GoodsWeixinPrice;
 use Illuminate\Database\Eloquent\Model;
+use Mockery\Exception;
 
 /**
  * App\Service\ModularData
@@ -24,28 +27,76 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ModularData extends Model
 {
-    // 根据模块类型获取商品表对象
+    // 根据模块类型 获取商品表[goods_xxx] 对象
     public static function modularTypeToGetGoodsTableClass($modularType)
     {
         switch ($modularType) {
             case 'WEIXIN':
-                $table = new GoodsWeixin;
+                $object = new GoodsWeixin;
                 break;
             case 'WEIBO':
-                $table = new GoodsWeibo;
+                $object = new GoodsWeibo;
                 break;
             case 'VIDEO':
-                $table = new GoodsVideo;
+                $object = new GoodsVideo;
                 break;
             case 'SELFMEDIA':
-                $table = new GoodsSelfmedia;
+                $object = new GoodsSelfmedia;
                 break;
             case 'SOFTARTICLE':
-                $table = new GoodsSoftarticle;
+                $object = new GoodsSoftarticle;
                 break;
         }
 
-        return $table;
+        return $object;
+    }
+
+    // 根据模块类型获取 价格种类表[xxx_priceclassify] 对象
+    public static function modularTypeToGetPriceclassifyTableClass($modularType)
+    {
+        switch ($modularType) {
+            case 'WEIXIN':
+                $object = new \App\Models\Weixin\Priceclassify;
+                break;
+            case 'WEIBO':
+                $object = new \App\Models\Weibo\Priceclassify;
+                break;
+            case 'VIDEO':
+                $object = new \App\Models\Video\Priceclassify;
+                break;
+            case 'SELFMEDIA':
+                $object = new \App\Models\Selfmedia\Priceclassify;
+                break;
+            case 'SOFTARTICLE':
+                $object = new \App\Models\Softarticle\Priceclassify;
+                break;
+        }
+
+        return $object;
+    }
+
+    // 根据模块类型获取 商品价格表[goods_xxx_price] 对象
+    public static function modularTypeToGetGoodsPriceTableClass($modularType)
+    {
+        switch ($modularType) {
+            case 'WEIXIN':
+                $object = new GoodsWeixinPrice;
+                break;
+            case 'WEIBO':
+                $object = new GoodsWeiboPrice;
+                break;
+            case 'VIDEO':
+                $object = new GoodsVideoPrice;
+                break;
+            case 'SELFMEDIA':
+                $object = new GoodsSelfmediaPrice;
+                break;
+            case 'SOFTARTICLE':
+                $object = new GoodsSoftarticlePrice;
+                break;
+        }
+
+        return $object;
     }
 
 
@@ -72,27 +123,32 @@ class ModularData extends Model
         return $re;
     }
 
-    // 插入价格信息
+    // 跳转到插入价格信息
     public static function withPriceInfo($modularType, $goods)
     {
-        switch ($modularType) {
-            case 'WEIXIN':
-                $re = GoodsWeixinPrice::withPriceInfo($goods);
-                break;
-            case 'WEIBO':
-                $re = GoodsWeiboPrice::withPriceInfo($goods);
-                break;
-            case 'VIDEO':
-                $re = GoodsVideoPrice::withPriceInfo($goods);
-                break;
-            case 'SELFMEDIA':
-                $re = $goods;
-                break;
-            case 'SOFTARTICLE':
-                $re = $goods;
-                break;
-        }
+        $re = self::modularTypeToGetGoodsPriceTableClass($modularType)::withPriceInfo($goods);
 
         return $re;
+    }
+
+    // 检查模块类型
+    public static function checkModularType($modularType)
+    {
+        if (!in_array($modularType, array_keys(type("MODULAR_TYPE"))))
+            throw new Exception('模块类型错误');
+
+        return true;
+    }
+
+    // 判断商品是否存在
+    public static function checkGoodsHas($data)
+    {
+        // 根据模块类型获取商品表对象
+        $table = ModularData::modularTypeToGetGoodsTableClass($data->modular_type);
+        $re    = $table->find($data->goods_id);
+        if (!$re)
+            throw new Exception('商品不存在');
+
+        return true;
     }
 }

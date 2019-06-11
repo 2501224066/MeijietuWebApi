@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 /**
  * App\Models\UserCollection
  *
+ * @property int $collection_id 收藏id
  * @property int $uid 用户id
  * @property string $modular_type 模块类型
  * @property int $goods_id 商品id
@@ -20,6 +21,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCollection newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCollection newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCollection query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCollection whereCollectionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCollection whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCollection whereGoodsId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserCollection whereModularType($value)
@@ -34,34 +36,6 @@ class UserCollection extends Model
     public $guarded = [];
 
 
-    // 判断用户身份
-    public static function checkIdentity()
-    {
-        if (JWTAuth::user()->identity != User::IDENTIDY['广告主'])
-            throw new Exception('只有广告主可收藏商品');
-    }
-
-    // 检查模块类型
-    public static function checkModularType($modularType)
-    {
-        if (!in_array($modularType, array_keys(type("MODULAR_TYPE"))))
-            throw new Exception('模块类型错误');
-
-        return true;
-    }
-
-    // 判断商品是否存在
-    public static function checkGoodsHas($data)
-    {
-        // 根据模块类型获取商品表对象
-        $table = ModularData::modularTypeToGetGoodsTableClass($data->modular_type);
-        $re    = $table->find($data->goods_id);
-        if (!$re)
-            throw new Exception('商品不存在');
-
-        return true;
-    }
-
     // 判断商品是否已经收藏
     public static function checkCollectionHas($data)
     {
@@ -70,6 +44,8 @@ class UserCollection extends Model
             ->count();
         if ($count)
             throw new Exception('此商品已收藏');
+
+        return true;
     }
 
     // 添加收藏
@@ -87,11 +63,9 @@ class UserCollection extends Model
     }
 
     // 删除收藏
-    public static function del($data)
+    public static function del($id)
     {
-        $re = self::whereModularType($data->modular_type)
-            ->where('goods_id', $data->goods_id)
-            ->delete();
+        $re = self::whereCollectionId($id)->delete();
         if (!$re)
             throw new Exception('操作失败');
 

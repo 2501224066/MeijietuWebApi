@@ -4,7 +4,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\UserCollection as UserCollectionRequests;
+use App\Models\User;
 use App\Models\UserCollection;
+use App\Service\ModularData;
 
 class UserCollectionController extends BaseController
 {
@@ -16,13 +18,13 @@ class UserCollectionController extends BaseController
     public function collectionGoods(UserCollectionRequests $request)
     {
         // 判断用户身份
-        UserCollection::checkIdentity();
+        User::checkIdentity();
         // 检查模块类型
-        UserCollection::checkModularType($request->modular_type);
+        ModularData::checkModularType($request->modular_type);
         // 判断商品是否已经收藏
         UserCollection::checkCollectionHas($request);
         // 判断商品是否存在
-        UserCollection::checkGoodsHas($request);
+        ModularData::checkGoodsHas($request);
         // 添加收藏
         UserCollection::add($request);
 
@@ -34,12 +36,9 @@ class UserCollectionController extends BaseController
      * @param UserCollectionRequests $request
      * @return mixed
      */
-    public function delCollection(UserCollectionRequests $request)
+    public function delCollection($id)
     {
-        // 检查模块类型
-        UserCollection::checkModularType($request->modular_type);
-        // 删除收藏
-        UserCollection::del($request);
+        UserCollection::del($id);
 
         return $this->success();
     }
@@ -51,26 +50,17 @@ class UserCollectionController extends BaseController
      */
     public function getCollection(UserCollectionRequests $request)
     {
-        if ($request->modular_type) { // 查询对应模块收藏
-
-            // 检查模块类型
-            UserCollection::checkModularType($request->modular_type);
-            // 查询收藏信息
-            $re = UserCollection::modularTypeCollectionInfo($request->modular_type);
-
-        } else { // 查询所有收藏
-
-            // 微信收藏
-            $re['weixin'] = UserCollection::modularTypeCollectionInfo('WEIXIN');
-            // 微博收藏
-            $re['weibo'] = UserCollection::modularTypeCollectionInfo('WEIBO');
-            // 视频收藏
-            $re['video'] = UserCollection::modularTypeCollectionInfo('VIDEO');
-            // 自媒体收藏
-            $re['selfmedia'] = UserCollection::modularTypeCollectionInfo('SELFMEDIA');
-            // 软文收藏
-            $re['softarticle'] = UserCollection::modularTypeCollectionInfo('SOFTARTICLE');
-
+        if ($request->modular_type) {
+            // 查询对应模块收藏
+            ModularData::checkModularType($request->modular_type); // 检查模块类型
+            $re = UserCollection::modularTypeCollectionInfo($request->modular_type);// 查询收藏信息
+        } else {
+            // 查询所有收藏
+            $re['weixin']      = UserCollection::modularTypeCollectionInfo('WEIXIN');      // 微信收藏
+            $re['weibo']       = UserCollection::modularTypeCollectionInfo('WEIBO');       // 微博收藏
+            $re['video']       = UserCollection::modularTypeCollectionInfo('VIDEO');       // 视频收藏
+            $re['selfmedia']   = UserCollection::modularTypeCollectionInfo('SELFMEDIA');   // 自媒体收藏
+            $re['softarticle'] = UserCollection::modularTypeCollectionInfo('SOFTARTICLE'); // 软文收藏
         }
 
         return $this->success($re);

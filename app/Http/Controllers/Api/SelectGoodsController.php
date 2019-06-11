@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\SelectGoods as SelectGoodsRequests;
-use App\Models\Selfmeida\GoodsSelfmeidaPrice;
+use App\Models\Selfmedia\GoodsSelfmediaPrice;
 use App\Models\Softarticle\GoodsSoftarticlePrice;
 use App\Models\Weixin\GoodsWeixin;
 use App\Models\Weixin\GoodsWeixinPrice;
@@ -84,13 +84,13 @@ class SelectGoodsController extends BaseController
     public function selectSelfmediaGoods(SelectGoodsRequests $request)
     {
         // 价格筛选
-        $idArr = GoodsSelfmeidaPrice::screenPrice($request);
+        $idArr = GoodsSelfmediaPrice::screenPrice($request);
 
         // 拼装条件并查询
         $data = GoodsSelfmedia::select($request, $idArr);
 
         // 插入价格信息
-        $re = GoodsSelfmeidaPrice::withPriceInfo($data);
+        $re = GoodsSelfmediaPrice::withPriceInfo($data);
 
         return $this->success($re);
     }

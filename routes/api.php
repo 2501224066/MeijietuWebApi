@@ -67,11 +67,13 @@ $api->group(['version' => 'v1'], function ($api) {
 
             // 商品收藏
             $api->post('collectionGoods', 'UserCollectionController@collectionGoods'); // 收藏商品
-            $api->post('delCollection', 'UserCollectionController@delCollection');     // 删除收藏
+            $api->post('delCollection/{id}', 'UserCollectionController@delCollection');     // 删除收藏
             $api->post('getCollection', 'UserCollectionController@getCollection');     // 获取收藏
 
             // 购物车
-            $api->post('joinShopcart', 'UserShopcartController@joinShopcart'); // 加入购物车
+            $api->post('joinShopcart', 'UserShopcartController@joinShopcart');    // 加入购物车
+            $api->post('shopcartDel/{id}', 'UserShopcartController@shopcartDel'); // 从购物车删除
+            $api->post('getShopcart', 'UserShopcartController@getShopcart');      // 购物车数据
         });
     });
 });

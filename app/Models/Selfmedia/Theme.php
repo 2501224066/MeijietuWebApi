@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\Theme whereThemeName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Selfmedia\Theme whereThemeStatus($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Selfmedia\Priceclassify[] $priceclassify
  */
 class Theme extends Model
 {
