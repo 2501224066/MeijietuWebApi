@@ -93,7 +93,7 @@ class GoodsSelfmedia extends Model
 
             // 添加商品
             $goods_id = self::insertGetId([
-                'goods_num'         => createGoodsNnm(),
+                'goods_num'         => createGoodsNnm('M'),
                 'uid'               => JWTAuth::user()->uid,
                 'goods_title'       => htmlspecialchars($data->goods_title),
                 'goods_title_about' => htmlspecialchars($data->goods_title_about),
@@ -108,8 +108,8 @@ class GoodsSelfmedia extends Model
                 'region_name'       => Region::whereRegionId($data->region_id)->value('region_name'),
                 'qq_ID'             => htmlspecialchars($data->qq_ID),
                 'remarks'           => htmlspecialchars($data->remarks),
-                'created_at'         => $now,
-                'updated_at'         => $now
+                'created_at'        => $now,
+                'updated_at'        => $now
             ]);
             if (!$goods_id)
                 throw new Exception('保存失败');
@@ -132,11 +132,13 @@ class GoodsSelfmedia extends Model
     }
 
     // 拼装条件并查询
-    public static function select($data,  $idArr)
+    public static function select($data, $idArr)
     {
-        $query = self::whereIn('goods_id', $idArr)
-            ->where('theme_id', $data->theme_id)
+        $query = self::whereThemeId($data->theme_id)
             ->where('status', self::STATUS_ON);
+
+        if ($idArr)
+            $query->whereIn('goods_id', $idArr);
 
         if ($data->pricelevel_min)
             $query->where('price', '>', $data->pricelevel_min);

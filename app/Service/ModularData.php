@@ -99,7 +99,6 @@ class ModularData extends Model
         return $object;
     }
 
-
     // 查询对应模块商品信息
     public static function goodsInfo($modularType, $parm, $attr)
     {
@@ -141,11 +140,11 @@ class ModularData extends Model
     }
 
     // 判断商品是否存在
-    public static function checkGoodsHas($data)
+    public static function checkGoodsHas($modular_type, $goods_id)
     {
         // 根据模块类型获取商品表对象
-        $table = ModularData::modularTypeToGetGoodsTableClass($data->modular_type);
-        $re    = $table->find($data->goods_id);
+        $table = ModularData::modularTypeToGetGoodsTableClass($modular_type);
+        $re    = $table->find($goods_id);
         if (!$re)
             throw new Exception('商品不存在');
 

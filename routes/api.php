@@ -32,6 +32,7 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('selectVideoGoods', 'SelectGoodsController@selectVideoGoods');             // 搜索视频商品
         $api->get('selectSelfmediaGoods', 'SelectGoodsController@selectSelfmediaGoods');     // 搜索自媒体商品
         $api->get('selectSoftarticleGoods', 'SelectGoodsController@selectSoftarticleGoods'); // 搜索软文商品
+        $api->get('oneGoodsInfo', 'SelectGoodsController@oneGoodsInfo');                     // 单个商品信息
 
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
@@ -66,14 +67,15 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('userGoods', 'SelectGoodsController@userGoods');
 
             // 商品收藏
-            $api->post('collectionGoods', 'UserCollectionController@collectionGoods'); // 收藏商品
-            $api->post('delCollection/{id}', 'UserCollectionController@delCollection');     // 删除收藏
-            $api->post('getCollection', 'UserCollectionController@getCollection');     // 获取收藏
+            $api->post('collectionGoods', 'UserCollectionController@collectionGoods');      // 收藏商品
+            $api->post('delCollection/{id_str}', 'UserCollectionController@delCollection'); // 删除收藏
+            $api->post('getCollection', 'UserCollectionController@getCollection');          // 获取收藏
 
             // 购物车
-            $api->post('joinShopcart', 'UserShopcartController@joinShopcart');    // 加入购物车
-            $api->post('shopcartDel/{id}', 'UserShopcartController@shopcartDel'); // 从购物车删除
-            $api->post('getShopcart', 'UserShopcartController@getShopcart');      // 购物车数据
+            $api->post('joinShopcart', 'UserShopcartController@joinShopcart');        // 加入购物车
+            $api->post('shopcartDel/{id_str}', 'UserShopcartController@shopcartDel'); // 从购物车删除
+            $api->post('getShopcart', 'UserShopcartController@getShopcart');          // 购物车数据
+            $api->post('shopcartChangePriceclassify', 'UserShopcartController@shopcartChangePriceclassify'); // 修改价格种类
         });
     });
 });

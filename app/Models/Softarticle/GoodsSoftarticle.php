@@ -113,7 +113,7 @@ class GoodsSoftarticle extends Model
 
             // 添加商品
             $goods_id = self::insertGetId([
-                'goods_num'          => createGoodsNnm(),
+                'goods_num'          => createGoodsNnm('A'),
                 'uid'                => JWTAuth::user()->uid,
                 'goods_title'        => htmlspecialchars($data->goods_title),
                 'goods_title_about'  => htmlspecialchars($data->goods_title_about),
@@ -162,15 +162,11 @@ class GoodsSoftarticle extends Model
     // 拼装条件并查询
     public static function select($data, $idArr)
     {
-        $query = self::whereIn('goods_id', $idArr)
-            ->where('theme_id', $data->theme_id)
+        $query = self::whereThemeId($data->theme_id)
             ->where('status', self::STATUS_ON);
 
-        if ($data->pricelevel_min)
-            $query->where('price', '>', $data->pricelevel_min);
-
-        if ($data->pricelevel_max)
-            $query->where('price', '<=', $data->pricelevel_max);
+        if ($idArr)
+            $query->whereIn('goods_id', $idArr);
 
         if ($data->filed_id)
             $query->where('filed_id', $data->filed_id);

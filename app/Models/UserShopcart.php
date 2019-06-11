@@ -66,6 +66,9 @@ class UserShopcart extends Model
         if ($truePrice != $data->price)
             throw new Exception('商品价格有误');
 
+        if ($data->price <= 0)
+            throw new Exception('商品此类别不出售');
+
         return true;
     }
 
@@ -88,11 +91,13 @@ class UserShopcart extends Model
     }
 
     // 删除
-    public static function del($id)
+    public static function del($idArr)
     {
-        $re = self::whereShopcartId($id)->delete();
-        if (!$re)
-            throw new Exception('操作失败');
+        foreach ($idArr as $id) {
+            $re = self::whereShopcartId($id)->delete();
+            if (!$re)
+                throw new Exception('操作失败');
+        }
 
         return true;
     }
@@ -101,12 +106,37 @@ class UserShopcart extends Model
     public static function withInfo($goods)
     {
         foreach ($goods as &$v) {
+            // 模块类型名称
             $v->modular_type_name = type('MODULAR_TYPE')[$v->modular_type];
-            $info = ModularData::modularTypeToGetGoodsTableClass($v->modular_type)::where('goods_id', $v->goods_id)->first();
-            if($info)
-                $v->info = $info;
+            // 商品信息
+            $info                 = ModularData::modularTypeToGetGoodsTableClass($v->modular_type)::where('goods_id', $v->goods_id)->first();
+            // 商品价格信息
+            $price_info           = ModularData::modularTypeToGetGoodsPriceTableClass($v->modular_type)::where('goods_id', $v->goods_id)->get();
+            if ($info) {
+                $v->goods_title = $info->goods_title;
+                $v->theme_name  = $info->theme_name;
+                $v->filed_name  = $info->filed_name;
+                $v->goods_num   = $info->goods_num;
+                $v->price_info  = $price_info;
+            }
         }
 
         return $goods;
+    }
+
+    public static function change($data)
+    {
+        $re = self::whereGoodsId($data->goods_id)
+            ->where('modular_type', $data->modular_type)
+            ->update([
+                'priceclassify_id'   => htmlspecialchars($data->priceclassify_id),
+                'priceclassify_name' => ModularData::modularTypeToGetPriceclassifyTableClass($data->modular_type)->where('priceclassify_id', $data->priceclassify_id)->value('priceclassify_name'),
+                'unit_price'         => htmlspecialchars($data->price),
+                'total_price'        => htmlspecialchars($data->price),
+            ]);
+        if (!$re)
+            throw new Exception('操作失败');
+
+        return true;
     }
 }

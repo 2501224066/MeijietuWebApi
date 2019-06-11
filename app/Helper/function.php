@@ -1,7 +1,8 @@
 <?php
 
 // 类型管理与调用
-function type($parm){
+function type($parm)
+{
     // 请求验证码类型
     $CODE_TYPE = [
         'checkPhone'         => '检查手机号',
@@ -30,7 +31,7 @@ function type($parm){
         'SOFTARTICLE' => '软文营销',
     ];
 
-    switch ($parm){
+    switch ($parm) {
         case "CODE_TYPE":
             $type = $CODE_TYPE;
             break;
@@ -48,7 +49,7 @@ function type($parm){
 }
 
 // 生存商品编号
-function createGoodsNnm()
+function createGoodsNnm($ma)
 {
-    return date('d'). strtoupper(uniqid()). date('Y').mt_rand(1000000, 9999999).date('m');
+    return date('d') . strtoupper(uniqid()) . date('Y') . mt_rand(1000000, 9999999) . $ma . date('m');
 }

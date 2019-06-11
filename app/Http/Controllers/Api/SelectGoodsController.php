@@ -137,4 +137,25 @@ class SelectGoodsController extends BaseController
 
         return $this->success($re);
     }
+
+    /**
+     * 单个商品信息
+     * @param SelectGoodsRequests $request
+     * @return mixed
+     */
+    public function oneGoodsInfo(SelectGoodsRequests $request)
+    {
+        // 检查模块类型
+        ModularData::checkModularType($request->modular_type);
+        // 检查商品是否存在
+        ModularData::checkGoodsHas($request->modular_type, $request->goods_id);
+        // 商品信息
+        $goods = ModularData::modularTypeToGetGoodsTableClass($request->modular_type)::where('goods_id', $request->goods_id)
+            ->first();
+        // 商品价格信息
+        $goods->price_info = ModularData::modularTypeToGetGoodsPriceTableClass($request->modular_type)::where('goods_id', $request->goods_id)
+            ->get();
+
+        return $this->success($goods);
+    }
 }

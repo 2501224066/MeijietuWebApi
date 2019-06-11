@@ -63,11 +63,13 @@ class UserCollection extends Model
     }
 
     // 删除收藏
-    public static function del($id)
+    public static function del($idArr)
     {
-        $re = self::whereCollectionId($id)->delete();
-        if (!$re)
-            throw new Exception('操作失败');
+        foreach ($idArr as $id) {
+            $re = self::whereCollectionId($id)->delete();
+            if (!$re)
+                throw new Exception('操作失败');
+        }
 
         return true;
     }
@@ -79,6 +81,7 @@ class UserCollection extends Model
         $goodsIdArr = UserCollection::whereUid($uid)
             ->where('modular_type',$modularType)
             ->pluck('goods_id');
+        // 查询对应模块商品信息
         $re = ModularData::goodsInfo($modularType, $goodsIdArr, 'goods_id_arr');
 
         return $re;

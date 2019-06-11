@@ -136,3 +136,5 @@
  1. 加入购物车 `joinShopcart`
  2. 从购物车删除 `ShopcartDel`
  3. 购物车数据 `getShopcart`
+ 4. 修改价格种类 `shopcartChangePriceclassify`
+ 5. 所有上传添加删除状态 `delete_status`

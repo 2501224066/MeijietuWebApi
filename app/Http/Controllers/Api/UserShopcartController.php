@@ -26,7 +26,7 @@ class UserShopcartController extends BaseController
         // 检查商品价格信息
         UserShopcart::checkGoodsPrice($request);
         // 判断商品是否存在
-        ModularData::checkGoodsHas($request);
+        ModularData::checkGoodsHas($request->modular_type, $request->goods_id);
         // 加入
         UserShopcart::add($request);
 
@@ -38,9 +38,10 @@ class UserShopcartController extends BaseController
      * @param UserShopcartRequests $request
      * @return mixed
      */
-    public function shopcartDel($id)
+    public function shopcartDel($idStr)
     {
-        UserShopcart::del($id);
+        $idArr = explode('-', trim($idStr));
+        UserShopcart::del($idArr);
 
         return $this->success();
     }
@@ -57,6 +58,19 @@ class UserShopcartController extends BaseController
         $re = UserShopcart::withInfo($goods);
 
         return $this->success($re);
+    }
+
+    /**
+     * 修改价格种类
+     */
+    public function shopcartChangePriceclassify(UserShopcartRequests $request)
+    {
+        // 检查商品价格信息
+        UserShopcart::checkGoodsPrice($request);
+        // 修改
+        UserShopcart::change($request);
+
+        return $this->success();
     }
 
 }

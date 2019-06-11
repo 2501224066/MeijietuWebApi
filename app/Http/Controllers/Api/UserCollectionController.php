@@ -24,7 +24,7 @@ class UserCollectionController extends BaseController
         // 判断商品是否已经收藏
         UserCollection::checkCollectionHas($request);
         // 判断商品是否存在
-        ModularData::checkGoodsHas($request);
+        ModularData::checkGoodsHas($request->modular_type, $request->goods_id);
         // 添加收藏
         UserCollection::add($request);
 
@@ -36,9 +36,10 @@ class UserCollectionController extends BaseController
      * @param UserCollectionRequests $request
      * @return mixed
      */
-    public function delCollection($id)
+    public function delCollection($idStr)
     {
-        UserCollection::del($id);
+        $idArr = explode('-', trim($idStr));
+        UserCollection::del($idArr);
 
         return $this->success();
     }
