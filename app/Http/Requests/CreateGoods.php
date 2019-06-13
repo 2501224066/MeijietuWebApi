@@ -32,7 +32,7 @@ class CreateGoods extends Base
                 $rules['region_id']         = 'required|numeric|exists:currency_region,region_id';
                 $rules['reserve_status']    = 'required|numeric';
                 $rules['qq_ID']             = 'required|numeric';
-                $rules['price_data']        = 'required';
+                $rules['price_data']        = 'required|json';
                 $rules['remarks']           = 'present';
                 break;
 
@@ -47,7 +47,7 @@ class CreateGoods extends Base
                 $rules['authtype_id']       = 'required|numeric|exists:weibo_authtype,authtype_id';
                 $rules['reserve_status']    = 'required|numeric';
                 $rules['qq_ID']             = 'required|numeric';
-                $rules['price_data']        = 'required';
+                $rules['price_data']        = 'required|json';
                 $rules['remarks']           = 'present';
                 break;
 
@@ -62,7 +62,7 @@ class CreateGoods extends Base
                 $rules['region_id']         = 'required|numeric|exists:currency_region,region_id';
                 $rules['platform_id']       = 'required|numeric|exists:video_platform,platform_id';
                 $rules['qq_ID']             = 'required|numeric';
-                $rules['price_data']        = 'required';
+                $rules['price_data']        = 'required|json';
                 $rules['remarks']           = 'present';
                 break;
 
@@ -77,7 +77,7 @@ class CreateGoods extends Base
                 $rules['region_id']         = 'required|numeric|exists:currency_region,region_id';
                 $rules['platform_id']       = 'required|numeric|exists:selfmedia_platform,platform_id';
                 $rules['qq_ID']             = 'required|numeric';
-                $rules['price_data']        = 'required';
+                $rules['price_data']        = 'required|json';
                 $rules['remarks']           = 'present';
                 break;
 
@@ -96,7 +96,7 @@ class CreateGoods extends Base
                 $rules['industry_id']       = 'required|numeric|exists:softarticle_industry,industry_id';
                 $rules['entryclassify_id']  = 'required|numeric|exists:softarticle_entryclassify,entryclassify_id';
                 $rules['qq_ID']             = 'required|numeric';
-                $rules['price_data']        = 'required';
+                $rules['price_data']        = 'required|json';
                 $rules['remarks']           = 'present';
                 break;
         }
@@ -133,6 +133,7 @@ class CreateGoods extends Base
             'qq_ID.numeric' => 'QQ号需为数字',
 
             'price_data.required' => '价格信息不得为空',
+            'price_data.json'     => '价格信息非JSON格式',
 
             'reserve_status.required' => '是否预约不得为空',
             'reserve_status.numeric'  => '是否预约需为数字',

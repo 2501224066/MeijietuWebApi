@@ -138,3 +138,4 @@
  3. 购物车数据 `getShopcart`
  4. 修改价格种类 `shopcartChangePriceclassify`
  5. 所有上传添加删除状态 `delete_status`
+ 6. 创建订单表 `indent_info`

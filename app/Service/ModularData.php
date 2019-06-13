@@ -14,7 +14,9 @@ use App\Models\Weibo\GoodsWeibo;
 use App\Models\Weibo\GoodsWeiboPrice;
 use App\Models\Weixin\GoodsWeixin;
 use App\Models\Weixin\GoodsWeixinPrice;
+use DemeterChain\C;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Mockery\Exception;
 
 /**
@@ -149,5 +151,15 @@ class ModularData extends Model
             throw new Exception('商品不存在');
 
         return true;
+    }
+
+    // 当天订单数
+    public static function todayIndentCount()
+    {
+        $name = 'INDENTCOUNT' . date('Ymd');
+        if (!Cache::has($name))
+            Cache::put($name, 1, 60 * 24);
+
+        return sprintf("%04d", Cache::get($name));
     }
 }

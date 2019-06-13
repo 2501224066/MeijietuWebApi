@@ -52,7 +52,7 @@ class Usalesman extends Model
         $init = self::whereStatus(1)->orderBy('salesman_id', 'ASC')->first()->salesman_id;
 
         // 位置不存在设置初始值
-        if ( ! Cache::has('salesman_tag')) {
+        if (!Cache::has('salesman_tag')) {
             Cache::put('salesman_tag', $init, 60);
             return $init;
         }
@@ -60,7 +60,7 @@ class Usalesman extends Model
         $id = self::whereStatus(1)->where('salesman_id', '>', Cache::get('salesman_tag'))->value('salesman_id');
 
         // 位置超出回归初始值
-        if ( ! $id) {
+        if (!$id) {
             Cache::put('salesman_tag', $init, 60);
             return $init;
         }
@@ -74,10 +74,17 @@ class Usalesman extends Model
     public static function info($salesman_id)
     {
         $re = self::whereSalesmanId($salesman_id)->first();
-        if( ! $re)
+        if (!$re)
             throw new Exception('未找到客服信息');
 
-        return $re;
+        return [
+            'salesman_id'            => $re->salesman_id,
+            'salesman_qq_ID'         => $re->salesman_qq_ID,
+            'salesman_weixin_ID'     => $re->salesman_weixin_ID,
+            'salesman_name'          => $re->salesman_name,
+            'salesman_head_portrait' => $re->salesman_head_portrait,
+            'status'                 => $re->status,
+        ];
     }
 
 }
