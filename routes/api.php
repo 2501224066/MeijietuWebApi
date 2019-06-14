@@ -19,12 +19,7 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('smsVerifCode', 'CaptchaController@smsVerifCode');     // 获取短信验证码
 
         // 商品属性
-        $api->get('weixinGoodsAttribute', 'GoodsAttributeController@weixinGoodsAttribute');           // 微信商品属性
-        $api->get('weiboGoodsAttribute', 'GoodsAttributeController@weiboGoodsAttribute');             // 微博商品属性
-        $api->get('videoGoodsAttribute', 'GoodsAttributeController@videoGoodsAttribute');             // 视频商品属性
-        $api->get('selfmediaGoodsAttribute', 'GoodsAttributeController@selfmediaGoodsAttribute');     // 自媒体商品属性
-        $api->get('softarticleGoodsAttribute', 'GoodsAttributeController@softarticleGoodsAttribute'); // 软文商品属性
-        $api->get('currencyGoodsAttribute', 'GoodsAttributeController@currencyGoodsAttribute');       // 公共商品属性
+        $api->get('getGoodsAttribute', 'GoodsAttributeController@getGoodsAttribute');
 
         // 搜索商品
         $api->get('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods');           // 搜索微信商品

@@ -14,6 +14,13 @@ use App\Models\Video\GoodsVideo;
 
 class CreateGoodsController extends BaseController
 {
+
+
+    public function createGoods()
+    {
+
+    }
+
     /**
      * 添加微信商品
      * @param CreateGoodsRequests $request
