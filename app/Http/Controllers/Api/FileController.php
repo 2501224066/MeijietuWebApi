@@ -3,6 +3,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cp\Product;
+use App\Models\Cp\Skyvalue;
 use App\Models\Log\LogUpload;
 use App\Service\File;
 use App\Http\Requests\File as FileRequest;
@@ -34,5 +36,4 @@ class FileController extends BaseController
 
         return $this->success(['path' =>  $path]);
     }
-
 }

@@ -26,9 +26,6 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('softarticleGoodsAttribute', 'GoodsAttributeController@softarticleGoodsAttribute'); // 软文商品属性
         $api->get('currencyGoodsAttribute', 'GoodsAttributeController@currencyGoodsAttribute');       // 公共商品属性
 
-        ////////// 获取产品素质
-        $api->get('getGoodsQuality','GoodsQualityController@getGoodsQuality');
-
         // 搜索商品
         $api->get('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods');           // 搜索微信商品
         $api->get('selectWeiboGoods', 'SelectGoodsController@selectWeiboGoods');             // 搜索微博商品
