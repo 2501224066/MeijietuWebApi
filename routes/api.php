@@ -18,8 +18,8 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('checkImgCode', 'CaptchaController@checkImgCode');     // 验证图形验证码
         $api->get('smsVerifCode', 'CaptchaController@smsVerifCode');     // 获取短信验证码
 
-        // 商品属性
-        $api->get('getGoodsAttribute', 'GoodsAttributeController@getGoodsAttribute');
+        // 获取商品属性
+        $api->get('getGoodsAttribute', 'GoodsController@getGoodsAttribute');
 
         // 搜索商品
         $api->get('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods');           // 搜索微信商品
@@ -48,18 +48,11 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('savePhone', 'UserInfoController@savePhone');                           // 修改手机号
             $api->post('savePass', 'UserInfoController@savePass');                             // 修改密码
 
-            // 文件处理
-            $api->post('uploadImg', 'FileController@uploadImg'); // 图片上传
+            // 图片上传
+            $api->post('uploadImg', 'FileController@uploadImg');
 
             // 创建商品
-            $api->post('createWeixinGoods', 'CreateGoodsController@createWeixinGoods');           // 创建微信商品
-            $api->post('createWeiboGoods', 'CreateGoodsController@createWeiboGoods');             // 创建微博商品
-            $api->post('createVideoGoods', 'CreateGoodsController@createVideoGoods');             // 创建视频商品
-            $api->post('createSelfmediaGoods', 'CreateGoodsController@createSelfmediaGoods');     // 创建自媒体商品
-            $api->post('createSoftarticleGoods', 'CreateGoodsController@createSoftarticleGoods'); // 创建软文商品
-
-            // 搜索用户创建的全部商品
-            $api->post('userGoods', 'SelectGoodsController@userGoods');
+            $api->post('createGoods', 'GoodsController@createGoods');
 
             // 商品收藏
             $api->post('collectionGoods', 'UserCollectionController@collectionGoods');      // 收藏商品

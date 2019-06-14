@@ -70,4 +70,10 @@ class Theme extends Model
     {
         return $this->belongsToMany(Pricelevel::class, "tb_theme_pricelevel", 'theme_id', 'pricelevel_id');
     }
+
+    // 权重等级
+    public function weightlevel() : BelongsToMany
+    {
+        return $this->belongsToMany(Weightlevel::class, "tb_theme_weightlevel", 'theme_id', 'weightlevel_id');
+    }
 }

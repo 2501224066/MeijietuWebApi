@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Tb\Modular;
 use Illuminate\Support\Facades\Cache;
 
-class GoodsAttributeController extends BaseController
+class GoodsController extends BaseController
 {
 
     public function getGoodsAttribute()
@@ -41,6 +41,9 @@ class GoodsAttributeController extends BaseController
             }])
             ->with(['theme.pricelevel' => function ($query) {
                 $query->orderBy('pricelevel_id', 'ASC');
+            }])
+            ->with(['theme.weightlevel' => function ($query) {
+                $query->orderBy('weightlevel_id', 'ASC');
             }])
             ->get();
 

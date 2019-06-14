@@ -3,7 +3,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\CreateGoods as CreateGoodsRequests;
+use App\Http\Requests\Goods as CreateGoodsRequests;
 use App\Jobs\getWeixinGongZhongHaoBasicData;
 use App\Models\Weixin\GoodsWeixin;
 use App\Models\Weixin\Theme;
