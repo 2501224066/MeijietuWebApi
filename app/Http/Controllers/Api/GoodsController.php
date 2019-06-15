@@ -3,12 +3,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Jobs\addWeiXinBasicsData;
+use App\Models\Nb\Goods;
 use App\Models\Tb\Modular;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\Goods as GoodsRequests;
 
 class GoodsController extends BaseController
 {
 
+    /**
+     * 获取商品属性
+     * @return mixed
+     */
     public function getGoodsAttribute()
     {
         /*if (Cache::has('goodsAttribute'))
@@ -50,5 +57,23 @@ class GoodsController extends BaseController
         //Cache::put('goodsAttribute', json_encode($re), 30);
 
         return $this->success($re);
+    }
+
+    /**
+     * 创建商品
+     * @param GoodsRequests $request
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function createGoods(GoodsRequests $request)
+    {
+        // 组装数组
+        $arr = Goods::assembleArr($request);
+        // 添加商品
+        $goodsId = Goods::add($arr, $request->price_json);
+        // 补充基础数据
+        Goods::addBasicsData($goodsId, $arr);
+
+        return $this->success();
     }
 }

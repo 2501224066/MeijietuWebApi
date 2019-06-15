@@ -30,24 +30,6 @@ function type($parm)
                 "head_portrait"    => '头像',
             ];
             break;
-
-        // 模块类型
-        case "MODULAR_TYPE":
-            $type = [
-                'WEIXIN'      => '微信营销',
-                'WEIBO'       => '微博营销',
-                'VIDEO'       => '视频营销',
-                'SELFMODEL'   => '自媒体营销',
-                'SOFTARTICLE' => '软文营销',
-            ];
-            break;
-
-        // 业务类型
-        case "BUSINESS_TYPE":
-            $type = [
-                'Market' => '10',
-            ];
-            break;
     }
 
     return $type;
@@ -55,12 +37,12 @@ function type($parm)
 
 /**
  * 生成商品编号
- * @param string $tag 标记(微信=X, 微博=B, 视频=V, 自媒体=M, 软文=A)
+ * @param string $abbreviation 业务简写
  * @return string
  */
-function createGoodsNnm($tag)
+function createGoodsNnm($abbreviation)
 {
-    return date('d') . strtoupper(uniqid()) . date('Y') . mt_rand(1000000, 9999999) . $tag . date('m');
+    return date('d') . strtoupper(uniqid()) . date('Y') . mt_rand(1000000, 9999999) . $abbreviation . date('m');
 }
 
 

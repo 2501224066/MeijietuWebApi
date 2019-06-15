@@ -6,47 +6,60 @@ $api->group(['version' => 'v1'], function ($api) {
     $api->group(['namespace' => '\App\Http\Controllers\Api'], function ($api) {
 
         // 注册登录
-        $api->post('checkPhone', 'AuthController@checkPhone'); // 检查手机号
-        $api->post('register', 'AuthController@register');     // 注册
-        $api->post('signIn', 'AuthController@signIn');         // 账密登录
-        $api->post('codeSignIn', 'AuthController@codeSignIn'); // 动态登录
-        $api->post('resetPass', 'AuthController@resetPass');   // 重置密码
+            // 检查手机号
+            $api->post('checkPhone', 'AuthController@checkPhone');
+            // 注册
+            $api->post('register', 'AuthController@register');
+            // 账密登录
+            $api->post('signIn', 'AuthController@signIn');
+            // 动态登录
+            $api->post('codeSignIn', 'AuthController@codeSignIn');
+            // 重置密码
+            $api->post('resetPass', 'AuthController@resetPass');
 
         // 验证码
-        $api->get('emailVerifCode', 'CaptchaController@emailVerifCode'); // 获取邮箱验证码
-        $api->get('getImgCode', 'CaptchaController@getImgCode');         // 获取图形验证码
-        $api->get('checkImgCode', 'CaptchaController@checkImgCode');     // 验证图形验证码
-        $api->get('smsVerifCode', 'CaptchaController@smsVerifCode');     // 获取短信验证码
+            // 获取邮箱验证码
+            $api->get('emailVerifCode', 'CaptchaController@emailVerifCode');
+            // 获取图形验证码
+            $api->get('getImgCode', 'CaptchaController@getImgCode');
+            // 验证图形验证码
+            $api->get('checkImgCode', 'CaptchaController@checkImgCode');
+            // 获取短信验证码
+            $api->get('smsVerifCode', 'CaptchaController@smsVerifCode');
 
         // 获取商品属性
         $api->get('getGoodsAttribute', 'GoodsController@getGoodsAttribute');
 
-        // 搜索商品
-        $api->get('selectWeixinGoods', 'SelectGoodsController@selectWeixinGoods');           // 搜索微信商品
-        $api->get('selectWeiboGoods', 'SelectGoodsController@selectWeiboGoods');             // 搜索微博商品
-        $api->get('selectVideoGoods', 'SelectGoodsController@selectVideoGoods');             // 搜索视频商品
-        $api->get('selectSelfmediaGoods', 'SelectGoodsController@selectSelfmediaGoods');     // 搜索自媒体商品
-        $api->get('selectSoftarticleGoods', 'SelectGoodsController@selectSoftarticleGoods'); // 搜索软文商品
-        $api->get('oneGoodsInfo', 'SelectGoodsController@oneGoodsInfo');                     // 单个商品信息
-
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
-            $api->post('refresh', 'AuthController@refresh'); // 刷新token
-            $api->post('signOut', 'AuthController@signOut'); // 退出登录
+            // 刷新token
+            $api->post('refresh', 'AuthController@refresh');
+            // 退出登录
+            $api->post('signOut', 'AuthController@signOut');
 
             // 客服
-            $api->post('usalsesmanInfo', 'UsalesmanController@usalsesmanInfo');                 // 用户专属客服信息
-            $api->post('distributionUsalsesman', 'UsalesmanController@distributionUsalsesman'); // 分配客服
+                // 用户专属客服信息
+                $api->post('usalsesmanInfo', 'UsalesmanController@usalsesmanInfo');
+                // 分配客服
+                $api->post('distributionUsalsesman', 'UsalesmanController@distributionUsalsesman');
 
             // 个人信息
-            $api->post('realnamePeople', 'UserInfoController@realnamePeople');                 // 个人实名认证
-            $api->post('realnamePeopleInfo', 'UserInfoController@realnamePeopleInfo');         // 获取个人实名认证信息
-            $api->post('realnameEnterprise', 'UserInfoController@realnameEnterprise');         // 企业实名认证
-            $api->post('realnameEnterpriseInfo', 'UserInfoController@realnameEnterpriseInfo'); // 获取企业实名认证信息
-            $api->post('me', 'AuthController@me');                                             // 获取用户信息
-            $api->post('saveInfo', 'UserInfoController@saveInfo');                             // 修改用户信息
-            $api->post('savePhone', 'UserInfoController@savePhone');                           // 修改手机号
-            $api->post('savePass', 'UserInfoController@savePass');                             // 修改密码
+                // 个人实名认证
+                $api->post('realnamePeople', 'UserInfoController@realnamePeople');
+                // 获取个人实名认证信息
+                $api->post('realnamePeopleInfo', 'UserInfoController@realnamePeopleInfo');
+                // 企业实名认证
+                $api->post('realnameEnterprise', 'UserInfoController@realnameEnterprise');
+                // 获取企业实名认证信息
+                $api->post('realnameEnterpriseInfo', 'UserInfoController@realnameEnterpriseInfo');
+                // 获取用户信息
+                $api->post('me', 'AuthController@me');
+                // 修改用户信息
+                $api->post('saveInfo', 'UserInfoController@saveInfo');
+                // 修改手机号
+                $api->post('savePhone', 'UserInfoController@savePhone');
+                // 修改密码
+                $api->post('savePass', 'UserInfoController@savePass');
 
             // 图片上传
             $api->post('uploadImg', 'FileController@uploadImg');
@@ -54,19 +67,6 @@ $api->group(['version' => 'v1'], function ($api) {
             // 创建商品
             $api->post('createGoods', 'GoodsController@createGoods');
 
-            // 商品收藏
-            $api->post('collectionGoods', 'UserCollectionController@collectionGoods');      // 收藏商品
-            $api->post('delCollection/{id_str}', 'UserCollectionController@delCollection'); // 删除收藏
-            $api->post('getCollection', 'UserCollectionController@getCollection');          // 获取收藏
-
-            // 购物车
-            $api->post('joinShopcart', 'UserShopcartController@joinShopcart');        // 加入购物车
-            $api->post('shopcartDel/{id_str}', 'UserShopcartController@shopcartDel'); // 从购物车删除
-            $api->post('getShopcart', 'UserShopcartController@getShopcart');          // 购物车数据
-            $api->post('shopcartChangePriceclassify', 'UserShopcartController@shopcartChangePriceclassify'); // 修改价格种类
-
-            // 订单
-            $api->post('createMarketIndent', 'IndentController@createMarketIndent'); // 生成营销订单
         });
     });
 });
