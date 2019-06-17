@@ -46,6 +46,7 @@ class Goods extends Base
 
                     case 'WEIBO':
                         $rules['link']           = 'required';
+                        $rules['auth_type']      = 'required|numeric';
                         $rules['reserve_status'] = 'required|numeric';
                         $rules['region_id']      = 'required|numeric|exists:tb_region,region_id';
                         break;
@@ -78,7 +79,12 @@ class Goods extends Base
                         $rules['pc_weightlevel_id']    = 'required|numeric|exists:tb_weightlevel,weightlevel_id';
                         break;
                 }
+                break;
 
+            // 搜索商品
+            case 'selectGoods':
+                $rules['modular_id'] = 'required|numeric|exists:tb_modular,modular_id';
+                $rules['theme_id']   = 'required|numeric|exists:tb_theme,theme_id';
                 break;
         }
 
@@ -123,7 +129,7 @@ class Goods extends Base
             'price_json.json'     => '价格信息非JSON格式',
 
             'numeric' => '参数格式错误',
-            'exists' => '参数不存在'
+            'exists'  => '参数不存在'
         ];
     }
 }

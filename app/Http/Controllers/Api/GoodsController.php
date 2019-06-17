@@ -3,7 +3,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Jobs\addWeiXinBasicsData;
 use App\Models\Nb\Goods;
 use App\Models\Tb\Modular;
 use Illuminate\Support\Facades\Cache;
@@ -75,5 +74,28 @@ class GoodsController extends BaseController
         Goods::addBasicsData($goodsId, $arr);
 
         return $this->success();
+    }
+
+    /**
+     * 个人所有商品
+     * @return mixed
+     */
+    public function goodsBelongToUser()
+    {
+        $re = Goods::getUserGoods();
+
+        return $this->success($re);
+    }
+
+    /**
+     * 搜索商品
+     * @param GoodsRequests $request
+     * @return mixed
+     */
+    public function selectGoods(GoodsRequests $request)
+    {
+        $re = Goods::getGoods($request);
+
+        return $this->success($re);
     }
 }

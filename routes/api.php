@@ -27,8 +27,11 @@ $api->group(['version' => 'v1'], function ($api) {
             // 获取短信验证码
             $api->get('smsVerifCode', 'CaptchaController@smsVerifCode');
 
-        // 获取商品属性
-        $api->get('getGoodsAttribute', 'GoodsController@getGoodsAttribute');
+        // 商品
+            // 获取商品属性
+            $api->get('getGoodsAttribute', 'GoodsController@getGoodsAttribute');
+            // 搜索商品
+            $api->get('selectGoods', 'GoodsController@selectGoods');
 
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
@@ -64,8 +67,13 @@ $api->group(['version' => 'v1'], function ($api) {
             // 图片上传
             $api->post('uploadImg', 'FileController@uploadImg');
 
-            // 创建商品
-            $api->post('createGoods', 'GoodsController@createGoods');
+            // 商品
+                // 创建商品
+                $api->post('createGoods', 'GoodsController@createGoods');
+                // 个人所有商品
+                $api->post('goodsBelongToUser', 'GoodsController@goodsBelongToUser');
+
+
 
         });
     });

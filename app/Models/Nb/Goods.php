@@ -14,6 +14,7 @@ use App\Models\Tb\Region;
 use App\Models\Tb\Theme;
 use App\Models\Tb\Weightlevel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -25,6 +26,18 @@ class Goods extends Model
     protected $primaryKey = 'goods_id';
 
     protected $guarded = [];
+
+    const STATUS = ['下架' => 0, '上架' => 1];
+
+    const VERIFY_STATUS = ['待审核' => 0, '未通过' => 1, '已通过' => 2];
+
+    const DELETE_STATUS = ['未删除' => 0, '已删除' => 1];
+
+    public function goods_price(): HasMany
+    {
+        return $this->hasMany(GoodsPrice::class, 'goods_id', 'goods_id');
+    }
+
 
     /**
      * 组装数组
@@ -66,6 +79,9 @@ class Goods extends Model
 
         if ($request->has('max_title_long'))
             $arr['max_title_long'] = htmlspecialchars($request->max_title_long);
+
+        if ($request->has('auth_type'))
+            $arr['auth_type'] = htmlspecialchars($request->auth_type);
 
         if ($request->has('news_source_status'))
             $arr['news_source_status'] = htmlspecialchars($request->news_source_status);
@@ -168,4 +184,75 @@ class Goods extends Model
 
         return true;
     }
+
+    // 获取用户商品
+    public static function getUserGoods()
+    {
+        return self::with('goods_price')
+            ->where('uid', JWTAuth::user()->uid)
+            ->where('delete_status', self::DELETE_STATUS['未删除'])
+            ->get();
+    }
+
+    // 获取商品
+    public static function getGoods($request)
+    {
+        $query = self::with('goods_price')
+            ->where('status', self::STATUS['上架'])
+            ->where('verify_status', self::VERIFY_STATUS['已通过'])
+            ->where('modular_id', $request->modular_id)
+            ->where('theme_id', $request->theme_id);
+
+        if ($request->has('key_word'))
+            $query->where('title', 'like', '%' . $request->key_word . '%')
+                ->orWhere('title_about', 'like', '%' . $request->key_word . '%');
+
+        if ($request->has('filed_id'))
+            $query->where('filed_id', $request->filed_id);
+
+        if ($request->has('platform_id'))
+            $query->where('platform_id', $request->platform_id);
+
+        if ($request->has('industry_id'))
+            $query->where('industry_id', $request->industry_id);
+
+        if ($request->has('region_id'))
+            $query->where('region_id', $request->region_id);
+
+        if ($request->has('priceclassify_id'))
+            $query->where('priceclassify_id', $request->priceclassify_id);
+
+        if ($request->has('fanslevel_min'))
+            $query->where('fans_num', '>=', $request->fanslevel_min);
+
+        if ($request->has('fanslevel_max'))
+            $query->where('fans_num_max', '<', $request->fanslevel_max);
+
+        if ($request->has('pricelevel_min'))
+            $query->where('price', '>=', $request->pricelevel_min);
+
+        if ($request->has('pricelevel_max'))
+            $query->where('price', '<', $request->pricelevel_max);
+
+        if ($request->has('readlevel_min'))
+            $query->where('avg_read_num', '>=', $request->readlevel_min);
+
+        if ($request->has('readlevel_max'))
+            $query->where('avg_read_num', '<', $request->readlevel_max);
+
+        if ($request->has('likelevel_min'))
+            $query->where('avg_like_num', '>=', $request->likelevel_min);
+
+        if ($request->has('likelevel_max'))
+            $query->where('avg_like_num', '<', $request->likelevel_max);
+
+        if ($request->has('weekend_status'))
+            $query->where('weekend_status', $request->weekend_status);
+
+        if ($request->has('included_sataus'))
+            $query->where('included_sataus', $request->included_sataus);
+
+        return $query->paginate();
+    }
+
 }
