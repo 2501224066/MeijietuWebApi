@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Nb\Goods;
 use App\Models\Nb\GoodsPrice;
-use App\Models\Nb\UserCollection;
 use App\Models\Tb\Modular;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
@@ -105,23 +104,5 @@ class GoodsController extends BaseController
         $re = Goods::getGoods($request, $whereInGoodsIdArr);
 
         return $this->success($re);
-    }
-
-    /**
-     * 收藏商品
-     * @param GoodsRequests $request
-     */
-    public function collectionGoods(GoodsRequests $request)
-    {
-        // 检查身份
-        User::checkIdentity(User::IDENTIDY['广告主']);
-        // 转换数据类型
-        $goodsIdArr = json_decode($request->goods_id_json, false);
-        // 转换结构
-        $arr = UserCollection::changeStruct($goodsIdArr);
-        // 添加收藏
-        UserCollection::add($arr);
-
-        $this->success();
     }
 }

@@ -70,6 +70,7 @@ class Goods extends Base
                         $rules['entry_status']         = 'required|numeric';
                         $rules['included_sataus']      = 'required|numeric';
                         $rules['link']                 = 'required';
+                        $rules['case_link']            = 'required';
                         $rules['link_type']            = 'required|numeric';
                         $rules['weekend_status']       = 'required|numeric';
                         $rules['platform_id']          = 'required|numeric|exists:tb_platform,platform_id';
@@ -85,11 +86,6 @@ class Goods extends Base
             case 'selectGoods':
                 $rules['modular_id'] = 'required|numeric|exists:tb_modular,modular_id';
                 $rules['theme_id']   = 'required|numeric|exists:tb_theme,theme_id';
-                break;
-
-            // 收藏商品
-            case 'collectionGoods':
-                $rules['goods_id_json']   = 'required|json';
                 break;
         }
 

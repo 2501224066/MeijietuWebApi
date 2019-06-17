@@ -179,6 +179,9 @@ class Goods extends Model
         if ($request->has('link'))
             $arr['link'] = htmlspecialchars($request->link);
 
+        if ($request->has('case_link'))
+            $arr['case_link'] = htmlspecialchars($request->case_link);
+
         if ($request->has('room_ID'))
             $arr['room_ID'] = htmlspecialchars($request->room_ID);
 

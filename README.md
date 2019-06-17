@@ -156,3 +156,8 @@
  1. `goodsBelongToUser` 个人所有商品
  2. `selectGoods` 搜索商品
  3. `collectionGoods` 收藏商品
+ 4. `getCollection` 获取收藏商品
+ 5. `delCollection` 删除收藏商品
+ 6. `joinShopcart` 加入购物车
+ 7. `getShopcart` 获取购物车商品
+ 8. `delShopcart`删除购物车商品
