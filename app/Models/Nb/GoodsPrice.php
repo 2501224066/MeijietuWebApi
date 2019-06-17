@@ -34,7 +34,7 @@ class GoodsPrice extends Model
     public static function screePrice($request)
     {
         if( ! $request->has('priceclassify_id'))
-            return [];
+            return false;
 
         if ($request->has('priceclassify_id'))
             $query = self::where('priceclassify_id', $request->priceclassify_id);

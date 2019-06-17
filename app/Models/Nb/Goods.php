@@ -309,8 +309,10 @@ class Goods extends Model
             ->where('status', self::STATUS['上架'])
             ->where('verify_status', self::VERIFY_STATUS['已通过'])
             ->where('modular_id', $request->modular_id)
-            ->where('theme_id', $request->theme_id)
-            ->whereIn('goods_id', $whereInGoodsIdArr);
+            ->where('theme_id', $request->theme_id);
+
+        if( $whereInGoodsIdArr)
+            $query->whereIn('goods_id', $whereInGoodsIdArr);
 
         if ($request->has('key_word'))
             $query->where('title', 'like', '%' . $request->key_word . '%')

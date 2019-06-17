@@ -88,6 +88,10 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('getShopcart', 'ShopcartController@getShopcart');
                 // 删除购物车商品
                 $api->post('delShopcart', 'ShopcartController@delShopcart');
+
+            // 订单
+                // 生成订单
+                $api->post('createIndent', 'IndentController@createIndent');
         });
     });
 });
