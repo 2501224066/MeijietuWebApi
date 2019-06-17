@@ -151,3 +151,8 @@
  1. 五个模块 创建商品统一接口
  2. 字段验证，api的队列请求
  3. 后台创建软文套餐
+ 
+ ## 2019/6/17
+ 1. `goodsBelongToUser` 个人所有商品
+ 2. `selectGoods` 搜索商品
+ 3. `collectionGoods` 收藏商品

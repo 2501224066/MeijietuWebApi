@@ -3,9 +3,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Usalesman;
+use App\Models\Usalesman\Usalesman;
+use App\Models\Usalesman\UserUsalesman;
 use App\Models\User;
-use App\Models\UserUsalesman;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UsalesmanController extends BaseController

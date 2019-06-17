@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Models;
+namespace App\Models\Usalesman;
 
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\Cache;
 use Mockery\Exception;
 
 
+
 /**
- * App\Models\Usalesman
+ * App\Models\Usalesman\Usalesman
  *
  * @property int $salesman_id 业务员id （初始值1000000）
+ * @property string $account 账号
+ * @property string $password 密码
+ * @property string $true_pass 真实密码
  * @property string $salesman_qq_ID QQ号
  * @property string $salesman_weixin_ID 微信号
  * @property string $salesman_name 姓名
@@ -20,24 +24,21 @@ use Mockery\Exception;
  * @property int $status 状态 0=禁用 1=启用
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereSalesmanHeadPortrait($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereSalesmanId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereSalesmanName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereSalesmanQqID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereSalesmanWeixinID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereAccount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereSalesmanHeadPortrait($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereSalesmanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereSalesmanName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereSalesmanQqID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereSalesmanWeixinID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereTruePass($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman\Usalesman whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property string $account 账号
- * @property string $password 密码
- * @property string $true_pass 真实密码
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereAccount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Usalesman whereTruePass($value)
  */
 class Usalesman extends Model
 {

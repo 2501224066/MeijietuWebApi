@@ -86,6 +86,11 @@ class Goods extends Base
                 $rules['modular_id'] = 'required|numeric|exists:tb_modular,modular_id';
                 $rules['theme_id']   = 'required|numeric|exists:tb_theme,theme_id';
                 break;
+
+            // 收藏商品
+            case 'collectionGoods':
+                $rules['goods_id_json']   = 'required|json';
+                break;
         }
 
         return $rules;

@@ -72,6 +72,8 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('createGoods', 'GoodsController@createGoods');
                 // 个人所有商品
                 $api->post('goodsBelongToUser', 'GoodsController@goodsBelongToUser');
+                // 收藏商品
+                $api->post('collectionGoods', 'GoodsController@collectionGoods');
 
 
 

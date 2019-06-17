@@ -7,6 +7,30 @@ namespace App\Models\Tb;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * App\Models\Tb\Theme
+ *
+ * @property int $theme_id
+ * @property string $theme_name
+ * @property string $theme_status
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Fansnumlevel[] $fansnumlevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Filed[] $filed
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Industry[] $industry
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Likelevel[] $likelevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Platform[] $platform
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Priceclassify[] $priceclassify
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Pricelevel[] $pricelevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Readlevel[] $readlevel
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Region[] $region
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tb\Weightlevel[] $weightlevel
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Theme newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Theme newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Theme query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Theme whereThemeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Theme whereThemeName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Theme whereThemeStatus($value)
+ * @mixin \Eloquent
+ */
 class Theme extends Model
 {
     protected $table = 'tb_theme';
