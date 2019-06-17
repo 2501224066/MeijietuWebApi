@@ -33,7 +33,7 @@ class Collection extends Model
 
     public $guarded = [];
 
-    public function goods() : HasOne
+    public function goods(): HasOne
     {
         return $this->hasOne(Goods::class, 'goods_id', 'goods_id');
     }
@@ -53,11 +53,10 @@ class Collection extends Model
     {
         $uid = JWTAuth::user()->uid;
         DB::transaction(function () use ($goodsIdArr, $uid) {
-            foreach ($goodsIdArr as $goodsId => $goodsPriceId) {
+            foreach ($goodsIdArr as $goodsId) {
                 $re = self::firstOrCreate([
                     'uid'      => $uid,
                     'goods_id' => $goodsId,
-                     'goods_price_id' => $goodsPriceId
                 ]);
                 if (!$re)
                     throw new Exception('保存失败');
@@ -80,11 +79,10 @@ class Collection extends Model
     public static function del($goodsIdArr)
     {
         $uid = JWTAuth::user()->uid;
-        foreach ($goodsIdArr as $goodsId => $goodsPriceId) {
+        foreach ($goodsIdArr as $goodsId) {
             self::whereUid($uid)
-            ->where( 'goods_id', $goodsId)
-                ->where( 'goods_price_id', $goodsPriceId)
-            ->delete();
+                ->where('goods_id', $goodsId)
+                ->delete();
         }
 
         return true;

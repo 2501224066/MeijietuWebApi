@@ -256,7 +256,7 @@ class Goods extends Model
                 throw new Exception('保存失败');
 
             // 插入商品价格
-            $priceArr = json_decode($priceJson, true);
+            $priceArr = json_decode($priceJson);
             foreach ($priceArr as $priceclassify_id => $price) {
                 $st = GoodsPrice::create([
                     'goods_id'           => $goodsId,

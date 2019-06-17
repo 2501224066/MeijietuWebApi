@@ -21,7 +21,7 @@ class CollectionController extends BaseController
         // 检查身份
         User::checkIdentity(User::IDENTIDY['广告主']);
         // 转换数据类型
-        $goodsIdArr = json_decode($request->goods_id_json, false);
+        $goodsIdArr = json_decode($request->goods_id_json);
         // 添加收藏
         Collection::add($goodsIdArr);
 
@@ -44,7 +44,7 @@ class CollectionController extends BaseController
     public function delCollection(GoodsRequests $request)
     {
         // 转换数据类型
-        $goodsIdArr = json_decode($request->goods_id_json, false);
+        $goodsIdArr = json_decode($request->goods_id_json);
         // 删除
         Collection::del($goodsIdArr);
 

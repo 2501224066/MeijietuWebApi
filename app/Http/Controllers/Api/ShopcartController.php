@@ -21,7 +21,7 @@ class ShopcartController extends BaseController
         // 检查身份
         User::checkIdentity(User::IDENTIDY['广告主']);
         // 转换数据类型
-        $goodsIdArr = json_decode($request->goods_id_json, false);
+        $goodsIdArr = json_decode($request->goods_id_json);
         // 添加收藏
         Shopcart::join($goodsIdArr);
 
@@ -45,7 +45,7 @@ class ShopcartController extends BaseController
     public function delShopcart(GoodsRequests $request)
     {
         // 转换数据类型
-        $goodsIdArr = json_decode($request->goods_id_json, false);
+        $goodsIdArr = json_decode($request->goods_id_json);
         // 删除
         Shopcart::del($goodsIdArr);
 
