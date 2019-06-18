@@ -48,23 +48,10 @@ function createGoodsNnm($abbreviation)
 
 /**
  * 生成订单编号
- * @param int $business 业务类型
  * @return string
  */
-function createIndentNnm($business)
+function createIndentNnm($key)
 {
-    $todayCount = \App\Service\ModularData::todayIndentCount(); // 当天订单数量
-    return type('BUSINESS_TYPE')[$business] . substr(date('Ymd'), 2) . (date('H') * 60 * 60 + date('i') * 60 + date('s')) . $todayCount;
+    $todayCount = \App\Models\Indent\IndentInfo::todayIndentCount($key); // 当天订单数量
+    return substr(date('Ymd'), 2) . (date('H') * 60 * 60 + date('i') * 60 + date('s')) . $todayCount;
 }
-
-
-/*use Illuminate\Support\Facades\Cache;
-// 当天订单数
-public static function todayIndentCount()
-{
-    $name = 'INDENTCOUNT' . date('Ymd');
-    if (!Cache::has($name))
-        Cache::put($name, 1, 60 * 24);
-
-    return sprintf("%04d", Cache::get($name));
-}*/

@@ -15,6 +15,7 @@ use App\Models\Tb\Theme;
 use App\Models\Tb\Weightlevel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -141,6 +142,11 @@ class Goods extends Model
     public function goods_price(): HasMany
     {
         return $this->hasMany(GoodsPrice::class, 'goods_id', 'goods_id');
+    }
+
+    public function one_goods_price(): HasOne
+    {
+        return $this->hasOne(GoodsPrice::class, 'goods_id', 'goods_id');
     }
 
 

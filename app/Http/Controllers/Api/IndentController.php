@@ -5,12 +5,24 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Requests\Indent as IndentRequests;
+use App\Models\Indent\IndentInfo;
 
 class IndentController extends BaseController
 {
-    public static function createIndent(IndentRequests $request)
+    /**
+     * 创建订单
+     * @param IndentRequests $request
+     * @return mixed
+     */
+    public function createIndent(IndentRequests $request)
     {
-        $info = json_decode($request->info);
-        dd($info);
+        // json转对象
+        $info = json_decode($request->info, true);
+        // 数据整理
+        $data = IndentInfo::dataSorting($info);
+        // 添加
+        IndentInfo::add($data);
+
+        return $this->success();
     }
 }

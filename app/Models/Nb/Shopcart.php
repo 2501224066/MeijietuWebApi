@@ -16,9 +16,14 @@ class Shopcart extends Model
 
     protected $guarded = [];
 
-    public function goods() : HasOne
+    public function goods(): HasOne
     {
         return $this->hasOne(Goods::class, 'goods_id', 'goods_id');
+    }
+
+    public function goods_price(): HasOne
+    {
+        return $this->hasOne(GoodsPrice::class, 'goods_price_id', 'goods_price_id');
     }
 
     //加入购物车
@@ -28,8 +33,8 @@ class Shopcart extends Model
         DB::transaction(function () use ($goodsIdArr, $uid) {
             foreach ($goodsIdArr as $goodsId => $goodsPriceId) {
                 $re = self::firstOrCreate([
-                    'uid'      => $uid,
-                    'goods_id' => $goodsId,
+                    'uid'            => $uid,
+                    'goods_id'       => $goodsId,
                     'goods_price_id' => $goodsPriceId
                 ]);
                 if (!$re)
@@ -44,7 +49,7 @@ class Shopcart extends Model
     public static function getShopcart()
     {
         $uid = JWTAuth::user()->uid;
-        return self::with('goods.goods_price')
+        return self::with(['goods','goods_price'])
             ->where('uid', $uid)
             ->get();
     }
@@ -55,8 +60,8 @@ class Shopcart extends Model
         $uid = JWTAuth::user()->uid;
         foreach ($goodsIdArr as $goodsId => $goodsPriceId) {
             self::whereUid($uid)
-                ->where( 'goods_id', $goodsId)
-                ->where( 'goods_price_id', $goodsPriceId)
+                ->where('goods_id', $goodsId)
+                ->where('goods_price_id', $goodsPriceId)
                 ->delete();
         }
 
