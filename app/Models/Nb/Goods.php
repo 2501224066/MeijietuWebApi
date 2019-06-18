@@ -169,7 +169,7 @@ class Goods extends Model
         $arr['theme_id']     = htmlspecialchars($request->theme_id);
         $arr['theme_name']   = Theme::whereThemeId($request->theme_id)->value('theme_name');
         $arr['filed_id']     = htmlspecialchars($request->filed_id);
-        $arr['filed_name']   = Filed::whereFiledId($request->filed_id)->value('filed_id');
+        $arr['filed_name']   = Filed::whereFiledId($request->filed_id)->value('filed_name');
         $arr['remarks']      = htmlspecialchars($request->remarks);
         $arr['created_at']   = $time;
         $arr['updated_at']   = $time;
