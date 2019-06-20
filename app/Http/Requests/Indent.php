@@ -4,6 +4,8 @@
 namespace App\Http\Requests;
 
 
+use App\Rules\SpecialChar;
+
 class Indent extends Base
 {
     /**
@@ -23,7 +25,7 @@ class Indent extends Base
         switch ($this->getFunName()) {
             // 创建订单
             case 'createIndent':
-                $rules['info'] = 'required|json';
+                $rules['info'] = ['required', new SpecialChar, 'json'];
                 break;
         }
 
@@ -34,7 +36,7 @@ class Indent extends Base
     {
         return [
             'required' => '参数不全',
-            'json' => '格式错误'
+            'json'     => '格式错误'
         ];
     }
 }

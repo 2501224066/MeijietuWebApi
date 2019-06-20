@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\Models\SystemSetting;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -22,16 +22,19 @@ class Pay
     // 公钥
     private static $publicKey = '-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDzELgJKj9SMGPXRYHO2rVjIsIlxNApZRxWJKQ3RQqaKaGs93v2owmeJVOsSbXCf7NLXED1+fEqY3xv4YWzYdAEOenGbS2iqbst7H/2FvJOrewMniwgdssiNRAi+eCmZlLiniWAjpAjw+Ai9MnsEHAxDap88QfJ533eycWS5xp45QIDAQAB-----ENDPUBLICKEY-----';
 
-
     /**
-     * 生成流水订单
+     * 生成流水单
      */
     // TODO...
 
+
     /**
-     * 连连请求参数
+     * 连连请求数据
+     * @param string $runwaterNum 流水单号
+     * @param float $money 充值金额
+     * @return array
      */
-    public static function requestData($uid, $no_order, $money)
+    public static function lianlianRequestData($runwaterNum, $money)
     {
         $data = [
             'version'      => '1.1', // 版本号
@@ -40,47 +43,51 @@ class Pay
             'timetamp'     => date('YmdHid'), // 时间戳
             'sign_type'    => 'RSA', // 签名方式
             'busi_partner' => '101001', // 商户业务类型
-            'no_order'     => $no_order, // 商户唯一订单
+            'no_order'     => $runwaterNum, // 商户唯一订单
             'dt_orcer'     => date('YmdHid'), // 商户订单时间
             'name_goods'   => '用户资金充值', // 商品名称
             'money_order'  => $money, // 交易金额
             'notify_url'   => env('APP_URL'), // 服务器异步通知 地址
             'url_return'   => env('PAY_URL_RETURN'), // 支付结束回显 url
             'userreq_ip'   => Request::getClientIp(), // 用户端申请IP
-            'valid_order'  => SystemSetting::whereSettingName('runwater_indent_life')->value('value') / 60, // 订单有效时间
             'risk_item'    => json_encode([ // 风险控制参数
                 'frms_ware_category '      => '1008', // 商品类目传1008
                 'goods_name'               => '用户资金充值', // 商品名称
                 'user_info_mercht_userno ' => JWTAuth::user()->uid, // 你们平台的用户id
                 'user_info_dt_register '   => date('YmdHis', strtotime(JWTAuth::user()->created_at)),  // 用户在你们平台的注册时间 格式例子：20180103115612
                 'user_info_bind_phone '    => JWTAuth::user()->phone,  // 用户在你们平台的注册手机号
-
             ]),
         ];
 
-        $data['sign'] = self::Rsasign($data, self::$priKey); // 签名
+        $data['sign'] = self::RSAsign($data, self::$priKey); // 签名
+
+        return $data;
     }
 
-    /**RSA签名
+    /**
+     * RSA签名
      * $data签名数据(需要先排序，然后拼接)
      * 签名用商户私钥，必须是没有经过pkcs8转换的私钥
      * 最后的签名，需要用base64编码
-     * return Sign签名
+     * @param $data
+     * @param $priKey
+     * @return string Sign签名
      */
-    protected static function Rsasign($data, $priKey)
+    protected static function RSAsign($data, $priKey)
     {
-        //转换为openssl密钥，必须是没有经过pkcs8转换的私钥
+        // 排序
+        ksort($data);
+        // 转换为openssl密钥，必须是没有经过pkcs8转换的私钥
         $res = openssl_get_privatekey($priKey);
-
-        //调用openssl内置签名方法，生成签名$sign
+        // 调用openssl内置签名方法，生成签名$sign
         openssl_sign($data, $sign, $res, OPENSSL_ALGO_MD5);
-
-        //释放资源
+        // 释放资源
         openssl_free_key($res);
-
-        //base64编码
+        // base64编码
         $sign = base64_encode($sign);
-        //file_put_contents("log.txt","签名原串:".$data."\n", FILE_APPEND);
+        // 日志记录
+        Log::info("签名原串:" . $data . "\n");
+
         return $sign;
     }
 

@@ -4,6 +4,8 @@
 namespace App\Http\Requests;
 
 
+use App\Rules\SpecialChar;
+
 class Collection
 {
     /**
@@ -23,12 +25,12 @@ class Collection
         switch ($this->getFunName()) {
             // 收藏商品
             case 'collectionGoods':
-                $rules['goods_id_json'] = 'required|json';
+                $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
                 break;
 
             // 删除收藏
             case 'delCollection':
-                $rules['goods_id_json'] = 'required|json';
+                $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
                 break;
         }
 
@@ -39,7 +41,7 @@ class Collection
     {
         return [
             'required' => '参数不全',
-            'json' => '格式错误'
+            'json'     => '格式错误'
         ];
     }
 }

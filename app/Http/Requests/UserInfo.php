@@ -4,6 +4,8 @@
 namespace App\Http\Requests;
 
 
+use App\Rules\SpecialChar;
+
 class UserInfo extends Base
 {
     /**
@@ -23,59 +25,59 @@ class UserInfo extends Base
         switch ($this->getFunName()) {
             // 个人实名认证
             case 'realnamePeople':
-                $rules['truename']           = 'required';
-                $rules['identity_card_ID']   = 'required';
-                $rules['identity_card_face'] = 'required';
-                $rules['identity_card_back'] = 'required';
-                $rules['bank_deposit']       = 'required';
-                $rules['bank_branch']        = 'required';
-                $rules['bank_prov']          = 'required';
-                $rules['bank_city']          = 'required';
-                $rules['bank_card']          = 'required';
-                $rules['bank_band_phone']    = ['required', 'numeric', 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
-                $rules['smsCode']            = 'required|numeric';
+                $rules['truename']           = ['required', new SpecialChar];
+                $rules['identity_card_ID']   = ['required', new SpecialChar];
+                $rules['identity_card_face'] = ['required', new SpecialChar];
+                $rules['identity_card_back'] = ['required', new SpecialChar];
+                $rules['bank_deposit']       = ['required', new SpecialChar];
+                $rules['bank_branch']        = ['required', new SpecialChar];
+                $rules['bank_prov']          = ['required', new SpecialChar];
+                $rules['bank_city']          = ['required', new SpecialChar];
+                $rules['bank_card']          = ['required', new SpecialChar];
+                $rules['bank_band_phone']    = ['required', new SpecialChar, 'numeric', 'regex:/^((13[0-9])', '(14[5,7])', '(15[0-3,5-9])', '(17[0,3,5-8])', '(18[0-9])', '166', '198', '199', '(147))\\d{8}$/'];
+                $rules['smsCode']            = ['required', new SpecialChar, 'numeric'];
                 break;
 
             // 企业实名认证
             case 'realnameEnterprise':
-                $rules['enterprise_name']    = 'required';
-                $rules['social_credit_code'] = 'required';
-                $rules['business_license']   = 'required';
-                $rules['bank_deposit']       = 'required';
-                $rules['bank_branch']        = 'required';
-                $rules['bank_prov']          = 'required';
-                $rules['bank_city']          = 'required';
-                $rules['bank_card']          = 'required';
-                $rules['bank_band_phone']    = ['required', 'numeric', 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
-                $rules['smsCode']            = 'required|numeric';
+                $rules['enterprise_name']    = ['required', new SpecialChar];
+                $rules['social_credit_code'] = ['required', new SpecialChar];
+                $rules['business_license']   = ['required', new SpecialChar];
+                $rules['bank_deposit']       = ['required', new SpecialChar];
+                $rules['bank_branch']        = ['required', new SpecialChar];
+                $rules['bank_prov']          = ['required', new SpecialChar];
+                $rules['bank_city']          = ['required', new SpecialChar];
+                $rules['bank_card']          = ['required', new SpecialChar];
+                $rules['bank_band_phone']    = ['required', new SpecialChar, 'numeric', 'regex:/^((13[0-9])', '(14[5,7])', '(15[0-3,5-9])', '(17[0,3,5-8])', '(18[0-9])', '166', '198', '199', '(147))\\d{8}$/'];
+                $rules['smsCode']            = ['required', new SpecialChar, 'numeric'];
                 break;
 
             // 修改用户信息
             case 'saveInfo':
-                $rules['head_portrait'] = 'present';
-                $rules['nickname']      = 'required';
-                $rules['sex']           = 'present';
-                $rules['birth']         = 'present';
-                $rules['qq_ID']         = 'present';
-                $rules['weixin_ID']     = 'present';
-                $rules['imgCode']       = 'required';
-                $rules['imgToken']      = 'required';
+                $rules['head_portrait'] = ['present', new SpecialChar];
+                $rules['nickname']      = ['required', new SpecialChar];
+                $rules['sex']           = ['present', new SpecialChar];
+                $rules['birth']         = ['present', new SpecialChar];
+                $rules['qq_ID']         = ['present', new SpecialChar];
+                $rules['weixin_ID']     = ['present', new SpecialChar];
+                $rules['imgCode']       = ['required', new SpecialChar];
+                $rules['imgToken']      = ['required', new SpecialChar];
                 break;
 
             // 修改手机号
             case 'savePhone':
-                $rules['phone']                  = ['required', 'numeric', 'exists:user,phone', 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
-                $rules['smsCode']                = 'required|numeric';
-                $rules['new_phone']              = ['required', 'confirmed', 'numeric', 'unique:user,phone', 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/'];
-                $rules['new_phone_confirmation'] = 'required';
+                $rules['phone']                  = ['required', new SpecialChar, 'numeric', 'exists:user,phone', 'regex:/^((13[0-9])', '(14[5,7])', '(15[0-3,5-9])', '(17[0,3,5-8])', '(18[0-9])', '166', '198', '199', '(147))\\d{8}$/'];
+                $rules['smsCode']                = ['required', new SpecialChar, 'numeric'];
+                $rules['new_phone']              = ['required', new SpecialChar, 'confirmed', 'numeric', 'unique:user,phone', 'regex:/^((13[0-9])', '(14[5,7])', '(15[0-3,5-9])', '(17[0,3,5-8])', '(18[0-9])', '166', '198', '199', '(147))\\d{8}$/'];
+                $rules['new_phone_confirmation'] = ['required', new SpecialChar];
                 break;
 
             // 修改密码
             case 'savePass':
-                $rules['password']              = 'required|between:6,18';
-                $rules['smsCode']               = 'required|numeric';
-                $rules['new_pass']              = 'required|between:6,18|confirmed';
-                $rules['new_pass_confirmation'] = 'required';
+                $rules['password']              = ['required', new SpecialChar, 'between:6,18'];
+                $rules['smsCode']               = ['required', new SpecialChar, 'numeric'];
+                $rules['new_pass']              = ['required', new SpecialChar, 'between:6,18', 'confirmed'];
+                $rules['new_pass_confirmation'] = ['required', new SpecialChar];
                 break;
         }
 

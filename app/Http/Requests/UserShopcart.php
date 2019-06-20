@@ -3,6 +3,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SpecialChar;
 
 class UserShopcart extends Base
 {
@@ -23,18 +24,18 @@ class UserShopcart extends Base
         switch ($this->getFunName()) {
             // 加入购物车
             case 'joinShopcart':
-                $rules['goods_id']         = 'required|numeric';
-                $rules['modular_type']     = 'required';
-                $rules['priceclassify_id'] = 'required|numeric';
-                $rules['price']            = 'required';
+                $rules['goods_id']         = ['required', new SpecialChar, 'numeric'];
+                $rules['modular_type']     = ['required', new SpecialChar];
+                $rules['priceclassify_id'] = ['required', new SpecialChar, 'numeric'];
+                $rules['price']            = ['required', new SpecialChar];
                 break;
 
             //修改价格种类
             case 'shopcartChangePriceclassify':
-                $rules['goods_id']         = 'required|numeric';
-                $rules['modular_type']     = 'required';
-                $rules['priceclassify_id'] = 'required|numeric';
-                $rules['price']            = 'required';
+                $rules['goods_id']         = ['required', new SpecialChar, 'numeric'];
+                $rules['modular_type']     = ['required', new SpecialChar];
+                $rules['priceclassify_id'] = ['required', new SpecialChar, 'numeric'];
+                $rules['price']            = ['required', new SpecialChar];
                 break;
         }
 

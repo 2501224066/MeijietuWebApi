@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 
 use App\Models\Tb\Modular;
 use Illuminate\Http\Request;
+use App\Rules\SpecialChar;
 
 class Goods extends Base
 {
@@ -26,66 +27,66 @@ class Goods extends Base
         switch ($this->getFunName()) {
             // 创建商品
             case 'createGoods':
-                $rules['title']       = 'required|unique:nb_goods,title';
-                $rules['title_about'] = 'required';
-                $rules['qq_ID']       = 'required|numeric';
-                $rules['modular_id']  = 'required|numeric|exists:tb_modular,modular_id';
-                $rules['theme_id']    = 'required|numeric|exists:tb_theme,theme_id';
-                $rules['filed_id']    = 'required|numeric|exists:tb_filed,filed_id';
-                $rules['remarks']     = 'present';
-                $rules['price_json']  = 'required|json';
+                $rules['title']       = ['required', new SpecialChar, 'unique:nb_goods,title'];
+                $rules['title_about'] = ['required', new SpecialChar];
+                $rules['qq_ID']       = ['required', 'numeric'];
+                $rules['modular_id']  = ['required', 'numeric', 'exists:tb_modular,modular_id'];
+                $rules['theme_id']    = ['required', 'numeric', 'exists:tb_theme,theme_id'];
+                $rules['filed_id']    = ['required', 'numeric', 'exists:tb_filed,filed_id'];
+                $rules['remarks']     = ['present'];
+                $rules['price_json']  = ['required', 'json'];
 
                 // 定义规则
                 switch (Modular::whereModularId(Request::input('modular_id'))->value('tag')) {
                     case 'WEIXIN':
-                        $rules['weixin_ID']      = 'required';
-                        $rules['fans_num']       = 'required|numeric';
-                        $rules['reserve_status'] = 'required';
-                        $rules['region_id']      = 'required|numeric|exists:tb_region,region_id';
+                        $rules['weixin_ID']      = ['required', new SpecialChar];
+                        $rules['fans_num']       = ['required', 'numeric'];
+                        $rules['reserve_status'] = ['required', new SpecialChar];
+                        $rules['region_id']      = ['required', 'numeric', 'exists:tb_region,region_id'];
                         break;
 
                     case 'WEIBO':
-                        $rules['link']           = 'required';
-                        $rules['auth_type']      = 'required|numeric';
-                        $rules['reserve_status'] = 'required|numeric';
-                        $rules['region_id']      = 'required|numeric|exists:tb_region,region_id';
+                        $rules['link']           = ['required', new SpecialChar];
+                        $rules['auth_type']      = ['required', new SpecialChar, 'numeric'];
+                        $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
+                        $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
                         break;
 
                     case 'VIDEO':
-                        $rules['room_ID']     = 'required';
-                        $rules['fans_num']    = 'required|numeric';
-                        $rules['platform_id'] = 'required|numeric|exists:tb_platform,platform_id';
-                        $rules['region_id']   = 'required|numeric|exists:tb_region,region_id';
+                        $rules['room_ID']     = ['required', new SpecialChar];
+                        $rules['fans_num']    = ['required', new SpecialChar, 'numeric'];
+                        $rules['platform_id'] = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
+                        $rules['region_id']   = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
                         break;
 
                     case 'SELFMEDIA':
-                        $rules['reserve_status'] = 'required|numeric';
-                        $rules['platform_id']    = 'required|numeric|exists:tb_platform,platform_id';
-                        $rules['region_id']      = 'required|numeric|exists:tb_region,region_id';
+                        $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
+                        $rules['platform_id']    = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
+                        $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
                         break;
 
                     case 'SOFTARTICLE':
-                        $rules['max_title_long']       = 'required|numeric';
-                        $rules['news_source_status']   = 'required|numeric';
-                        $rules['entry_status']         = 'required|numeric';
-                        $rules['included_sataus']      = 'required|numeric';
-                        $rules['link']                 = 'required';
-                        $rules['case_link']            = 'required';
-                        $rules['link_type']            = 'required|numeric';
-                        $rules['weekend_status']       = 'required|numeric';
-                        $rules['platform_id']          = 'required|numeric|exists:tb_platform,platform_id';
-                        $rules['industry_id']          = 'required|numeric|exists:tb_industry,industry_id';
-                        $rules['region_id']            = 'required|numeric|exists:tb_region,region_id';
-                        $rules['phone_weightlevel_id'] = 'required|numeric|exists:tb_weightlevel,weightlevel_id';
-                        $rules['pc_weightlevel_id']    = 'required|numeric|exists:tb_weightlevel,weightlevel_id';
+                        $rules['max_title_long']       = ['required', new SpecialChar, 'numeric'];
+                        $rules['news_source_status']   = ['required', new SpecialChar, 'numeric'];
+                        $rules['entry_status']         = ['required', new SpecialChar, 'numeric'];
+                        $rules['included_sataus']      = ['required', new SpecialChar, 'numeric'];
+                        $rules['link']                 = ['required', new SpecialChar];
+                        $rules['case_link']            = ['required', new SpecialChar];
+                        $rules['link_type']            = ['required', new SpecialChar, 'numeric'];
+                        $rules['weekend_status']       = ['required', new SpecialChar, 'numeric'];
+                        $rules['platform_id']          = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
+                        $rules['industry_id']          = ['required', new SpecialChar, 'numeric', 'exists:tb_industry,industry_id'];
+                        $rules['region_id']            = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
+                        $rules['phone_weightlevel_id'] = ['required', new SpecialChar, 'numeric', 'exists:tb_weightlevel,weightlevel_id'];
+                        $rules['pc_weightlevel_id']    = ['required', new SpecialChar, 'numeric', 'exists:tb_weightlevel,weightlevel_id'];
                         break;
                 }
                 break;
 
             // 搜索商品
             case 'selectGoods':
-                $rules['modular_id'] = 'required|numeric|exists:tb_modular,modular_id';
-                $rules['theme_id']   = 'required|numeric|exists:tb_theme,theme_id';
+                $rules['modular_id'] = ['required', new SpecialChar, 'numeric', 'exists:tb_modular,modular_id'];
+                $rules['theme_id']   = ['required', new SpecialChar, 'numeric', 'exists:tb_theme,theme_id'];
                 break;
         }
 

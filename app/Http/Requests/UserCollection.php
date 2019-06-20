@@ -4,6 +4,8 @@
 namespace App\Http\Requests;
 
 
+use App\Rules\SpecialChar;
+
 class UserCollection extends Base
 {
     /**
@@ -23,13 +25,13 @@ class UserCollection extends Base
         switch ($this->getFunName()) {
             // 收藏商品
             case 'collectionGoods':
-                $rules['goods_id']     = 'required|numeric';
-                $rules['modular_type'] = 'required';
+                $rules['goods_id']     = ['required', 'numeric', new SpecialChar];
+                $rules['modular_type'] = ['required', new SpecialChar];
                 break;
 
             // 获取收藏
             case 'getCollection':
-                $rules['modular_type'] = 'present';
+                $rules['modular_type'] = ['present', new SpecialChar];
                 break;
         }
 

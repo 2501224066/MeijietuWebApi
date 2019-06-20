@@ -55,3 +55,11 @@ function createIndentNnm($key)
     $todayCount = \App\Models\Indent\IndentInfo::todayIndentCount($key); // 当天订单数量
     return substr(date('Ymd'), 2) . (date('H') * 60 * 60 + date('i') * 60 + date('s')) . $todayCount;
 }
+
+/**
+ * 生成钱包修改校验锁
+ */
+function createWalletChangLock($uid, $avaiable_money, $created_at, $updated_at)
+{
+    return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money . $created_at . $updated_at);
+}

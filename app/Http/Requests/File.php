@@ -4,6 +4,8 @@
 namespace App\Http\Requests;
 
 
+use App\Rules\SpecialChar;
+
 class File extends Base
 {
     /**
@@ -23,8 +25,8 @@ class File extends Base
         switch ($this->getFunName()) {
             // 图片上传
             case 'uploadImg':
-                $rules['image']       = 'required';
-                $rules['upload_type'] = 'required';
+                $rules['image']       = ['required', new SpecialChar];
+                $rules['upload_type'] = ['required', new SpecialChar];
                 break;
         }
 

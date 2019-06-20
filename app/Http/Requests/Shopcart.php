@@ -4,6 +4,8 @@
 namespace App\Http\Requests;
 
 
+use App\Rules\SpecialChar;
+
 class Shopcart
 {
     /**
@@ -23,12 +25,12 @@ class Shopcart
         switch ($this->getFunName()) {
             // 加入购物车
             case 'joinShopcart':
-                $rules['goods_id_json'] = 'required|json';
+                $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
                 break;
 
             // 删除购物车商品
             case 'delShopcart':
-                $rules['goods_id_json'] = 'required|json';
+                $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
                 break;
         }
 
@@ -39,7 +41,7 @@ class Shopcart
     {
         return [
             'required' => '参数不全',
-            'json' => '格式错误'
+            'json'     => '格式错误'
         ];
     }
 }

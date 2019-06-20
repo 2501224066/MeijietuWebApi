@@ -96,6 +96,7 @@ $api->group(['version' => 'v1'], function ($api) {
             //连连三方
                 //Recharge
                 $api->post('recharge', 'PayController@recharge');
+
         });
     });
 });
