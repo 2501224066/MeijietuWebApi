@@ -25,7 +25,7 @@ class SpecialChar implements Rule
      */
     public function passes($attribute, $value)
     {
-        $pregs = '/select|insert|update|CR|document|LF|eval|delete|script|alert|\'|\/\*|\#|\--|\ --|\/|\*|\-|\+|\=|\~|\*@|\*!|\$|\%|\^|\&|\(|\)|\/|\/\/|\.\.\/|\.\/|union|into|load_file|outfile/';
+        $pregs = '/select|insert|update|CR|document|LF|eval|delete|script|alert|\"|\/\*|\#|\--|\ --|\/|\*|\-|\+|\=|\~|\*@|\*!|\$|\%|\^|\&|\(|\)|\/|\/\/|\.\.\/|\.\/|union|into|load_file|outfile/';
         return ! preg_match($pregs, $value);
     }
 
