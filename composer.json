@@ -21,7 +21,9 @@
         "mrgoon/aliyun-sms": "dev-master",
         "predis/predis": "^1.1",
         "rap2hpoutre/laravel-log-viewer": "^1.1",
-        "tymon/jwt-auth": "1.*@rc"
+        "tymon/jwt-auth": "1.*@rc",
+        "ext-json": "*",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

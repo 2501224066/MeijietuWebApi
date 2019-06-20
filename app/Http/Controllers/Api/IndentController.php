@@ -25,4 +25,9 @@ class IndentController extends BaseController
 
         return $this->success();
     }
+
+    /**
+     * 查询用户订单
+     * 订单有效期三天，过期订单加入删除队列
+     */
 }

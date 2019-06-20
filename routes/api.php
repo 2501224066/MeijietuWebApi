@@ -92,6 +92,10 @@ $api->group(['version' => 'v1'], function ($api) {
             // 订单
                 // 生成订单
                 $api->post('createIndent', 'IndentController@createIndent');
+
+            //连连三方
+                //Recharge
+                $api->post('recharge', 'PayController@recharge');
         });
     });
 });

@@ -6,6 +6,7 @@ namespace App\Models\Log;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Request;
 
 
 /**
@@ -50,7 +51,7 @@ class LogLogin extends Model
     public static function write($phone, $loginType)
     {
         $user = User::wherePhone($phone)->first();
-        $ip = \Request::getClientIp();
+        $ip = Request::getClientIp();
 
         $re = self::create([
             "uid" => $user->uid,
