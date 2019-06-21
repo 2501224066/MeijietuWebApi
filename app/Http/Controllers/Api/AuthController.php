@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Log\LogLogin;
+use App\Models\Up\Wallet;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
 use App\Models\Captcha;
@@ -14,7 +15,7 @@ class AuthController extends BaseController
     /**
      * Create a new AuthController instance.
      * 要求附带email和password（数据来源users表）
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -54,9 +55,11 @@ class AuthController extends BaseController
         $uid = User::add($request->phone, $request->email, $request->password, $request->nickname, $request->identity, $request->getClientIp());
         // 分配客服
         User::withUsalesman($uid);
+        // 生成钱包
+        Wallet::createWallet($uid);
 
         return $this->success();
-        
+
     }
 
     /**
@@ -71,12 +74,12 @@ class AuthController extends BaseController
         // 检查图形验证码
         Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
         // 验证账号密码
-        $user = User::checkPass($request->phone, $request->password);
+        $user  = User::checkPass($request->phone, $request->password);
         $token = JWTAuth::fromUser($user);
         // 修改登录log为成功状态
         LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);
 
-        return $this->respondWithToken($token,[
+        return $this->respondWithToken($token, [
             'nickname' => $user->nickname,
             'identity' => $user->identity
         ]);
@@ -93,12 +96,12 @@ class AuthController extends BaseController
         $logId = LogLogin::write($request->phone, 2);
         // 检查短信验证码
         Captcha::checkCode($request->smsCode, $request->phone, 'codeSignIn');
-        $user = User::wherePhone($request->phone)->first();
+        $user  = User::wherePhone($request->phone)->first();
         $token = JWTAuth::fromUser($user);
         // 修改登录log为成功状态
         LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);
 
-        return $this->respondWithToken($token,[
+        return $this->respondWithToken($token, [
             'nickname' => $user->nickname,
             'identity' => $user->identity
         ]);
@@ -114,7 +117,7 @@ class AuthController extends BaseController
         // 检查下一步令牌
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
         // 修改密码
-        User::savePass($request->phone, Hash::make($request->password) );
+        User::savePass($request->phone, Hash::make($request->password));
 
         return $this->success();
     }
@@ -128,14 +131,14 @@ class AuthController extends BaseController
     {
         $user = auth('api')->user();
         return $this->success([
-            "head_portrait" => $user->head_portrait,
-            "nickname" => $user->nickname,
-            "sex" =>$user->sex,
-            "email" => $user->email,
-            "phone" => $user->phone,
-            "birth" => $user->birth,
-            "qq_ID" => $user->qq_ID,
-            "weixin_ID" => $user->weixin_ID,
+            "head_portrait"   => $user->head_portrait,
+            "nickname"        => $user->nickname,
+            "sex"             => $user->sex,
+            "email"           => $user->email,
+            "phone"           => $user->phone,
+            "birth"           => $user->birth,
+            "qq_ID"           => $user->qq_ID,
+            "weixin_ID"       => $user->weixin_ID,
             "realname_status" => $user->realname_status
         ]);
     }
@@ -165,7 +168,7 @@ class AuthController extends BaseController
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -173,10 +176,10 @@ class AuthController extends BaseController
     {
         $JWTAuthResponse = [
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'token_type'   => 'bearer',
+            'expires_in'   => auth('api')->factory()->getTTL() * 60
         ];
 
-        return response()->json(array_merge($data, $JWTAuthResponse));       
+        return response()->json(array_merge($data, $JWTAuthResponse));
     }
 }

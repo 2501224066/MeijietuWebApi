@@ -30,11 +30,19 @@ class PayController extends BaseController
     }
 
     /**
-     *充值回调
+     * 充值回调
+     * @return false|string
      */
     public static function lianLianPayRechargeBack()
     {
+        // 接收数据
         $data = file_get_contents( "php://input");
-        $data = json_decode($data, true);
-    }
+        $data = json_decode($data);
+
+        // 回调操作
+        Pay::back($data);
+
+        // 返回连连响应参数
+        return  json_encode(["ret_code"=>"0000", "ret_msg"=>"交易成功" ]);
+}
 }

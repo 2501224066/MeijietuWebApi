@@ -99,6 +99,11 @@ $api->group(['version' => 'v1'], function ($api) {
                 // 充值回调
                 $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
 
+            //钱包
+                // 生成钱包
+                $api->post('createWallet', 'WalletController@createWallet');
+                // 钱包信息
+                $api->post('walletInfo', 'WalletController@walletInfo');
         });
     });
 });

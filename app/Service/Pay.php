@@ -3,8 +3,10 @@
 
 namespace App\Service;
 
+use App\Models\Up\Runwater;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
+use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Pay
@@ -21,6 +23,8 @@ class Pay
     // 公钥
     private static $publicKey = '-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDzELgJKj9SMGPXRYHO2rVjIsIlxNApZRxWJKQ3RQqaKaGs93v2owmeJVOsSbXCf7NLXED1+fEqY3xv4YWzYdAEOenGbS2iqbst7H/2FvJOrewMniwgdssiNRAi+eCmZlLiniWAjpAjw+Ai9MnsEHAxDap88QfJ533eycWS5xp45QIDAQAB-----ENDPUBLICKEY-----';
 
+    // 连连公钥
+    private static $lianLianPublicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSS/DiwdCf/aZsxxcacDnooGph3d2JOj5GXWi+q3gznZauZjkNP8SKl3J2liP0O6rU/Y/29+IUe+GTMhMOFJuZm1htAtKiu5ekW0GlBMWxf4FPkYlQkPE0FtaoMP3gYfh+OwI+fIRrpW3ySn3mScnc6Z700nU/VYrRkfcSCbSnRwIDAQAB';
 
     /**
      * 连连请求数据
@@ -80,11 +84,45 @@ class Pay
         // base64编码
         $sign = base64_encode($sign);
         // 日志记录
-        Log::info("签名原串:" . $data . "\n");
+        Log::info("签名原串:" . json_encode($data) . "\n");
 
         return $sign;
     }
 
+    /**
+     * 回调操作
+     */
+    public static function back($data)
+    {
+        $sign = $data['sign'];
+        unset($data['sign']);
+
+        // 检测是否为重复回调
+        $count = Runwater::checkMoreBack($data['callback_oid_paybill']);
+        if($count){
+            Log::info('捕捉到重复回调:' . json_encode($data) . "\n");
+            return true;
+        }
+
+        // 验参
+        $re = self::RSAverify($data, $sign);
+        if (!$re) {
+            Log::info('连连回调RSA验签失败:' . json_encode($data) . "\n");
+            throw new Exception('连连回调RSA验签失败');
+        }
+
+        // 金额比对
+        $money = Runwater::whereRunwaterNum($data['no_order'])->value('money');
+        if ($money != $data['money_order']) {
+            Runwater::backAbnormal($data); // 记录流水异常
+            throw new Exception('回调金额异常');
+        }
+
+        // 记录流水并修改用户资金
+        Runwater::backSucc($data);
+
+        return true;
+    }
 
     /**
      * RSA验签
@@ -93,19 +131,16 @@ class Pay
      * 验签用连连支付公钥
      * return 验签是否通过 bool值
      */
-    function Rsaverify($data, $sign)  {
-        //读取连连支付公钥文件
-        $pubKey = file_get_contents('key/llpay_public_key.pem');
-
+    public static function RSAverify($data, $sign)
+    {
+        // 排序
+        ksort($data);
         //转换为openssl格式密钥
-        $res = openssl_get_publickey($pubKey);
-
+        $res = openssl_get_publickey(self::$lianLianPublicKey);
         //调用openssl内置方法验签，返回bool值
-        $result = (bool)openssl_verify($data, base64_decode($sign), $res,OPENSSL_ALGO_MD5);
-
+        $result = (bool)openssl_verify($data, base64_decode($sign), $res, OPENSSL_ALGO_MD5);
         //释放资源
         openssl_free_key($res);
-
         //返回资源是否成功
         return $result;
     }
