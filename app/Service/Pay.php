@@ -94,6 +94,8 @@ class Pay
      */
     public static function back($data)
     {
+        Log::info('连连回调:' . json_encode($data) . "\n");
+
         $sign = $data['sign'];
         unset($data['sign']);
 
