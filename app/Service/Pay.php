@@ -56,7 +56,7 @@ class Pay
             'sign_type'    => 'RSA', // 签名方式
             'busi_partner' => '101001', // 商户业务类型
             'no_order'     => $runwaterNum, // 商户唯一订单
-            'dt_orcer'     => date('YmdHid'), // 商户订单时间
+            'dt_order'     => date('YmdHid'), // 商户订单时间
             'name_goods'   => '用户资金充值', // 商品名称
             'money_order'  => $money, // 交易金额
             'notify_url'   => env('PAY_NOTIFY_URL'), // 服务器异步通知 地址
