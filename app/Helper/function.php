@@ -45,6 +45,14 @@ function createGoodsNnm($abbreviation)
     return date('d') . strtoupper(uniqid()) . date('Y') . mt_rand(1000000, 9999999) . $abbreviation . date('m');
 }
 
+// 当天单数
+function todayCount($key)
+{
+    if (!Cache::has($key))
+        Cache::put($key, 1, 60 * 24);
+
+    return sprintf("%04d", Cache::get($key));
+}
 
 /**
  * 生成订单编号
@@ -52,8 +60,17 @@ function createGoodsNnm($abbreviation)
  */
 function createIndentNnm($key)
 {
-    $todayCount = \App\Models\Indent\IndentInfo::todayIndentCount($key); // 当天订单数量
+    $todayCount = todayCount($key); // 当天单数
     return substr(date('Ymd'), 2) . (date('H') * 60 * 60 + date('i') * 60 + date('s')) . $todayCount;
+}
+
+/**
+ * 生成流水单号
+ */
+function createRunwaterNum($key)
+{
+    $todayCount = todayCount($key); // 当天单数
+    return date('YmdHis') . mt_rand(1000,9999). $todayCount;
 }
 
 /**

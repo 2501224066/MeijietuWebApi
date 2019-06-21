@@ -106,25 +106,9 @@ class IndentInfo extends Model
             }
 
             // 订单数自增
-            self::IndentCountAdd($key);
+            Cache::increment($key);
         });
 
-        return true;
-    }
-
-    // 当天订单数
-    public static function todayIndentCount($key)
-    {
-        if (!Cache::has($key))
-            Cache::put($key, 1, 60 * 24);
-
-        return sprintf("%04d", Cache::get($key));
-    }
-
-    // 订单数自增
-    public static function IndentCountAdd($key)
-    {
-        Cache::increment($key);
         return true;
     }
 }

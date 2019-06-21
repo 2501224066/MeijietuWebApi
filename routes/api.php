@@ -94,8 +94,10 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('createIndent', 'IndentController@createIndent');
 
             //连连三方
-                //Recharge
+                //充值
                 $api->post('recharge', 'PayController@recharge');
+                // 充值回调
+                $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
 
         });
     });

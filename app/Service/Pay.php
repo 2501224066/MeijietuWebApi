@@ -3,7 +3,6 @@
 
 namespace App\Service;
 
-
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -21,11 +20,6 @@ class Pay
 
     // 公钥
     private static $publicKey = '-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDzELgJKj9SMGPXRYHO2rVjIsIlxNApZRxWJKQ3RQqaKaGs93v2owmeJVOsSbXCf7NLXED1+fEqY3xv4YWzYdAEOenGbS2iqbst7H/2FvJOrewMniwgdssiNRAi+eCmZlLiniWAjpAjw+Ai9MnsEHAxDap88QfJ533eycWS5xp45QIDAQAB-----ENDPUBLICKEY-----';
-
-    /**
-     * 生成流水单
-     */
-    // TODO...
 
 
     /**
@@ -47,7 +41,7 @@ class Pay
             'dt_orcer'     => date('YmdHid'), // 商户订单时间
             'name_goods'   => '用户资金充值', // 商品名称
             'money_order'  => $money, // 交易金额
-            'notify_url'   => env('APP_URL'), // 服务器异步通知 地址
+            'notify_url'   => env('PAY_NOTIFY_URL'), // 服务器异步通知 地址
             'url_return'   => env('PAY_URL_RETURN'), // 支付结束回显 url
             'userreq_ip'   => Request::getClientIp(), // 用户端申请IP
             'risk_item'    => json_encode([ // 风险控制参数
@@ -91,4 +85,28 @@ class Pay
         return $sign;
     }
 
+
+    /**
+     * RSA验签
+     * $data待签名数据(需要先排序，然后拼接)
+     * $sign需要验签的签名,需要base64_decode解码
+     * 验签用连连支付公钥
+     * return 验签是否通过 bool值
+     */
+    function Rsaverify($data, $sign)  {
+        //读取连连支付公钥文件
+        $pubKey = file_get_contents('key/llpay_public_key.pem');
+
+        //转换为openssl格式密钥
+        $res = openssl_get_publickey($pubKey);
+
+        //调用openssl内置方法验签，返回bool值
+        $result = (bool)openssl_verify($data, base64_decode($sign), $res,OPENSSL_ALGO_MD5);
+
+        //释放资源
+        openssl_free_key($res);
+
+        //返回资源是否成功
+        return $result;
+    }
 }
