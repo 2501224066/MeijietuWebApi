@@ -19,7 +19,6 @@ class PayController extends BaseController
     {
         // 生成流水单
         $runwaterNum = Runwater::createRunwater($request->money);
-
         // 组合请求连连数据
         $data = Pay::lianlianRequestData($runwaterNum, htmlspecialchars($request->money));
 

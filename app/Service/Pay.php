@@ -18,7 +18,21 @@ class Pay
     private static $phone = '3044889256';
 
     // 私钥
-    private static $priKey = '-----BEGINRSAPRIVATEKEY-----MIICXAIBAAKBgQDzELgJKj9SMGPXRYHO2rVjIsIlxNApZRxWJKQ3RQqaKaGs93v2owmeJVOsSbXCf7NLXED1+fEqY3xv4YWzYdAEOenGbS2iqbst7H/2FvJOrewMniwgdssiNRAi+eCmZlLiniWAjpAjw+Ai9MnsEHAxDap88QfJ533eycWS5xp45QIDAQABAoGAN2jsS0qSPM5DNGPn/5vkFcFquOlw+r7OAuU/ekoG7LXo4WFZpRPtsVuZA4GaKciqutdBB9H+pEchqu+iZw45OQuqzzN2G+f6w1aJf2N7xqTlAnZIdJvJvkmH/cYkw3T87vRG5g95bqxMYDpez3JBbPJiZ1e6dpQhL/7UgJg0wNECQQD95/y7QXqYAhI1l/pxQ4xVH7S6aS0kULALnCeUQWycmDFH4YKiyqGiZ295V+Q7jjo8TdJbI5AJS0/c7jFDuHaDAkEA9RHYh4qzyccruxKmo8cfjQhCT7tchzblzYAxtpgAY6pP/P5iBLqkXxsiRAMrP7kPFaPIOicmodEo3hi17ml2dwJBAPplaTlmRrdX+4s8+O/wNJnSLdJUXP9eT27zrZiouKrp8Fe6DrHqcWKO7UFWqy8MgWPtP1FADhEMY5M2mAD4Dm8CQHtocys+E28mlsTrjXKn0SGJ6SqRZPTKFkq3pVEXlgqaNxFlYCKVgjRKS6UIG31JSWlSQn/WO0P9OaEtvF/ER90CQBdvkeSXkWFNTniAiUAh73lA/DHN4O2rbiSeFIQsqBBrNOnSK5Mz6V98dL5m8LGOKv0DVbvTdAjFhrlzXuVO5AE=-----ENDRSAPRIVATEKEY-----';
+    private static $priKey = '-----BEGIN RSA PRIVATE KEY-----' . "\n" .
+    'MIICXAIBAAKBgQDzELgJKj9SMGPXRYHO2rVjIsIlxNApZRxWJKQ3RQqaKaGs93v2' . "\n" .
+    'owmeJVOsSbXCf7NLXED1+fEqY3xv4YWzYdAEOenGbS2iqbst7H/2FvJOrewMniwg' . "\n" .
+    'dssiNRAi+eCmZlLiniWAjpAjw+Ai9MnsEHAxDap88QfJ533eycWS5xp45QIDAQAB' . "\n" .
+    'AoGAN2jsS0qSPM5DNGPn/5vkFcFquOlw+r7OAuU/ekoG7LXo4WFZpRPtsVuZA4Ga' . "\n" .
+    'KciqutdBB9H+pEchqu+iZw45OQuqzzN2G+f6w1aJf2N7xqTlAnZIdJvJvkmH/cYk' . "\n" .
+    'w3T87vRG5g95bqxMYDpez3JBbPJiZ1e6dpQhL/7UgJg0wNECQQD95/y7QXqYAhI1' . "\n" .
+    'l/pxQ4xVH7S6aS0kULALnCeUQWycmDFH4YKiyqGiZ295V+Q7jjo8TdJbI5AJS0/c' . "\n" .
+    '7jFDuHaDAkEA9RHYh4qzyccruxKmo8cfjQhCT7tchzblzYAxtpgAY6pP/P5iBLqk' . "\n" .
+    'XxsiRAMrP7kPFaPIOicmodEo3hi17ml2dwJBAPplaTlmRrdX+4s8+O/wNJnSLdJU' . "\n" .
+    'XP9eT27zrZiouKrp8Fe6DrHqcWKO7UFWqy8MgWPtP1FADhEMY5M2mAD4Dm8CQHto' . "\n" .
+    'cys+E28mlsTrjXKn0SGJ6SqRZPTKFkq3pVEXlgqaNxFlYCKVgjRKS6UIG31JSWlS' . "\n" .
+    'Qn/WO0P9OaEtvF/ER90CQBdvkeSXkWFNTniAiUAh73lA/DHN4O2rbiSeFIQsqBBr' . "\n" .
+    'NOnSK5Mz6V98dL5m8LGOKv0DVbvTdAjFhrlzXuVO5AE=' . "\n" .
+    '-----END RSA PRIVATE KEY-----';
 
     // 公钥
     private static $publicKey = '-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDzELgJKj9SMGPXRYHO2rVjIsIlxNApZRxWJKQ3RQqaKaGs93v2owmeJVOsSbXCf7NLXED1+fEqY3xv4YWzYdAEOenGbS2iqbst7H/2FvJOrewMniwgdssiNRAi+eCmZlLiniWAjpAjw+Ai9MnsEHAxDap88QfJ533eycWS5xp45QIDAQAB-----ENDPUBLICKEY-----';
@@ -63,33 +77,6 @@ class Pay
     }
 
     /**
-     * RSA签名
-     * $data签名数据(需要先排序，然后拼接)
-     * 签名用商户私钥，必须是没有经过pkcs8转换的私钥
-     * 最后的签名，需要用base64编码
-     * @param $data
-     * @param $priKey
-     * @return string Sign签名
-     */
-    protected static function RSAsign($data, $priKey)
-    {
-        // 排序
-        ksort($data);
-        // 转换为openssl密钥，必须是没有经过pkcs8转换的私钥
-        $res = openssl_get_privatekey($priKey);
-        // 调用openssl内置签名方法，生成签名$sign
-        openssl_sign($data, $sign, $res, OPENSSL_ALGO_MD5);
-        // 释放资源
-        openssl_free_key($res);
-        // base64编码
-        $sign = base64_encode($sign);
-        // 日志记录
-        Log::info("签名原串:" . json_encode($data) . "\n");
-
-        return $sign;
-    }
-
-    /**
      * 回调操作
      */
     public static function back($data)
@@ -101,7 +88,7 @@ class Pay
 
         // 检测是否为重复回调
         $count = Runwater::checkMoreBack($data['callback_oid_paybill']);
-        if($count){
+        if ($count) {
             Log::info('捕捉到重复回调:' . json_encode($data) . "\n");
             return true;
         }
@@ -127,6 +114,33 @@ class Pay
     }
 
     /**
+     * RSA签名
+     * $data签名数据(需要先排序，然后拼接)
+     * 签名用商户私钥，必须是没有经过pkcs8转换的私钥
+     * 最后的签名，需要用base64编码
+     * @param $data
+     * @param $priKey
+     * @return string Sign签名
+     */
+    protected static function RSAsign($data, $priKey)
+    {
+        // 排序
+        ksort($data);
+        // 转换为openssl密钥，必须是没有经过pkcs8转换的私钥
+        $res = openssl_get_privatekey($priKey);
+        // 调用openssl内置签名方法，生成签名$sign
+        openssl_sign(self::KVstring($data), $sign, $res, OPENSSL_ALGO_MD5);
+        // 释放资源
+        openssl_free_key($res);
+        // base64编码
+        $sign = base64_encode($sign);
+        // 日志记录
+        Log::info("签名原串:" . json_encode($data) . "\n");
+
+        return $sign;
+    }
+
+    /**
      * RSA验签
      * $data待签名数据(需要先排序，然后拼接)
      * $sign需要验签的签名,需要base64_decode解码
@@ -140,10 +154,23 @@ class Pay
         //转换为openssl格式密钥
         $res = openssl_get_publickey(self::$lianLianPublicKey);
         //调用openssl内置方法验签，返回bool值
-        $result = (bool)openssl_verify($data, base64_decode($sign), $res, OPENSSL_ALGO_MD5);
+        $result = (bool)openssl_verify(self::KVstring($data), base64_decode($sign), $res, OPENSSL_ALGO_MD5);
         //释放资源
         openssl_free_key($res);
         //返回资源是否成功
         return $result;
+    }
+
+    /**
+     * 将已有json数组中的参数按照key_1=value_1&key_2=value2的形式进行排列
+     */
+    public static function KVstring($data)
+    {
+        $str = '';
+        foreach ($data as $k => $v) {
+            $str .= $k . '=' . $v . '&';
+        }
+
+        return trim('&', $str);
     }
 }
