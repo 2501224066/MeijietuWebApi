@@ -52,7 +52,7 @@ class Pay
             'version'      => '1.1', // 版本号
             'oid_partner'  => self::$oid_partner, // 用户所属商户号
             'user_id'      => JWTAuth::user()->uid, // 用户名
-            'timetamp'     => date('YmdHid'), // 时间戳
+            'timestamp'     => date('YmdHid'), // 时间戳
             'sign_type'    => 'RSA', // 签名方式
             'busi_partner' => '101001', // 商户业务类型
             'no_order'     => $runwaterNum, // 商户唯一订单
