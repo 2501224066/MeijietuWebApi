@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Usalesman\Usalesman;
 use App\Models\Usalesman\UserUsalesman;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -111,7 +112,7 @@ class User extends Authenticatable implements JWTSubject
         // 检查用户是否已经分配客服
         self::checkUserHasUsalesman($uid);
         // 获取客服
-        $salesman_id = UserUsalesman::getSalesmanId($uid);
+        $salesman_id = Usalesman::getSalesman();
         // 将客服id与用户id存入它们的关联表
         $re = UserUsalesman::create([
             'uid'         => $uid,
