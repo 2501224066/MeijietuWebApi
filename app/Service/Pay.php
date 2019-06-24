@@ -168,7 +168,7 @@ class Pay
      */
     public static function backOP($data)
     {
-        Log::info('连连回调:' . json_encode($data) . "\n");
+        Log::info('【连连回调】 回调参数:' . json_encode($data) . "\n");
 
         // 检查流水是否存在
         $runWater = Runwater::checkHas($data['no_order']);
@@ -176,19 +176,18 @@ class Pay
         // 检测是否为重复回调
         Runwater::checkMoreBack($data['oid_paybill']);
 
-
         // 验参
         $sign = $data['sign'];
         unset($data['sign']);
         $re = self::RSAverify($data, $sign);
         if (!$re) {
-            Log::info('RSA验签失败:' . json_encode($data) . "\n");
+            Log::info('【连连回调】RSA验签失败:' . json_encode($data) . "\n");
             exit;
         }
 
         // 金额比对
         if ($runWater->money != $data['money_order']) {
-            Log::info('金额异常:' . json_encode($data) . "\n");
+            Log::info('【连连回调】金额异常:' . json_encode($data) . "\n");
             // 流水异常操作
             Runwater::backAbnormalOP($data, $runWater->to_uid);
             exit;

@@ -141,11 +141,11 @@ class Runwater extends Model
                 $time = date('Y-m-d H:i:s');
                 Wallet::whereUid($uid)->update([
                     'available_money' => $money,
-                    'chang_lock' => createWalletChangLock($uid, $money, $time),
+                    'change_lock' => createWalletChangeLock($uid, $money, $time),
                     'time' => $time
                 ]);
             } catch (\Exception $e) {
-                Log::info('连连回调成功操作失败:' . json_encode($data) . "\n");
+                Log::info('【连连回调】 修改金额失败:' . json_encode($data) . "\n");
                 throw new Exception();
             }
         });

@@ -76,7 +76,7 @@ function createRunwaterNum($key)
 /**
  * 生成钱包修改校验锁
  */
-function createWalletChangLock($uid, $avaiable_money, $time)
+function createWalletChangeLock($uid, $avaiable_money, $time)
 {
     return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money*1 . $time);
 }
