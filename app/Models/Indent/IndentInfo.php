@@ -87,7 +87,7 @@ class IndentInfo extends Model
 
                 // 创建订单子项
                 foreach ($data['info'] as $it) {
-                    $re = IndentItem::create([
+                    IndentItem::create([
                         'indent_id'          => $indentId,
                         'seller_id'          => $it['goodsData']['uid'],
                         'goods_id'           => $it['goodsData']['goods_id'],

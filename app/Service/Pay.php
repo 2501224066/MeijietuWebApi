@@ -18,27 +18,64 @@ class Pay
     private static $phone = '3044889256';
 
     // 私钥
-    private static $priKey = '-----BEGIN RSA PRIVATE KEY-----' . "\n" .
-    'MIICXAIBAAKBgQDzELgJKj9SMGPXRYHO2rVjIsIlxNApZRxWJKQ3RQqaKaGs93v2' . "\n" .
-    'owmeJVOsSbXCf7NLXED1+fEqY3xv4YWzYdAEOenGbS2iqbst7H/2FvJOrewMniwg' . "\n" .
-    'dssiNRAi+eCmZlLiniWAjpAjw+Ai9MnsEHAxDap88QfJ533eycWS5xp45QIDAQAB' . "\n" .
-    'AoGAN2jsS0qSPM5DNGPn/5vkFcFquOlw+r7OAuU/ekoG7LXo4WFZpRPtsVuZA4Ga' . "\n" .
-    'KciqutdBB9H+pEchqu+iZw45OQuqzzN2G+f6w1aJf2N7xqTlAnZIdJvJvkmH/cYk' . "\n" .
-    'w3T87vRG5g95bqxMYDpez3JBbPJiZ1e6dpQhL/7UgJg0wNECQQD95/y7QXqYAhI1' . "\n" .
-    'l/pxQ4xVH7S6aS0kULALnCeUQWycmDFH4YKiyqGiZ295V+Q7jjo8TdJbI5AJS0/c' . "\n" .
-    '7jFDuHaDAkEA9RHYh4qzyccruxKmo8cfjQhCT7tchzblzYAxtpgAY6pP/P5iBLqk' . "\n" .
-    'XxsiRAMrP7kPFaPIOicmodEo3hi17ml2dwJBAPplaTlmRrdX+4s8+O/wNJnSLdJU' . "\n" .
-    'XP9eT27zrZiouKrp8Fe6DrHqcWKO7UFWqy8MgWPtP1FADhEMY5M2mAD4Dm8CQHto' . "\n" .
-    'cys+E28mlsTrjXKn0SGJ6SqRZPTKFkq3pVEXlgqaNxFlYCKVgjRKS6UIG31JSWlS' . "\n" .
-    'Qn/WO0P9OaEtvF/ER90CQBdvkeSXkWFNTniAiUAh73lA/DHN4O2rbiSeFIQsqBBr' . "\n" .
-    'NOnSK5Mz6V98dL5m8LGOKv0DVbvTdAjFhrlzXuVO5AE=' . "\n" .
-    '-----END RSA PRIVATE KEY-----';
+    private static $priKey = "-----BEGIN RSA PRIVATE KEY-----" . "\n" .
+    "MIIJKAIBAAKCAgEAliWcq2i9Ye0etuEJKKo81Vq9LBvbODimqW+gtU8VManEpaQa" . "\n" .
+    "eGI9Y858s2klSJiWnLISq3Iovggxdp0RzKCuopjKDuUbCBwQ13u85YpXRrr/fSi5" . "\n" .
+    "GaiwFEGuEmZmyldzYAjG2+Pf/mpsttAmtpxLqcCt6Q8qDB5MiNT9Hc8cTQVerkdT" . "\n" .
+    "1/oqvzOsl216idTEQcggB7XyfFZeUGFZy3ypU9hCAbG6sICpfq4BNbqQBTjW4VUW" . "\n" .
+    "4fmsBPzxkQta8iwZdTZ8oqDR3eVo3FvNnz0zs+smmPkjkqutCzSUxShF332SfXvW" . "\n" .
+    "8wopmxl48M+uwyjZhYiPV7s9pgV8nM057YUFJ+bIxr1b8t30p1eUaYVI7sZlc0BH" . "\n" .
+    "b6OanbY634XbOG9yk/nd9ZVarZs1V+WuXxxiZ/LdIU7gQvfhWbIst2jNVwHJVsUD" . "\n" .
+    "s09z0Y0lCc+ZSjKi8bvQw62Pu6JnQgYQKKyeIzAm9osxZsNfeWliDG+OHe3a8a+w" . "\n" .
+    "BBYkz9BtKM8yPTMdy5h89FvCOhtMJpGlMNqAm/DXhlGJzWAZW2yQOmzioPknQll4" . "\n" .
+    "wiDfIQxbPUzDHC9ed7dBLA2el86AcYt4+z5x5iAaNgcMx8MNtf/0U0UkX4rwi/wu" . "\n" .
+    "Up19O1gn6VGCF9uzF90Or1Uip2GX21rosmTaNmwj/Y09vdl0lAWemqiT1VcCAwEA" . "\n" .
+    "AQKCAgBjgGN1+IBgsApFuZYfO8n6vhpVa9R4Spqv+Ijw/oqWEeJ+vuTH2JrEVKex" . "\n" .
+    "IcISfQR6rUvQEGRNoxJcf7S2/dkdadGl01B5rFfA5YCGQYqbFfuQTvdzuKWPlwMr" . "\n" .
+    "sG74MsID520ZdccQTCjlccXmCGfgBA98Po9n3oBrwXJIWeNwa1mWdzBqFaBUe4Mq" . "\n" .
+    "CuRFCRpSWbRYR8x9d6Mi85DVWDTCmrMLemO06l7o05l7qLoeq89DHud+M746xAG2" . "\n" .
+    "VGcdy/nHAqfQAnFx8sDuH2yB1cY4umImyBw568lOfrcEfS7o78evnu0QvTBbV6Md" . "\n" .
+    "OxSewqh8ZMZRpoUxS7uMEjkMXbXO+rixDwdkZQQkROjrJ8FiuNVkQsmtfYuXZ4Ua" . "\n" .
+    "LWt2yRY2AvAq/qtPsQUb605EEE9/B26pPZwoUBqPqhCrGRrmtLCOwQIUrZJfXEVb" . "\n" .
+    "bDbhs1d3vE+bQMxkoIfRI7l+TxMSA3aul7o8afIh64Zbf2KDSSM488ljLdcLyEIs" . "\n" .
+    "cbrtuccdlnDJOWlw/jXZDKIP+ryrrJa7B4eYgfsDU6hVTLbT97xv9BICzxDODiGP" . "\n" .
+    "C4QjGr+EnpZQ42oDPK7TjIX2AueibfSdyCCvDEqTWVtK61LPl6YC9+nr9+bzdoA1" . "\n" .
+    "ownKcSGInQbHP6mQ0LMY3Qy/pX/UAEXTPWNS0I68etIJ2fpRsQKCAQEAxBR7zkdE" . "\n" .
+    "q//SvbBkJlI/wCuyMyMhIoJCKkXEVtZjscE5LQCh5MjNoRPzpH46wCt3xJvgpl4b" . "\n" .
+    "bUJduD57kTNp3pEvCXN54gWkhVS/Dh7p2ty2JCQHKV2xAKGwVxhQY/T1o2oUp/Bt" . "\n" .
+    "3pUyugGun+7m6w/NIL+quUiEWXi69ZNanLos1w/402IRzFflyK0LyymiBOiXA2hG" . "\n" .
+    "ZwgaLuWXru61PCPAkR0qYYf1ZQILFBhVyy/q4/y3WOPPn0MUZ2p/I9EaYnyVNwDu" . "\n" .
+    "Y5jOsE2ogmdzpwzYj7j/RRF0fCjrZYxaepHm5aQs8qviBP5ajBCVWxI162W3GiQg" . "\n" .
+    "F2cVQvB058/i2QKCAQEAxAe9uqi+1qqhRzn3ieg1yW+X0yWpJawi9zQE28S0XZur" . "\n" .
+    "KGdVQ7XJk40eQA4kEuoSuOqwca6j11lp+VnaVpcjrlHmPJA+bY9MBoG6LibDwbIj" . "\n" .
+    "ZzP5bsV50AvPDAT4tKNlHnwXOUohnfo3U4WyErZGl4Yr/Dmd48g9BAOdZpzXy+lK" . "\n" .
+    "lgdk+IBBid0fM6bK3WkIx6af2908AqYNK/AsGuCc1p9c4XNTCS6ZPi7EZvdyHSCB" . "\n" .
+    "6H/bXtY+/naOT1eUAzSwwi2AGyrybJv6zelOvU4PV6PocDs7IdhchYbsB94PISDZ" . "\n" .
+    "1QCPxizCCSQnax53CFWWrJM5rlpsjt/NLqmp7FX7rwKCAQBqVcVyb5nhQSIzdrZJ" . "\n" .
+    "Re+Gsuu36cQtZ8CkFiPNCAUWv/fW3PHvFarWQPCvczk/QBN6jyI8duqezQ/wPApd" . "\n" .
+    "CynN5qRAltwxY+f92qCl8sPVyj4IyXUMzN+RvR3ZjbkDDDQuQ/ghvzSGMhlJYGIo" . "\n" .
+    "H7IhJfeTW/4k7xu/Pcb+KMRKHHj2xJWnZRbL35sgwh+UNObFjLFgyqrrcyxn5GDn" . "\n" .
+    "IFMu4yCqUcvLCqVc+sexRSU5xKm4rDNuRFUzRHiLQOjkLqEFahStuJaPcq4cVHEf" . "\n" .
+    "DyVcIY5MGwJsnXOzZamK75udvwQd43PwwqAXHy1RqiilM/IDz6yFw7OXnXKdU7PC" . "\n" .
+    "hy25AoIBAQC+L4B8u0DDhjIIp42o53hfoXvcZ/puSU53JandCj+vXds1zOMlWRZj" . "\n" .
+    "qBMENHP9Qcm+TDu5X6UnxmERgYJaZjJA6saEVbGrm843td7K7eMYZlsAwqUqOj8P" . "\n" .
+    "gJV05NHid3AgnmXtuCVbXqoUx25Xxy4/zfWYtNGhb+D6pwMrzdlzxTgOzMfCbLSp" . "\n" .
+    "K7Yc56KEI2ZYRSltJ3wUWcQHr/EqdmbTtzNmq/uQufwFH1x/RW0aIzLGPl236gad" . "\n" .
+    "3Kn/AkngvlsLWRejxAwFIWO4KLWy5ivubGCTmnOpR3+kMJ2ImIF3M6cDh5L1wvDR" . "\n" .
+    "65iuzZTQqjEP55qbtLEEAM/RiNwKJfWTAoIBAF8FJ1DWCYEj1l8r7d9PzY+kZWVv" . "\n" .
+    "UudapvCD8oj8eQpBGmiBDKnitqopLCJg35bP1CcO3mzr088Zpwo0DrSX7m1iJqyn" . "\n" .
+    "MbvBHFtK1TyHJdEwZa3AFCvmGq7wgi4SZpdKxDGhqGhtyTLF7t51Y+lZq6yI6NIb" . "\n" .
+    "hmYs83LrTrs1aDN900XhqNCTbg2rVLx2A+MvWHoyeHP/MzDlTKAZqNcz7QHJxzuH" . "\n" .
+    "ikSWMVd7BolL4zTRktyfptkYeUwxvD8q7yJB6juqr7GlIUc0eZEHNXznzGdh3YIA" . "\n" .
+    "829mP57rAnxI0NslARxnP4ICcWg1hizXMO/bZRShaKWWljJ60E55EiaEVqA=" . "\n" .
+    "-----END RSA PRIVATE KEY-----";
 
     // 公钥
-    private static $publicKey = '-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDzELgJKj9SMGPXRYHO2rVjIsIlxNApZRxWJKQ3RQqaKaGs93v2owmeJVOsSbXCf7NLXED1+fEqY3xv4YWzYdAEOenGbS2iqbst7H/2FvJOrewMniwgdssiNRAi+eCmZlLiniWAjpAjw+Ai9MnsEHAxDap88QfJ533eycWS5xp45QIDAQAB-----ENDPUBLICKEY-----';
+    private static $publicKey = 'MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAliWcq2i9Ye0etuEJKKo81Vq9LBvbODimqW+gtU8VManEpaQaeGI9Y858s2klSJiWnLISq3Iovggxdp0RzKCuopjKDuUbCBwQ13u85YpXRrr/fSi5GaiwFEGuEmZmyldzYAjG2+Pf/mpsttAmtpxLqcCt6Q8qDB5MiNT9Hc8cTQVerkdT1/oqvzOsl216idTEQcggB7XyfFZeUGFZy3ypU9hCAbG6sICpfq4BNbqQBTjW4VUW4fmsBPzxkQta8iwZdTZ8oqDR3eVo3FvNnz0zs+smmPkjkqutCzSUxShF332SfXvW8wopmxl48M+uwyjZhYiPV7s9pgV8nM057YUFJ+bIxr1b8t30p1eUaYVI7sZlc0BHb6OanbY634XbOG9yk/nd9ZVarZs1V+WuXxxiZ/LdIU7gQvfhWbIst2jNVwHJVsUDs09z0Y0lCc+ZSjKi8bvQw62Pu6JnQgYQKKyeIzAm9osxZsNfeWliDG+OHe3a8a+wBBYkz9BtKM8yPTMdy5h89FvCOhtMJpGlMNqAm/DXhlGJzWAZW2yQOmzioPknQll4wiDfIQxbPUzDHC9ed7dBLA2el86AcYt4+z5x5iAaNgcMx8MNtf/0U0UkX4rwi/wuUp19O1gn6VGCF9uzF90Or1Uip2GX21rosmTaNmwj/Y09vdl0lAWemqiT1VcCAwEAAQ==';
 
     // 连连公钥
     private static $lianLianPublicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSS/DiwdCf/aZsxxcacDnooGph3d2JOj5GXWi+q3gznZauZjkNP8SKl3J2liP0O6rU/Y/29+IUe+GTMhMOFJuZm1htAtKiu5ekW0GlBMWxf4FPkYlQkPE0FtaoMP3gYfh+OwI+fIRrpW3ySn3mScnc6Z700nU/VYrRkfcSCbSnRwIDAQAB';
+
 
     /**
      * 连连请求数据
