@@ -33,8 +33,7 @@ class Runwater extends Model
     const STATUS = [
         '进行中' => 0,
         '成功'  => 1,
-        '失败'  => 2,
-        '异常'  => 3
+        '异常'  => 2
     ];
 
     // 当天订单数
@@ -70,16 +69,30 @@ class Runwater extends Model
         return $runwaterNum;
     }
 
+    // 检测流水是否存在
+    public static function checkHas($runwater_num)
+    {
+        $re = self::whereRunwaterNum($runwater_num)->first();
+        if (!$re)
+            throw new Exception('无此流水');
+
+        return $re;
+    }
+
     // 检测是否为重复回调
     public static function checkMoreBack($callback_oid_paybill)
     {
-        return self::whereCallbackOidPaybill($callback_oid_paybill)->count();
+        $count = self::whereCallbackOidPaybill($callback_oid_paybill)->count();
+        if ($count)
+            throw new Exception('重复回调');
+
+        return true;
     }
 
-    // 回调流水异常
-    public static function backAbnormalOP($data)
+    // 回调金额异常
+    public static function backAbnormalOP($data, $uid)
     {
-        DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data, $uid) {
             try {
                 // 添加异常记录
                 self::whereRunwaterNum($data['no_order'])
@@ -94,23 +107,22 @@ class Runwater extends Model
                     ]);
 
                 // 钱包禁用
-                $uid = self::whereRunwaterNum($data['no_order'])->value('to_uid');
                 Wallet::whereUid($uid)->updata([
                     'status' => Wallet::STATUS['禁用'],
                     'remark' => '充值回调金额异常'
                 ]);
             } catch (\Exception $e) {
-                Log::info('连连回调流水异常操作失败:' . json_encode($data) . "\n");
+                Log::info('金额异常操作失败:' . json_encode($data) . "\n");
                 throw new Exception();
             }
         });
     }
 
     // 回调成功操作
-    public static function backSuccOP($data)
+    public static function backSuccOP($data, $uid)
     {
 
-        DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data, $uid) {
             try {
                 // 记录流水
                 self::whereRunwaterNum($data['no_order'])
@@ -124,27 +136,14 @@ class Runwater extends Model
                         'callback_bank_code'    => $data['bank_code']
                     ]);
 
-                $uid = self::whereRunwaterNum($data['no_order'])->value('to_uid');
-
-                // 校验修改校验锁
-                $info = Wallet::whereUid($uid)->first();
-                if (createWalletChangLock($uid, $info->avaiable_money, $info->time) != $info->chang_lock) {
-                    // 校验失败，禁用钱包
-                    Wallet::whereUid($uid)->update([
-                        'status' => Wallet::STATUS['禁用'],
-                        'remark' => '校验修改检验锁失败，禁用钱包'
-                    ]);
-                } else {
-                    // 修改资金
-                    Wallet::whereUid($uid)
-                        ->updata([
-                            'available_money' => $info['available_money'] + $data['money_order'],
-                            'time'            => date('Y-m-d H:i:s')
-                        ]);
-
-                    // 更新修改校验锁
-                    Wallet::whereUid($uid)->updata(['chang_lock' => createWalletChangLock($uid, $info->avaiable_money, $info->time)]);
-                }
+                // 修改资金
+                $money = Wallet::whereUid($uid)->value('available_money') + $data['money_order'];
+                $time = date('Y-m-d H:i:s');
+                Wallet::whereUid($uid)->update([
+                    'available_money' => $money,
+                    'chang_lock' => createWalletChangLock($uid, $money, $time),
+                    'time' => $time
+                ]);
             } catch (\Exception $e) {
                 Log::info('连连回调成功操作失败:' . json_encode($data) . "\n");
                 throw new Exception();

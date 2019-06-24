@@ -36,7 +36,7 @@ class Wallet extends Model
         $time = date('Y-m-d H:i:s');
         $re   = self::create([
             'uid'             => $uid,
-            'available_money' => 0,
+            'available_money' => "0.00",
             'chang_lock'      => createWalletChangLock($uid, 0, $time),
             'time'            => $time
         ]);
@@ -68,20 +68,15 @@ class Wallet extends Model
     // 校验修改校验锁
     public static function checkChangLock($uid)
     {
-        $info = self::whereUid($uid)->first();
-        if (createWalletChangLock($uid, $info->avaiable_money, $info->time) != $info->chang_lock)
+        $wallet = self::whereUid($uid)->first();
+        if (createWalletChangLock($uid, $wallet->available_money, $wallet->time) != $wallet->chang_lock) {
+            self::whereUid($uid)->update([
+                'status' => self::STATUS['禁用'],
+                'remark' => '校验修改校验锁失败, 禁用钱包'
+             ]);
             throw new Exception('校验修改校验锁失败');
+        }
 
         return true;
-    }
-
-    // 更新修改校验锁
-    public static function saveChangLock($uid)
-    {
-        $info      = self::whereUid($uid)->first();
-        $changLock = createWalletChangLock($uid, $info->avaiable_money, $info->time);
-        $re        = Wallet::whereUid($uid)->updata(['chang_lock' => $changLock]);
-        if (!$re)
-            throw new Exception('更新修改校验锁失败');
     }
 }

@@ -4,6 +4,7 @@
 namespace App\Service;
 
 use App\Models\Up\Runwater;
+use App\Models\Up\Wallet;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Mockery\Exception;
@@ -74,7 +75,9 @@ class Pay
     private static $publicKey = 'MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAliWcq2i9Ye0etuEJKKo81Vq9LBvbODimqW+gtU8VManEpaQaeGI9Y858s2klSJiWnLISq3Iovggxdp0RzKCuopjKDuUbCBwQ13u85YpXRrr/fSi5GaiwFEGuEmZmyldzYAjG2+Pf/mpsttAmtpxLqcCt6Q8qDB5MiNT9Hc8cTQVerkdT1/oqvzOsl216idTEQcggB7XyfFZeUGFZy3ypU9hCAbG6sICpfq4BNbqQBTjW4VUW4fmsBPzxkQta8iwZdTZ8oqDR3eVo3FvNnz0zs+smmPkjkqutCzSUxShF332SfXvW8wopmxl48M+uwyjZhYiPV7s9pgV8nM057YUFJ+bIxr1b8t30p1eUaYVI7sZlc0BHb6OanbY634XbOG9yk/nd9ZVarZs1V+WuXxxiZ/LdIU7gQvfhWbIst2jNVwHJVsUDs09z0Y0lCc+ZSjKi8bvQw62Pu6JnQgYQKKyeIzAm9osxZsNfeWliDG+OHe3a8a+wBBYkz9BtKM8yPTMdy5h89FvCOhtMJpGlMNqAm/DXhlGJzWAZW2yQOmzioPknQll4wiDfIQxbPUzDHC9ed7dBLA2el86AcYt4+z5x5iAaNgcMx8MNtf/0U0UkX4rwi/wuUp19O1gn6VGCF9uzF90Or1Uip2GX21rosmTaNmwj/Y09vdl0lAWemqiT1VcCAwEAAQ==';
 
     // 连连公钥
-    private static $lianLianPublicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSS/DiwdCf/aZsxxcacDnooGph3d2JOj5GXWi+q3gznZauZjkNP8SKl3J2liP0O6rU/Y/29+IUe+GTMhMOFJuZm1htAtKiu5ekW0GlBMWxf4FPkYlQkPE0FtaoMP3gYfh+OwI+fIRrpW3ySn3mScnc6Z700nU/VYrRkfcSCbSnRwIDAQAB';
+    private static $lianLianPublicKey = "-----BEGIN PUBLIC KEY-----" . "\n" .
+    "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSS/DiwdCf/aZsxxcacDnooGph3d2JOj5GXWi+q3gznZauZjkNP8SKl3J2liP0O6rU/Y/29+IUe+GTMhMOFJuZm1htAtKiu5ekW0GlBMWxf4FPkYlQkPE0FtaoMP3gYfh+OwI+fIRrpW3ySn3mScnc6Z700nU/VYrRkfcSCbSnRwIDAQAB" . "\n" .
+    "-----END PUBLIC KEY-----";
 
 
     /**
@@ -167,33 +170,35 @@ class Pay
     {
         Log::info('连连回调:' . json_encode($data) . "\n");
 
+        // 检查流水是否存在
+        $runWater = Runwater::checkHas($data['no_order']);
+
         // 检测是否为重复回调
-        $count = Runwater::checkMoreBack($data['oid_paybill']);
-        if ($count) {
-            Log::info('捕捉到重复回调:' . json_encode($data) . "\n");
-            throw new Exception();
-        }
+        Runwater::checkMoreBack($data['oid_paybill']);
+
 
         // 验参
         $sign = $data['sign'];
         unset($data['sign']);
         $re = self::RSAverify($data, $sign);
         if (!$re) {
-            Log::info('连连回调RSA验签失败:' . json_encode($data) . "\n");
-            throw new Exception();
+            Log::info('RSA验签失败:' . json_encode($data) . "\n");
+            exit;
         }
 
         // 金额比对
-        $money = Runwater::whereRunwaterNum($data['no_order'])->value('money');
-        if ($money != $data['money_order']) {
-            Log::info('连连回调流水异常:' . json_encode($data) . "\n");
+        if ($runWater->money != $data['money_order']) {
+            Log::info('金额异常:' . json_encode($data) . "\n");
             // 流水异常操作
-            Runwater::backAbnormalOP($data);
-            throw new Exception();
+            Runwater::backAbnormalOP($data, $runWater->to_uid);
+            exit;
         }
 
+        // 校验修改校验锁
+        Wallet::checkChangLock($runWater->to_uid);
+
         // 记录流水并修改用户资金
-        Runwater::backSuccOp($data);
+        Runwater::backSuccOp($data, $runWater->to_uid);
 
         return true;
     }
