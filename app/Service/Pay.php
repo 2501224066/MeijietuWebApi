@@ -52,7 +52,7 @@ class Pay
             'version'      => '1.1', // 版本号
             'oid_partner'  => self::$oid_partner, // 用户所属商户号
             'user_id'      => JWTAuth::user()->uid, // 用户名
-            'timestamp'     => date('YmdHid'), // 时间戳
+            'timestamp'    => date('YmdHid'), // 时间戳
             'sign_type'    => 'RSA', // 签名方式
             'busi_partner' => '101001', // 商户业务类型
             'no_order'     => $runwaterNum, // 商户唯一订单
@@ -77,43 +77,6 @@ class Pay
     }
 
     /**
-     * 回调操作
-     */
-    public static function back($data)
-    {
-        Log::info('连连回调:' . json_encode($data) . "\n");
-
-        $sign = $data['sign'];
-        unset($data['sign']);
-
-        // 检测是否为重复回调
-        $count = Runwater::checkMoreBack($data['callback_oid_paybill']);
-        if ($count) {
-            Log::info('捕捉到重复回调:' . json_encode($data) . "\n");
-            return true;
-        }
-
-        // 验参
-        $re = self::RSAverify($data, $sign);
-        if (!$re) {
-            Log::info('连连回调RSA验签失败:' . json_encode($data) . "\n");
-            throw new Exception('连连回调RSA验签失败');
-        }
-
-        // 金额比对
-        $money = Runwater::whereRunwaterNum($data['no_order'])->value('money');
-        if ($money != $data['money_order']) {
-            Runwater::backAbnormal($data); // 记录流水异常
-            throw new Exception('回调金额异常');
-        }
-
-        // 记录流水并修改用户资金
-        Runwater::backSucc($data);
-
-        return true;
-    }
-
-    /**
      * RSA签名
      * $data签名数据(需要先排序，然后拼接)
      * 签名用商户私钥，必须是没有经过pkcs8转换的私钥
@@ -129,7 +92,7 @@ class Pay
         // 转换为openssl密钥，必须是没有经过pkcs8转换的私钥
         $res = openssl_get_privatekey($priKey);
         // 调用openssl内置签名方法，生成签名$sign
-        openssl_sign(self::KVstring($data), $sign, $res, OPENSSL_ALGO_MD5);
+        openssl_sign(KVstring($data), $sign, $res, OPENSSL_ALGO_MD5);
         // 释放资源
         openssl_free_key($res);
         // base64编码
@@ -154,23 +117,49 @@ class Pay
         //转换为openssl格式密钥
         $res = openssl_get_publickey(self::$lianLianPublicKey);
         //调用openssl内置方法验签，返回bool值
-        $result = (bool)openssl_verify(self::KVstring($data), base64_decode($sign), $res, OPENSSL_ALGO_MD5);
+        $result = (bool)openssl_verify(KVstring($data), base64_decode($sign), $res, OPENSSL_ALGO_MD5);
         //释放资源
         openssl_free_key($res);
         //返回资源是否成功
         return $result;
     }
 
+
     /**
-     * 将已有json数组中的参数按照key_1=value_1&key_2=value2的形式进行排列
+     * 回调操作
      */
-    public static function KVstring($data)
+    public static function backOP($data)
     {
-        $str = '';
-        foreach ($data as $k => $v) {
-            $str .= $k . '=' . $v . '&';
+        Log::info('连连回调:' . json_encode($data) . "\n");
+
+        // 检测是否为重复回调
+        $count = Runwater::checkMoreBack($data['oid_paybill']);
+        if ($count) {
+            Log::info('捕捉到重复回调:' . json_encode($data) . "\n");
+            throw new Exception();
         }
 
-        return trim('&', $str);
+        // 验参
+        $sign = $data['sign'];
+        unset($data['sign']);
+        $re = self::RSAverify($data, $sign);
+        if (!$re) {
+            Log::info('连连回调RSA验签失败:' . json_encode($data) . "\n");
+            throw new Exception();
+        }
+
+        // 金额比对
+        $money = Runwater::whereRunwaterNum($data['no_order'])->value('money');
+        if ($money != $data['money_order']) {
+            Log::info('连连回调流水异常:' . json_encode($data) . "\n");
+            // 流水异常操作
+            Runwater::backAbnormalOP($data);
+            throw new Exception();
+        }
+
+        // 记录流水并修改用户资金
+        Runwater::backSuccOp($data);
+
+        return true;
     }
 }

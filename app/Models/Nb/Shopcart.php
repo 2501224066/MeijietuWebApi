@@ -31,14 +31,16 @@ class Shopcart extends Model
     {
         $uid = JWTAuth::user()->uid;
         DB::transaction(function () use ($goodsIdArr, $uid) {
-            foreach ($goodsIdArr as $goodsId => $goodsPriceId) {
-                $re = self::firstOrCreate([
-                    'uid'            => $uid,
-                    'goods_id'       => $goodsId,
-                    'goods_price_id' => $goodsPriceId
-                ]);
-                if (!$re)
-                    throw new Exception('保存失败');
+            try {
+                foreach ($goodsIdArr as $goodsId => $goodsPriceId) {
+                    self::firstOrCreate([
+                        'uid'            => $uid,
+                        'goods_id'       => $goodsId,
+                        'goods_price_id' => $goodsPriceId
+                    ]);
+                }
+            } catch (\Exception $e) {
+                throw new Exception('保存失败');
             }
         });
 
@@ -49,7 +51,7 @@ class Shopcart extends Model
     public static function getShopcart()
     {
         $uid = JWTAuth::user()->uid;
-        return self::with(['goods','goods_price'])
+        return self::with(['goods', 'goods_price'])
             ->where('uid', $uid)
             ->get();
     }

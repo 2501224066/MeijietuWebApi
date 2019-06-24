@@ -79,36 +79,38 @@ class RealnameEnterprise extends Model
             throw new Exception("获取营业执照图片失败");
 
         DB::transaction(function () use ($request) {
-            $uid = JWTAuth::user()->uid;
+            try {
+                $uid = JWTAuth::user()->uid;
 
-            // 添加企业实名认证数据
-            $reOne = DB::table('realname_enterprise')
-                ->insert([
-                    'uid'                => $uid,
-                    'enterprise_name'    => htmlspecialchars($request->enterprise_name),
-                    'social_credit_code' => htmlspecialchars($request->social_credit_code),
-                    'business_license'   => htmlspecialchars($request->business_license),
-                    'bank_deposit'       => htmlspecialchars($request->bank_deposit),
-                    'bank_branch'        => htmlspecialchars($request->bank_branch),
-                    'bank_prov'          => htmlspecialchars($request->bank_prov),
-                    'bank_city'          => htmlspecialchars($request->bank_city),
-                    'bank_card'          => htmlspecialchars($request->bank_card),
-                    'bank_band_phone'    => htmlspecialchars($request->bank_band_phone),
-                    'verify_status'      => 1, // 审核状态 0=未通过 1=审核通过
-                    'created_at'         => date('Y-m-d H:i:s'),
-                    'updated_at'         => date('Y-m-d H:i:s')
-                ]);
-            if (!$reOne)
-                throw new Exception('保存失败');
+                // 添加企业实名认证数据
+                DB::table('realname_enterprise')
+                    ->insert([
+                        'uid'                => $uid,
+                        'enterprise_name'    => htmlspecialchars($request->enterprise_name),
+                        'social_credit_code' => htmlspecialchars($request->social_credit_code),
+                        'business_license'   => htmlspecialchars($request->business_license),
+                        'bank_deposit'       => htmlspecialchars($request->bank_deposit),
+                        'bank_branch'        => htmlspecialchars($request->bank_branch),
+                        'bank_prov'          => htmlspecialchars($request->bank_prov),
+                        'bank_city'          => htmlspecialchars($request->bank_city),
+                        'bank_card'          => htmlspecialchars($request->bank_card),
+                        'bank_band_phone'    => htmlspecialchars($request->bank_band_phone),
+                        'verify_status'      => 1, // 审核状态 0=未通过 1=审核通过
+                        'created_at'         => date('Y-m-d H:i:s'),
+                        'updated_at'         => date('Y-m-d H:i:s')
+                    ]);
 
-            // 修改用户表中实名认证状态
-            $reTwo = DB::table('user')
-                ->where('uid', $uid)
-                ->update([
-                    'realname_status' => 2 // 实名认证状态 0=未认证 1=个人认证 2=企业认证
-                ]);
-            if (!$reTwo)
+
+                // 修改用户表中实名认证状态
+                DB::table('user')
+                    ->where('uid', $uid)
+                    ->update([
+                        'realname_status' => 2 // 实名认证状态 0=未认证 1=个人认证 2=企业认证
+                    ]);
+
+            } catch (\Exception $e) {
                 throw new Exception('保存失败');
+            }
         });
 
         return true;

@@ -6,7 +6,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Pay as PayRequests;
 use App\Models\Up\Runwater;
+use App\Models\Up\Wallet;
 use App\Service\Pay;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PayController extends BaseController
 {
@@ -17,6 +19,11 @@ class PayController extends BaseController
      */
     public function recharge(PayRequests $request)
     {
+        $uid = JWTAuth::user()->uid;
+        // 检测是否拥有钱包
+        Wallet::checkHas($uid, TRUE);
+        // 校验钱包状态
+        Wallet::checkStatus($uid, Wallet::STATUS['启用']);
         // 生成流水单
         $runwaterNum = Runwater::createRunwater($request->money);
         // 组合请求连连数据
@@ -39,7 +46,7 @@ class PayController extends BaseController
         $data = json_decode($data);
 
         // 回调操作
-        Pay::back($data);
+        Pay::backOP($data);
 
         // 返回连连响应参数
         return  json_encode(["ret_code"=>"0000", "ret_msg"=>"交易成功" ]);

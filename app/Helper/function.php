@@ -80,3 +80,16 @@ function createWalletChangLock($uid, $avaiable_money, $time)
 {
     return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money . $time);
 }
+
+/**
+ * 将已有json数组中的参数按照key_1=value_1&key_2=value2的形式进行排列
+ */
+function KVstring($data)
+{
+    $str = '';
+    foreach ($data as $k => $v) {
+        $str .= $k . '=' . $v . '&';
+    }
+
+    return trim('&', $str);
+}

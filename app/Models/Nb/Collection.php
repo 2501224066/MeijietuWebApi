@@ -53,13 +53,16 @@ class Collection extends Model
     {
         $uid = JWTAuth::user()->uid;
         DB::transaction(function () use ($goodsIdArr, $uid) {
-            foreach ($goodsIdArr as $goodsId) {
-                $re = self::firstOrCreate([
-                    'uid'      => $uid,
-                    'goods_id' => $goodsId,
-                ]);
-                if (!$re)
-                    throw new Exception('保存失败');
+            try {
+                foreach ($goodsIdArr as $goodsId) {
+                    self::firstOrCreate([
+                        'uid'      => $uid,
+                        'goods_id' => $goodsId,
+                    ]);
+
+                }
+            } catch (\Exception $e) {
+                throw new Exception('保存失败');
             }
         });
 

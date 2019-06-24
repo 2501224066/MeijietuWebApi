@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Models\Up\Wallet;
-use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class WalletController extends BaseController
@@ -15,8 +14,7 @@ class WalletController extends BaseController
     {
         $uid = JWTAuth::user()->uid;
         // 检测是否已经拥有
-        Wallet::checkHas($uid);
-
+        Wallet::checkHas($uid, TRUE);
         // 创建
         Wallet::createWallet($uid);
 

@@ -74,39 +74,40 @@ class IndentInfo extends Model
         $time = date('Y-m-d H:i:s');
         $key  = 'INDENTCOUNT' . date('Ymd'); // 订单数key
         DB::transaction(function () use ($data, $uid, $time, $key) {
-            // 创建订单信息
-            $indentId = self::insertGetId([
-                'indent_num'    => createIndentNnm($key),
-                'buyer_id'      => $uid,
-                'total_amount'  => $data['amount'],
-                'indent_amount' => $data['amount'],
-                'create_time'   => $time
-            ]);
-            if (!$indentId)
-                throw new Exception('创建失败');
-
-            // 创建订单子项
-            foreach ($data['info'] as $it) {
-                $re = IndentItem::create([
-                    'indent_id'          => $indentId,
-                    'seller_id'          => $it['goodsData']['uid'],
-                    'goods_id'           => $it['goodsData']['goods_id'],
-                    'goods_num'          => $it['goodsData']['goods_num'],
-                    'goods_title'        => $it['goodsData']['title'],
-                    'modular_name'       => $it['goodsData']['modular_name'],
-                    'theme_name'         => $it['goodsData']['theme_name'],
-                    'priceclassify_name' => $it['goodsData']['one_goods_price']['priceclassify_name'],
-                    'goods_price'        => $it['goodsData']['one_goods_price']['price'],
-                    'goods_count'        => $it['goods_count'],
-                    'goods_amount'       => $it['goodsData']['one_goods_price']['price'] * $it['goods_count'],
-                    'create_time'        => $time
+            try {
+                // 创建订单信息
+                $indentId = self::insertGetId([
+                    'indent_num'    => createIndentNnm($key),
+                    'buyer_id'      => $uid,
+                    'total_amount'  => $data['amount'],
+                    'indent_amount' => $data['amount'],
+                    'create_time'   => $time
                 ]);
-                if (!$re)
-                    throw new Exception('创建失败');
-            }
 
-            // 订单数自增
-            Cache::increment($key);
+
+                // 创建订单子项
+                foreach ($data['info'] as $it) {
+                    $re = IndentItem::create([
+                        'indent_id'          => $indentId,
+                        'seller_id'          => $it['goodsData']['uid'],
+                        'goods_id'           => $it['goodsData']['goods_id'],
+                        'goods_num'          => $it['goodsData']['goods_num'],
+                        'goods_title'        => $it['goodsData']['title'],
+                        'modular_name'       => $it['goodsData']['modular_name'],
+                        'theme_name'         => $it['goodsData']['theme_name'],
+                        'priceclassify_name' => $it['goodsData']['one_goods_price']['priceclassify_name'],
+                        'goods_price'        => $it['goodsData']['one_goods_price']['price'],
+                        'goods_count'        => $it['goods_count'],
+                        'goods_amount'       => $it['goodsData']['one_goods_price']['price'] * $it['goods_count'],
+                        'create_time'        => $time
+                    ]);
+                }
+
+                // 订单数自增
+                Cache::increment($key);
+            } catch (\Exception $e) {
+                throw new Exception('创建失败');
+            }
         });
 
         return true;

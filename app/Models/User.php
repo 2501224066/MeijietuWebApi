@@ -178,24 +178,25 @@ class User extends Authenticatable implements JWTSubject
         ];
 
         DB::transaction(function () use ($user, $old_info, $new_info) {
-            // 修改信息
-            $reOne = DB::table('user', $old_info, $new_info)
-                ->where('uid', $user->uid)
-                ->update($new_info);
-            if (!$reOne)
-                throw new Exception('保存失败');
+            try {
+                // 修改信息
+                DB::table('user', $old_info, $new_info)
+                    ->where('uid', $user->uid)
+                    ->update($new_info);
 
-            // 记录
-            $reTwo = DB::table('log_saveuserinfo')
-                ->insert([
-                    'uid'      => JWTAuth::user()->uid,
-                    'ip'       => \Request::getClientIp(),
-                    'old_info' => json_encode($old_info),
-                    'new_info' => json_encode($new_info),
-                    'time_at'  => date('Y-m-d H:i:s')
-                ]);
-            if (!$reTwo)
+                // 记录
+                DB::table('log_saveuserinfo')
+                    ->insert([
+                        'uid'      => JWTAuth::user()->uid,
+                        'ip'       => \Request::getClientIp(),
+                        'old_info' => json_encode($old_info),
+                        'new_info' => json_encode($new_info),
+                        'time_at'  => date('Y-m-d H:i:s')
+                    ]);
+
+            } catch (\Exception $e) {
                 throw new Exception('保存失败');
+            }
         });
 
         return true;
@@ -222,24 +223,24 @@ class User extends Authenticatable implements JWTSubject
         ];
 
         DB::transaction(function () use ($phone, $old_info, $new_info) {
-            // 修改手机号
-            $reOne = DB::table('user')
-                ->where('phone', $phone)
-                ->update($new_info);
-            if (!$reOne)
-                throw new Exception('保存失败');
+            try {
+                // 修改手机号
+                DB::table('user')
+                    ->where('phone', $phone)
+                    ->update($new_info);
 
-            // 记录
-            $reTwo = DB::table('log_saveuserinfo')
-                ->insert([
-                    'uid'      => JWTAuth::user()->uid,
-                    'ip'       => \Request::getClientIp(),
-                    'old_info' => json_encode($old_info),
-                    'new_info' => json_encode($new_info),
-                    'time_at'  => date('Y-m-d H:i:s')
-                ]);
-            if (!$reTwo)
+                // 记录
+                DB::table('log_saveuserinfo')
+                    ->insert([
+                        'uid'      => JWTAuth::user()->uid,
+                        'ip'       => \Request::getClientIp(),
+                        'old_info' => json_encode($old_info),
+                        'new_info' => json_encode($new_info),
+                        'time_at'  => date('Y-m-d H:i:s')
+                    ]);
+            } catch (\Exception $e) {
                 throw new Exception('保存失败');
+            }
         });
 
         return true;

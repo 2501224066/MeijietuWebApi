@@ -256,22 +256,22 @@ class Goods extends Model
     {
         $goodsId = '';
         DB::transaction(function () use ($arr, $priceJson, &$goodsId) {
-            // 插入商品
-            $goodsId = self::insertGetId($arr);
-            if (!$goodsId)
-                throw new Exception('保存失败');
+            try {
+                // 插入商品
+                $goodsId = self::insertGetId($arr);
 
-            // 插入商品价格
-            $priceArr = json_decode($priceJson);
-            foreach ($priceArr as $priceclassify_id => $price) {
-                $st = GoodsPrice::create([
-                    'goods_id'           => $goodsId,
-                    'priceclassify_id'   => $priceclassify_id,
-                    'priceclassify_name' => Priceclassify::wherePriceclassifyId($priceclassify_id)->value('priceclassify_name'),
-                    'price'              => $price
-                ]);
-                if (!$st)
-                    throw new Exception('保存失败');
+                // 插入商品价格
+                $priceArr = json_decode($priceJson);
+                foreach ($priceArr as $priceclassify_id => $price) {
+                    GoodsPrice::create([
+                        'goods_id'           => $goodsId,
+                        'priceclassify_id'   => $priceclassify_id,
+                        'priceclassify_name' => Priceclassify::wherePriceclassifyId($priceclassify_id)->value('priceclassify_name'),
+                        'price'              => $price
+                    ]);
+                }
+            }catch (\Exception $e){
+                throw new Exception('保存失败');
             }
         });
 
@@ -289,7 +289,7 @@ class Goods extends Model
         switch (Modular::whereModularId($arr['modular_id'])->value('tag')) {
             // 微信基础数据
             case 'WEIXIN':
-                addWeiXinBasicsData::dispatch($goodsId, $arr['weixin_ID'])->onQueue('addWeiXinBasicsData');
+                AddWeiXinBasicsData::dispatch($goodsId, $arr['weixin_ID'])->onQueue('AddWeiXinBasicsData');
                 break;
 
             // 微博基础数据
