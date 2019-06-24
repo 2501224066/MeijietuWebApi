@@ -134,8 +134,6 @@ class Pay
         openssl_free_key($res);
         // base64编码
         $sign = base64_encode($sign);
-        // 日志记录
-        Log::info("签名原串:" . json_encode($data) . "\n");
 
         return $sign;
     }
