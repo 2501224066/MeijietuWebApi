@@ -135,16 +135,15 @@ class Runwater extends Model
                         'remark' => '校验修改检验锁失败，禁用钱包'
                     ]);
                 } else {
-                    // 校验成功
-                        // 修改资金
-                        Wallet::whereUid($uid)
-                            ->updata([
-                                'available_money' => $info['available_money'] + $data['money_order'],
-                                'time'            => date('Y-m-d H:i:s')
-                            ]);
+                    // 修改资金
+                    Wallet::whereUid($uid)
+                        ->updata([
+                            'available_money' => $info['available_money'] + $data['money_order'],
+                            'time'            => date('Y-m-d H:i:s')
+                        ]);
 
-                        // 更新修改校验锁
-                        Wallet::whereUid($uid)->updata(['chang_lock' => createWalletChangLock($uid, $info->avaiable_money, $info->time)]);
+                    // 更新修改校验锁
+                    Wallet::whereUid($uid)->updata(['chang_lock' => createWalletChangLock($uid, $info->avaiable_money, $info->time)]);
                 }
             } catch (\Exception $e) {
                 Log::info('连连回调成功操作失败:' . json_encode($data) . "\n");

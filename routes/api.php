@@ -5,6 +5,9 @@ $api->group(['version' => 'v1'], function ($api) {
 
     $api->group(['namespace' => '\App\Http\Controllers\Api'], function ($api) {
 
+        // 充值回调
+        $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
+
         // 注册登录
             // 检查手机号
             $api->post('checkPhone', 'AuthController@checkPhone');
@@ -96,8 +99,6 @@ $api->group(['version' => 'v1'], function ($api) {
             //连连三方
                 //充值
                 $api->post('recharge', 'PayController@recharge');
-                // 充值回调
-                $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
 
             //钱包
                 // 生成钱包
