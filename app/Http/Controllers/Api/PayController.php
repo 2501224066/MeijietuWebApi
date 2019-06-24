@@ -43,7 +43,7 @@ class PayController extends BaseController
     {
         // 接收数据
         $data = file_get_contents( "php://input");
-        $data = json_decode($data);
+        $data = json_decode($data, TRUE);
 
         // 回调操作
         Pay::backOP($data);
