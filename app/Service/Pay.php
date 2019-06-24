@@ -180,17 +180,14 @@ class Pay
         $sign = $data['sign'];
         unset($data['sign']);
         $re = self::RSAverify($data, $sign);
-        if (!$re) {
-            Log::info('【连连回调】RSA验签失败:' . json_encode($data) . "\n");
-            exit;
-        }
-
+        if (!$re)
+            throw new Exception('【连连回调】 RSA验签失败:' . json_encode($data) . "\n");
+        
         // 金额比对
         if ($runWater->money != $data['money_order']) {
-            Log::info('【连连回调】金额异常:' . json_encode($data) . "\n");
             // 流水异常操作
             Runwater::backAbnormalOP($data, $runWater->to_uid);
-            exit;
+            throw new Exception('【连连回调】 金额异常:' . json_encode($data) . "\n");
         }
 
         // 校验修改校验锁

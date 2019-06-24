@@ -84,7 +84,7 @@ class Runwater extends Model
     {
         $count = self::whereCallbackOidPaybill($callback_oid_paybill)->count();
         if ($count)
-            throw new Exception('重复回调');
+            throw new Exception('重复回调 连连支付单号:'.$callback_oid_paybill);
 
         return true;
     }
@@ -112,8 +112,7 @@ class Runwater extends Model
                     'remark' => '充值回调金额异常'
                 ]);
             } catch (\Exception $e) {
-                Log::info('金额异常操作失败:' . json_encode($data) . "\n");
-                throw new Exception();
+                throw new Exception('【连连回调】 金额异常操作失败:' . json_encode($data) . "\n");
             }
         });
     }
@@ -145,8 +144,7 @@ class Runwater extends Model
                     'time' => $time
                 ]);
             } catch (\Exception $e) {
-                Log::info('【连连回调】 修改金额失败:' . json_encode($data) . "\n");
-                throw new Exception();
+                throw new Exception('【连连回调】 修改金额失败:' . json_encode($data) . "\n");
             }
         });
     }
