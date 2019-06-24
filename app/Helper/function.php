@@ -91,5 +91,5 @@ function KVstring($data)
         $str .= $k . '=' . $v . '&';
     }
 
-    return trim('&', $str);
+    return trim($str, '&');
 }
