@@ -132,6 +132,7 @@ class IndentInfo extends Model
                     $indentId = self::insertGetId([
                         'indent_num'    => createIndentNnm($key),
                         'buyer_id'      => $uid,
+                        'seller_id'     => $seller_id,
                         'total_amount'  => $dt['amount'],
                         'indent_amount' => $dt['amount'],
                         'create_time'   => $time
@@ -141,7 +142,6 @@ class IndentInfo extends Model
                     foreach ($dt['indentGoods'] as $it) {
                         IndentItem::create([
                             'indent_id'          => $indentId,
-                            'seller_id'          => $it['uid'],
                             'goods_id'           => $it['goods_id'],
                             'goods_num'          => $it['goods_num'],
                             'goods_title'        => $it['title'],
@@ -166,8 +166,8 @@ class IndentInfo extends Model
         return true;
     }
 
-    // 检查订单归属
-    public static function checkIndentBelong($buyer_id)
+    // 检查订单买家
+    public static function checkIndentBuyer($buyer_id)
     {
         if ($buyer_id != JWTAuth::user()->uid)
             throw new Exception('订单归属错误');
@@ -236,5 +236,15 @@ class IndentInfo extends Model
         return true;
     }
 
+    // 需求文档
+    public static function addDemandFile($indentData,$demand_file)
+    {
+        $indentData->demand_file = $demand_file;
+        $re = $indentData->save();
+        if(!$re)
+            throw new Exception('操作失败');
+
+        return true;
+    }
 
 }

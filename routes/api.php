@@ -95,12 +95,6 @@ $api->group(['version' => 'v1'], function ($api) {
                 // 删除购物车商品
                 $api->post('delShopcart', 'ShopcartController@delShopcart');
 
-            // 订单
-                // 生成订单
-                $api->post('createIndent', 'IndentController@createIndent');
-                // 订单付款
-                $api->post('indentPayment', 'IndentController@indentPayment');
-
             //连连三方
                 //充值
                 $api->post('recharge', 'PayController@recharge');
@@ -110,6 +104,14 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('createWallet', 'WalletController@createWallet');
                 // 钱包信息
                 $api->post('walletInfo', 'WalletController@walletInfo');
+
+            // 订单
+                // 生成订单
+                $api->post('createIndent', 'IndentController@createIndent');
+                // 订单付款
+                $api->post('indentPayment', 'IndentController@indentPayment');
+                // 添加需求文档
+                $api->post('addDemandFile', 'IndentController@addDemandFile');
         });
     });
 });
