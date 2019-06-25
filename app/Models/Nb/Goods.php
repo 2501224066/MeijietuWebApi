@@ -124,6 +124,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereWeekendStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereWeixinID($value)
  * @mixin \Eloquent
+ * @property string|null $case_link 案例链接
+ * @property-read \App\Models\Nb\GoodsPrice $one_goods_price
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereCaseLink($value)
  */
 class Goods extends Model
 {
@@ -262,15 +265,25 @@ class Goods extends Model
 
                 // 插入商品价格
                 $priceArr = json_decode($priceJson);
+                // 软文模式卖家输入的为低价
+                switch (Modular::whereModularId($arr['modular_id'])->value('settlement_type')) {
+                    case Modular::SETTLEMENT_TYPE['标准模式']:
+                        $P = 'price';
+                        break;
+
+                    case Modular::SETTLEMENT_TYPE['软文模式']:
+                        $P = 'floor_price';
+                        break;
+                }
                 foreach ($priceArr as $priceclassify_id => $price) {
                     GoodsPrice::create([
                         'goods_id'           => $goodsId,
                         'priceclassify_id'   => $priceclassify_id,
                         'priceclassify_name' => Priceclassify::wherePriceclassifyId($priceclassify_id)->value('priceclassify_name'),
-                        'price'              => $price
+                        $P                   => $price
                     ]);
                 }
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 throw new Exception('保存失败');
             }
         });
@@ -317,7 +330,7 @@ class Goods extends Model
             ->where('modular_id', $request->modular_id)
             ->where('theme_id', $request->theme_id);
 
-        if( $whereInGoodsIdArr)
+        if ($whereInGoodsIdArr)
             $query->whereIn('goods_id', $whereInGoodsIdArr);
 
         if ($request->has('key_word'))

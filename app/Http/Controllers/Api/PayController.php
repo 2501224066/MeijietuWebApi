@@ -24,8 +24,8 @@ class PayController extends BaseController
         Wallet::checkHas($uid, TRUE);
         // 校验钱包状态
         Wallet::checkStatus($uid, Wallet::STATUS['启用']);
-        // 生成流水单
-        $runwaterNum = Runwater::createRunwater($request->money);
+        // 生成充值流水
+        $runwaterNum = Runwater::createRechargeRunwater($request->money);
         // 组合请求连连数据
         $data = Pay::lianlianRequestData($runwaterNum, htmlspecialchars($request->money));
 

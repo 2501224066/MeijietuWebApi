@@ -95,6 +95,8 @@ $api->group(['version' => 'v1'], function ($api) {
             // 订单
                 // 生成订单
                 $api->post('createIndent', 'IndentController@createIndent');
+                // 订单付款
+                $api->post('indentPayment', 'IndentController@indentPayment');
 
             //连连三方
                 //充值

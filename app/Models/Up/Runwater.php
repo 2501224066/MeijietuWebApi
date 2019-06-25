@@ -11,6 +11,50 @@ use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+/**
+ * App\Models\Up\Runwater
+ *
+ * @property int $runwater_id 流水id
+ * @property string $runwater_num 流水单号
+ * @property int|null $form_uid 来源处
+ * @property int|null $to_uid 去往处
+ * @property int|null $indent_id 订单id
+ * @property string|null $indent_num 订单号
+ * @property int $type 类型 1=充值 2=提现 3=交易
+ * @property int $direction 方向 1=转入 2=转出
+ * @property float $money 金额
+ * @property int $status 状态 0=进行中 1=成功 2=异常
+ * @property string|null $callback_time 回调时间
+ * @property string|null $callback_oid_paybill 连连支付单号
+ * @property float|null $callback_money_order 交易金额
+ * @property string|null $callback_settle_order 清算日期
+ * @property string|null $callback_pay_type 支付方式 0:余额支付 1:网银借记卡支付 8:网银信用卡支付 9:企业网银信用卡支付 2:快捷支付(借记卡) 3:快捷支付(信用卡) D:认证支付 I:微信主扫 L:支付宝主扫
+ * @property string|null $callback_bank_code 银行编号
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackBankCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackMoneyOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackOidPaybill($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackPayType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackSettleOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereDirection($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereFormUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndenId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndentNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereMoney($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereRunwaterId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereRunwaterNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereToUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Runwater extends Model
 {
     protected $table = 'up_runwater';
@@ -46,9 +90,9 @@ class Runwater extends Model
     }
 
     /**
-     * 生成流水单
+     * 生成充值流水
      */
-    public static function createRunwater($money)
+    public static function createRechargeRunwater($money)
     {
         $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key
         $runwaterNum = createRunwaterNum($key);
@@ -63,7 +107,7 @@ class Runwater extends Model
         if (!$re)
             throw new Exception('操作失败');
 
-        // 订单数自增
+        // 单数自增
         Cache::increment($key);
 
         return $runwaterNum;

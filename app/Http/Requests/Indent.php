@@ -27,6 +27,11 @@ class Indent extends Base
             case 'createIndent':
                 $rules['info'] = ['required', new SpecialChar, 'json'];
                 break;
+
+                // 订单付款
+            case 'indentPayment':
+                $rules['indent_num'] = ['required', new SpecialChar];
+                break;
         }
 
         return $rules;
@@ -36,7 +41,9 @@ class Indent extends Base
     {
         return [
             'required' => '参数不全',
-            'json'     => '格式错误'
+            'json'     => '格式错误',
+
+            'indent_num.required' => '订单编号不得为空'
         ];
     }
 }

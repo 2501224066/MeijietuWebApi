@@ -26,6 +26,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Nb\Goods $goods
  */
 class Collection extends Model
 {

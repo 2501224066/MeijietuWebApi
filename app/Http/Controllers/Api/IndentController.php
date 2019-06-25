@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Indent as IndentRequests;
 use App\Models\Indent\IndentInfo;
+use App\Models\Up\Wallet;
 
 class IndentController extends BaseController
 {
@@ -27,7 +28,22 @@ class IndentController extends BaseController
     }
 
     /**
-     * 查询用户订单
-     * 订单有效期三天，过期订单加入删除队列
+     * 订单付款
+     * @param IndentRequests $request
      */
+    public function indentPayment(IndentRequests $request)
+    {
+        // 订单数据
+        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 检查订单状态
+        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['待付款']);
+        // 检测订单归属
+        IndentInfo::checkIndentBelong($indentData->buyer_id);
+        // 钱包余额是够足够购买
+        Wallet::hasEnoughMoney($indentData->indent_amount);
+        // 支付购买
+        IndentInfo::pay($indentData);
+
+        return $this->success();
+    }
 }

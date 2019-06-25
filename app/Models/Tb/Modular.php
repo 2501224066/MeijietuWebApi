@@ -34,7 +34,17 @@ class Modular extends Model
 
     public $timestamps = false;
 
-    public function theme() : BelongsToMany
+    /**
+     * 结算模式
+     * 标准模式：订单价格-（订单价格*服务费率+官方成本） =  卖家获利
+     * 软文秘书：底价 = 卖家获利
+     */
+    const SETTLEMENT_TYPE = [
+        '标准模式' => 1,
+        '软文模式' => 2
+    ];
+
+    public function theme(): BelongsToMany
     {
         return $this->belongsToMany(Theme::class, 'tb_modular_theme', 'modular_id', 'theme_id');
     }
