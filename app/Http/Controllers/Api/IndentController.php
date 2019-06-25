@@ -30,6 +30,7 @@ class IndentController extends BaseController
     /**
      * 订单付款
      * @param IndentRequests $request
+     * @return mixed
      */
     public function indentPayment(IndentRequests $request)
     {

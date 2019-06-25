@@ -28,6 +28,12 @@ class File extends Base
                 $rules['image']       = ['required', new SpecialChar];
                 $rules['upload_type'] = ['required', new SpecialChar];
                 break;
+
+            // 文件上传
+            case 'uploadFile':
+                $rules['file']        = ['required', new SpecialChar];
+                $rules['upload_type'] = ['required', new SpecialChar];
+                break;
         }
 
         return $rules;
@@ -37,6 +43,7 @@ class File extends Base
     {
         return [
             'image.required'       => '图片不得为空',
+            'file.required'        => '文件不得为空',
             'upload_type.required' => '上传类型不得为空',
         ];
     }

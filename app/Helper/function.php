@@ -25,9 +25,10 @@ function type($parm)
         // 上传类型
         case "UPLOAD_TYPE":
             $type = [
-                "ID_card"          => '身份证',
-                "business_license" => '营业执照',
-                "head_portrait"    => '头像',
+                'ID_card'          => '身份证',
+                'business_license' => '营业执照',
+                'head_portrait'    => '头像',
+                'indent_word'      => '订单文档'
             ];
             break;
     }
@@ -70,7 +71,7 @@ function createIndentNnm($key)
 function createRunwaterNum($key)
 {
     $todayCount = todayCount($key); // 当天单数
-    return date('YmdHis') . mt_rand(1000,9999). $todayCount;
+    return date('YmdHis') . mt_rand(1000, 9999) . $todayCount;
 }
 
 /**
@@ -78,7 +79,7 @@ function createRunwaterNum($key)
  */
 function createWalletChangeLock($uid, $avaiable_money, $time)
 {
-    return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money*1 . $time);
+    return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money * 1 . $time);
 }
 
 /**

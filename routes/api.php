@@ -67,8 +67,11 @@ $api->group(['version' => 'v1'], function ($api) {
                 // 修改密码
                 $api->post('savePass', 'UserInfoController@savePass');
 
-            // 图片上传
-            $api->post('uploadImg', 'FileController@uploadImg');
+            // 文件处理
+                // 图片上传
+                $api->post('uploadImg', 'FileController@uploadImg');
+                // 文件上传
+                $api->post('uploadFile', 'FileController@uploadFile');
 
             // 商品
                 // 创建商品
