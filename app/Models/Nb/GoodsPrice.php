@@ -6,27 +6,26 @@ namespace App\Models\Nb;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 /**
  * App\Models\Nb\GoodsPrice
  *
+ * @property int $goods_price_id
  * @property int $goods_id
  * @property int $priceclassify_id
  * @property string $priceclassify_name 价格种类
- * @property float $price
+ * @property float $floor_price 低价(软文模式使用)
+ * @property float $price 真实价格
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereFloorPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereGoodsId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereGoodsPriceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice wherePriceclassifyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice wherePriceclassifyName($value)
  * @mixin \Eloquent
- * @property int $goods_price_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereGoodsPriceId($value)
- * @property float $gf_cost 官方成本
- * @property float $floor_price 低价(软文模式使用)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereFloorPrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereGfCost($value)
  */
 class GoodsPrice extends Model
 {

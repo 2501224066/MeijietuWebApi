@@ -114,8 +114,12 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('indentPayment', 'TransactionController@indentPayment');
                 // 买家添加需求文档
                 $api->post('addDemandFile', 'TransactionController@addDemandFile');
+                // 买家待接单取消订单
+                $api->post('acceptIndentBeforeCancel', 'TransactionController@acceptIndentBeforeCancel');
                 // 卖家接单
                 $api->post('acceptIndent', 'TransactionController@acceptIndent');
+                // 交易中买家取消订单
+                $api->post('inTransactionBuyerCancel', 'TransactionController@inTransactionBuyerCancel');
         });
     });
 });

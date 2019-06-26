@@ -265,12 +265,15 @@ class Goods extends Model
 
                 // 插入商品价格
                 $priceArr = json_decode($priceJson);
-                // 软文模式卖家输入的为低价
+
+                // 不同模式卖家输入价格
                 switch (Modular::whereModularId($arr['modular_id'])->value('settlement_type')) {
+                    // 标准模式卖家输入的为price
                     case Modular::SETTLEMENT_TYPE['标准模式']:
                         $P = 'price';
                         break;
 
+                    // 软文模式卖家输入的为低价
                     case Modular::SETTLEMENT_TYPE['软文模式']:
                         $P = 'floor_price';
                         break;

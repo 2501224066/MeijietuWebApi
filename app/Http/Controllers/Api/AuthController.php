@@ -7,11 +7,12 @@ use App\Models\Up\Wallet;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
 use App\Models\Captcha;
+use Dingo\Api\Routing\Helpers;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Hash;
 
 class AuthController extends BaseController
 {
+    use Helpers;
     /**
      * Create a new AuthController instance.
      * 要求附带email和password（数据来源users表）
@@ -114,10 +115,11 @@ class AuthController extends BaseController
      */
     public function resetPass(AuthRequests $request)
     {
+        //dd(JWTAuth::user()->uid);
         // 检查下一步令牌
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
         // 修改密码
-        User::savePass($request->phone, Hash::make($request->password));
+        User::savePass($request->phone, $request->password);
 
         return $this->success();
     }

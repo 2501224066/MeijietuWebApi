@@ -34,8 +34,18 @@ class Transaction extends Base
                 $rules['demand_file'] = ['required', new SpecialChar];
                 break;
 
+            // 买家待接单取消订单
+            case 'acceptIndentBeforeCancel':
+                $rules['indent_num']  = ['required', new SpecialChar];
+                break;
+
             // 卖家接单
             case 'acceptIndent':
+                $rules['indent_num']  = ['required', new SpecialChar];
+                break;
+
+            // 交易中买家取消订单
+            case 'inTransactionBuyerCancel':
                 $rules['indent_num']  = ['required', new SpecialChar];
                 break;
         }

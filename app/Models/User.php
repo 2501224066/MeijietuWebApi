@@ -9,7 +9,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Emadadly\LaravelUuid\Uuids;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 

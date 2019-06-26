@@ -1,3 +1,4 @@
+
 <?php
 
 use Jacobcyl\AliOSS\AliOssServiceProvider;
@@ -185,8 +186,6 @@ return [
         Emadadly\LaravelUuid\LaravelUuidServiceProvider::class,
         // DingoApi
         Dingo\Api\Provider\LaravelServiceProvider::class,
-        // JWTAuth
-        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         // AliSms
         Mrgoon\AliSms\ServiceProvider::class,
         // LogViewer

@@ -20,7 +20,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property int|null $to_uid 去往处
  * @property int|null $indent_id 订单id
  * @property string|null $indent_num 订单号
- * @property int $type 类型 1=充值 2=提现 3=订单付款 4=支付赔偿保证费
+ * @property int $type 类型 1=充值 2=提现 3=订单付款 4=支付赔偿保证费 5=取消订单全额退款 6=取消订单非全额退款 7=对方取消订单退款
  * @property int $direction 方向 1=转入 2=转出
  * @property float $money 金额
  * @property int $status 状态 0=进行中 1=成功 2=异常
@@ -64,10 +64,13 @@ class Runwater extends Model
     protected $primaryKey = 'runwarer_id';
 
     const TYPE = [
-        '充值' => 1,
-        '提现' => 2,
-        '订单付款' => 3,
-        '支付赔偿保证费' => 4
+        '充值'        => 1,
+        '提现'        => 2,
+        '订单付款'      => 3,
+        '支付赔偿保证费'   => 4,
+        '取消订单全额退款'  => 5,
+        '取消订单非全额退款' => 6,
+        '对方取消订单退款'  => 7
     ];
 
     const DIRECTION = [
@@ -129,7 +132,7 @@ class Runwater extends Model
     {
         $count = self::whereCallbackOidPaybill($callback_oid_paybill)->count();
         if ($count)
-            throw new Exception('重复回调 连连支付单号:'.$callback_oid_paybill);
+            throw new Exception('重复回调 连连支付单号:' . $callback_oid_paybill);
 
         return true;
     }
@@ -181,11 +184,11 @@ class Runwater extends Model
 
                 // 修改资金
                 $money = Wallet::whereUid($uid)->value('available_money') + $data['money_order'];
-                $time = date('Y-m-d H:i:s');
+                $time  = date('Y-m-d H:i:s');
                 Wallet::whereUid($uid)->update([
                     'available_money' => $money,
-                    'change_lock' => createWalletChangeLock($uid, $money, $time),
-                    'time' => $time
+                    'change_lock'     => createWalletChangeLock($uid, $money, $time),
+                    'time'            => $time
                 ]);
             } catch (\Exception $e) {
                 throw new Exception('【连连回调】 修改金额失败:' . json_encode($data) . "\n");
