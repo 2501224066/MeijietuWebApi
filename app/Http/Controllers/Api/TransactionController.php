@@ -129,7 +129,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['执行中']);
+        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['交易中']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->buyer_id);
         // 校验卖家钱包状态

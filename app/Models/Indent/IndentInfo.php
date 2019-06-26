@@ -28,7 +28,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $pay_time 订单支付时间
  * @property float $seller_income 卖家收入 默认=订单价格 *（1 - 服务费率）
  * @property int $bargaining_status 议价状态 0=未完成 1=已完成
- * @property int $status 交易状态 0=待付款 1=已付款待接单 2=待接单取消订单 3=执行中 4=执行中买家取消订单 5=执行中卖家取消订单 6=卖方完成 7=全部完成 8=已结算
+ * @property int $status 交易状态 0=待付款 1=已付款待接单 2=待接单取消订单 3=交易中 4=交易中买家取消订单 5=交易中卖家取消订单 6=卖方完成 7=全部完成 8=已结算
  * @property string|null $create_time
  * @property string|null $refuse_cause 拒绝原因
  * @property string|null $demand_file 需求文档
@@ -75,9 +75,9 @@ class IndentInfo extends Model
         '待付款'       => 0,
         '已付款待接单'    => 1,
         '待接单取消订单'   => 2,
-        '执行中'       => 3,
-        '执行中买家取消订单' => 4,
-        '执行中卖家取消订单' => 5,
+        '交易中'       => 3,
+        '交易中买家取消订单' => 4,
+        '交易中卖家取消订单' => 5,
         '卖方完成'      => 6,
         '全部完成'      => 7,
         '已结算'       => 8

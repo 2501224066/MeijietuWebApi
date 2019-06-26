@@ -122,7 +122,7 @@ class Transaction
                 Cache::increment($key);
 
                 // 修改订单信息
-                $indentData->status = IndentInfo::STATUS['执行中'];
+                $indentData->status = IndentInfo::STATUS['交易中'];
                 $indentData->save();
             } catch (\Exception $e) {
                 throw new Exception('操作失败');
@@ -254,7 +254,7 @@ class Transaction
                 Cache::increment($key);
 
                 // 修改订单信息
-                $indentData->status = IndentInfo::STATUS['执行中买家取消订单'];
+                $indentData->status = IndentInfo::STATUS['交易中买家取消订单'];
                 $indentData->save();
             } catch (\Exception $e) {
                 throw new Exception('操作失败');
