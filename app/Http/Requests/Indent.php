@@ -28,16 +28,6 @@ class Indent extends Base
                 $rules['info'] = ['required', new SpecialChar, 'json'];
                 break;
 
-            // 订单付款
-            case 'indentPayment':
-                $rules['indent_num'] = ['required', new SpecialChar];
-                break;
-
-            // 添加需求文档
-            case 'addDemandFile':
-                $rules['indent_num']  = ['required', new SpecialChar];
-                $rules['demand_file'] = ['required', new SpecialChar];
-                break;
         }
 
         return $rules;
@@ -46,11 +36,8 @@ class Indent extends Base
     public function messages()
     {
         return [
-            'required' => '参数不全',
-            'json'     => '格式错误',
-
-            'indent_num.required'  => '订单编号不得为空',
-            'demand_file.required' => '需求文件不得为空'
+            'info.required' => '商品信息不得为空',
+            'info.json'     => '商品信息格式错误',
         ];
     }
 }

@@ -98,17 +98,17 @@ class Wallet extends Model
                 'remark' => '校验修改校验锁失败, 禁用钱包'
              ]);
 
-            throw new Exception('校验修改校验锁失败');
+            throw new Exception('校验修改校验锁失败, 禁用钱包, 请联系客服');
         }
 
         return true;
     }
 
     // 钱包余额是够足够购买
-    public static function hasEnoughMoney($indent_amount)
+    public static function hasEnoughMoney($money)
     {
         $available_money = self::whereUid(JWTAuth::user()->uid)->value('available_money');
-        if($available_money < $indent_amount)
+        if($available_money < $money)
             throw new Exception('钱包余额不足');
 
         return true;

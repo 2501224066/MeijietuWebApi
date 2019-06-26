@@ -7,9 +7,9 @@ namespace App\Models\Up;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 /**
  * App\Models\Up\Runwater
@@ -20,7 +20,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property int|null $to_uid 去往处
  * @property int|null $indent_id 订单id
  * @property string|null $indent_num 订单号
- * @property int $type 类型 1=充值 2=提现 3=交易
+ * @property int $type 类型 1=充值 2=提现 3=订单付款 4=支付赔偿保证费
  * @property int $direction 方向 1=转入 2=转出
  * @property float $money 金额
  * @property int $status 状态 0=进行中 1=成功 2=异常
@@ -44,7 +44,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereDirection($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereFormUid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndenId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndentNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereMoney($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereRunwaterId($value)
@@ -66,7 +66,8 @@ class Runwater extends Model
     const TYPE = [
         '充值' => 1,
         '提现' => 2,
-        '交易' => 3
+        '订单付款' => 3,
+        '支付赔偿保证费' => 4
     ];
 
     const DIRECTION = [
@@ -164,7 +165,6 @@ class Runwater extends Model
     // 回调成功操作
     public static function backSuccOP($data, $uid)
     {
-
         DB::transaction(function () use ($data, $uid) {
             try {
                 // 记录流水

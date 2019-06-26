@@ -301,7 +301,7 @@ class Goods extends Model
     {
         switch (Modular::whereModularId($arr['modular_id'])->value('tag')) {
             // 微信基础数据
-            case 'WEIXIN':
+            case Modular::TAG['微信营销']:
                 AddWeiXinBasicsData::dispatch($goodsId, $arr['weixin_ID'])->onQueue('AddWeiXinBasicsData');
                 break;
 

@@ -23,6 +23,10 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property int $goods_price_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereGoodsPriceId($value)
+ * @property float $gf_cost 官方成本
+ * @property float $floor_price 低价(软文模式使用)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereFloorPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereGfCost($value)
  */
 class GoodsPrice extends Model
 {

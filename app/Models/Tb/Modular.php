@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Modular whereModularName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Modular whereTag($value)
  * @mixin \Eloquent
+ * @property int $settlement_type 结算方式 1=标准模式 2=软文模式
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tb\Modular whereSettlementType($value)
  */
 class Modular extends Model
 {
@@ -42,6 +44,14 @@ class Modular extends Model
     const SETTLEMENT_TYPE = [
         '标准模式' => 1,
         '软文模式' => 2
+    ];
+
+    const TAG = [
+        '微信营销'  => 'WEIXIN',
+        '微博营销'  => 'WEIBO',
+        '视频营销'  => 'VIDEO',
+        '自媒体营销' => 'SELFMEIDA',
+        '软文营销'  => 'SOFTARTICLE'
     ];
 
     public function theme(): BelongsToMany

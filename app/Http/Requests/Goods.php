@@ -38,34 +38,34 @@ class Goods extends Base
 
                 // 定义规则
                 switch (Modular::whereModularId(Request::input('modular_id'))->value('tag')) {
-                    case 'WEIXIN':
+                    case Modular::TAG['微信营销']:
                         $rules['weixin_ID']      = ['required', new SpecialChar];
                         $rules['fans_num']       = ['required', 'numeric'];
                         $rules['reserve_status'] = ['required', new SpecialChar];
                         $rules['region_id']      = ['required', 'numeric', 'exists:tb_region,region_id'];
                         break;
 
-                    case 'WEIBO':
+                    case Modular::TAG['微博营销']:
                         $rules['link']           = ['required', new SpecialChar];
                         $rules['auth_type']      = ['required', new SpecialChar, 'numeric'];
                         $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
                         $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
                         break;
 
-                    case 'VIDEO':
+                    case Modular::TAG['视频营销']:
                         $rules['room_ID']     = ['required', new SpecialChar];
                         $rules['fans_num']    = ['required', new SpecialChar, 'numeric'];
                         $rules['platform_id'] = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
                         $rules['region_id']   = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
                         break;
 
-                    case 'SELFMEDIA':
+                    case Modular::TAG['自媒体营销']:
                         $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
                         $rules['platform_id']    = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
                         $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
                         break;
 
-                    case 'SOFTARTICLE':
+                    case Modular::TAG['软文营销']:
                         $rules['max_title_long']       = ['required', new SpecialChar, 'numeric'];
                         $rules['news_source_status']   = ['required', new SpecialChar, 'numeric'];
                         $rules['entry_status']         = ['required', new SpecialChar, 'numeric'];

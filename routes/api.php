@@ -108,10 +108,14 @@ $api->group(['version' => 'v1'], function ($api) {
             // 订单
                 // 生成订单
                 $api->post('createIndent', 'IndentController@createIndent');
+
+            // 交易
                 // 订单付款
-                $api->post('indentPayment', 'IndentController@indentPayment');
-                // 添加需求文档
-                $api->post('addDemandFile', 'IndentController@addDemandFile');
+                $api->post('indentPayment', 'TransactionController@indentPayment');
+                // 买家添加需求文档
+                $api->post('addDemandFile', 'TransactionController@addDemandFile');
+                // 卖家接单
+                $api->post('acceptIndent', 'TransactionController@acceptIndent');
         });
     });
 });
