@@ -40,10 +40,11 @@ class AddWeiBoBasicsData implements ShouldQueue
     {
         // 截取链接最后数组ID
         if (strpos($this->link, '?')) {
-            $id = end(explode('/', substr($this->link, 0, strpos($this->link, '?'))));
+            $arr = explode('/', substr($this->link, 0, strpos($this->link, '?')));
         } else {
-            $id = end(explode('/', $this->link));
+            $arr = explode('/', $this->link);
         }
+        $id = end($arr);
 
         // 查询自库数据
         $re = DB::connection('weibo_mongodb')
