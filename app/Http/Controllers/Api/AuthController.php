@@ -143,7 +143,7 @@ class AuthController extends BaseController
             "qq_ID"           => $user->qq_ID,
             "weixin_ID"       => $user->weixin_ID,
             "realname_status" => $user->realname_status,
-            "indentity"       => $user->indentity
+            "identity"        => $user->identity
         ]);
     }
 
