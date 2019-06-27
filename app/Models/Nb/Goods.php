@@ -5,7 +5,7 @@ namespace App\Models\Nb;
 
 
 use App\Jobs\AddWeiBoBasicsData;
-use App\Jobs\addWeiXinBasicsData;
+use App\Jobs\AddWeiXinBasicsData;
 use App\Models\Tb\Filed;
 use App\Models\Tb\Industry;
 use App\Models\Tb\Modular;
