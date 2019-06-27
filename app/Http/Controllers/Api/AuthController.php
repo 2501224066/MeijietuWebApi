@@ -13,6 +13,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthController extends BaseController
 {
     use Helpers;
+
     /**
      * Create a new AuthController instance.
      * 要求附带email和password（数据来源users表）
@@ -141,7 +142,8 @@ class AuthController extends BaseController
             "birth"           => $user->birth,
             "qq_ID"           => $user->qq_ID,
             "weixin_ID"       => $user->weixin_ID,
-            "realname_status" => $user->realname_status
+            "realname_status" => $user->realname_status,
+            "indentity"       => $user->indentity
         ]);
     }
 
