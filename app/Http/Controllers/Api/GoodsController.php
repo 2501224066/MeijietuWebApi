@@ -86,6 +86,9 @@ class GoodsController extends BaseController
      */
     public function goodsBelongSelf()
     {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        // 商品数据
         $re = Goods::getUserGoods();
 
         return $this->success($re);
