@@ -309,7 +309,9 @@ class Goods extends Model
                 break;
 
             // 微博基础数据
-            //TODO...
+            case Modular::TAG['微博营销']:
+                AddWeiBoBasicsData::dispatch($goodsId, $arr['link'])->onQueue('AddWeiBoBasicsData');
+                break;
         }
 
         return true;

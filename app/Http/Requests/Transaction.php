@@ -48,6 +48,11 @@ class Transaction extends Base
             case 'inTransactionBuyerCancel':
                 $rules['indent_num']  = ['required', new SpecialChar];
                 break;
+
+            // 交易中卖家取消订单
+            case 'inTransactionSellerCancel':
+                $rules['indent_num']  = ['required', new SpecialChar];
+                break;
         }
 
         return $rules;

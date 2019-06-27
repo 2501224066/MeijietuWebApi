@@ -119,8 +119,8 @@ class TransactionController extends BaseController
 
     /**
      * 交易中买家取消订单
-     * 非全额退款给买家
-     * 退回赔偿保证金给卖家
+     * 扣除赔偿保证费退给买家
+     * 将卖家自己的赔偿保证费与分成的买家赔偿退给卖家
      */
     public function inTransactionBuyerCancel(TransactionRequests $request)
     {
@@ -140,11 +140,32 @@ class TransactionController extends BaseController
         Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
         // 校验买家修改校验锁
         Wallet::checkChangLock($indentData->buyer_id);
-        // 钱包余额是够足够
-        Wallet::hasEnoughMoney($indentData->compensate_fee);
         // 交易中买家取消订单资金操作
         Transaction::inTransactionBuyerCancelMoneyOP($indentData);
 
         return $this->success();
+    }
+
+    /**
+     * 交易中卖家取消订单
+     * 将购买资金与分成的卖家赔偿退给买家
+     * @param TransactionRequests $request
+     */
+    public function inTransactionSellerCancel(TransactionRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        // 订单数据
+        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 检查订单状态
+        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['交易中']);
+        // 检测订单归属
+        IndentInfo::checkIndentBelong($indentData->seller_id);
+        // 校验买家钱包状态
+        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
+        // 校验买家修改校验锁
+        Wallet::checkChangLock($indentData->buyer_id);
+        // 交易中买家取消订单资金操作
+        Transaction::inTransactionSellerCancelMoneyOP($indentData);
     }
 }

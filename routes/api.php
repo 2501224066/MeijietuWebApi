@@ -120,6 +120,8 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('acceptIndent', 'TransactionController@acceptIndent');
                 // 交易中买家取消订单
                 $api->post('inTransactionBuyerCancel', 'TransactionController@inTransactionBuyerCancel');
+                // 交易中买家取消订单
+                $api->post('inTransactionSellerCancel', 'TransactionController@inTransactionSellerCancel');
         });
     });
 });

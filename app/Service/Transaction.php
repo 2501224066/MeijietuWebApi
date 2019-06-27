@@ -188,12 +188,14 @@ class Transaction
         DB::transaction(function () use ($indentData) {
             try {
                 $time = date('Y-m-d H:i:s');
-                // 赔偿费
+                // 赔偿保证费
                 $C = $indentData->compensate_fee;
-                // 卖家获得资金 (分得卖家赔偿费+自身抵押赔偿费）
-                $sellerM = floor($C * (1 + SystemSetting::whereSettingName('userbtain_compensate_ratio')->value('value')));
-                // 买家获得资金
-                $buyerM = $indentData->indent_amount-$indentData->compensate_fee;
+                // 支出赔偿
+                $expendC = floor($C * SystemSetting::whereSettingName('userbtain_compensate_ratio')->value('value'));
+                // 卖家获得资金 (自身抵押赔偿费+ 分得买家赔偿费）
+                $sellerM = $C + $expendC;
+                // 买家获得资金 (购买资金 - 赔偿保证费)
+                $buyerM = $indentData->indent_amount - $C;
                 // 公共钱包退还
                 $centerM = $buyerM + $sellerM;
 
@@ -205,7 +207,7 @@ class Transaction
                     'change_lock'     => createWalletChangeLock(Wallet::CENTERID, $centerMoney, $time)
                 ]);
 
-                // 买家家钱包资金增加
+                // 买家钱包资金增加
                 $buyerMoney = Wallet::whereUid($indentData->buyer_id)->value('available_money') + $buyerM;
                 Wallet::whereUid($indentData->buyer_id)->update([
                     'available_money' => $buyerMoney,
@@ -255,6 +257,62 @@ class Transaction
 
                 // 修改订单信息
                 $indentData->status = IndentInfo::STATUS['交易中买家取消订单'];
+                $indentData->save();
+            } catch (\Exception $e) {
+                throw new Exception('操作失败');
+            }
+        });
+    }
+
+    // 交易中卖家取消订单资金操作
+    public static function inTransactionSellerCancelMoneyOP($indentData)
+    {
+        DB::transaction(function () use ($indentData) {
+            try {
+                $time = date('Y-m-d H:i:s');
+                // 赔偿保证费
+                $C = $indentData->compensate_fee;
+                // 支出赔偿
+                $expendC = floor($C * SystemSetting::whereSettingName('userbtain_compensate_ratio')->value('value'));
+                // 买家获得资金 (购买资金 + 分得卖家赔偿费)
+                $buyerM = $indentData->indent_amount + $expendC;
+                // 公共钱包退还
+                $centerM = $buyerM;
+
+                // 公共钱包资金减少
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $centerM;
+                Wallet::whereUid(Wallet::CENTERID)->update([
+                    'available_money' => $centerMoney,
+                    'time'            => $time,
+                    'change_lock'     => createWalletChangeLock(Wallet::CENTERID, $centerMoney, $time)
+                ]);
+
+                // 买家钱包资金增加
+                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->value('available_money') + $buyerM;
+                Wallet::whereUid($indentData->buyer_id)->update([
+                    'available_money' => $buyerMoney,
+                    'time'            => $time,
+                    'change_lock'     => createWalletChangeLock($indentData->buyer_id, $buyerMoney, $time)
+                ]);
+
+                // 生成交易流水
+                $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key
+                $runwaterNum = createRunwaterNum($key);
+                Runwater::create([
+                    'runwater_num' => $runwaterNum,
+                    'form_uid'     => Wallet::CENTERID,
+                    'to_uid'       => $indentData->buyer_id,
+                    'indent_id'    => $indentData->indent_id,
+                    'indent_num'   => $indentData->indent_num,
+                    'type'         => Runwater::TYPE['对方取消订单退款'],
+                    'direction'    => Runwater::DIRECTION['转入'],
+                    'money'        => $buyerM,
+                    'status'       => Runwater::STATUS['成功']
+                ]);
+                Cache::increment($key);
+
+                // 修改订单信息
+                $indentData->status = IndentInfo::STATUS['交易中卖家取消订单'];
                 $indentData->save();
             } catch (\Exception $e) {
                 throw new Exception('操作失败');
