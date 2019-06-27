@@ -39,15 +39,15 @@ class AddWeiBoBasicsData implements ShouldQueue
     public function handle()
     {
         // 截取链接最后数组ID
-        if(strpos($this->link,'?')) {
+        if (strpos($this->link, '?')) {
             $id = end(explode('/', substr($this->link, 0, strpos($this->link, '?'))));
-        }else{
+        } else {
             $id = end(explode('/', $this->link));
         }
 
         // 查询自库数据
-        $re = DB::connection('mongodb')
-            ->collection('WeiBo_OutPut_Data')
+        $re = DB::connection('weibo_mongodb')
+            ->collection('WeiBo_Analysis')
             ->where('WeiBo_Uid', $id)
             ->first();
 

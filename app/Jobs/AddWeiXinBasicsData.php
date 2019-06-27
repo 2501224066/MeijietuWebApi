@@ -37,7 +37,7 @@ class AddWeiXinBasicsData implements ShouldQueue
     public function handle()
     {
         // 查询自库数据
-        $re = DB::connection('mongodb')
+        $re = DB::connection('weixin_mongodb')
             ->collection('WeiXin_OfficialAccount_Analysis')
             ->where('OfficialAccount_ID', $this->weixin_ID)
             ->first();
