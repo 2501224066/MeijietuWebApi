@@ -13,20 +13,22 @@ use Illuminate\Support\Facades\Hash;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+
 /**
  * App\Models\User
  *
  * @property string $id UUID
- * @property int $uid 用户id
+ * @property int $uid 用户id （初始值1000000）
  * @property string $nickname 昵称
  * @property string $email 邮箱
  * @property string $phone 电话
  * @property string $password 密码
- * @property int|null $sex 性别 1=男 2=女
+ * @property string|null $head_portrait 头像
+ * @property int|null $sex 性别 1=男 0=女
  * @property string|null $birth 出生日期
  * @property string|null $qq_ID qq号
  * @property string|null $weixin_ID 微信号
- * @property int|null $identity 身份 1=广告主 2=流量主 3=代理
+ * @property int|null $identity 身份 1=广告主 2=流量主
  * @property int $realname_status 实名认证状态 0=未认证 1=个人认证 2=企业认证
  * @property string $ip 客户端最近一次登录ip
  * @property int|null $status 状态 0=禁用 1=启用
@@ -40,6 +42,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirth($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereHeadPortrait($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIdentity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIp($value)
@@ -54,8 +57,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereWeixinID($value)
  * @mixin \Eloquent
- * @property string|null $head_portrait 头像
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereHeadPortrait($value)
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -72,7 +73,6 @@ class User extends Authenticatable implements JWTSubject
     const IDENTIDY = [
         '广告主' => 1,
         '媒体主' => 2,
-        '代理'  => 3
     ];
 
     //JWTauth
