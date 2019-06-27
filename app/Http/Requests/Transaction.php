@@ -36,22 +36,33 @@ class Transaction extends Base
 
             // 买家待接单取消订单
             case 'acceptIndentBeforeCancel':
-                $rules['indent_num']  = ['required', new SpecialChar];
+                $rules['indent_num'] = ['required', new SpecialChar];
                 break;
 
             // 卖家接单
             case 'acceptIndent':
-                $rules['indent_num']  = ['required', new SpecialChar];
+                $rules['indent_num'] = ['required', new SpecialChar];
                 break;
 
             // 交易中买家取消订单
             case 'inTransactionBuyerCancel':
-                $rules['indent_num']  = ['required', new SpecialChar];
+                $rules['indent_num'] = ['required', new SpecialChar];
                 break;
 
             // 交易中卖家取消订单
             case 'inTransactionSellerCancel':
-                $rules['indent_num']  = ['required', new SpecialChar];
+                $rules['indent_num'] = ['required', new SpecialChar];
+                break;
+
+            // 卖家确认完成
+            case 'sellerComplete':
+                $rules['indent_num'] = ['required', new SpecialChar];
+                break;
+
+            // 卖家添加需求文档
+            case 'addAchievementsFile':
+                $rules['indent_num']        = ['required', new SpecialChar];
+                $rules['achievements_file'] = ['required', new SpecialChar];
                 break;
         }
 
@@ -62,7 +73,8 @@ class Transaction extends Base
     {
         return [
             'indent_num.required'  => '订单编号不得为空',
-            'demand_file.required' => '需求文件不得为空'
+            'demand_file.required' => '需求文件不得为空',
+            'achievements_file'    => '成功文件不得为空'
         ];
     }
 }

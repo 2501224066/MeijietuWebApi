@@ -76,8 +76,8 @@ $api->group(['version' => 'v1'], function ($api) {
             // 商品
                 // 创建商品
                 $api->post('createGoods', 'GoodsController@createGoods');
-                // 获取个人所有商品
-                $api->post('goodsBelongToUser', 'GoodsController@goodsBelongToUser');
+                // 获取自己商品
+                $api->post('goodsBelongSelf', 'GoodsController@goodsBelongSelf');
 
             // 收藏
                 // 收藏商品
@@ -108,6 +108,8 @@ $api->group(['version' => 'v1'], function ($api) {
             // 订单
                 // 生成订单
                 $api->post('createIndent', 'IndentController@createIndent');
+                // 获取自己订单
+                $api->post('indentBelongSelf', 'IndentController@indentBelongSelf');
 
             // 交易
                 // 订单付款
@@ -122,6 +124,10 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('inTransactionBuyerCancel', 'TransactionController@inTransactionBuyerCancel');
                 // 交易中买家取消订单
                 $api->post('inTransactionSellerCancel', 'TransactionController@inTransactionSellerCancel');
+                // 卖家确认完成
+                $api->post('sellerConfirmComplete', 'TransactionController@sellerConfirmComplete');
+                // 卖家添加需求文档
+                $api->post('addAchievementsFile', 'TransactionController@addAchievementsFile');
         });
     });
 });

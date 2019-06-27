@@ -128,6 +128,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $case_link 案例链接
  * @property-read \App\Models\Nb\GoodsPrice $one_goods_price
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereCaseLink($value)
+ * @property int|null $avg_retweet_num 平均转发数
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereAvgRetweetNum($value)
  */
 class Goods extends Model
 {

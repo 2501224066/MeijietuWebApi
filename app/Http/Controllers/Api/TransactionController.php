@@ -150,6 +150,7 @@ class TransactionController extends BaseController
      * 交易中卖家取消订单
      * 将购买资金与分成的卖家赔偿退给买家
      * @param TransactionRequests $request
+     * @return mixed
      */
     public function inTransactionSellerCancel(TransactionRequests $request)
     {
@@ -167,5 +168,47 @@ class TransactionController extends BaseController
         Wallet::checkChangLock($indentData->buyer_id);
         // 交易中买家取消订单资金操作
         Transaction::inTransactionSellerCancelMoneyOP($indentData);
+
+        return $this->success();
+    }
+
+    /**
+     * 卖家确认完成
+     * @param TransactionRequests $request
+     * @return mixed
+     */
+    public function sellerConfirmComplete(TransactionRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        // 订单数据
+        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 检查订单状态
+        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['交易中']);
+        // 检测订单归属
+        IndentInfo::checkIndentBelong($indentData->seller_id);
+        // 修改状态
+        Transaction::sellerComplete($indentData);
+
+        return $this->success();
+    }
+
+    /**
+     * 卖家添加成果文档
+     */
+    public function addAchievementsFile(TransactionRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        // 订单数据
+        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 检查订单状态
+        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
+        // 检测订单归属
+        IndentInfo::checkIndentBelong($indentData->seller_id);
+        // 添加
+        Transaction::addAchievementsFile($indentData, $request->achievements_file);
+
+        return $this->success();
     }
 }

@@ -67,7 +67,7 @@ class User extends Authenticatable implements JWTSubject
 
     public $incrementing = false;
 
-    public $fillable = ['uid', 'phone', 'email', 'password', 'nickname', 'ip'];
+    public $fillable = ['uid', 'phone', 'email', 'password', 'nickname', 'identity', 'ip'];
 
     const IDENTIDY = [
         '广告主' => 1,
@@ -88,16 +88,16 @@ class User extends Authenticatable implements JWTSubject
     }
 
     //添加用户
-    public static function add($phone, $email, $password, $nickname, $identity, $ip)
+    public static function add($request)
     {
         // 添加user
         $user = self::create([
-            'phone'         => htmlspecialchars($phone),
-            'email'         => htmlspecialchars($email),
-            'password'      => Hash::make(htmlspecialchars($password)),
-            'nickname'      => htmlspecialchars($nickname),
-            'identity'      => htmlspecialchars($identity),
-            'ip'            => $ip,
+            'phone'         => htmlspecialchars($request->phone),
+            'email'         => htmlspecialchars($request->email),
+            'password'      => Hash::make(htmlspecialchars($request->password)),
+            'nickname'      => htmlspecialchars($request->nickname),
+            'identity'      => htmlspecialchars($request->identity),
+            'ip'            => $request->getClientIp(),
             'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('value')
         ]);
         if (!$user)

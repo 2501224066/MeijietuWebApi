@@ -180,6 +180,8 @@ class Transaction
                 throw new Exception('操作失败');
             }
         });
+
+        return true;
     }
 
     // 交易中买家取消订单资金操作
@@ -262,6 +264,8 @@ class Transaction
                 throw new Exception('操作失败');
             }
         });
+
+        return true;
     }
 
     // 交易中卖家取消订单资金操作
@@ -318,5 +322,29 @@ class Transaction
                 throw new Exception('操作失败');
             }
         });
+
+        return true;
+    }
+
+    // 卖家完成
+    public static function sellerComplete($indentData)
+    {
+        $indentData->status = IndentInfo::STATUS['卖方完成'];
+        $re                 = $indentData->save();
+        if (!$re)
+            throw new Exception('操作失败');
+
+        return true;
+    }
+
+    // 成果文档
+    public static function addAchievementsFile($indentData, $achievements_file)
+    {
+        $indentData->achievements_file = $achievements_file;
+        $re                      = $indentData->save();
+        if (!$re)
+            throw new Exception('操作失败');
+
+        return true;
     }
 }

@@ -28,4 +28,16 @@ class IndentController extends BaseController
 
         return $this->success();
     }
+
+    /**
+     * 获取自己订单
+     *
+     */
+    public function indentBelongSelf()
+    {
+        // 订单数据
+        $re = IndentInfo::getSelfIndent();
+
+        return $this->success($re);
+    }
 }

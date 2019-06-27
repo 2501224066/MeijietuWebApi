@@ -81,10 +81,10 @@ class GoodsController extends BaseController
     }
 
     /**
-     * 个人所有商品
+     * 获取自己商品
      * @return mixed
      */
-    public function goodsBelongToUser()
+    public function goodsBelongSelf()
     {
         $re = Goods::getUserGoods();
 

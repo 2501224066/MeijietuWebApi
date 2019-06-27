@@ -7,12 +7,13 @@ namespace App\Models\Indent;
 use App\Models\Nb\Goods;
 use App\Models\SystemSetting;
 use App\Models\Tb\Modular;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
 
 /**
  * App\Models\Indent\IndentInfo
@@ -32,11 +33,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $create_time
  * @property string|null $refuse_cause 拒绝原因
  * @property string|null $demand_file 需求文档
- * @property string|null $prove_file 证明文档
+ * @property string|null $achievements_file 成果文档
  * @property int $delete_status 删除状态 0=未删除 1=删除
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereAchievementsFile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBargainingStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBuyerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereCompensateFee($value)
@@ -48,7 +50,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereIndentNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo wherePayAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo wherePayTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereProveFile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereRefuseCause($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereSellerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereSellerIncome($value)
@@ -82,6 +83,11 @@ class IndentInfo extends Model
         '全部完成'      => 7,
         '已结算'       => 8
     ];
+
+    public function indent_item(): HasMany
+    {
+        return $this->hasMany(IndentItem::class, 'indent_id', 'indent_id');
+    }
 
     // 数据整理
     public static function dataSorting($info)
@@ -257,5 +263,24 @@ class IndentInfo extends Model
             throw new Exception('议价未完成，请联系客服');
 
         return true;
+    }
+
+    // 自己订单
+    public static function getSelfIndent()
+    {
+        $user = JWTAuth::user();
+
+        $query  =IndentInfo::whereBuyerId($user->uid)
+            ->with('indent_item')
+            ->orderBy('create_time', 'ASC');
+
+        // 媒体主显示 已付款待接单且议价已完成 的状态节点后订单
+        if($user->identity == User::IDENTIDY['媒体主']){
+            $query->where('status', self::STATUS['已付款待接单'])
+                ->where('bargaining_status', self::BARGAINING_STATUS['已完成']);
+        }
+
+        return $query->paginate();
+
     }
 }
