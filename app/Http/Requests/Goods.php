@@ -46,7 +46,7 @@ class Goods extends Base
                         break;
 
                     case Modular::TAG['微博营销']:
-                        $rules['link']           = ['required', new SpecialChar];
+                        $rules['link']           = ['required'];
                         $rules['auth_type']      = ['required', new SpecialChar, 'numeric'];
                         $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
                         $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
@@ -70,8 +70,8 @@ class Goods extends Base
                         $rules['news_source_status']   = ['required', new SpecialChar, 'numeric'];
                         $rules['entry_status']         = ['required', new SpecialChar, 'numeric'];
                         $rules['included_sataus']      = ['required', new SpecialChar, 'numeric'];
-                        $rules['link']                 = ['required', new SpecialChar];
-                        $rules['case_link']            = ['required', new SpecialChar];
+                        $rules['link']                 = ['required'];
+                        $rules['case_link']            = ['required'];
                         $rules['link_type']            = ['required', new SpecialChar, 'numeric'];
                         $rules['weekend_status']       = ['required', new SpecialChar, 'numeric'];
                         $rules['platform_id']          = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
