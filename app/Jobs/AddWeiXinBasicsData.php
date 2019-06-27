@@ -3,8 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Nb\Goods;
-use App\Models\Tb\Modular;
-use Dingo\Api\Http\Request;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

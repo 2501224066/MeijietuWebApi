@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Captcha as CaptchaRequests;
-use App\Models\Captcha;;
+use App\Models\Captcha;
 use Gregwar\Captcha\CaptchaBuilder;
-use Cache;
+use Illuminate\Support\Facades\Cache;
 
 class CaptchaController extends BaseController
 {
@@ -34,19 +34,21 @@ class CaptchaController extends BaseController
     /**
      * 生成图形验证码
      */
-    public function getImgCode(CaptchaRequests $request)
+    public function getImgCode()
     {
         $builder = new CaptchaBuilder;
         $builder->build(100, 40);
         $code = $builder->getPhrase();
-        
-        $key = 'imgCode:'.$request->imgToken;
+
+        $imgToken = mt_rand(100000, 999999);
+        $key = 'imgCode:' . $imgToken;
         Cache::put($key, $code, 5);
-       
-        $output = $builder->output();
-        return response($output, 200)
-            ->header("Cache-Control", " no-cache, must-revalidate")
-            ->header('Content-Type', 'image/jpeg');
+
+        $base64Img = $builder->inline();
+        return $this->success([
+            'img_token' => $imgToken,
+            'img_code' => $base64Img
+        ]);
     }
 
     /**

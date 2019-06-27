@@ -33,11 +33,6 @@ class Captcha extends Base
                 $rules['code_type'] = ['required', new SpecialChar];
                 break;
 
-            // 获取图片验证码
-            case 'getImgCode':
-                $rules['imgToken'] = ['required', new SpecialChar];
-                break;
-
             // 检查图片验证码
             case 'checkImgCode':
                 $rules['imgToken'] = ['required', new SpecialChar];
