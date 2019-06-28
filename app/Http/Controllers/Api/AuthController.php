@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Log\LogLogin;
+use App\Models\RealnamePeople;
 use App\Models\Up\Wallet;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
@@ -132,9 +133,11 @@ class AuthController extends BaseController
      */
     public function me()
     {
-        $user = auth('api')->user();
+        $user           = auth('api')->user();
+        $realnamePeople = RealnamePeople::whereUid($user->uid)->first();
         return $this->success([
             "head_portrait"   => $user->head_portrait,
+            "truename"        => $realnamePeople ? $realnamePeople->truename : null,
             "nickname"        => $user->nickname,
             "sex"             => $user->sex,
             "email"           => $user->email,
