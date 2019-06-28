@@ -17,14 +17,14 @@ class TransactionCompleteDelayPayment extends Command
      *
      * @var string
      */
-    protected $signature = 'trans:payment';
+    protected $signature = 'transaction:complete';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '订阅Redis的Key过期通知实现交易完成定时打款';
+    protected $description = '延迟打款完成结算';
 
     /**
      * Create a new command instance.
