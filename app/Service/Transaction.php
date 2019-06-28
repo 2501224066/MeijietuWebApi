@@ -11,6 +11,7 @@ use App\Models\Up\Wallet;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Transaction
 {
@@ -79,6 +80,58 @@ class Transaction
         return true;
     }
 
+    // 待接单取消订单/卖家拒单资金操作，录入取消原因
+    public static function fullRefundToBuyer($indentData, $cancelCause)
+    {
+        DB::transaction(function () use ($indentData, $cancelCause) {
+            try {
+                $time = date('Y-m-d H:i:s');
+                $M    = $indentData->indent_amount;
+                $U    = $indentData->buyer_id;
+
+                // 公共钱包资金减少
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $M;
+                Wallet::whereUid(Wallet::CENTERID)->update([
+                    'available_money' => $centerMoney,
+                    'time'            => $time,
+                    'change_lock'     => createWalletChangeLock(Wallet::CENTERID, $centerMoney, $time)
+                ]);
+
+                // 买家家钱包资金增加
+                $buyerMoney = Wallet::whereUid($U)->value('available_money') + $M;
+                Wallet::whereUid($U)->update([
+                    'available_money' => $buyerMoney,
+                    'time'            => $time,
+                    'change_lock'     => createWalletChangeLock($U, $buyerMoney, $time)
+                ]);
+
+                // 生成交易流水
+                $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key
+                $runwaterNum = createRunwaterNum($key);
+                Runwater::create([
+                    'runwater_num' => $runwaterNum,
+                    'form_uid'     => Wallet::CENTERID,
+                    'to_uid'       => $U,
+                    'indent_id'    => $indentData->indent_id,
+                    'indent_num'   => $indentData->indent_num,
+                    'type'         => Runwater::TYPE['取消订单全额退款'],
+                    'direction'    => Runwater::DIRECTION['转入'],
+                    'money'        => $M,
+                    'status'       => Runwater::STATUS['成功']
+                ]);
+                Cache::increment($key);
+
+                // 修改订单信息
+                $indentData->status       = (JWTAuth::user()->uid == $indentData->buyer_id) ? IndentInfo::STATUS['待接单买家取消订单'] : IndentInfo::STATUS['卖家拒单'];
+                $indentData->cancel_cause = $cancelCause;
+                $indentData->save();
+            } catch (\Exception $e) {
+                throw new Exception('操作失败');
+            }
+        });
+
+        return true;
+    }
 
     // 卖家支付赔偿保证费
     public static function payCompensateFee($indentData)
@@ -132,62 +185,10 @@ class Transaction
         return true;
     }
 
-    // 全额退款给买家
-    public static function fullRefundToBuyer($indentData)
-    {
-        DB::transaction(function () use ($indentData) {
-            try {
-                $time = date('Y-m-d H:i:s');
-                $M    = $indentData->indent_amount;
-                $U    = $indentData->buyer_id;
-
-                // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $M;
-                Wallet::whereUid(Wallet::CENTERID)->update([
-                    'available_money' => $centerMoney,
-                    'time'            => $time,
-                    'change_lock'     => createWalletChangeLock(Wallet::CENTERID, $centerMoney, $time)
-                ]);
-
-                // 买家家钱包资金增加
-                $buyerMoney = Wallet::whereUid($U)->value('available_money') + $M;
-                Wallet::whereUid($U)->update([
-                    'available_money' => $buyerMoney,
-                    'time'            => $time,
-                    'change_lock'     => createWalletChangeLock($U, $buyerMoney, $time)
-                ]);
-
-                // 生成交易流水
-                $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key
-                $runwaterNum = createRunwaterNum($key);
-                Runwater::create([
-                    'runwater_num' => $runwaterNum,
-                    'form_uid'     => Wallet::CENTERID,
-                    'to_uid'       => $U,
-                    'indent_id'    => $indentData->indent_id,
-                    'indent_num'   => $indentData->indent_num,
-                    'type'         => Runwater::TYPE['取消订单全额退款'],
-                    'direction'    => Runwater::DIRECTION['转入'],
-                    'money'        => $M,
-                    'status'       => Runwater::STATUS['成功']
-                ]);
-                Cache::increment($key);
-
-                // 修改订单信息
-                $indentData->status = IndentInfo::STATUS['待接单取消订单'];
-                $indentData->save();
-            } catch (\Exception $e) {
-                throw new Exception('操作失败');
-            }
-        });
-
-        return true;
-    }
-
     // 交易中买家取消订单资金操作
-    public static function inTransactionBuyerCancelMoneyOP($indentData)
+    public static function inTransactionBuyerCancelMoneyOP($indentData, $cancelCause)
     {
-        DB::transaction(function () use ($indentData) {
+        DB::transaction(function () use ($indentData, $cancelCause) {
             try {
                 $time = date('Y-m-d H:i:s');
                 // 赔偿保证费
@@ -258,7 +259,8 @@ class Transaction
                 Cache::increment($key);
 
                 // 修改订单信息
-                $indentData->status = IndentInfo::STATUS['交易中买家取消订单'];
+                $indentData->status       = IndentInfo::STATUS['交易中买家取消订单'];
+                $indentData->cancel_cause = $cancelCause;
                 $indentData->save();
             } catch (\Exception $e) {
                 throw new Exception('操作失败');
@@ -269,9 +271,9 @@ class Transaction
     }
 
     // 交易中卖家取消订单资金操作
-    public static function inTransactionSellerCancelMoneyOP($indentData)
+    public static function inTransactionSellerCancelMoneyOP($indentData, $cancelCause)
     {
-        DB::transaction(function () use ($indentData) {
+        DB::transaction(function () use ($indentData, $cancelCause) {
             try {
                 $time = date('Y-m-d H:i:s');
                 // 赔偿保证费
@@ -316,7 +318,8 @@ class Transaction
                 Cache::increment($key);
 
                 // 修改订单信息
-                $indentData->status = IndentInfo::STATUS['交易中卖家取消订单'];
+                $indentData->status       = IndentInfo::STATUS['交易中卖家取消订单'];
+                $indentData->cancel_cause = $cancelCause;
                 $indentData->save();
             } catch (\Exception $e) {
                 throw new Exception('操作失败');
@@ -341,9 +344,28 @@ class Transaction
     public static function addAchievementsFile($indentData, $achievements_file)
     {
         $indentData->achievements_file = $achievements_file;
-        $re                      = $indentData->save();
+        $re                            = $indentData->save();
         if (!$re)
             throw new Exception('操作失败');
+
+        return true;
+    }
+
+    // 买家完成
+    public static function buyerComplete($indentData)
+    {
+        try {
+            // 将订单号存入Redis，设置过期时间
+            $delayTime = SystemSetting::whereSettingName('trans_payment_delay')->value('value');
+            $key       = 'TRANSACTION_COMPLETE_DELAY_PAYMENT:' . $indentData->indent_num;
+            Cache::put($key, mt_rand(100000, 999999), $delayTime);
+
+            // 修改状态
+            $indentData->status = IndentInfo::STATUS['全部完成'];
+            $indentData->save();
+        } catch (\Exception $e) {
+            throw new Exception('操作失败');
+        }
 
         return true;
     }

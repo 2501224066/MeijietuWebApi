@@ -62,15 +62,13 @@ class TransactionController extends BaseController
     }
 
     /**
-     * 买家待接单取消订单
+     * 待接单买家取消订单/卖家拒单
      * 全额退款给买家
      * @param TransactionRequests $request
      * @return mixed
      */
     public function acceptIndentBeforeCancel(TransactionRequests $request)
     {
-        // 检查身份
-        User::checkIdentity(User::IDENTIDY['广告主']);
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
@@ -81,8 +79,8 @@ class TransactionController extends BaseController
         Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
         // 校验修改校验锁
         Wallet::checkChangLock($indentData->buyer_id);
-        // 全额退款给买家
-        Transaction::fullRefundToBuyer($indentData);
+        // 待接单取消订单/卖家拒单资金操作，录入取消原因
+        Transaction::fullRefundToBuyer($indentData, htmlspecialchars($request->cancel_cause));
 
         return $this->success();
     }
@@ -141,7 +139,7 @@ class TransactionController extends BaseController
         // 校验买家修改校验锁
         Wallet::checkChangLock($indentData->buyer_id);
         // 交易中买家取消订单资金操作
-        Transaction::inTransactionBuyerCancelMoneyOP($indentData);
+        Transaction::inTransactionBuyerCancelMoneyOP($indentData, htmlspecialchars($request->cancel_cause));
 
         return $this->success();
     }
@@ -167,7 +165,7 @@ class TransactionController extends BaseController
         // 校验买家修改校验锁
         Wallet::checkChangLock($indentData->buyer_id);
         // 交易中买家取消订单资金操作
-        Transaction::inTransactionSellerCancelMoneyOP($indentData);
+        Transaction::inTransactionSellerCancelMoneyOP($indentData, htmlspecialchars($request->cancel_cause));
 
         return $this->success();
     }
@@ -195,6 +193,8 @@ class TransactionController extends BaseController
 
     /**
      * 卖家添加成果文档
+     * @param TransactionRequests $request
+     * @return mixed
      */
     public function addAchievementsFile(TransactionRequests $request)
     {
@@ -211,4 +211,26 @@ class TransactionController extends BaseController
 
         return $this->success();
     }
+
+    /**
+     * 买方确认完成
+     * 将订单号存入Redis设置过期事件
+     * 以遍下一步通过Redis的Key过期订阅机制去完成打款
+     */
+    public function buyerConfirmComplete(TransactionRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['广告主']);
+        // 订单数据
+        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 检查订单状态
+        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
+        // 检测订单归属
+        IndentInfo::checkIndentBelong($indentData->buyer_id);
+        // 修改状态
+        Transaction::buyerComplete($indentData);
+
+        return $this->success();
+    }
+
 }

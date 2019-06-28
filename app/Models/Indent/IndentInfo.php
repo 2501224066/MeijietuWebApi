@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+
 /**
  * App\Models\Indent\IndentInfo
  *
@@ -29,18 +30,20 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $pay_time 订单支付时间
  * @property float $seller_income 卖家收入 默认=订单价格 *（1 - 服务费率）
  * @property int $bargaining_status 议价状态 0=未完成 1=已完成
- * @property int $status 交易状态 0=待付款 1=已付款待接单 2=待接单取消订单 3=交易中 4=交易中买家取消订单 5=交易中卖家取消订单 6=卖方完成 7=全部完成 8=已结算
+ * @property int $status 交易状态 0=待付款 1=已付款待接单 2=待接单买家取消订单 3=卖家拒单  4=交易中 5=交易中买家取消订单 6=交易中卖家取消订单 7=卖方完成 8=全部完成 9=已结算
  * @property string|null $create_time
- * @property string|null $refuse_cause 拒绝原因
+ * @property string|null $cancel_cause 取消原因
  * @property string|null $demand_file 需求文档
  * @property string|null $achievements_file 成果文档
  * @property int $delete_status 删除状态 0=未删除 1=删除
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Indent\IndentItem[] $indent_item
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereAchievementsFile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBargainingStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBuyerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereCancelCause($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereCompensateFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereCreateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereDeleteStatus($value)
@@ -50,13 +53,11 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereIndentNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo wherePayAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo wherePayTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereRefuseCause($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereSellerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereSellerIncome($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereTotalAmount($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Indent\IndentItem[] $indent_item
  */
 class IndentInfo extends Model
 {
@@ -74,15 +75,16 @@ class IndentInfo extends Model
     ];
 
     const STATUS = [
-        '待付款'       => 0,
-        '已付款待接单'    => 1,
-        '待接单取消订单'   => 2,
-        '交易中'       => 3,
-        '交易中买家取消订单' => 4,
-        '交易中卖家取消订单' => 5,
-        '卖方完成'      => 6,
-        '全部完成'      => 7,
-        '已结算'       => 8
+        '待付款'            => 0,
+        '已付款待接单'         => 1,
+        '待接单买家取消订单' => 2,
+        '卖家拒单'           => 3,
+        '交易中'            => 4,
+        '交易中买家取消订单'      => 5,
+        '交易中卖家取消订单'      => 6,
+        '卖方完成'           => 7,
+        '全部完成'           => 8,
+        '已结算'            => 9
     ];
 
     public function indent_item(): HasMany
@@ -186,13 +188,13 @@ class IndentInfo extends Model
 
                         // 软文模式下卖家收入为商品底价 无需议价
                         case Modular::SETTLEMENT_TYPE['软文模式']:
-                            $seller_income = $dt['floor_amount'];
+                            $seller_income     = $dt['floor_amount'];
                             $bargaining_status = IndentInfo::BARGAINING_STATUS['已完成'];
                             break;
 
                         // 自身模式下卖家(平台自己)收入订单价格 无需议价
                         case Modular::SETTLEMENT_TYPE['自身模式']:
-                            $seller_income = $dt['amount'];
+                            $seller_income     = $dt['amount'];
                             $bargaining_status = IndentInfo::BARGAINING_STATUS['已完成'];
                             break;
                     }
@@ -271,12 +273,12 @@ class IndentInfo extends Model
     {
         $user = JWTAuth::user();
 
-        $query  =IndentInfo::whereBuyerId($user->uid)
+        $query = IndentInfo::whereBuyerId($user->uid)
             ->with('indent_item')
             ->orderBy('create_time', 'ASC');
 
         // 媒体主显示 已付款待接单且议价已完成 的状态节点后订单
-        if($user->identity == User::IDENTIDY['媒体主']){
+        if ($user->identity == User::IDENTIDY['媒体主']) {
             $query->where('status', self::STATUS['已付款待接单'])
                 ->where('bargaining_status', self::BARGAINING_STATUS['已完成']);
         }

@@ -128,6 +128,8 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('sellerConfirmComplete', 'TransactionController@sellerConfirmComplete');
                 // 卖家添加需求文档
                 $api->post('addAchievementsFile', 'TransactionController@addAchievementsFile');
+                // 买家确认完成
+                $api->post('buyerConfirmComplete', 'TransactionController@sellerConfirmComplete');
         });
     });
 });
