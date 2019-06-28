@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Emadadly\LaravelUuid\Uuids;
 use Illuminate\Support\Facades\Hash;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -60,7 +59,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  */
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable, Uuids;
+    use Notifiable;
 
     protected $table = 'user';
 

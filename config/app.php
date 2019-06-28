@@ -182,8 +182,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        // Uuid
-        Emadadly\LaravelUuid\LaravelUuidServiceProvider::class,
         // DingoApi
         Dingo\Api\Provider\LaravelServiceProvider::class,
         // AliSms
