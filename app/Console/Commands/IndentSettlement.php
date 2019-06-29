@@ -106,7 +106,7 @@ class IndentSettlement extends Command
                 // 完成结算
                 Log::info('【订单结算】 订单号 ' . $indentNum . ' 完成结算' . "\n");
             } catch (\Exception $e) {
-                Log::info('【订单结算】 结算失败:订单号 ' . $indentNum . "\n");
+                Log::info('【订单结算】 结算失败:订单号 ' . $indentNum . "失败原因:" . $e->getMessage() . "\n");
                 LogIndentSettlement::create([
                     'indent_num' => $indentNum,
                     'created_at' => date('Y-m-d H:i:s')
