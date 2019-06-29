@@ -214,9 +214,7 @@ class TransactionController extends BaseController
 
     /**
      * 买方确认完成
-     * 将订单号存入Redis设置过期事件
-     * 以遍下一步通过Redis的Key过期订阅机制去完成打款
-     * 运行 php artisan transaction:complete 延迟打款完成结算
+     * 使用延迟队列延迟打款
      */
     public function buyerConfirmComplete(TransactionRequests $request)
     {

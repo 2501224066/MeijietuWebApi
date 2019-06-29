@@ -31,7 +31,7 @@ class UserCollection extends Base
 
             // 获取收藏
             case 'getCollection':
-                $rules['modular_type'] = ['present', new SpecialChar];
+                $rules['modular_type'] = ['present'];
                 break;
         }
 

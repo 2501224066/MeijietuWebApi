@@ -13,10 +13,10 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
+
 /**
  * App\Models\User
  *
- * @property string $id UUID
  * @property int $uid 用户id （初始值1000000）
  * @property string $nickname 昵称
  * @property string $email 邮箱
@@ -37,12 +37,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User uuid($uuid, $first = true)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirth($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereHeadPortrait($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIdentity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNickname($value)
@@ -67,7 +65,7 @@ class User extends Authenticatable implements JWTSubject
 
     public $incrementing = false;
 
-    public $fillable = ['uid', 'phone', 'email', 'password', 'nickname', 'identity', 'ip'];
+    public $guarded = [];
 
     const IDENTIDY = [
         '广告主' => 1,
@@ -102,7 +100,7 @@ class User extends Authenticatable implements JWTSubject
         if (!$user)
             throw new Exception('注册失败');
 
-        return self::whereId($user->id)->value('uid');
+        return self::wherePhone($user->phone)->value('uid');
     }
 
     // 分配客服

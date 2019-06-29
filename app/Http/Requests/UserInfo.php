@@ -54,12 +54,12 @@ class UserInfo extends Base
 
             // 修改用户信息
             case 'saveInfo':
-                $rules['head_portrait'] = ['present', new SpecialChar];
+                $rules['head_portrait'] = ['required', new SpecialChar];
                 $rules['nickname']      = ['required', new SpecialChar];
-                $rules['sex']           = ['present', new SpecialChar];
-                $rules['birth']         = ['present', new SpecialChar];
-                $rules['qq_ID']         = ['present', new SpecialChar];
-                $rules['weixin_ID']     = ['present', new SpecialChar];
+                $rules['sex']           = ['present'];
+                $rules['birth']         = ['present'];
+                $rules['qq_ID']         = ['present'];
+                $rules['weixin_ID']     = ['present'];
                 $rules['imgCode']       = ['required', new SpecialChar];
                 $rules['imgToken']      = ['required', new SpecialChar];
                 break;
@@ -107,6 +107,7 @@ class UserInfo extends Base
             'smsCode.required'         => "验证码不得为空",
             'smsCode.numeric'          => "验证码必须为数字",
 
+            "head_portrait"     => "头像不得为空",
             "nickname.required" => "昵称不得为空",
             "sex.numeric"       => "性别不合规",
             "qq_ID.numeric"     => "QQ号不合规",

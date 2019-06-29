@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Jobs\IndentSettlement;
 use App\Models\Indent\IndentInfo;
 use App\Models\SystemSetting;
 use App\Models\Up\Runwater;
@@ -355,14 +356,13 @@ class Transaction
     public static function buyerComplete($indentData)
     {
         try {
-            // 将订单号存入Redis，设置过期时间
-            $delayTime = SystemSetting::whereSettingName('trans_payment_delay')->value('value');
-            $key       = 'TRANSACTION_COMPLETE_DELAY_PAYMENT:' . $indentData->indent_num;
-            Cache::put($key, mt_rand(100000, 999999), $delayTime);
-
             // 修改状态
             $indentData->status = IndentInfo::STATUS['全部完成'];
             $indentData->save();
+
+            // 存入延迟队列
+            $delayTime = SystemSetting::whereSettingName('trans_payment_delay')->value('value');
+            IndentSettlement::dispatch($indentData->indent_num)->delay($delayTime);
         } catch (\Exception $e) {
             throw new Exception('操作失败');
         }

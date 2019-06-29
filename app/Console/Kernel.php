@@ -14,8 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // 注册artisan命令
-        Commands\IndentSettlement::class
+       //
     ];
 
     /**

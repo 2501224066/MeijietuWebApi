@@ -26,71 +26,71 @@ class SelectGoods extends Base
             // 搜索微信商品
             case 'selectWeixinGoods':
                 $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:weixin_theme,theme_id'];
-                $rules['keyword']          = ['present', new SpecialChar];
-                $rules['filed_id']         = ['present', new SpecialChar];
-                $rules['fansnumlevel_min'] = ['present', new SpecialChar];
-                $rules['fansnumlevel_max'] = ['present', new SpecialChar];
-                $rules['priceclassify_id'] = ['present', new SpecialChar];
-                $rules['pricelevel_min']   = ['present', new SpecialChar];
-                $rules['pricelevel_max']   = ['present', new SpecialChar];
-                $rules['readlevel_min']    = ['present', new SpecialChar];
-                $rules['readlevel_max']    = ['present', new SpecialChar];
-                $rules['region_id']        = ['present', new SpecialChar];
+                $rules['keyword']          = ['present'];
+                $rules['filed_id']         = ['present'];
+                $rules['fansnumlevel_min'] = ['present'];
+                $rules['fansnumlevel_max'] = ['present'];
+                $rules['priceclassify_id'] = ['present'];
+                $rules['pricelevel_min']   = ['present'];
+                $rules['pricelevel_max']   = ['present'];
+                $rules['readlevel_min']    = ['present'];
+                $rules['readlevel_max']    = ['present'];
+                $rules['region_id']        = ['present'];
                 break;
 
             // 搜索微博商品
             case 'selectWeiboGoods':
                 $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:weibo_theme,theme_id'];
-                $rules['keyword']          = ['present', new SpecialChar];
-                $rules['filed_id']         = ['present', new SpecialChar];
-                $rules['fansnumlevel_min'] = ['present', new SpecialChar];
-                $rules['fansnumlevel_max'] = ['present', new SpecialChar];
-                $rules['priceclassify_id'] = ['present', new SpecialChar];
-                $rules['pricelevel_min']   = ['present', new SpecialChar];
-                $rules['pricelevel_max']   = ['present', new SpecialChar];
-                $rules['authtype_id']      = ['present', new SpecialChar];
-                $rules['region_id']        = ['present', new SpecialChar];
+                $rules['keyword']          = ['present'];
+                $rules['filed_id']         = ['present'];
+                $rules['fansnumlevel_min'] = ['present'];
+                $rules['fansnumlevel_max'] = ['present'];
+                $rules['priceclassify_id'] = ['present'];
+                $rules['pricelevel_min']   = ['present'];
+                $rules['pricelevel_max']   = ['present'];
+                $rules['authtype_id']      = ['present'];
+                $rules['region_id']        = ['present'];
                 break;
 
             // 搜索视频商品
             case 'selectVideoGoods':
                 $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:video_theme,theme_id'];
-                $rules['keyword']          = ['present', new SpecialChar];
-                $rules['filed_id']         = ['present', new SpecialChar];
-                $rules['platform_id']      = ['present', new SpecialChar];
-                $rules['fansnumlevel_min'] = ['present', new SpecialChar];
-                $rules['fansnumlevel_max'] = ['present', new SpecialChar];
-                $rules['priceclassify_id'] = ['present', new SpecialChar];
-                $rules['pricelevel_min']   = ['present', new SpecialChar];
-                $rules['pricelevel_max']   = ['present', new SpecialChar];
-                $rules['region_id']        = ['present', new SpecialChar];
+                $rules['keyword']          = ['present'];
+                $rules['filed_id']         = ['present'];
+                $rules['platform_id']      = ['present'];
+                $rules['fansnumlevel_min'] = ['present'];
+                $rules['fansnumlevel_max'] = ['present'];
+                $rules['priceclassify_id'] = ['present'];
+                $rules['pricelevel_min']   = ['present'];
+                $rules['pricelevel_max']   = ['present'];
+                $rules['region_id']        = ['present'];
                 break;
 
             // 搜索自媒体商品
             case 'selectSelfmediaGoods':
                 $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:selfmedia_theme,theme_id'];
-                $rules['keyword']          = ['present', new SpecialChar];
-                $rules['filed_id']         = ['present', new SpecialChar];
-                $rules['platform_id']      = ['present', new SpecialChar];
-                $rules['fansnumlevel_min'] = ['present', new SpecialChar];
-                $rules['fansnumlevel_max'] = ['present', new SpecialChar];
-                $rules['pricelevel_min']   = ['present', new SpecialChar];
-                $rules['pricelevel_max']   = ['present', new SpecialChar];
-                $rules['region_id']        = ['present', new SpecialChar];
+                $rules['keyword']          = ['present'];
+                $rules['filed_id']         = ['present'];
+                $rules['platform_id']      = ['present'];
+                $rules['fansnumlevel_min'] = ['present'];
+                $rules['fansnumlevel_max'] = ['present'];
+                $rules['pricelevel_min']   = ['present'];
+                $rules['pricelevel_max']   = ['present'];
+                $rules['region_id']        = ['present'];
                 break;
 
             // 搜索软文商品
             case 'selectSoftarticleGoods':
                 $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:softarticle_theme,theme_id'];
-                $rules['keyword']          = ['present', new SpecialChar];
-                $rules['filed_id']         = ['present', new SpecialChar];
-                $rules['platform_id']      = ['present', new SpecialChar];
-                $rules['sendspeed_id']     = ['present', new SpecialChar];
-                $rules['industry_id']      = ['present', new SpecialChar];
-                $rules['entryclassify_id'] = ['present', new SpecialChar];
-                $rules['pricelevel_min']   = ['present', new SpecialChar];
-                $rules['pricelevel_max']   = ['present', new SpecialChar];
-                $rules['region_id']        = ['present', new SpecialChar];
+                $rules['keyword']          = ['present'];
+                $rules['filed_id']         = ['present'];
+                $rules['platform_id']      = ['present'];
+                $rules['sendspeed_id']     = ['present'];
+                $rules['industry_id']      = ['present'];
+                $rules['entryclassify_id'] = ['present'];
+                $rules['pricelevel_min']   = ['present'];
+                $rules['pricelevel_max']   = ['present'];
+                $rules['region_id']        = ['present'];
                 break;
 
             //单个商品信息
