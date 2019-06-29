@@ -33,6 +33,6 @@ class UsalesmanController extends BaseController
         $uid = JWTAuth::user()->uid;
         User::withUsalesman($uid);
 
-        return $this->success('分配客服成功');
+        return $this->success();
     }
 }

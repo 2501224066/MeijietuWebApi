@@ -130,6 +130,9 @@ $api->group(['version' => 'v1'], function ($api) {
                 $api->post('addAchievementsFile', 'TransactionController@addAchievementsFile');
                 // 买家确认完成
                 $api->post('buyerConfirmComplete', 'TransactionController@sellerConfirmComplete');
+
+            // 流水记录
+                $api->post('runwaterList', 'RunwaterController@runWaterList');
         });
     });
 });

@@ -55,7 +55,7 @@
                 </div>
                 <div class="panel-body">
                     <p>尊敬的用户 您好：</p>
-                    <p style="text-indent:2em;">您的{{ $codeType }}为【{{ $code }}】，有效期为5分钟！请在有效期内使用！<p>
+                    <p style="text-indent:2em;">{{ $content }}<p>
                 </div>
                 <div class="panel-footer">
                     <span style="float:right;">时间：{{ $time }}</span>

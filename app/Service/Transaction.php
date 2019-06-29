@@ -57,7 +57,7 @@ class Transaction
                 $runwaterNum = createRunwaterNum($key);
                 Runwater::create([
                     'runwater_num' => $runwaterNum,
-                    'form_uid'     => $U,
+                    'from_uid'     => $U,
                     'to_uid'       => Wallet::CENTERID,
                     'indent_id'    => $indentData->indent_id,
                     'indent_num'   => $indentData->indent_num,
@@ -111,7 +111,7 @@ class Transaction
                 $runwaterNum = createRunwaterNum($key);
                 Runwater::create([
                     'runwater_num' => $runwaterNum,
-                    'form_uid'     => Wallet::CENTERID,
+                    'from_uid'     => Wallet::CENTERID,
                     'to_uid'       => $U,
                     'indent_id'    => $indentData->indent_id,
                     'indent_num'   => $indentData->indent_num,
@@ -164,7 +164,7 @@ class Transaction
                 $runwaterNum = createRunwaterNum($key);
                 Runwater::create([
                     'runwater_num' => $runwaterNum,
-                    'form_uid'     => $U,
+                    'from_uid'     => $U,
                     'to_uid'       => Wallet::CENTERID,
                     'indent_id'    => $indentData->indent_id,
                     'indent_num'   => $indentData->indent_num,
@@ -224,7 +224,7 @@ class Transaction
                 $runwaterNum = createRunwaterNum($key);
                 Runwater::create([
                     'runwater_num' => $runwaterNum,
-                    'form_uid'     => Wallet::CENTERID,
+                    'from_uid'     => Wallet::CENTERID,
                     'to_uid'       => $indentData->buyer_id,
                     'indent_id'    => $indentData->indent_id,
                     'indent_num'   => $indentData->indent_num,
@@ -248,7 +248,7 @@ class Transaction
                 $runwaterNum = createRunwaterNum($key);
                 Runwater::create([
                     'runwater_num' => $runwaterNum,
-                    'form_uid'     => Wallet::CENTERID,
+                    'from_uid'     => Wallet::CENTERID,
                     'to_uid'       => $indentData->seller_id,
                     'indent_id'    => $indentData->indent_id,
                     'indent_num'   => $indentData->indent_num,
@@ -307,7 +307,7 @@ class Transaction
                 $runwaterNum = createRunwaterNum($key);
                 Runwater::create([
                     'runwater_num' => $runwaterNum,
-                    'form_uid'     => Wallet::CENTERID,
+                    'from_uid'     => Wallet::CENTERID,
                     'to_uid'       => $indentData->buyer_id,
                     'indent_id'    => $indentData->indent_id,
                     'indent_num'   => $indentData->indent_num,

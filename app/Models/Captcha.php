@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Mail\emailVerifCode;
+use App\Service\Type;
 use Cache;
 use Mockery\Exception;
 use Illuminate\Support\Facades\Mail;
@@ -10,10 +11,14 @@ use Mrgoon\AliSms\AliSms;
 
 class Captcha
 {
+    const TYPE = [
+        '验证码' => 1
+    ];
+
     //检查请求验证码类型
     public static function checkCodeType($codeType)
     {
-        if (!in_array($codeType, array_keys(type("CODE_TYPE"))))
+        if (!in_array($codeType, Type::CODE_TYPE))
             throw new Exception('请求验证码类型错误');
 
         return true;
@@ -46,27 +51,5 @@ class Captcha
 
         return true;
 
-    }
-
-    //发送邮箱验证码
-    public static function sendEmailVerifCode($email, $code_type, $code)
-    {
-        $re = Mail::to($email)
-            ->cc(ENV('MAIL_FROM_ADDRESS'))
-            ->send(new emailVerifCode(type("CODE_TYPE")[$code_type], $code));
-        if (!$re)
-            throw new Exception('邮箱验证码发送失败');
-
-        return true;
-    }
-
-    //发送短信验证码
-    public static function sendSmsVerifCode($phone, $code)
-    {
-        $ali_sms = new AliSms();
-        $re      = $ali_sms->sendSms($phone, env('ALIYUN_SMS_TEMPLATE_CODE'), ['code' => $code]);
-
-        if (!($re->Message == "OK"))
-            throw new Exception('短信验证码发送失败');
     }
 }

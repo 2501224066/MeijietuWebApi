@@ -31,7 +31,7 @@ class UserInfoController extends BaseController
         // 数据存入数据库
         RealnamePeople::add($request);
 
-        return $this->success('个人实名认证成功');
+        return $this->success();
     }
 
     /**
@@ -59,7 +59,7 @@ class UserInfoController extends BaseController
         // 数据存入数据库
         RealnameEnterprise::add($request);
 
-        return $this->success('企业实名认证成功');
+        return $this->success();
     }
 
     /**
@@ -83,7 +83,7 @@ class UserInfoController extends BaseController
         // 修改信息并记录
         User::saveInfo($request);
 
-        return $this->success('修改完成');
+        return $this->success();
     }
 
     /**
@@ -100,7 +100,7 @@ class UserInfoController extends BaseController
         // 修改手机号并记录
         User::savePhoneAndLog($request->phone, $request->new_phone);
 
-        return $this->success('修改完成');
+        return $this->success();
     }
 
     /**
@@ -118,6 +118,6 @@ class UserInfoController extends BaseController
         // 修改密码
         User::savePass($phone, $request->new_pass);
 
-        return $this->success('修改完成');
+        return $this->success();
     }
 }

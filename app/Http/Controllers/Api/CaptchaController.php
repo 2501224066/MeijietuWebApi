@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Captcha as CaptchaRequests;
+use App\Jobs\SendEmail;
+use App\Jobs\SendSms;
 use App\Models\Captcha;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Support\Facades\Cache;
@@ -15,9 +17,9 @@ class CaptchaController extends BaseController
     public function emailVerifCode(CaptchaRequests $request)
     {
         $code = Captcha::createAndKeepCode($request->code_type, $request->email);
-        Captcha::sendEmailVerifCode($request->email, $request->code_type, $code);
+        SendEmail::dispatch(Captcha::TYPE['验证码'], $request->email, $code)->onQueue('SendEmail');
 
-        return $this->success('邮件发送成功，请注意查收');
+        return $this->success();
     }
 
     /**
@@ -26,9 +28,9 @@ class CaptchaController extends BaseController
     public function smsVerifCode(CaptchaRequests $request)
     {
         $code = Captcha::createAndKeepCode($request->code_type, $request->phone);
-        Captcha::sendSmsVerifCode($request->phone, $code);
+        SendSms::dispatch(Captcha::TYPE['验证码'], $request->phone, $code)->onQueue('SendSms');
 
-        return $this->success('短信验证码发送成功，请注意查收');
+        return $this->success();
     }
 
     /**
@@ -41,13 +43,13 @@ class CaptchaController extends BaseController
         $code = $builder->getPhrase();
 
         $imgToken = mt_rand(100000, 999999);
-        $key = 'imgCode:' . $imgToken;
+        $key      = 'imgCode:' . $imgToken;
         Cache::put($key, $code, 5);
 
         $base64Img = $builder->inline();
         return $this->success([
             'img_token' => $imgToken,
-            'img_code' => $base64Img
+            'img_code'  => $base64Img
         ]);
     }
 

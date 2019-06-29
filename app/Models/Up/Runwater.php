@@ -11,12 +11,13 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
+
 /**
  * App\Models\Up\Runwater
  *
  * @property int $runwater_id 流水id
  * @property string $runwater_num 流水单号
- * @property int|null $form_uid 来源处
+ * @property int|null $from_uid 来源处
  * @property int|null $to_uid 去往处
  * @property int|null $indent_id 订单id
  * @property string|null $indent_num 订单号
@@ -43,7 +44,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereDirection($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereFormUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereFromUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndentNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereMoney($value)
@@ -94,9 +95,7 @@ class Runwater extends Model
         return sprintf("%04d", Cache::get($key));
     }
 
-    /**
-     * 生成充值流水
-     */
+    //生成充值流水
     public static function createRechargeRunwater($money)
     {
         $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key

@@ -82,7 +82,7 @@ class AddWeiXinBasicsData implements ShouldQueue
                 DB::table('up_runwater')
                     ->insert([
                         'runwater_num' => $runwaterNum,
-                        'form_uid'     => Wallet::CENTERID,
+                        'from_uid'     => Wallet::CENTERID,
                         'to_uid'       => $indentData->seller_id,
                         'indent_id'    => $indentData->indent_id,
                         'indent_num'   => $indentData->indent_num,
