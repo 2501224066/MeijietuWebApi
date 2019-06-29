@@ -43,7 +43,7 @@ class AddWeiXinBasicsData implements ShouldQueue
 
         // 存入商品表中
         if ($re)
-            DB::table('Goods')
+            DB::table('nb_goods')
                 ->where('goods_id', $this->goodsId)
                 ->update([
                     'avg_read_num'    => $re['Avg_Read_Num'],
