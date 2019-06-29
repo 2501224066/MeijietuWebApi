@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\Nb\Goods;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -44,7 +43,8 @@ class AddWeiXinBasicsData implements ShouldQueue
 
         // 存入商品表中
         if ($re)
-            Goods::whereGoodsId($this->goodsId)
+            DB::table('Goods')
+                ->where('goods_id', $this->goodsId)
                 ->update([
                     'avg_read_num'    => $re['Avg_Read_Num'],
                     'avg_like_num'    => $re['Avg_Like_Num'],

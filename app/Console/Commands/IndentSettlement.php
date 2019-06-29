@@ -3,28 +3,29 @@
 namespace App\Console\Commands;
 
 use App\Models\Indent\IndentInfo;
-use App\Models\SystemSetting;
+use App\Models\Log\LogIndentSettlement;
 use App\Models\Up\Runwater;
 use App\Models\Up\Wallet;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
-class TransactionCompleteDelayPayment extends Command
+class IndentSettlement extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'transaction:complete';
+    protected $signature = 'indent:settlement {--queue=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '延迟打款完成结算';
+    protected $description = '订单结算-延迟打款';
 
     /**
      * Create a new command instance.
@@ -47,6 +48,7 @@ class TransactionCompleteDelayPayment extends Command
         $redis = Redis::connection('publisher');
         // 接受Key过期消息
         $redis->psubscribe(['__keyevent@*__:expired'], function ($OverdueKey) {
+            Log::info('【Redis】 Key ' . $OverdueKey . ' 过期' . "\n");
             // 判断当前过期Key是否为 交易完成延迟打款Key
             if (!strstr($OverdueKey, 'TRANSACTION_COMPLETE_DELAY_PAYMENT:')) return false;
             // 取出订单号
@@ -54,10 +56,7 @@ class TransactionCompleteDelayPayment extends Command
             // 订单数据
             $indentData = IndentInfo::whereIndentNum($indentNum)->first();
             // 订单不存在跳出
-            if (!$indentData) {
-                echo '订单[' . $indentNum . ']不存在' . "\n";
-                return false;
-            }
+            if (!$indentData) return false;
 
             try {
                 // 检查订单状态
@@ -105,13 +104,13 @@ class TransactionCompleteDelayPayment extends Command
                 $indentData->save();
 
                 // 完成结算
-                echo '订单[' . $indentNum . ']完成结算' . "\n";
+                Log::info('【订单结算】 订单号 ' . $indentNum . ' 完成结算' . "\n");
             } catch (\Exception $e) {
-                echo $e->getMessage() . "\n";
-                // 将订单号存入Redis，设置过期时间
-                $delayTime = SystemSetting::whereSettingName('trans_payment_delay')->value('value');
-                $key       = 'TRANSACTION_COMPLETE_DELAY_PAYMENT:' . $indentNum;
-                Cache::put($key, mt_rand(100000, 999999), $delayTime);
+                Log::info('【订单结算】 结算失败:订单号 ' . $indentNum . "\n");
+                LogIndentSettlement::create([
+                    'indent_num' => $indentNum,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
             }
 
             return true;

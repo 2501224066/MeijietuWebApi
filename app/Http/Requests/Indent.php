@@ -27,7 +27,6 @@ class Indent extends Base
             case 'createIndent':
                 $rules['info'] = ['required', new SpecialChar, 'json'];
                 break;
-
         }
 
         return $rules;
