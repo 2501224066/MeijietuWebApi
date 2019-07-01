@@ -73,7 +73,7 @@ class Shopcart extends Model
                     ]);
                 }
             } catch (\Exception $e) {
-                throw new Exception($e->getMessage());
+                throw new Exception('操作失败');
             }
         });
 
