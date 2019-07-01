@@ -7,6 +7,8 @@ namespace App\Models\Indent;
 use App\Models\Nb\Goods;
 use App\Models\SystemSetting;
 use App\Models\Tb\Modular;
+use App\Models\Usalesman\Usalesman;
+use App\Models\Usalesman\UserUsalesman;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -92,6 +94,21 @@ class IndentInfo extends Model
         return $this->hasMany(IndentItem::class, 'indent_id', 'indent_id');
     }
 
+    // 检查商品信息
+    public static function checkGoodsData($goodsData)
+    {
+        if ($goodsData['status'] == Goods::STATUS['下架'])
+            throw new Exception('含有已下架商品');
+
+        if (!($goodsData && $goodsData['one_goods_price']))
+            throw new Exception('未发现商品信息');
+
+        if ($goodsData['one_goods_price']['price'] <= 0)
+            throw new Exception('含有不出售商品');
+
+        return true;
+    }
+
     // 数据整理
     public static function dataSorting($info)
     {
@@ -138,28 +155,14 @@ class IndentInfo extends Model
         return $data;
     }
 
-    // 检查商品信息
-    public static function checkGoodsData($goodsData)
-    {
-        if ($goodsData['status'] == Goods::STATUS['下架'])
-            throw new Exception('含有已下架商品');
-
-        if (!($goodsData && $goodsData['one_goods_price']))
-            throw new Exception('未发现商品信息');
-
-        if ($goodsData['one_goods_price']['price'] <= 0)
-            throw new Exception('含有不出售商品');
-
-        return true;
-    }
-
     // 添加订单
     public static function add($data)
     {
-        $uid  = JWTAuth::user()->uid;
-        $time = date('Y-m-d H:i:s');
-        $key  = 'INDENTCOUNT' . date('Ymd'); // 订单数key
-        DB::transaction(function () use ($data, $uid, $time, $key) {
+        $uid         = JWTAuth::user()->uid;
+        $salesman_id = UserUsalesman::getSalesmanId($uid);
+        $time        = date('Y-m-d H:i:s');
+        $key         = 'INDENTCOUNT' . date('Ymd'); // 订单数key
+        DB::transaction(function () use ($data, $uid, $salesman_id, $time, $key) {
             try {
                 foreach ($data as $seller_id => $dt) {
                     // 赔偿保证费
@@ -205,6 +208,7 @@ class IndentInfo extends Model
                         'indent_num'        => createIndentNnm($key),
                         'buyer_id'          => $uid,
                         'seller_id'         => $seller_id,
+                        'salesman_id'       => $salesman_id,
                         'total_amount'      => $dt['amount'],
                         'indent_amount'     => $dt['amount'],
                         'compensate_fee'    => $compensate_fee,
