@@ -155,6 +155,20 @@ class Goods extends Model
         return $this->hasOne(GoodsPrice::class, 'goods_id', 'goods_id');
     }
 
+    // 检查商品信息
+    public static function checkGoodsData($goodsData)
+    {
+        if ($goodsData['status'] == Goods::STATUS['下架'])
+            throw new Exception('含有已下架商品');
+
+        if (!($goodsData && $goodsData['one_goods_price']))
+            throw new Exception('未发现商品信息');
+
+        if ($goodsData['one_goods_price']['price'] <= 0)
+            throw new Exception('含有不出售商品');
+
+        return true;
+    }
 
     /**
      * 组装数组
@@ -335,12 +349,16 @@ class Goods extends Model
     {
         $query = self::with('goods_price')
             ->where('status', self::STATUS['上架'])
-            ->where('verify_status', self::VERIFY_STATUS['已通过'])
-            ->where('modular_id', $request->modular_id)
-            ->where('theme_id', $request->theme_id);
+            ->where('verify_status', self::VERIFY_STATUS['已通过']);
 
         if ($whereInGoodsIdArr)
             $query->whereIn('goods_id', $whereInGoodsIdArr);
+
+        if($request->has('modular_id'))
+            $query->where('modular_id', $request->modular_id);
+
+        if($request->has('theme_id'))
+            $query->where('theme_id', $request->theme_id);
 
         if ($request->has('key_word'))
             $query->where('title', 'like', '%' . $request->key_word . '%')

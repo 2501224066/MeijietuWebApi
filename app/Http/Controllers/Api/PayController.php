@@ -39,7 +39,7 @@ class PayController extends BaseController
      * 充值回调
      * @return false|string
      */
-    public static function lianLianPayRechargeBack()
+    public function lianLianPayRechargeBack()
     {
         // 接收数据
         $data = file_get_contents("php://input");
@@ -50,5 +50,19 @@ class PayController extends BaseController
 
         // 返回连连响应参数
         return json_encode(["ret_code" => "0000", "ret_msg" => "交易成功"]);
+    }
+
+    /**
+     * 提现
+     */
+    public function extract(PayRequests $request)
+    {
+        $uid = JWTAuth::user()->uid;
+        // 检测是否拥有钱包
+        Wallet::checkHas($uid, TRUE);
+        // 校验钱包状态
+        Wallet::checkStatus($uid, Wallet::STATUS['启用']);
+        // 提现操作
+        $runwaterNum = Runwater::extractOP($uid, $request->money);
     }
 }

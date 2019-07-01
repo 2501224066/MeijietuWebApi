@@ -7,6 +7,7 @@ $api->group(['version' => 'v1'], function ($api) {
 
         // 测试
         $api->get('openGoods', 'TestController@openGoods');
+        $api->get('joinWeixinBasicData', 'TestController@joinWeixinBasicData');
 
         // 充值回调
         $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
@@ -39,6 +40,8 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('getGoodsAttribute', 'GoodsController@getGoodsAttribute');
         //  搜索商品
         $api->get('selectGoods', 'GoodsController@selectGoods');
+        //  单个商品信息
+        $api->get('oneGoodsInfo', 'GoodsController@oneGoodsInfo');
 
         // JWT身份验证
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
@@ -105,6 +108,8 @@ $api->group(['version' => 'v1'], function ($api) {
             // 连连三方
             //  充值
             $api->post('recharge', 'PayController@recharge');
+            //  提现
+            $api->post('extract', 'PayController@cash');
 
             // 钱包
             //  生成钱包

@@ -34,6 +34,9 @@ class ShopcartController extends BaseController
      */
     public function getShopcart()
     {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['广告主']);
+
         return Shopcart::getShopcart();
     }
 

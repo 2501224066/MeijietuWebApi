@@ -94,21 +94,6 @@ class IndentInfo extends Model
         return $this->hasMany(IndentItem::class, 'indent_id', 'indent_id');
     }
 
-    // 检查商品信息
-    public static function checkGoodsData($goodsData)
-    {
-        if ($goodsData['status'] == Goods::STATUS['下架'])
-            throw new Exception('含有已下架商品');
-
-        if (!($goodsData && $goodsData['one_goods_price']))
-            throw new Exception('未发现商品信息');
-
-        if ($goodsData['one_goods_price']['price'] <= 0)
-            throw new Exception('含有不出售商品');
-
-        return true;
-    }
-
     // 数据整理
     public static function dataSorting($info)
     {
@@ -128,7 +113,7 @@ class IndentInfo extends Model
                 ->toArray();
 
             // 检查商品信息
-            self::checkGoodsData($goodsData);
+            Goods::checkGoodsData($goodsData);
 
             // 根据不同卖家生成订单
             $seller_id                = $goodsData['uid'];
@@ -238,7 +223,7 @@ class IndentInfo extends Model
                     Cache::increment($key);
                 }
             } catch (\Exception $e) {
-                throw new Exception('创建失败');
+                throw new Exception($e->getMessage());
             }
         });
 

@@ -27,6 +27,11 @@ class Pay extends Base
             case 'recharge':
                 $rules['money'] = ['required', new SpecialChar, 'numeric'];
                 break;
+
+            // 提现
+            case 'extract':
+                $rules['money'] = ['required', new SpecialChar, 'numeric'];
+                break;
         }
 
         return $rules;

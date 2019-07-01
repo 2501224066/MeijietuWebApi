@@ -11,7 +11,6 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-
 /**
  * App\Models\Up\Runwater
  *
@@ -72,7 +71,7 @@ class Runwater extends Model
         '取消订单全额退款'  => 5,
         '取消订单非全额退款' => 6,
         '对方取消订单退款'  => 7,
-        '订单完成结算' => 8
+        '订单完成结算'    => 8
     ];
 
     const DIRECTION = [
@@ -193,6 +192,39 @@ class Runwater extends Model
             } catch (\Exception $e) {
                 throw new Exception('【连连回调】 修改金额失败:' . json_encode($data) . "\n");
             }
+        });
+    }
+
+    // 提现操作
+    public static function extractOP($uid, $money)
+    {
+        $time = date('Y-m-d H:i:s');
+        DB::transaction(function () use ($uid, $money, $time) {
+            try {
+                // 用户资金扣除
+                $userMoney = Wallet::whereUid($uid)->value('available_money') - $money;
+                Wallet::whereUid($uid)->update([
+                    'available_money' => $userMoney,
+                    'time'            => $time,
+                    'change_lock'     => createWalletChangeLock($uid, $userMoney, $time)
+                ]);
+
+                // 生成交易流水
+                $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key
+                $runwaterNum = createRunwaterNum($key);
+                Runwater::create([
+                    'runwater_num' => $runwaterNum,
+                    'from_uid'     => $uid,
+                    'type'         => Runwater::TYPE['提现'],
+                    'direction'    => Runwater::DIRECTION['转出'],
+                    'money'        => $money,
+                    'status'       => Runwater::STATUS['进行中']
+                ]);
+                Cache::increment($key);
+            } catch (\Exception $e) {
+                throw new Exception('操作失败');
+            }
+
         });
     }
 }

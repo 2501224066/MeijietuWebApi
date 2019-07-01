@@ -55,6 +55,17 @@ class Shopcart extends Model
         DB::transaction(function () use ($goodsIdArr, $uid) {
             try {
                 foreach ($goodsIdArr as $goodsId => $goodsPriceId) {
+                    // 获取商品信息
+                    $goodsData = Goods::with(['one_goods_price' => function ($query) use ($goodsId, $goodsPriceId) {
+                        $query->where('goods_price_id', $goodsPriceId);
+                    }])
+                        ->where('goods_id', $goodsId)
+                        ->first()
+                        ->toArray();
+
+                    // 检查商品信息
+                    Goods::checkGoodsData($goodsData);
+
                     self::firstOrCreate([
                         'uid'            => $uid,
                         'goods_id'       => $goodsId,
@@ -62,7 +73,7 @@ class Shopcart extends Model
                     ]);
                 }
             } catch (\Exception $e) {
-                throw new Exception('保存失败');
+                throw new Exception($e->getMessage());
             }
         });
 

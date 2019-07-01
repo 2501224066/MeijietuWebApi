@@ -89,6 +89,11 @@ class Goods extends Base
                 $rules['modular_id'] = ['required', new SpecialChar, 'numeric', 'exists:tb_modular,modular_id'];
                 $rules['theme_id']   = ['required', new SpecialChar, 'numeric', 'exists:tb_theme,theme_id'];
                 break;
+
+            // 单个商品信息
+            case 'oneGoodsInfo':
+                $rules['goods_num'] = ['required', new SpecialChar, 'exists:nb_goods,goods_num'];
+                break;
         }
 
         return $rules;
@@ -130,6 +135,9 @@ class Goods extends Base
 
             'price_json.required' => '价格信息不得为空',
             'price_json.json'     => '价格信息非JSON格式',
+
+            'goods_num.required'=> '商品编号不得为空',
+            'goods_num.exists'=> '商品编号不存在',
 
             'numeric' => '参数格式错误',
             'exists'  => '参数不存在'

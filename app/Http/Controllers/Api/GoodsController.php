@@ -108,4 +108,17 @@ class GoodsController extends BaseController
 
         return $this->success($re);
     }
+
+    /**
+     * 单个商品信息
+     * @param GoodsRequests $request
+     * @return mixed
+     */
+    public function oneGoodsInfo(GoodsRequests $request)
+    {
+        $goodsId = Goods::whereGoodsNum($request->goods_num)->value('goods_id');
+        $re = Goods::getGoods($request, [$goodsId]);
+
+        return $this->success($re);
+    }
 }
