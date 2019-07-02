@@ -39,19 +39,33 @@ class Pub
 
     /*
      *  消除制造商品
-     *  初始创造的一批商品,当用户录入商品后，判断再初始商品中是否有重复的，有则删除初始商品
+     *  初始创造的一批商品,当用户录入商品后，判断初始商品中是否有重复的，有则删除初始商品
      */
     public static function delZZGoods($goodsId)
     {
+        // 微信公众号
         $goods = Goods::whereGoodsId($goodsId)->first();
-        $arr =  Goods::whereUid(0)
-            ->where('weixin_ID', $goods->weixin_ID)
-            ->orWhere('link', $goods->link)
-            ->pluck('goods_id');
+        if ($goods->weixin_ID) {
+            $arr = Goods::whereUid(0)
+                ->where('weixin_ID', $goods->weixin_ID)
+                ->pluck('goods_id');
 
-        foreach ($arr as $goods_id){
-            Goods::whereGoodsId($goods_id)->delete();
-            GoodsPrice::whereGoodsId($goods_id)->delete();
+            foreach ($arr as $goods_id) {
+                Goods::whereGoodsId($goods_id)->delete();
+                GoodsPrice::whereGoodsId($goods_id)->delete();
+            }
+        }
+
+        // 微博
+        if($goods->link){
+            $arr = Goods::whereUid(0)
+                ->where('link', $goods->link)
+                ->pluck('goods_id');
+
+            foreach ($arr as $goods_id) {
+                Goods::whereGoodsId($goods_id)->delete();
+                GoodsPrice::whereGoodsId($goods_id)->delete();
+            }
         }
     }
 }
