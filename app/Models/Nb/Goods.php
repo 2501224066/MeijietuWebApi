@@ -312,29 +312,6 @@ class Goods extends Model
         return $goodsId;
     }
 
-    /**
-     * 补充基础数据
-     * @param int $goodsId 商品id
-     * @param array $arr 接收数据
-     * @return bool
-     */
-    public static function addBasicsData($goodsId, $arr)
-    {
-        switch (Modular::whereModularId($arr['modular_id'])->value('tag')) {
-            // 微信基础数据
-            case Modular::TAG['微信营销']:
-                AddWeiXinBasicsData::dispatch($goodsId, $arr['weixin_ID'])->onQueue('AddWeiXinBasicsData');
-                break;
-
-            // 微博基础数据
-            case Modular::TAG['微博营销']:
-                AddWeiBoBasicsData::dispatch($goodsId, $arr['link'])->onQueue('AddWeiBoBasicsData');
-                break;
-        }
-
-        return true;
-    }
-
     // 获取用户商品
     public static function getUserGoods()
     {
@@ -361,8 +338,7 @@ class Goods extends Model
             $query->where('theme_id', $request->theme_id);
 
         if ($request->has('key_word'))
-            $query->where('title', 'like', '%' . $request->key_word . '%')
-                ->orWhere('title_about', 'like', '%' . $request->key_word . '%');
+            $query->whereRaw('title like ? or title_about like ?', ["%{$request->key_word}%", "%{$request->key_word}%"]);
 
         if ($request->has('filed_id'))
             $query->where('filed_id', $request->filed_id);

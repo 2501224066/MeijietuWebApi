@@ -17,8 +17,8 @@ class RunwaterController extends BaseController
     {
         $uid = JWTAuth::user()->uid;
 
-        $re = Runwater::where('from_uid', $uid)
-            ->orWhere('to_uid', $uid)
+        $re = Runwater::where('status', Runwater::STATUS['成功'])
+            ->whereRaw('from_uid = ? or to_uid = ?', [$uid, $uid])
             ->orderBy('created_at', 'DESC')
             ->where('status', Runwater::STATUS['成功'])
             ->paginate(50);

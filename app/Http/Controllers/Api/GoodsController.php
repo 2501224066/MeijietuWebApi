@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Jobs\GoodsCreatedOP;
 use App\Models\Nb\Goods;
 use App\Models\Nb\GoodsPrice;
 use App\Models\Tb\Modular;
@@ -76,10 +77,8 @@ class GoodsController extends BaseController
         $arr = Goods::assembleArr($request);
         // 添加商品
         $goodsId = Goods::add($arr, $request->price_json);
-        // 补充基础数据
-        Goods::addBasicsData($goodsId, $arr);
-        // 消除制造商品
-        Pub::delZZGoods($goodsId);
+        // 添加基础数据，删除制造商品
+        GoodsCreatedOP::dispatch($goodsId, $arr)->onQueue('GoodsCreatedOP');
 
         return $this->success();
     }
