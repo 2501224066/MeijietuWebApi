@@ -239,15 +239,6 @@ class IndentInfo extends Model
         return true;
     }
 
-    // 检查订单状态
-    public static function checkIndentStatus($status, $needStatus)
-    {
-        if ($status != $needStatus)
-            throw new Exception('订单状态非法');
-
-        return true;
-    }
-
     // 检查议价状态
     public static function checkSaceBuyerIncomeStatus($bargaining_status, $needStatus)
     {

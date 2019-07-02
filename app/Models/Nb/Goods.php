@@ -354,10 +354,10 @@ class Goods extends Model
         if ($whereInGoodsIdArr)
             $query->whereIn('goods_id', $whereInGoodsIdArr);
 
-        if($request->has('modular_id'))
+        if ($request->has('modular_id'))
             $query->where('modular_id', $request->modular_id);
 
-        if($request->has('theme_id'))
+        if ($request->has('theme_id'))
             $query->where('theme_id', $request->theme_id);
 
         if ($request->has('key_word'))
@@ -403,4 +403,15 @@ class Goods extends Model
         return $query->paginate();
     }
 
+    // 下架
+    public static function down($goods)
+    {
+        $goods->verify_status = self::VERIFY_STATUS['待审核'];
+        $goods->status = self::STATUS['下架'];
+        $re = $goods->save();
+        if(!$re)
+            throw new Exception('操作失败');
+
+        return true;
+    }
 }

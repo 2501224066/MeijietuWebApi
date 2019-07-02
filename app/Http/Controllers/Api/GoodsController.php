@@ -7,8 +7,10 @@ use App\Models\Nb\Goods;
 use App\Models\Nb\GoodsPrice;
 use App\Models\Tb\Modular;
 use App\Models\User;
+use App\Service\Pub;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Goods as GoodsRequests;
+
 
 class GoodsController extends BaseController
 {
@@ -76,6 +78,8 @@ class GoodsController extends BaseController
         $goodsId = Goods::add($arr, $request->price_json);
         // 补充基础数据
         Goods::addBasicsData($goodsId, $arr);
+        // 消除制造商品
+        Pub::delZZGoods($goodsId);
 
         return $this->success();
     }
@@ -88,7 +92,7 @@ class GoodsController extends BaseController
     {
         // 检查身份
         User::checkIdentity(User::IDENTIDY['媒体主']);
-        // 商品数据
+        // 数据
         $re = Goods::getUserGoods();
 
         return $this->success($re);
@@ -120,5 +124,22 @@ class GoodsController extends BaseController
         $re = Goods::getGoods($request, [$goodsId]);
 
         return $this->success($re);
+    }
+
+    /**
+     * 商品下架
+     */
+    public function goodsDown(GoodsRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        // 商品数据
+        $goods = Goods::whereGoodsNum($request->goods_num)->first();
+        // 检查状态
+        Pub::checkStatus($goods->status, Goods::STATUS['上架']);
+        // 下架
+        Goods::down($goods);
+
+        return $this->success();
     }
 }

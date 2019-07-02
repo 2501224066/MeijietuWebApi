@@ -9,6 +9,7 @@ use App\Models\Indent\IndentInfo;
 use App\Models\Up\Wallet;
 use App\Models\User;
 use App\Service\Transaction;
+use App\Service\Pub;
 
 class TransactionController extends BaseController
 {
@@ -25,7 +26,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['待付款']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['待付款']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->buyer_id);
         // 校验钱包状态
@@ -52,7 +53,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->buyer_id);
         // 添加
@@ -72,7 +73,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->buyer_id);
         // 校验钱包状态
@@ -98,7 +99,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
         // 检查议价状态
         IndentInfo::checkSaceBuyerIncomeStatus($indentData->bargaining_status, IndentInfo::BARGAINING_STATUS['已完成']);
         // 检测订单归属
@@ -127,7 +128,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['交易中']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->buyer_id);
         // 校验卖家钱包状态
@@ -157,7 +158,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['交易中']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->seller_id);
         // 校验买家钱包状态
@@ -182,7 +183,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['交易中']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->seller_id);
         // 修改状态
@@ -203,7 +204,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->seller_id);
         // 添加
@@ -223,7 +224,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        IndentInfo::checkIndentStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
+        Pub::checkStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
         // 检测订单归属
         IndentInfo::checkIndentBelong($indentData->buyer_id);
         // 修改状态

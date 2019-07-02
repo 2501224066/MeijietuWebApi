@@ -94,6 +94,11 @@ class Goods extends Base
             case 'oneGoodsInfo':
                 $rules['goods_num'] = ['required', new SpecialChar, 'exists:nb_goods,goods_num'];
                 break;
+
+            // 商品下架
+            case 'goodsDown':
+                $rules['goods_num'] = ['required', new SpecialChar, 'exists:nb_goods,goods_num'];
+                break;
         }
 
         return $rules;

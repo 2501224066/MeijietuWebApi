@@ -6,8 +6,9 @@ $api->group(['version' => 'v1'], function ($api) {
     $api->group(['namespace' => '\App\Http\Controllers\Api'], function ($api) {
 
         // 测试
+        //  商品全部上架
         $api->get('openGoods', 'TestController@openGoods');
-        $api->get('joinWeixinBasicData', 'TestController@joinWeixinBasicData');
+
 
         // 充值回调
         $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
@@ -87,6 +88,8 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('createGoods', 'GoodsController@createGoods');
             //  获取自己商品
             $api->post('goodsBelongSelf', 'GoodsController@goodsBelongSelf');
+            //  商品下架
+            $api->post('goodsDown', 'GoodsController@goodsDown');
 
 
             // 收藏

@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Mail\emailVerifCode;
-use App\Service\Type;
+
+use App\Service\Pub;
 use Cache;
 use Mockery\Exception;
-use Illuminate\Support\Facades\Mail;
-use Mrgoon\AliSms\AliSms;
 
 class Captcha
 {
@@ -18,7 +16,7 @@ class Captcha
     //检查请求验证码类型
     public static function checkCodeType($codeType)
     {
-        if (!in_array($codeType, Type::CODE_TYPE))
+        if (!in_array($codeType, Pub::CODE_TYPE))
             throw new Exception('请求验证码类型错误');
 
         return true;
