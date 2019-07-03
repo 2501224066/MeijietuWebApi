@@ -80,6 +80,7 @@ class zzWeiBoGoods extends Command
                     'avatar_url'      => $v['BasicInfo']['Avatar_Url'],
                     'region_id'       => 1,
                     'region_name'     => '全国',
+                    'reserve_status'  => 0,
                     'created_at'      => $time,
                     'updated_at'      => $time
                 ]);

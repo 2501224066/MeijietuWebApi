@@ -77,6 +77,7 @@ class zzWeiXinGoods extends Command
                     'avatar_url'      => $v['BasicInfo']['Avatar_Url'],
                     'qrcode_url'      => $v['BasicInfo']['Qrcode_Url'],
                     'region_id'       => 1,
+                    'reserve_status'  => 0,
                     'region_name'     => '全国',
                     'created_at'      => $time,
                     'updated_at'      => $time

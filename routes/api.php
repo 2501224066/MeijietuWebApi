@@ -6,8 +6,7 @@ $api->group(['version' => 'v1'], function ($api) {
     $api->group(['namespace' => '\App\Http\Controllers\Api'], function ($api) {
 
         // 测试
-        //  商品全部上架
-        $api->get('openGoods', 'TestController@openGoods');
+        $api->get('test', 'TestController@test');
 
 
         // 充值回调
