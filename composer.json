@@ -20,7 +20,8 @@
         "rap2hpoutre/laravel-log-viewer": "^1.1",
         "tymon/jwt-auth": "1.*@rc",
         "ext-json": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "ext-curl": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

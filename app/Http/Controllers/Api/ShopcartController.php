@@ -50,6 +50,7 @@ class ShopcartController extends BaseController
     {
         // 转换数据类型
         $shopcartIdArr = json_decode($request->shopcart_id_json);
+
         // 删除
         foreach ($shopcartIdArr as $shopcartId) {
             Shopcart::whereShopcartId($shopcartId)
