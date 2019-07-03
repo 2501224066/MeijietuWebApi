@@ -115,6 +115,7 @@ class GoodsCreatedOP implements ShouldQueue
     {
         // 微信公众号
         $goods = Goods::whereGoodsId($goodsId)->first();
+        echo $goods->weixin_ID;
         if ($goods->weixin_ID) {
             $arr = Goods::whereUid(0)
                 ->where('theme_name', '公众号')
