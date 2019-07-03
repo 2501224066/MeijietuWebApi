@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
 use App\Models\RealnamePeople;
 use App\Models\Up\Wallet;
@@ -56,10 +57,8 @@ class AuthController extends BaseController
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
         // 数据添加到数据库
         $uid = User::add($request);
-        // 分配客服
-        User::withUsalesman($uid);
-        // 生成钱包
-        Wallet::createWallet($uid);
+        // 支出后续操作
+        RegisteredOP::dispatch($uid)->onQueue('RegisteredOP');
 
         return $this->success();
 
