@@ -71,4 +71,5 @@ class GoodsPrice extends Model
 
         return true;
     }
+
 }

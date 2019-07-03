@@ -381,11 +381,92 @@ class Goods extends Model
     public static function down($goods)
     {
         $goods->verify_status = self::VERIFY_STATUS['待审核'];
-        $goods->status = self::STATUS['下架'];
-        $re = $goods->save();
-        if(!$re)
+        $goods->status        = self::STATUS['下架'];
+        $re                   = $goods->save();
+        if (!$re)
             throw new Exception('操作失败');
 
         return true;
+    }
+
+    // 添加微信基础数据
+    public static function addWeiXinBasicData($goodsId, $weixin_ID)
+    {
+        // 查询自库数据
+        $re = DB::connection('weixin_mongodb')
+            ->collection('WeiXin_OfficialAccount_Analysis')
+            ->where('OfficialAccount_ID', $weixin_ID)
+            ->first();
+
+        // 存入商品表中
+        if ($re)
+            self::whereGoodsId($goodsId)->update([
+                    'avg_read_num'    => $re['Avg_Read_Num'],
+                    'avg_like_num'    => $re['Avg_Like_Num'],
+                    'avg_comment_num' => $re['Avg_Comment_Num'],
+                    'avatar_url'      => $re['BasicInfo']['Avatar_Url'],
+                    'qrcode_url'      => $re['BasicInfo']['Qrcode_Url']]);
+
+    }
+
+    // 添加微博基础数据
+    public static function addWeiBoBasicData($goodsId, $link)
+    {
+        // 截取链接最后数组ID
+        if (strpos($link, '?')) {
+            $arr = explode('/', substr($link, 0, strpos($link, '?')));
+        } else {
+            $arr = explode('/', $link);
+        }
+        $id = end($arr);
+
+        // 查询自库数据
+        $re = DB::connection('weibo_mongodb')
+            ->collection('WeiBo_Analysis')
+            ->where('WeiBo_Uid', $id)
+            ->first();
+
+        // 存入商品表中
+        if ($re)
+            self::whereGoodsId($goodsId)->update([
+                    'avg_like_num'    => $re['Avg_Like_Num_Last10'],
+                    'avg_comment_num' => $re['Avg_Comment_Num_Last10'],
+                    'avg_retweet_num' => $re['Avg_Retweet_Num_Last10'],
+                    'avatar_url'      => $re['BasicInfo']['Avatar_Url'],
+                    'fans_num'        => $re['BasicInfo']['Fans_Num']
+                ]);
+
+    }
+
+    /*
+     *  删除制造商品[微信公众号][微博]
+     *  初始创造的一批商品,当用户录入商品后，判断初始商品中是否有重复的，有则删除初始商品
+     */
+    public static function delZZGoods($goodsId)
+    {
+        // 微信公众号
+        $goods = DB::table('nb_goods')->where('goods_id', $goodsId)->first();
+        echo $goods->weixin_ID;
+        if ($goods->weixin_ID) {
+            $arr = DB::table('nb_goods')
+                ->where('uid', 0)
+                ->where('theme_name', '公众号')
+                ->where('weixin_ID', $goods->weixin_ID)
+                ->pluck('goods_id');
+        }
+
+        // 微博
+        if ($goods->link) {
+            $arr = DB::table('nb_goods')
+                ->where('uid', 0)
+                ->where('modular_name', '微博营销')
+                ->where('link', $goods->link)
+                ->pluck('goods_id');
+        }
+
+        foreach ($arr as $goods_id) {
+            Goods::whereGoodsId($goods_id)->delete();
+            GoodsPrice::whereGoodsId($goods_id)->delete();
+        }
     }
 }
