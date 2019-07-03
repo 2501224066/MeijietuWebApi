@@ -27,7 +27,7 @@ class Goods extends Base
         switch ($this->getFunName()) {
             // 创建商品
             case 'createGoods':
-                $rules['title']       = ['required', new SpecialChar, 'unique:nb_goods,title'];
+                $rules['title']       = ['required', new SpecialChar];
                 $rules['title_about'] = ['required', new SpecialChar];
                 $rules['qq_ID']       = ['required', 'numeric'];
                 $rules['modular_id']  = ['required', 'numeric', 'exists:tb_modular,modular_id'];
