@@ -75,8 +75,12 @@ class GoodsController extends BaseController
         User::checkIdentity(User::IDENTIDY['媒体主']);
         // 组装数组
         $arr = Goods::assembleArr($request);
+        // 价格数据
+        $priceArr = json_decode($request->price_json, true);
+        // 检查价格种类完整性
+        GoodsPrice::checkPriceclassify($arr['theme_id'], $priceArr);
         // 添加商品
-        $goodsId = Goods::add($arr, $request->price_json);
+        $goodsId = Goods::add($arr, $priceArr);
         // 添加基础数据，删除制造商品
         GoodsCreatedOP::dispatch($goodsId, $arr)->onQueue('GoodsCreatedOP');
 

@@ -273,16 +273,13 @@ class Goods extends Model
      * @return string
      * @throws \Throwable
      */
-    public static function add($arr, $priceJson)
+    public static function add($arr, $priceArr)
     {
         $goodsId = '';
-        DB::transaction(function () use ($arr, $priceJson, &$goodsId) {
+        DB::transaction(function () use ($arr, $priceArr, &$goodsId) {
             try {
                 // 插入商品
                 $goodsId = self::insertGetId($arr);
-
-                // 插入商品价格
-                $priceArr = json_decode($priceJson);
 
                 // 不同模式卖家输入价格
                 switch (Modular::whereModularId($arr['modular_id'])->value('settlement_type')) {
@@ -296,6 +293,7 @@ class Goods extends Model
                         $P = 'floor_price';
                         break;
                 }
+
                 foreach ($priceArr as $priceclassify_id => $price) {
                     GoodsPrice::create([
                         'goods_id'           => $goodsId,
@@ -305,7 +303,7 @@ class Goods extends Model
                     ]);
                 }
             } catch (\Exception $e) {
-                throw new Exception($e->getMessage());
+                throw new Exception('保存失败');
             }
         });
 
