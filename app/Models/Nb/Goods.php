@@ -353,10 +353,10 @@ class Goods extends Model
             $query->where('region_id', $request->region_id);
 
         if ($request->has('fansnumlevel_min'))
-            $query->where('fans_num', '>=', $request->fanslevel_min);
+            $query->where('fans_num', '>=', $request->fansnumlevel_min);
 
         if ($request->has('fansnumlevel_max'))
-            $query->where('fans_num', '<', $request->fanslevel_max);
+            $query->where('fans_num', '<', $request->fansnumlevel_max);
 
         if ($request->has('readlevel_min'))
             $query->where('avg_read_num', '>=', $request->readlevel_min);
