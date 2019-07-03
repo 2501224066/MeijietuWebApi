@@ -4,6 +4,7 @@
 namespace App\Models\Log;
 
 
+use App\Service\Pub;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -41,7 +42,7 @@ class LogUpload extends Model
         self::create([
             'uid' => JWTAuth::user()->uid,
             'file' => $path,
-            'upload_type' => $upload_type
+            'upload_type' => array_flip(Pub::UPLOAD_TYPE)[$upload_type]
         ]);
     }
 }

@@ -6,7 +6,7 @@ $api->group(['version' => 'v1'], function ($api) {
     $api->group(['namespace' => '\App\Http\Controllers\Api'], function ($api) {
 
         // 测试
-        $api->get('test', 'TestController@test');
+        $api->get('test', 'TestController@index');
 
 
         // 充值回调
