@@ -44,13 +44,17 @@ class ShopcartController extends BaseController
      * 删除购物车商品
      * @param GoodsRequests $request
      * @return mixed
+     * @throws \Exception
      */
     public function delShopcart(GoodsRequests $request)
     {
         // 转换数据类型
-        $goodsIdArr = json_decode($request->goods_id_json);
+        $shopcartIdArr = json_decode($request->shopcart_id_json);
         // 删除
-        Shopcart::del($goodsIdArr);
+        foreach ($shopcartIdArr as $shopcartId) {
+            Shopcart::whereShopcartId($shopcartId)
+                ->delete();
+        }
 
         return $this->success();
     }

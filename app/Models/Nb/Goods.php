@@ -130,6 +130,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereCaseLink($value)
  * @property int|null $avg_retweet_num 平均转发数
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereAvgRetweetNum($value)
+ * @property int $recommend_status 推荐状态 0=否 1=是
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereRecommendStatus($value)
  */
 class Goods extends Model
 {

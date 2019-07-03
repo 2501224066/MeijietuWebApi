@@ -11,22 +11,25 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
+
 /**
  * App\Models\Nb\Collection
  *
- * @property int $uid 用户id
- * @property int $goods_id 商品id
+ * @property int $collection_id
+ * @property int $uid
+ * @property int $goods_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Nb\Goods $goods
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection whereCollectionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection whereGoodsId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Collection whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\Models\Nb\Goods $goods
  */
 class Collection extends Model
 {
@@ -79,16 +82,4 @@ class Collection extends Model
             ->get();
     }
 
-    // 删除收藏
-    public static function del($goodsIdArr)
-    {
-        $uid = JWTAuth::user()->uid;
-        foreach ($goodsIdArr as $goodsId) {
-            self::whereUid($uid)
-                ->where('goods_id', $goodsId)
-                ->delete();
-        }
-
-        return true;
-    }
 }

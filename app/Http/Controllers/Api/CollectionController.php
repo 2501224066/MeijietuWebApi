@@ -39,14 +39,19 @@ class CollectionController extends BaseController
 
     /**
      * 删除收藏商品
-     * @return Collection[]|\Illuminate\Database\Eloquent\Collection
+     * @param GoodsRequests $request
+     * @return mixed
+     * @throws \Exception
      */
     public function delCollection(GoodsRequests $request)
     {
         // 转换数据类型
-        $goodsIdArr = json_decode($request->goods_id_json);
+        $collectionIdArr = json_decode($request->collection_id_json);
         // 删除
-        Collection::del($goodsIdArr);
+        foreach ($collectionIdArr as $collectionId) {
+            Collection::whereCollectionId($collectionId)
+                ->delete();
+        }
 
         return $this->success();
     }

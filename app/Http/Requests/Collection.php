@@ -30,7 +30,7 @@ class Collection
 
             // 删除收藏
             case 'delCollection':
-                $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
+                $rules['collection_id_json'] = ['required', new SpecialChar, 'json'];
                 break;
         }
 

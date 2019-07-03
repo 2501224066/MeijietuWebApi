@@ -30,7 +30,7 @@ class Shopcart
 
             // 删除购物车商品
             case 'delShopcart':
-                $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
+                $rules['shopcart_id_json'] = ['required', new SpecialChar, 'json'];
                 break;
         }
 

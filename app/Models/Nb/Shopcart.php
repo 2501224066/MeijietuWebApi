@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+
 /**
  * App\Models\Nb\Shopcart
  *
+ * @property int $shopcart_id
  * @property int $uid 用户id
  * @property int $goods_id 商品id
  * @property int $goods_price_id 商品价格id
@@ -28,6 +30,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Shopcart whereGoodsCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Shopcart whereGoodsId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Shopcart whereGoodsPriceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Shopcart whereShopcartId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Shopcart whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Shopcart whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -89,17 +92,4 @@ class Shopcart extends Model
             ->get();
     }
 
-    // 删除购物车商品
-    public static function del($goodsIdArr)
-    {
-        $uid = JWTAuth::user()->uid;
-        foreach ($goodsIdArr as $goodsId => $goodsPriceId) {
-            self::whereUid($uid)
-                ->where('goods_id', $goodsId)
-                ->where('goods_price_id', $goodsPriceId)
-                ->delete();
-        }
-
-        return true;
-    }
 }

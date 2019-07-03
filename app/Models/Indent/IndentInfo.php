@@ -60,6 +60,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereTotalAmount($value)
  * @mixin \Eloquent
+ * @property int $salesman_id 客服id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereSalesmanId($value)
  */
 class IndentInfo extends Model
 {
