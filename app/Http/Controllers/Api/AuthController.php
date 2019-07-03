@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
 use App\Models\RealnamePeople;
-use App\Models\Up\Wallet;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
 use App\Models\Captcha;
+use App\Service\Pub;
 use Dingo\Api\Routing\Helpers;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -77,6 +77,9 @@ class AuthController extends BaseController
         Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
         // 验证账号密码
         $user  = User::checkPass($request->phone, $request->password);
+        // 检查用户状态
+        Pub::checkStatus($user->status, User::STATUS['启用']);
+        // 生成token
         $token = JWTAuth::fromUser($user);
         // 修改登录log为成功状态
         LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);
@@ -98,7 +101,11 @@ class AuthController extends BaseController
         $logId = LogLogin::write($request->phone, 2);
         // 检查短信验证码
         Captcha::checkCode($request->smsCode, $request->phone, 'codeSignIn');
+        // 用户信息
         $user  = User::wherePhone($request->phone)->first();
+        // 检查用户状态
+        Pub::checkStatus($user->status, User::STATUS['启用']);
+        // 生成token
         $token = JWTAuth::fromUser($user);
         // 修改登录log为成功状态
         LogLogin::whereLogLoginId($logId)->update(['login_status' => 1]);

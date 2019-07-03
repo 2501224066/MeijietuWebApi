@@ -72,6 +72,11 @@ class User extends Authenticatable implements JWTSubject
         '媒体主' => 2,
     ];
 
+    const STATUS = [
+        '启用' => 1,
+        '禁用' => 0
+    ];
+
     //JWTauth
     public function getJWTIdentifier()
     {
