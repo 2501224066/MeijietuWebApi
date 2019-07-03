@@ -356,7 +356,7 @@ class Goods extends Model
             $query->where('fans_num', '>=', $request->fanslevel_min);
 
         if ($request->has('fanslevel_max'))
-            $query->where('fans_num_max', '<', $request->fanslevel_max);
+            $query->where('fans_num', '<', $request->fanslevel_max);
 
         if ($request->has('readlevel_min'))
             $query->where('avg_read_num', '>=', $request->readlevel_min);
