@@ -120,6 +120,7 @@ class GoodsCreatedOP implements ShouldQueue
                 ->where('filed_name', '公众号')
                 ->where('weixin_ID', $goods->weixin_ID)
                 ->pluck('goods_id');
+            print_r($arr);
         }
 
         // 微博
@@ -130,9 +131,9 @@ class GoodsCreatedOP implements ShouldQueue
                 ->pluck('goods_id');
         }
 
-        foreach ($arr as $goods_id) {
+        /*foreach ($arr as $goods_id) {
             Goods::whereGoodsId($goods_id)->delete();
             GoodsPrice::whereGoodsId($goods_id)->delete();
-        }
+        }*/
     }
 }
