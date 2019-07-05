@@ -67,7 +67,7 @@ class PayController extends BaseController
         // 校验钱包状态
         Wallet::checkStatus($user->uid, Wallet::STATUS['启用']);
         // 提现操作
-        $runwaterNum = Runwater::extractOP($user->uid, $request->money);
+        Runwater::extractOP($user->uid, $request->money);
 
         return $this->success();
     }

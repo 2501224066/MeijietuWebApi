@@ -226,5 +226,7 @@ class Runwater extends Model
             }
 
         });
+
+        return true;
     }
 }
