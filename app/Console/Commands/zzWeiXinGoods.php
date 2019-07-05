@@ -79,6 +79,8 @@ class zzWeiXinGoods extends Command
                     'region_id'       => 1,
                     'reserve_status'  => 0,
                     'region_name'     => '全国',
+                    'verify_status' => 2,
+                    'status'        => 1,
                     'created_at'      => $time,
                     'updated_at'      => $time
                 ]);

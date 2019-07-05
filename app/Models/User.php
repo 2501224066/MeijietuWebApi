@@ -13,7 +13,6 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-
 /**
  * App\Models\User
  *
@@ -66,6 +65,12 @@ class User extends Authenticatable implements JWTSubject
     public $incrementing = false;
 
     public $guarded = [];
+
+    const REALNAME_STATUS = [
+        '未认证'  => 0,
+        '个人认证' => 1,
+        '企业认证' => 2
+    ];
 
     const IDENTIDY = [
         '广告主' => 1,
@@ -248,13 +253,21 @@ class User extends Authenticatable implements JWTSubject
         return true;
     }
 
-    // 检查是否已经认证
-    public static function checkRealnameStatus()
+    // 检查实名认证
+    public static function checkRealnameStatus($realnameStatus, $io)
     {
-        $realnameStatus = JWTAuth::user()->realname_status;
-        if ($realnameStatus != 0)
-            throw new Exception('已有认证');
+        switch ($io) {
+            case 'y':
+                if ($realnameStatus != self::REALNAME_STATUS['未认证'])
+                    throw new Exception('已有认证');
+            break;
 
+            case 'n':
+                if ($realnameStatus == self::REALNAME_STATUS['未认证'])
+                    throw new Exception('未实名认证');
+                break;
+
+        }
         return true;
     }
 

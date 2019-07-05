@@ -30,7 +30,8 @@ class zzWeiBoGoods extends Command
     {
 
         $start = 0;
-        while ($start < 17000) {
+        while ($start < 16500) {
+            echo $start;
             $start++;
 
             $v = DB::connection('weibo_mongodb')
@@ -52,7 +53,7 @@ class zzWeiBoGoods extends Command
             }
 
             echo " y\n";
-            DB::transaction(function () use ($v) {
+            DB::transaction(function () use ($v, $link) {
 
                 $time = date('Y-m-d H:i:s');
 
@@ -64,8 +65,9 @@ class zzWeiBoGoods extends Command
                 $goodsId = Goods::insertGetId([
                     'goods_num'       => createGoodsNnm('B'),
                     'title'           => $v['BasicInfo']['WeiBo_Name'],
-                    'html_title'      => $v['BasicInfo']['Description'] ? $v['BasicInfo']['OfficialAccount_Name'] : '吃喝玩乐',
+                    'html_title'      => $v['BasicInfo']['WeiBo_Name'],
                     'title_about'     => $title_about,
+                    'link'            => $link,
                     'qq_ID'           => '1001001001',
                     'modular_id'      => 2,
                     'modular_name'    => '微博营销',
@@ -81,6 +83,8 @@ class zzWeiBoGoods extends Command
                     'region_id'       => 1,
                     'region_name'     => '全国',
                     'reserve_status'  => 0,
+                    'verify_status'   => 2,
+                    'status'          => 1,
                     'created_at'      => $time,
                     'updated_at'      => $time
                 ]);
@@ -89,28 +93,28 @@ class zzWeiBoGoods extends Command
                     'goods_id'           => $goodsId,
                     'priceclassify_id'   => 12,
                     'priceclassify_name' => '微博直发',
-                    'price'              => null
+                    'price'              => $v['Price_ZhiFa']
                 ]);
 
                 GoodsPrice::create([
                     'goods_id'           => $goodsId,
                     'priceclassify_id'   => 13,
                     'priceclassify_name' => '微博转发',
-                    'price'              => null
+                    'price'              => $v['Price_ZhuanFa']
                 ]);
 
                 GoodsPrice::create([
                     'goods_id'           => $goodsId,
                     'priceclassify_id'   => 7,
                     'priceclassify_name' => '微任务直发',
-                    'price'              => null
+                    'price'              => 0
                 ]);
 
                 GoodsPrice::create([
                     'goods_id'           => $goodsId,
                     'priceclassify_id'   => 8,
                     'priceclassify_name' => '微任务转发',
-                    'price'              => null
+                    'price'              => 0
                 ]);
             });
 

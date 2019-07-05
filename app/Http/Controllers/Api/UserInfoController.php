@@ -20,8 +20,9 @@ class UserInfoController extends BaseController
      */
     public function realnamePeople(UserInfoRequests $request)
     {
+        $user = JWTAuth::user();
         // 检查是否已经认证
-        User::checkRealnameStatus();
+        User::checkRealnameStatus($user->realname_status, 'y');
         // 绑定手机号检验
         Captcha::checkCode($request->smsCode, $request->bank_band_phone, 'realnamePeople');
         // 检查银行卡信息
@@ -50,8 +51,9 @@ class UserInfoController extends BaseController
      */
     public function realnameEnterprise(UserInfoRequests $request)
     {
+        $user = JWTAuth::user();
         // 检查是否已经认证
-        User::checkRealnameStatus();
+        User::checkRealnameStatus($user->realname_status, 'y');
         // 绑定手机号检验
         Captcha::checkCode($request->smsCode, $request->bank_band_phone, 'realnameEnterprise');
         // 检查营业执照信息

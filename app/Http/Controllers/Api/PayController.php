@@ -7,7 +7,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Pay as PayRequests;
 use App\Models\Up\Runwater;
 use App\Models\Up\Wallet;
+use App\Models\User;
 use App\Service\Pay;
+use App\Service\Pub;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PayController extends BaseController
@@ -57,12 +59,16 @@ class PayController extends BaseController
      */
     public function extract(PayRequests $request)
     {
-        $uid = JWTAuth::user()->uid;
+        $user = JWTAuth::user();
+        // 检测实名认证
+        User::checkRealnameStatus($user->realname_status, 'n');
         // 检测是否拥有钱包
-        Wallet::checkHas($uid, TRUE);
+        Wallet::checkHas($user->uid, TRUE);
         // 校验钱包状态
-        Wallet::checkStatus($uid, Wallet::STATUS['启用']);
+        Wallet::checkStatus($user->uid, Wallet::STATUS['启用']);
         // 提现操作
-        $runwaterNum = Runwater::extractOP($uid, $request->money);
+        $runwaterNum = Runwater::extractOP($user->uid, $request->money);
+
+        return $this->success();
     }
 }
