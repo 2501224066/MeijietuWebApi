@@ -56,6 +56,8 @@ class PayController extends BaseController
 
     /**
      * 提现
+     * @param PayRequests $request
+     * @return mixed
      */
     public function extract(PayRequests $request)
     {

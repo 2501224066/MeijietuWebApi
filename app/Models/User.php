@@ -105,7 +105,7 @@ class User extends Authenticatable implements JWTSubject
             'nickname'      => htmlspecialchars($request->nickname),
             'identity'      => htmlspecialchars($request->identity),
             'ip'            => $request->getClientIp(),
-            'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('value')
+            'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('img')
         ]);
         if (!$user)
             throw new Exception('注册失败');
