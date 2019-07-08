@@ -8,6 +8,7 @@ use App\Service\Pub;
 
 class TestController extends BaseController
 {
+
     /*
     // 商品上架
     Goods::whereVerifyStatus(0)->update([

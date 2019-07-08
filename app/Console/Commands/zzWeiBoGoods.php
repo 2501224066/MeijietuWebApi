@@ -29,7 +29,7 @@ class zzWeiBoGoods extends Command
     public function handle()
     {
 
-        $start = 0;
+        $start = 13075;
         while ($start < 16500) {
             echo $start;
             $start++;
@@ -93,14 +93,14 @@ class zzWeiBoGoods extends Command
                     'goods_id'           => $goodsId,
                     'priceclassify_id'   => 12,
                     'priceclassify_name' => '微博直发',
-                    'price'              => $v['Price_ZhiFa']
+                    'price'              => $v['Price_ZhiFa'] ? $v['Price_ZhiFa'] : 0
                 ]);
 
                 GoodsPrice::create([
                     'goods_id'           => $goodsId,
                     'priceclassify_id'   => 13,
                     'priceclassify_name' => '微博转发',
-                    'price'              => $v['Price_ZhuanFa']
+                    'price'              => $v['Price_ZhuanFa'] ? $v['Price_ZhuanFa'] : 0
                 ]);
 
                 GoodsPrice::create([

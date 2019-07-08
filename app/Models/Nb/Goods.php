@@ -14,6 +14,7 @@ use App\Models\Tb\Priceclassify;
 use App\Models\Tb\Region;
 use App\Models\Tb\Theme;
 use App\Models\Tb\Weightlevel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -451,7 +452,7 @@ class Goods extends Model
         echo $goods->weixin_ID;
         if ($goods->weixin_ID) {
             $arr = DB::table('nb_goods')
-                ->where('uid', 0)
+                ->where('uid', User::GF)
                 ->where('theme_name', '公众号')
                 ->where('weixin_ID', $goods->weixin_ID)
                 ->pluck('goods_id');
@@ -460,7 +461,7 @@ class Goods extends Model
         // 微博
         if ($goods->link) {
             $arr = DB::table('nb_goods')
-                ->where('uid', 0)
+                ->where('uid', User::GF)
                 ->where('modular_name', '微博营销')
                 ->where('link', $goods->link)
                 ->pluck('goods_id');

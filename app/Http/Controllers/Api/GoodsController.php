@@ -42,13 +42,13 @@ class GoodsController extends BaseController
                 $query->orderBy('region_id', 'ASC');
             }])
             ->with(['theme.fansnumlevel' => function ($query) {
-                $query->orderBy('fansnumlevel_id', 'ASC');
+                $query->orderBy('fansnumlevel_min', 'ASC');
             }])
             ->with(['theme.readlevel' => function ($query) {
-                $query->orderBy('readlevel_id', 'ASC');
+                $query->orderBy('readlevel_min', 'ASC');
             }])
             ->with(['theme.likelevel' => function ($query) {
-                $query->orderBy('likelevel_id', 'ASC');
+                $query->orderBy('likelevel_min', 'ASC');
             }])
             ->with(['theme.pricelevel' => function ($query) {
                 $query->orderBy('pricelevel_id', 'ASC');

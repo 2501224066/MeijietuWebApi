@@ -26,7 +26,7 @@ class zzWeiXinGoods extends Command
     public function handle()
     {
 
-        $start = 14000;
+        $start = 1;
         while ($start < 14100) {
             echo $start;
             $start++;

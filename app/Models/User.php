@@ -66,6 +66,8 @@ class User extends Authenticatable implements JWTSubject
 
     public $guarded = [];
 
+    const GF = 1;
+
     const REALNAME_STATUS = [
         '未认证'  => 0,
         '个人认证' => 1,
