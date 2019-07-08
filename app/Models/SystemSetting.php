@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $about 解释
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SystemSetting whereAbout($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SystemSetting whereId($value)
+ * @property string|null $img 图片值
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SystemSetting whereImg($value)
  */
 class SystemSetting extends Model
 {

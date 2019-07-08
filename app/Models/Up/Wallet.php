@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 /**
  * App\Models\Up\Wallet
  *
+ * @property int $wallet_id
  * @property int $uid
  * @property float $available_money 可用资金
  * @property string $change_lock 修改校验锁
@@ -27,11 +28,14 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Wallet whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Wallet whereTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Wallet whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Wallet whereWalletId($value)
  * @mixin \Eloquent
  */
 class Wallet extends Model
 {
     protected $table = 'up_wallet';
+
+    protected $primaryKey = 'wallet_id';
 
     protected $guarded = [];
 

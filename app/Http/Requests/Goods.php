@@ -33,9 +33,9 @@ class Goods extends Base
                 $rules['modular_id']  = ['required', 'numeric', 'exists:tb_modular,modular_id'];
                 $rules['theme_id']    = ['required', 'numeric', 'exists:tb_theme,theme_id'];
                 $rules['filed_id']    = ['required', 'numeric', 'exists:tb_filed,filed_id'];
-                $rules['remarks']     = ['sometimes', 'present', new SpecialChar];
+                $rules['remarks']     = ['nullable', new SpecialChar];
                 $rules['price_json']  = ['required', 'json'];
-                $rules['avatar_url']  = ['sometimes', 'required', new SpecialChar];
+                $rules['avatar_url']  = ['nullable', new SpecialChar];
 
                 // 定义规则
                 switch (Modular::whereModularId(Request::input('modular_id'))->value('tag')) {
