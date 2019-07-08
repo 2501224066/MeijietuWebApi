@@ -79,6 +79,8 @@ class GoodsController extends BaseController
         $priceArr = json_decode($request->price_json, true);
         // 检查价格种类完整性
         GoodsPrice::checkPriceclassify($arr['theme_id'], $priceArr);
+        // 检测价格数据合法性
+        GoodsPrice::checkPrice($priceArr);
         // 添加商品
         $goodsId = Goods::add($arr, $priceArr);
         // 添加基础数据，删除制造商品

@@ -72,4 +72,15 @@ class GoodsPrice extends Model
         return true;
     }
 
+    // 检测价格数据合法性
+    public static function checkPrice($priceArr)
+    {
+        foreach ($priceArr as $price) {
+            if ($price < 0)
+                throw new Exception('价格不得小于零');
+        }
+
+        return true;
+    }
+
 }

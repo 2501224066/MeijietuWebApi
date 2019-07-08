@@ -33,7 +33,7 @@ class Goods extends Base
                 $rules['modular_id']  = ['required', 'numeric', 'exists:tb_modular,modular_id'];
                 $rules['theme_id']    = ['required', 'numeric', 'exists:tb_theme,theme_id'];
                 $rules['filed_id']    = ['required', 'numeric', 'exists:tb_filed,filed_id'];
-                $rules['remarks']     = ['sometimes', 'required', new SpecialChar];
+                $rules['remarks']     = ['sometimes', 'present', new SpecialChar];
                 $rules['price_json']  = ['required', 'json'];
                 $rules['avatar_url']  = ['sometimes', 'required', new SpecialChar];
 

@@ -8,11 +8,6 @@ use App\Rules\SpecialChar;
 
 class UserInfo extends Base
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
@@ -87,6 +82,9 @@ class UserInfo extends Base
     public function messages()
     {
         return [
+            'date'    => '日期格式错误',
+            'numeric' => '参数类型错误',
+
             'truename.required'           => "真实姓名不得为空",
             'identity_card_ID.required'   => "身份证号码不得为空",
             'identity_card_face.required' => "身份证正面照不得为空",
