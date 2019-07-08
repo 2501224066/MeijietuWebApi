@@ -51,7 +51,7 @@ class GoodsController extends BaseController
                 $query->orderBy('likelevel_min', 'ASC');
             }])
             ->with(['theme.pricelevel' => function ($query) {
-                $query->orderBy('pricelevel_id', 'ASC');
+                $query->orderBy('pricelevel_min', 'ASC');
             }])
             ->with(['theme.weightlevel' => function ($query) {
                 $query->orderBy('weightlevel_id', 'ASC');

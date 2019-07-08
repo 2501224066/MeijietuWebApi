@@ -371,6 +371,9 @@ class Goods extends Model
         if ($request->has('likelevel_max'))
             $query->where('avg_like_num', '<', $request->likelevel_max);
 
+        if ($request->has('auth_type'))
+            $query->where('auth_type', $request->auth_type);
+
         if ($request->has('weekend_status'))
             $query->where('weekend_status', $request->weekend_status);
 
