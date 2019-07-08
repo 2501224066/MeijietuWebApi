@@ -56,10 +56,10 @@ class UserInfo extends Base
             case 'saveInfo':
                 $rules['head_portrait'] = ['required', new SpecialChar];
                 $rules['nickname']      = ['required', new SpecialChar];
-                $rules['sex']           = ['present'];
-                $rules['birth']         = ['present'];
-                $rules['qq_ID']         = ['present'];
-                $rules['weixin_ID']     = ['present'];
+                $rules['sex']           = ['sometimes', 'required', 'numeric', new SpecialChar];
+                $rules['birth']         = ['sometimes', 'required', 'date'];
+                $rules['qq_ID']         = ['sometimes', 'required', new SpecialChar];
+                $rules['weixin_ID']     = ['sometimes', 'required', new SpecialChar];
                 $rules['imgCode']       = ['required', new SpecialChar];
                 $rules['imgToken']      = ['required', new SpecialChar];
                 break;

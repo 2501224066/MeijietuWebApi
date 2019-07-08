@@ -28,11 +28,6 @@ class UserCollection extends Base
                 $rules['goods_id']     = ['required', 'numeric', new SpecialChar];
                 $rules['modular_type'] = ['required', new SpecialChar];
                 break;
-
-            // 获取收藏
-            case 'getCollection':
-                $rules['modular_type'] = ['present'];
-                break;
         }
 
         return $rules;
