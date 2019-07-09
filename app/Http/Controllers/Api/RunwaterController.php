@@ -21,7 +21,7 @@ class RunwaterController extends BaseController
             ->whereRaw('from_uid = ? or to_uid = ?', [$uid, $uid])
             ->orderBy('created_at', 'DESC')
             ->where('status', Runwater::STATUS['成功'])
-            ->paginate(50);
+            ->paginate();
 
         return $this->success($re);
     }
