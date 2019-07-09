@@ -36,4 +36,13 @@ class Pub
 
         return true;
     }
+
+    // 限制次数
+    public static function checkCount($count, $needCount)
+    {
+        if ($count != $needCount)
+            throw new Exception('次数非法');
+
+        return true;
+    }
 }

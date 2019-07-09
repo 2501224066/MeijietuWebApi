@@ -25,9 +25,9 @@ class IndentController extends BaseController
         // 数据整理
         $data = IndentInfo::dataSorting($info);
         // 添加
-        IndentInfo::add($data);
+        $indent_mum = IndentInfo::add($data);
 
-        return $this->success();
+        return $this->success(['indent_num' => $indent_mum]);
     }
 
     /**

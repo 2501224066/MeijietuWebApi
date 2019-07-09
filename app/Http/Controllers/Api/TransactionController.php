@@ -16,7 +16,7 @@ class TransactionController extends BaseController
     /**
      * 订单付款
      * 支付订单价格
-     * @param  TransactionRequests $request
+     * @param TransactionRequests $request
      * @return mixed
      */
     public function indentPayment(TransactionRequests $request)
@@ -43,7 +43,7 @@ class TransactionController extends BaseController
 
     /**
      * 买家添加需求文档
-     * @param  TransactionRequests $request
+     * @param TransactionRequests $request
      * @return mixed
      */
     public function addDemandFile(TransactionRequests $request)
@@ -52,6 +52,10 @@ class TransactionController extends BaseController
         User::checkIdentity(User::IDENTIDY['广告主']);
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 文档是否存在;
+        $count = $indentData->demand_file ? 1 : 0;
+        // 仅上传一次限制
+        Pub::checkCount($count, 0);
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
         // 检测订单归属
@@ -89,7 +93,7 @@ class TransactionController extends BaseController
     /**
      * 卖家接单
      * 支付赔偿保证金
-     * @param  TransactionRequests $request
+     * @param TransactionRequests $request
      * @return mixed
      */
     public function acceptIndent(TransactionRequests $request)
@@ -203,6 +207,10 @@ class TransactionController extends BaseController
         User::checkIdentity(User::IDENTIDY['媒体主']);
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 文档是否存在;
+        $count = $indentData->achievements_file ? 1 : 0;
+        // 仅上传一次限制
+        Pub::checkCount($count, 0);
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
         // 检测订单归属

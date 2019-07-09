@@ -145,11 +145,13 @@ class IndentInfo extends Model
     // 添加订单
     public static function add($data)
     {
+        $indent_num = "";
+
         $uid         = JWTAuth::user()->uid;
         $salesman_id = UserUsalesman::getSalesmanId($uid);
         $time        = date('Y-m-d H:i:s');
         $key         = 'INDENTCOUNT' . date('Ymd'); // 订单数key
-        DB::transaction(function () use ($data, $uid, $salesman_id, $time, $key) {
+        DB::transaction(function () use ($data, $uid, $salesman_id, $time, $key, &$indent_mum) {
             try {
                 foreach ($data as $seller_id => $dt) {
                     // 赔偿保证费
@@ -191,8 +193,9 @@ class IndentInfo extends Model
 
 
                     // 创建订单信息
+                    $indent_mum = createIndentNnm($key);
                     $indentId = self::insertGetId([
-                        'indent_num'        => createIndentNnm($key),
+                        'indent_num'        => $indent_mum,
                         'buyer_id'          => $uid,
                         'seller_id'         => $seller_id,
                         'salesman_id'       => $salesman_id,
@@ -229,7 +232,7 @@ class IndentInfo extends Model
             }
         });
 
-        return true;
+        return $indent_mum;
     }
 
     // 检查订单归属
