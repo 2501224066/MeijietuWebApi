@@ -194,7 +194,7 @@ class Goods extends Model
         $arr['filed_id']     = htmlspecialchars($request->filed_id);
         $arr['filed_name']   = Filed::whereFiledId($request->filed_id)->value('filed_name');
         $arr['remarks']      = htmlspecialchars($request->remarks);
-        $arr['avatar_url']   = $request->has('avatar_url') ? htmlspecialchars($request->avatar_url) : JWTAuth::user()->head_portrait;
+        $arr['avatar_url']   = $request->avatar_url ? htmlspecialchars($request->avatar_url) : JWTAuth::user()->head_portrait;
         $arr['created_at']   = $time;
         $arr['updated_at']   = $time;
         $arr['goods_num']    = createGoodsNnm($modualrData->abbreviation);
