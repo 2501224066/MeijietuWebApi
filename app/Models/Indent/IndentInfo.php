@@ -259,10 +259,10 @@ class IndentInfo extends Model
             ->with('indent_item')
             ->orderBy('create_time', 'ASC');
 
-        // 媒体主显示 已付款待接单且议价已完成 的状态节点后订单
+        // 媒体主显示 已付款待接单 的状态节点后订单
         if ($user->identity == User::IDENTIDY['媒体主']) {
-            $query->where('status', self::STATUS['已付款待接单'])
-                ->where('bargaining_status', self::BARGAINING_STATUS['已完成']);
+            $query->where('status', self::STATUS['已付款待接单']);
+
         }
 
         return $query->paginate();
