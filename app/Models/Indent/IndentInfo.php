@@ -264,7 +264,7 @@ class IndentInfo extends Model
 
         // 媒体主显示 已付款待接单 的状态节点后订单
         if ($user->identity == User::IDENTIDY['媒体主']) {
-            $query->where('status', self::STATUS['已付款待接单']);
+            $query->where('status','>=', self::STATUS['已付款待接单']);
         }
 
         return $query->paginate();
