@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Indent as IndentRequests;
 use App\Http\Requests\Indent;
+use App\Jobs\IndentCreatedOP;
 use App\Models\Indent\IndentInfo;
 use App\Models\User;
 
@@ -26,6 +27,9 @@ class IndentController extends BaseController
         $data = IndentInfo::dataSorting($info);
         // 添加
         $indent_mum = IndentInfo::add($data);
+        // 删除购物车中对应商品
+        IndentCreatedOP::dispatch($info)->onQueue('IndentCreatedOP');
+
 
         return $this->success(['indent_num' => $indent_mum]);
     }
