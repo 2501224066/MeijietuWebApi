@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
+use App\Models\Nb\Collection;
 use App\Models\RealnamePeople;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
@@ -76,7 +77,7 @@ class AuthController extends BaseController
         // 检查图形验证码
         Captcha::checkCode($request->imgCode, $request->imgToken, 'imgCode');
         // 验证账号密码
-        $user  = User::checkPass($request->phone, $request->password);
+        $user = User::checkPass($request->phone, $request->password);
         // 检查用户状态
         Pub::checkStatus($user->status, User::STATUS['启用']);
         // 生成token
@@ -102,7 +103,7 @@ class AuthController extends BaseController
         // 检查短信验证码
         Captcha::checkCode($request->smsCode, $request->phone, 'codeSignIn');
         // 用户信息
-        $user  = User::wherePhone($request->phone)->first();
+        $user = User::wherePhone($request->phone)->first();
         // 检查用户状态
         Pub::checkStatus($user->status, User::STATUS['启用']);
         // 生成token
@@ -139,20 +140,22 @@ class AuthController extends BaseController
      */
     public function me()
     {
-        $user           = auth('api')->user();
-        $realnamePeople = RealnamePeople::whereUid($user->uid)->first();
+        $user            = auth('api')->user();
+        $realnamePeople  = RealnamePeople::whereUid($user->uid)->first();
+        $CollectionCount = Collection::whereUid($user->uid)->count();
         return $this->success([
-            "head_portrait"   => $user->head_portrait,
-            "truename"        => $realnamePeople ? $realnamePeople->truename : null,
-            "nickname"        => $user->nickname,
-            "sex"             => $user->sex,
-            "email"           => $user->email,
-            "phone"           => $user->phone,
-            "birth"           => $user->birth,
-            "qq_ID"           => $user->qq_ID,
-            "weixin_ID"       => $user->weixin_ID,
-            "realname_status" => $user->realname_status,
-            "identity"        => $user->identity
+            "head_portrait"    => $user->head_portrait,
+            "truename"         => $realnamePeople ? $realnamePeople->truename : null,
+            "nickname"         => $user->nickname,
+            "sex"              => $user->sex,
+            "email"            => $user->email,
+            "phone"            => $user->phone,
+            "birth"            => $user->birth,
+            "qq_ID"            => $user->qq_ID,
+            "weixin_ID"        => $user->weixin_ID,
+            "realname_status"  => $user->realname_status,
+            "identity"         => $user->identity,
+            'collection_count' => $CollectionCount
         ]);
     }
 
