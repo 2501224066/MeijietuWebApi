@@ -255,7 +255,7 @@ class IndentInfo extends Model
     {
         $user = JWTAuth::user();
 
-        $query = IndentInfo::whereBuyerId($user->uid)
+        $query = IndentInfo::whereRaw('buyer_id = ? or seller_id = ?', [$user->uid, $user->uid])
             ->with('indent_item')
             ->orderBy('create_time', 'ASC');
 
