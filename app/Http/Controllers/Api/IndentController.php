@@ -30,7 +30,6 @@ class IndentController extends BaseController
         // 删除购物车中对应商品
         IndentCreatedOP::dispatch($info)->onQueue('IndentCreatedOP');
 
-
         return $this->success(['indent_num' => $indent_mum]);
     }
 

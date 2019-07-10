@@ -77,9 +77,12 @@ class Collection extends Model
     public static function getCollection()
     {
         $uid = JWTAuth::user()->uid;
-        return self::with('goods.goods_price')
+        $re['goods_id_arr'] =self::where('uid', $uid)
+            ->pluck('goods_id');
+        $re['collection'] = self::with('goods.goods_price')
             ->where('uid', $uid)
             ->get();
+        return $re;
     }
 
 }
