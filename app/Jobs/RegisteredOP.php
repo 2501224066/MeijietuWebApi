@@ -32,7 +32,7 @@ class RegisteredOP implements ShouldQueue
 
         try{
             // 分配客服
-            User::withUsalesman($uid);
+            User::withSalesman($uid);
             // 生成钱包
             Wallet::createWallet($uid);
         }catch (\Exception $e){

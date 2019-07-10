@@ -7,8 +7,6 @@ namespace App\Models\Indent;
 use App\Models\Nb\Goods;
 use App\Models\SystemSetting;
 use App\Models\Tb\Modular;
-use App\Models\Usalesman\Usalesman;
-use App\Models\Usalesman\UserUsalesman;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -148,7 +146,7 @@ class IndentInfo extends Model
         $indent_num = "";
 
         $uid         = JWTAuth::user()->uid;
-        $salesman_id = UserUsalesman::getSalesmanId($uid);
+        $salesman_id = JWTAuth::user()->salesman_id;
         $time        = date('Y-m-d H:i:s');
         $key         = 'INDENTCOUNT' . date('Ymd'); // 订单数key
         DB::transaction(function () use ($data, $uid, $salesman_id, $time, $key, &$indent_mum) {

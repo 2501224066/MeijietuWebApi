@@ -50,11 +50,6 @@ $api->group(['version' => 'v1'], function ($api) {
             // 退出登录
             $api->post('signOut', 'AuthController@signOut');
 
-            // 客服
-            //  用户专属客服信息
-            $api->post('usalsesmanInfo', 'UsalesmanController@usalsesmanInfo');
-            //  分配客服
-            $api->post('distributionUsalsesman', 'UsalesmanController@distributionUsalsesman');
 
             // 个人信息
             //  个人实名认证
@@ -73,6 +68,10 @@ $api->group(['version' => 'v1'], function ($api) {
             $api->post('savePhone', 'UserInfoController@savePhone');
             //  修改密码
             $api->post('savePass', 'UserInfoController@savePass');
+            //  用户客服信息
+            $api->post('salsesmanInfo', 'UserInfoController@userSalsesmanInfo');
+            //  分配客服
+            $api->post('distributionSalsesman', 'UserInfoController@distributionSalsesman');
 
 
             // 文件处理

@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Usalesman\Usalesman;
-use App\Models\Usalesman\UserUsalesman;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -11,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 
 /**
@@ -26,10 +26,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $birth 出生日期
  * @property string|null $qq_ID qq号
  * @property string|null $weixin_ID 微信号
- * @property int|null $identity 身份 1=广告主 2=流量主
+ * @property int|null $identity 身份 1=广告主 2=流量主 3=业务员
  * @property int $realname_status 实名认证状态 0=未认证 1=个人认证 2=企业认证
  * @property string $ip 客户端最近一次登录ip
  * @property int|null $status 状态 0=禁用 1=启用
+ * @property int|null $salesman_id 客服id
+ * @property string|null $salesman_name 客服名称
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -47,6 +49,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereQqID($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRealnameStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSalesmanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSalesmanName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSex($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUid($value)
@@ -77,6 +81,7 @@ class User extends Authenticatable implements JWTSubject
     const IDENTIDY = [
         '广告主' => 1,
         '媒体主' => 2,
+        '业务员' => 3
     ];
 
     const STATUS = [
@@ -113,34 +118,6 @@ class User extends Authenticatable implements JWTSubject
             throw new Exception('注册失败');
 
         return self::wherePhone($user->phone)->value('uid');
-    }
-
-    // 分配客服
-    public static function withUsalesman($uid)
-    {
-        // 检查用户是否已经分配客服
-        self::checkUserHasUsalesman($uid);
-        // 获取客服
-        $salesman_id = Usalesman::getSalesman();
-        // 将客服id与用户id存入它们的关联表
-        $re = UserUsalesman::create([
-            'uid'         => $uid,
-            'salesman_id' => $salesman_id
-        ]);
-        if (!$re)
-            throw new Exception('分配客服失败');
-
-        return true;
-    }
-
-    // 检查用户是否已经分配客服
-    public static function checkUserHasUsalesman($uid)
-    {
-        $count = UserUsalesman::whereUid($uid)->count();
-        if ($count)
-            throw new Exception('已有专属客服');
-
-        return true;
     }
 
     // 验证密码
@@ -262,7 +239,7 @@ class User extends Authenticatable implements JWTSubject
             case 'y':
                 if ($realnameStatus != self::REALNAME_STATUS['未认证'])
                     throw new Exception('已有认证');
-            break;
+                break;
 
             case 'n':
                 if ($realnameStatus == self::REALNAME_STATUS['未认证'])
@@ -283,4 +260,77 @@ class User extends Authenticatable implements JWTSubject
         return true;
     }
 
+    // 分配客服
+    public static function withSalesman($uid)
+    {
+        // 检查用户是否已经分配客服
+        self::checkUserHasSalesman($uid);
+        // 取得一个客服id
+        $salesman_id = self::getSalesman();
+        // 将客服id与用户id存入它们的关联表
+        $re = User::whereUid($uid)->update([
+            'salesman_id'   => $salesman_id,
+            'salesman_name' => User::whereUid($salesman_id)->value('nickname')
+        ]);
+        if (!$re)
+            throw new Exception('分配客服失败');
+
+        return true;
+    }
+
+    // 检查用户是否已经分配客服
+    public static function checkUserHasSalesman($uid)
+    {
+        $re = User::whereUid($uid)->value('salesman_id');
+        if ($re)
+            throw new Exception('已有专属客服');
+
+        return true;
+    }
+
+    // 循环获取客服id
+    public static function getSalesman()
+    {
+        // 所有客服id
+        $salesmanArr = User::whereIdentity(self::IDENTIDY['业务员'])
+            ->where('status', self::STATUS['启用'])
+            ->pluck('uid');
+
+        // 位置初始值
+        $init = 0;
+
+        // 位置不存在设置初始值
+        if (!Cache::has('salesman_tag')) {
+            Cache::put('salesman_tag', $init, 60);
+            return $salesmanArr[$init];
+        }
+
+        // 位置超出回归初始值
+        if (empty($salesmanArr[Cache::get('salesman_tag') + 1])) {
+            Cache::put('salesman_tag', $init, 60);
+            return $salesmanArr[$init];
+        }
+
+        Cache::put('salesman_tag', Cache::get('salesman_tag') + 1, 60);
+
+        return $salesmanArr[Cache::get('salesman_tag') + 1];
+    }
+
+    // 获取客服信息
+    public static function salesmanInfo()
+    {
+        $salesman_id = JWTAuth::user()->salesman_id;
+        if (!$salesman_id)
+            throw new Exception('未找到客服信息');
+
+        $info = User::whereUid($salesman_id)->first();
+        return [
+            'salesman_id'            => $info->uid,
+            'salesman_qq_ID'         => $info->qq_ID,
+            'salesman_weixin_ID'     => $info->weixin_ID,
+            'salesman_name'          => $info->nickname,
+            'salesman_head_portrait' => $info->head_portrait,
+            'status'                 => $info->status,
+        ];
+    }
 }
