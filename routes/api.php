@@ -110,7 +110,7 @@ $api->group(['version' => 'v1'], function ($api) {
             //  充值
             $api->post('recharge', 'PayController@recharge');
             //  提现
-            $api->post('extract', 'PayController@cash');
+            $api->post('extract', 'PayController@extract');
 
             // 钱包
             //  生成钱包
