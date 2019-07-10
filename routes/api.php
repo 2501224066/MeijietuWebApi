@@ -9,6 +9,11 @@ $api->group(['version' => 'v1'], function ($api) {
         $api->get('test', 'TestController@index');
 
 
+
+
+        // 首页
+        $api->get('indexPage', 'AuthController@indexPage');
+
         // 充值回调
         $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
 

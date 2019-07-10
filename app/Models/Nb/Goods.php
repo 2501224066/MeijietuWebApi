@@ -146,6 +146,8 @@ class Goods extends Model
 
     const VERIFY_STATUS = ['待审核' => 0, '未通过' => 1, '已通过' => 2];
 
+    const RECOMMEND_STATUS = ['否' => 0, '是' => 1];
+
     const DELETE_STATUS = ['未删除' => 0, '已删除' => 1];
 
     public function goods_price(): HasMany
@@ -407,11 +409,11 @@ class Goods extends Model
         // 存入商品表中
         if ($re)
             self::whereGoodsId($goodsId)->update([
-                    'avg_read_num'    => $re['Avg_Read_Num'],
-                    'avg_like_num'    => $re['Avg_Like_Num'],
-                    'avg_comment_num' => $re['Avg_Comment_Num'],
-                    'avatar_url'      => $re['BasicInfo']['Avatar_Url'],
-                    'qrcode_url'      => $re['BasicInfo']['Qrcode_Url']]);
+                'avg_read_num'    => $re['Avg_Read_Num'],
+                'avg_like_num'    => $re['Avg_Like_Num'],
+                'avg_comment_num' => $re['Avg_Comment_Num'],
+                'avatar_url'      => $re['BasicInfo']['Avatar_Url'],
+                'qrcode_url'      => $re['BasicInfo']['Qrcode_Url']]);
 
     }
 
@@ -435,12 +437,12 @@ class Goods extends Model
         // 存入商品表中
         if ($re)
             self::whereGoodsId($goodsId)->update([
-                    'avg_like_num'    => $re['Avg_Like_Num_Last10'],
-                    'avg_comment_num' => $re['Avg_Comment_Num_Last10'],
-                    'avg_retweet_num' => $re['Avg_Retweet_Num_Last10'],
-                    'avatar_url'      => $re['BasicInfo']['Avatar_Url'],
-                    'fans_num'        => $re['BasicInfo']['Fans_Num']
-                ]);
+                'avg_like_num'    => $re['Avg_Like_Num_Last10'],
+                'avg_comment_num' => $re['Avg_Comment_Num_Last10'],
+                'avg_retweet_num' => $re['Avg_Retweet_Num_Last10'],
+                'avatar_url'      => $re['BasicInfo']['Avatar_Url'],
+                'fans_num'        => $re['BasicInfo']['Fans_Num']
+            ]);
 
     }
 
