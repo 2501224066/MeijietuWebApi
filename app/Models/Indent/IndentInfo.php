@@ -192,7 +192,7 @@ class IndentInfo extends Model
 
                     // 创建订单信息
                     $indent_mum = createIndentNnm($key);
-                    $indentId = self::insertGetId([
+                    $indentId   = self::insertGetId([
                         'indent_num'        => $indent_mum,
                         'buyer_id'          => $uid,
                         'seller_id'         => $seller_id,
@@ -234,9 +234,9 @@ class IndentInfo extends Model
     }
 
     // 检查订单归属
-    public static function checkIndentBelong($uid)
+    public static function checkIndentBelong($uidArr)
     {
-        if ($uid != JWTAuth::user()->uid)
+        if (!in_array(JWTAuth::user()->uid, $uidArr))
             throw new Exception('订单不属于您');
 
         return true;
@@ -262,7 +262,7 @@ class IndentInfo extends Model
 
         // 媒体主显示 已付款待接单 的状态节点后订单
         if ($user->identity == User::IDENTIDY['媒体主']) {
-            $query->where('status','>=', self::STATUS['已付款待接单']);
+            $query->where('status', '>=', self::STATUS['已付款待接单']);
         }
 
         return $query->paginate();

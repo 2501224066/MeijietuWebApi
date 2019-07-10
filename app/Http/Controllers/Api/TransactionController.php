@@ -28,7 +28,7 @@ class TransactionController extends BaseController
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['待付款']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->buyer_id);
+        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 校验钱包状态
         Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
         // 校验修改校验锁
@@ -59,7 +59,7 @@ class TransactionController extends BaseController
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->buyer_id);
+        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 添加
         Transaction::addDemandFile($indentData, $request->demand_file);
 
@@ -79,7 +79,7 @@ class TransactionController extends BaseController
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->buyer_id);
+        IndentInfo::checkIndentBelong([$indentData->buyer_id, $indentData->seller_id]);
         // 校验钱包状态
         Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
         // 校验修改校验锁
@@ -107,7 +107,7 @@ class TransactionController extends BaseController
         // 检查议价状态
         IndentInfo::checkSaceBuyerIncomeStatus($indentData->bargaining_status, IndentInfo::BARGAINING_STATUS['已完成']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->seller_id);
+        IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 校验钱包状态
         Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
         // 校验修改校验锁
@@ -134,7 +134,7 @@ class TransactionController extends BaseController
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->buyer_id);
+        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 校验卖家钱包状态
         Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
         // 校验卖家修改校验锁
@@ -164,7 +164,7 @@ class TransactionController extends BaseController
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->seller_id);
+        IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 校验买家钱包状态
         Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
         // 校验买家修改校验锁
@@ -189,7 +189,7 @@ class TransactionController extends BaseController
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->seller_id);
+        IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 修改状态
         Transaction::sellerComplete($indentData);
 
@@ -214,7 +214,7 @@ class TransactionController extends BaseController
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->seller_id);
+        IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 添加
         Transaction::addAchievementsFile($indentData, $request->achievements_file);
 
@@ -234,7 +234,7 @@ class TransactionController extends BaseController
         // 检查订单状态
         Pub::checkStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
         // 检测订单归属
-        IndentInfo::checkIndentBelong($indentData->buyer_id);
+        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 修改状态
         Transaction::buyerComplete($indentData);
 
