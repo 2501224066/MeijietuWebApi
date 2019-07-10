@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
-use App\Models\Nb\Collection;
+use App\Models\Nb\Shopcart;
 use App\Models\RealnamePeople;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
@@ -140,22 +140,22 @@ class AuthController extends BaseController
      */
     public function me()
     {
-        $user            = auth('api')->user();
-        $realnamePeople  = RealnamePeople::whereUid($user->uid)->first();
-        $CollectionCount = Collection::whereUid($user->uid)->count();
+        $user           = auth('api')->user();
+        $realnamePeople = RealnamePeople::whereUid($user->uid)->first();
+        $shopcartCount  = Shopcart::whereUid($user->uid)->count();
         return $this->success([
-            "head_portrait"    => $user->head_portrait,
-            "truename"         => $realnamePeople ? $realnamePeople->truename : null,
-            "nickname"         => $user->nickname,
-            "sex"              => $user->sex,
-            "email"            => $user->email,
-            "phone"            => $user->phone,
-            "birth"            => $user->birth,
-            "qq_ID"            => $user->qq_ID,
-            "weixin_ID"        => $user->weixin_ID,
-            "realname_status"  => $user->realname_status,
-            "identity"         => $user->identity,
-            'collection_count' => $CollectionCount
+            "head_portrait"   => $user->head_portrait,
+            "truename"        => $realnamePeople ? $realnamePeople->truename : null,
+            "nickname"        => $user->nickname,
+            "sex"             => $user->sex,
+            "email"           => $user->email,
+            "phone"           => $user->phone,
+            "birth"           => $user->birth,
+            "qq_ID"           => $user->qq_ID,
+            "weixin_ID"       => $user->weixin_ID,
+            "realname_status" => $user->realname_status,
+            "identity"        => $user->identity,
+            'shopcart_count'  => $shopcartCount
         ]);
     }
 
