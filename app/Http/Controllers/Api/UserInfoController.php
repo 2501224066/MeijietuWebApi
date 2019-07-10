@@ -125,29 +125,21 @@ class UserInfoController extends BaseController
 
     /**
      * 用户专属客服信息
+     * @return mixed
      */
-    public function salsesmanInfo()
+    public function userSalsesmanInfo()
     {
-        $uid = JWTAuth::user()->uid;
-        // 获取客服ID
-        $salesman_id = UserUsalesman::getSalesmanId($uid);
-        // 获取客服信息
-        $data = Usalesman::info($salesman_id);
-
+        $data = User::salesmanInfo();
         return $this->success($data);
     }
 
     /**
      * 分配客服
+     * @return mixed
      */
     public function distributionSalsesman()
     {
-        $user = JWTAuth::user();
-        $salesman_id = UserUsalesman::getSalesmanId($user->uid);
-        $user->salesman_id =  $salesman_id;
-        $user->salesman_name = User::whereUid($salesman_id)->value('nickname');
-        $user->save();
-
+        User::withSalesman(JWTAuth::user()->uid);
         return $this->success();
     }
 }

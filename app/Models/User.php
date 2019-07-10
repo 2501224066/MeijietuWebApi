@@ -262,7 +262,7 @@ class User extends Authenticatable implements JWTSubject
     // 分配客服
     public static function withSalesman($uid)
     {
-        // 限制已经拥有客服
+        // 必须没有客服
         self::checkUserHasSalesman($uid, 'n');
         // 取得一个客服id
         $salesman_id = self::getSalesman();

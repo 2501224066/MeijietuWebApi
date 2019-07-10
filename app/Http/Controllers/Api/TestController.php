@@ -13,9 +13,9 @@ class TestController extends BaseController
     {
         // ToDo...
         // 充钱
-        //$uid = 1000037;
+        //$uid = 1000036;
         //$avaiable_money = 1000000;
-        //$time = '2019-07-10 09:30:13';
+        //$time = '2019-07-09 12:11:33';
         //return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money * 1 . $time);
 
         // 上架
