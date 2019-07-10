@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
+use App\Models\Nb\Collection;
 use App\Models\Nb\Shopcart;
 use App\Models\RealnamePeople;
 use App\Models\User;
@@ -143,6 +144,7 @@ class AuthController extends BaseController
         $user           = auth('api')->user();
         $realnamePeople = RealnamePeople::whereUid($user->uid)->first();
         $shopcartCount  = Shopcart::whereUid($user->uid)->count();
+        $collectionArr = Collection::whereUid($user->uid)->pluck('goods_id');
         return $this->success([
             "head_portrait"   => $user->head_portrait,
             "truename"        => $realnamePeople ? $realnamePeople->truename : null,
@@ -155,7 +157,8 @@ class AuthController extends BaseController
             "weixin_ID"       => $user->weixin_ID,
             "realname_status" => $user->realname_status,
             "identity"        => $user->identity,
-            'shopcart_count'  => $shopcartCount
+            'shopcart_count'  => $shopcartCount,
+            'collectionArr' => $collectionArr
         ]);
     }
 
