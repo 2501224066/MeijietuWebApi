@@ -226,7 +226,8 @@ class IndentInfo extends Model
                     Cache::increment($key);
                 }
             } catch (\Exception $e) {
-                throw new Exception('操作失败');
+                throw new Exception($e->getMessage());
+                //throw new Exception('操作失败');
             }
         });
 
