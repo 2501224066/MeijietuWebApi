@@ -12,7 +12,6 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-
 /**
  * App\Models\User
  *
@@ -263,8 +262,8 @@ class User extends Authenticatable implements JWTSubject
     // 分配客服
     public static function withSalesman($uid)
     {
-        // 检查用户是否已经分配客服
-        self::checkUserHasSalesman($uid);
+        // 限制已经拥有客服
+        self::checkUserHasSalesman($uid, 'n');
         // 取得一个客服id
         $salesman_id = self::getSalesman();
         // 将客服id与用户id存入它们的关联表
@@ -278,12 +277,19 @@ class User extends Authenticatable implements JWTSubject
         return true;
     }
 
-    // 检查用户是否已经分配客服
-    public static function checkUserHasSalesman($uid)
+    // 检查客服
+    public static function checkUserHasSalesman($uid, $io)
     {
         $re = User::whereUid($uid)->value('salesman_id');
-        if ($re)
-            throw new Exception('已有专属客服');
+        switch ($io) {
+            case 'n':
+                if ($re) throw new Exception('已有专属客服');
+                break;
+
+            case 'y' :
+                if (!$re) throw new Exception('没有客服，请到个人中心设置客服');
+                break;
+        }
 
         return true;
     }
