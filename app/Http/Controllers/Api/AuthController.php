@@ -50,6 +50,7 @@ class AuthController extends BaseController
             ->with('goods_price')
             ->where('status', Goods::STATUS['上架'])
             ->where('verify_status', Goods::VERIFY_STATUS['已通过'])
+            ->where('delete_status', Goods::DELETE_STATUS['未删除'])
             ->get();
         // ...
 

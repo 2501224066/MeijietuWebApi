@@ -329,7 +329,8 @@ class Goods extends Model
     {
         $query = self::with('goods_price')
             ->where('status', self::STATUS['上架'])
-            ->where('verify_status', self::VERIFY_STATUS['已通过']);
+            ->where('verify_status', self::VERIFY_STATUS['已通过'])
+            ->where('delete_status', self::DELETE_STATUS['未删除']);
 
         if ($whereInGoodsIdArr)
             $query->whereIn('goods_id', $whereInGoodsIdArr);
