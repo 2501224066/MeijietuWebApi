@@ -155,7 +155,7 @@ $api->group(['version' => 'v1'], function ($api) {
             //  卖家添加需求文档
             $api->post('addAchievementsFile', 'TransactionController@addAchievementsFile');
             //  买家确认完成
-            $api->post('buyerConfirmComplete', 'TransactionController@sellerConfirmComplete');
+            $api->post('buyerConfirmComplete', 'TransactionController@buyerConfirmComplete');
 
             // 流水记录
             $api->post('runwaterList', 'RunwaterController@runWaterList');
