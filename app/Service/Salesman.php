@@ -89,8 +89,7 @@ class Salesman
             'salesman_qq_ID'         => $info->qq_ID,
             'salesman_weixin_ID'     => $info->weixin_ID,
             'salesman_name'          => $info->nickname,
-            'salesman_head_portrait' => $info->head_portrait,
-            'status'                 => $info->status,
+            'salesman_head_portrait' => $info->head_portrait
         ];
     }
 

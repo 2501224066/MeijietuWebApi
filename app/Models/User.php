@@ -111,7 +111,9 @@ class User extends Authenticatable implements JWTSubject
             'nickname'      => htmlspecialchars($request->nickname),
             'identity'      => htmlspecialchars($request->identity),
             'ip'            => $request->getClientIp(),
-            'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('img')
+            'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('img'),
+            'salesman_id'   => $request->salesman_id,
+            'salesman_name' => $request->salesman_id ? User::whereUid($request->salesman_id)->value('nickname') : null
         ]);
         if (!$user)
             throw new Exception('注册失败');

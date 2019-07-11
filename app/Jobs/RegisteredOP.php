@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Up\Wallet;
+use App\Models\User;
 use App\Service\Salesman;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -30,12 +31,13 @@ class RegisteredOP implements ShouldQueue
     {
         $uid = $this->uid;
 
-        try{
-            // 分配客服
-            Salesman::withSalesman($uid);
+        try {
+            // 如果没有客服则分配客服
+            if (!User::whereUid($uid)->value('salesmane_id'))
+                Salesman::withSalesman($uid);
             // 生成钱包
             Wallet::createWallet($uid);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             echo $e->getMessage();
         }
     }

@@ -46,6 +46,7 @@ class Auth extends Base
                 $rules['nickname']              = ['required', new SpecialChar, 'between:3,10'];
                 $rules['nextToken']             = ['required', new SpecialChar];
                 $rules['identity']              = ['required', new SpecialChar, 'numeric'];
+                $rules['salesman_id']           = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:user,uid'];
                 break;
 
             // 登录
@@ -82,9 +83,10 @@ class Auth extends Base
             'phone.unique'   => '手机号已被使用',
             'phone.exists'   => '手机号未注册',
 
-            'email.required' => '邮箱不得为空',
-            'email.email'    => '邮箱格式错误',
-            'email.unique'   => '邮箱已被使用',
+            'email.required'     => '邮箱不得为空',
+            'email.email'        => '邮箱格式错误',
+            'email.unique'       => '邮箱已被使用',
+            'salesman_id.exists' => '客服不存在',
 
             'password.required'              => '密码不得为空',
             'password.confirmed'             => '两次输入密码不一致',

@@ -52,8 +52,11 @@ class AuthController extends BaseController
             ->where('verify_status', Goods::VERIFY_STATUS['已通过'])
             ->where('delete_status', Goods::DELETE_STATUS['未删除'])
             ->get()
-            ->groupBy('modular_name');
-        ;
+            ->groupBy('modular_name')
+            ->groupBy('theme_name');;;
+        // 随机客服
+        $salesman       = User::whereIdentity(User::IDENTIDY['业务员'])->where('status', User::STATUS['启用'])->inRandomOrder()->first();
+        $re['salesman'] = ['salesman_id' => $salesman->uid, 'salesman_qq_ID' => $salesman->qq_ID, 'salesman_weixin_ID' => $salesman->weixin_ID, 'salesman_name' => $salesman->nickname, 'salesman_head_portrait' => $salesman->head_portrait];
         // ...
 
         return $this->success($re);
@@ -130,7 +133,7 @@ class AuthController extends BaseController
         // 用户信息
         $user = User::wherePhone($request->phone)->first();
         // 检查用户状态
-        Pub::checkParm($user->status, User::STATUS['启用'],'账户状态异常');
+        Pub::checkParm($user->status, User::STATUS['启用'], '账户状态异常');
         // 生成token
         $token = JWTAuth::fromUser($user);
         // 修改登录log为成功状态
