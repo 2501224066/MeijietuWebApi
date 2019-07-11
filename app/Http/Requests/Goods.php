@@ -33,9 +33,9 @@ class Goods extends Base
                 $rules['modular_id']  = ['required', 'numeric', 'exists:tb_modular,modular_id'];
                 $rules['theme_id']    = ['required', 'numeric', 'exists:tb_theme,theme_id'];
                 $rules['filed_id']    = ['required', 'numeric', 'exists:tb_filed,filed_id'];
-                $rules['remarks']     = ['nullable', new SpecialChar];
                 $rules['price_json']  = ['required', 'json'];
-                $rules['avatar_url']  = ['nullable', new SpecialChar];
+                $rules['remarks']     = ['nullable', 'present', new SpecialChar];
+                $rules['avatar_url']  = ['nullable', 'present', new SpecialChar];
 
                 // 定义规则
                 switch (Modular::whereModularId(Request::input('modular_id'))->value('tag')) {
@@ -107,6 +107,7 @@ class Goods extends Base
     public function messages()
     {
         return [
+            'present'              => '参数不全',
             'title.required'       => '商品标题不得为空',
             'title.unique'         => '商品标题已存在',
             'title_about.required' => '标题简介不得为空',
@@ -141,8 +142,8 @@ class Goods extends Base
             'price_json.required' => '价格信息不得为空',
             'price_json.json'     => '价格信息非JSON格式',
 
-            'goods_num.required'=> '商品编号不得为空',
-            'goods_num.exists'=> '商品编号不存在',
+            'goods_num.required' => '商品编号不得为空',
+            'goods_num.exists'   => '商品编号不存在',
 
             'numeric' => '参数格式错误',
             'exists'  => '参数不存在'

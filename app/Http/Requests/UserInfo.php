@@ -51,10 +51,10 @@ class UserInfo extends Base
             case 'saveInfo':
                 $rules['head_portrait'] = ['required', new SpecialChar];
                 $rules['nickname']      = ['required', new SpecialChar];
-                $rules['sex']           = ['nullable', 'numeric', new SpecialChar];
-                $rules['birth']         = ['nullable', 'date'];
-                $rules['qq_ID']         = ['nullable', new SpecialChar];
-                $rules['weixin_ID']     = ['nullable', new SpecialChar];
+                $rules['sex']           = ['nullable', 'present', 'numeric', new SpecialChar];
+                $rules['birth']         = ['nullable', 'present', 'date'];
+                $rules['qq_ID']         = ['nullable', 'present', new SpecialChar];
+                $rules['weixin_ID']     = ['nullable', 'present', new SpecialChar];
                 $rules['imgCode']       = ['required', new SpecialChar];
                 $rules['imgToken']      = ['required', new SpecialChar];
                 break;
@@ -84,6 +84,7 @@ class UserInfo extends Base
         return [
             'date'    => '日期格式错误',
             'numeric' => '参数类型错误',
+            'present' => '参数不全',
 
             'truename.required'           => "真实姓名不得为空",
             'identity_card_ID.required'   => "身份证号码不得为空",

@@ -51,7 +51,11 @@ class AuthController extends BaseController
             ->where('status', Goods::STATUS['上架'])
             ->where('verify_status', Goods::VERIFY_STATUS['已通过'])
             ->where('delete_status', Goods::DELETE_STATUS['未删除'])
-            ->get();
+            ->get()
+            ->keyBy(function ($item) {
+                return strtoupper($item['modular_name']);
+            });
+        ;
         // ...
 
         return $this->success($re);

@@ -81,6 +81,10 @@ $api->group(['version' => 'v1'], function ($api) {
             // 客服
             //  服务客户列表
             $api->post('serveUserList', 'SalesmanController@serveUserList');
+            //  服务商品搜索
+            $api->post('serveGoodsSelect', 'SalesmanController@serveGoodsSelect');
+            //  服务订单搜索
+            $api->post('serveIndentSelect', 'SalesmanController@serveIndentSelect');
 
 
             // 文件处理

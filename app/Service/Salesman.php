@@ -4,6 +4,8 @@
 namespace App\Service;
 
 
+use App\Models\Indent\IndentInfo;
+use App\Models\Nb\Goods;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Mockery\Exception;
@@ -90,5 +92,41 @@ class Salesman
             'salesman_head_portrait' => $info->head_portrait,
             'status'                 => $info->status,
         ];
+    }
+
+    // 服务商品
+    public static function serveGoods($input, $userArr)
+    {
+        $query = Goods::whereIn('uid', $userArr)
+            ->orderBy('created_at', 'DESC');
+
+        if ($input->uid)
+            $query->where('uid', $input->uid);
+
+        if ($input->goods_num)
+            $query->where('goods_num', $input->goods_num);
+
+        return $query->paginate();
+    }
+
+    // 服务订单
+    public static function serveIndent($input)
+    {
+        $query = IndentInfo::whereSalesmanId(JWTAuth::user()->uid)
+            ->orderBy('create_time', 'DESC');
+
+        if ($input->buyer_id)
+            $query->where('buyer_id', $input->buyer_id);
+
+        if ($input->buyer_id)
+            $query->where('buyer_id', $input->buyer_id);
+
+        if ($input->seller_id)
+            $query->where('seller_id', $input->seller_id);
+
+        if ($input->indent_num)
+            $query->where('indent_num', $input->indent_num);
+
+        return $query->paginate();
     }
 }
