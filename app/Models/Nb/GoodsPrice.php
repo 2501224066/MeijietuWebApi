@@ -41,16 +41,16 @@ class GoodsPrice extends Model
     // 筛选价格
     public static function screePrice($request)
     {
-        if( ! $request->has('priceclassify_id'))
+        if( ! $request->priceclassify_id)
             return false;
 
-        if ($request->has('priceclassify_id'))
+        if ($request->priceclassify_id)
             $query = self::where('priceclassify_id', $request->priceclassify_id);
 
-        if ($request->has('pricelevel_min'))
+        if ($request->pricelevel_min)
             $query->where('price', '>=', $request->pricelevel_min);
 
-        if ($request->has('pricelevel_max'))
+        if ($request->pricelevel_max)
             $query->where('price', '<', $request->pricelevel_max);
 
         return $query->groupBy('goods_id')->pluck('goods_id');

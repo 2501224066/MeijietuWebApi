@@ -86,8 +86,21 @@ class Goods extends Base
 
             // 搜索商品
             case 'selectGoods':
-                $rules['modular_id'] = ['required', new SpecialChar, 'numeric', 'exists:tb_modular,modular_id'];
-                $rules['theme_id']   = ['required', new SpecialChar, 'numeric', 'exists:tb_theme,theme_id'];
+                $rules['modular_id']       = ['required', new SpecialChar, 'numeric', 'exists:tb_modular,modular_id'];
+                $rules['theme_id']         = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_theme,theme_id'];
+                $rules['key_word']         = ['nullable', 'present', new SpecialChar];
+                $rules['filed_id']         = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_filed,filed_id'];
+                $rules['platform_id']      = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
+                $rules['industry_id']      = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_industry,industry_id'];
+                $rules['region_id']        = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
+                $rules['fansnumlevel_min'] = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['fansnumlevel_max'] = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['readlevel_min']    = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['readlevel_max']    = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['likelevel_min']    = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['likelevel_max']    = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['weekend_status']   = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['included_sataus']  = ['nullable', 'present', new SpecialChar, 'numeric'];
                 break;
 
             // 单个商品信息
@@ -115,27 +128,22 @@ class Goods extends Base
             'qq_ID.required' => 'QQ号不得为空',
             'qq_ID.numeric'  => 'QQ号需为数字',
 
-            'modular_id.required' => '模块ID不得为空',
-            'modular_id.numeric'  => '模块ID需为数字',
-            'modular_id.exists'   => '模块ID不存在',
+            'modular_id.required' => '模块不得为空',
+            'modular_id.numeric'  => '模块需为数字',
+            'modular_id.exists'   => '模块不存在',
 
-            'theme_id.required' => '主题ID不得为空',
-            'theme_id.numeric'  => '主题ID需为数字',
-            'theme_id.exists'   => '主题ID不存在',
+            'theme_id.numeric'  => '主题需为数字',
+            'theme_id.exists'   => '主题不存在',
 
-            'filed_id.required' => '领域ID不得为空',
-            'filed_id.numeric'  => '领域ID需为数字',
-            'filed_id.exists'   => '领域ID不存在',
+            'filed_id.numeric'  => '领域需为数字',
+            'filed_id.exists'   => '领域不存在',
 
-            'Platfrom_id.required' => '平台ID不得为空',
-            'Platfrom_id.numeric'  => '平台ID需为数字',
-            'Platfrom_id.exists'   => '平台ID不存在',
+            'Platfrom_id.numeric'  => '平台需为数字',
+            'Platfrom_id.exists'   => '平台不存在',
 
-            'industry_id.required' => '行业ID不得为空',
-            'industry_id.numeric'  => '行业ID需为数字',
-            'industry_id.exists'   => '行业ID不存在',
+            'industry_id.numeric'  => '行业需为数字',
+            'industry_id.exists'   => '行业不存在',
 
-            'region_id.required' => '地区ID不得为空',
             'region_id.numeric'  => '地区ID需为数字',
             'region_id.exists'   => '地区ID不存在',
 

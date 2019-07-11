@@ -335,52 +335,52 @@ class Goods extends Model
         if ($whereInGoodsIdArr)
             $query->whereIn('goods_id', $whereInGoodsIdArr);
 
-        if ($request->has('modular_id'))
+        if ($request->modular_id)
             $query->where('modular_id', $request->modular_id);
 
-        if ($request->has('theme_id'))
+        if ($request->theme_id)
             $query->where('theme_id', $request->theme_id);
 
-        if ($request->has('key_word'))
+        if ($request->key_word)
             $query->whereRaw('title like ? or title_about like ?', ["%{$request->key_word}%", "%{$request->key_word}%"]);
 
-        if ($request->has('filed_id'))
+        if ($request->filed_id)
             $query->where('filed_id', $request->filed_id);
 
-        if ($request->has('platform_id'))
+        if ($request->platform_id)
             $query->where('platform_id', $request->platform_id);
 
-        if ($request->has('industry_id'))
+        if ($request->industry_id)
             $query->where('industry_id', $request->industry_id);
 
-        if ($request->has('region_id'))
+        if ($request->region_id)
             $query->where('region_id', $request->region_id);
 
-        if ($request->has('fansnumlevel_min'))
+        if ($request->fansnumlevel_min)
             $query->where('fans_num', '>=', $request->fansnumlevel_min);
 
-        if ($request->has('fansnumlevel_max'))
+        if ($request->fansnumlevel_max)
             $query->where('fans_num', '<', $request->fansnumlevel_max);
 
-        if ($request->has('readlevel_min'))
+        if ($request->readlevel_min)
             $query->where('avg_read_num', '>=', $request->readlevel_min);
 
-        if ($request->has('readlevel_max'))
+        if ($request->readlevel_max)
             $query->where('avg_read_num', '<', $request->readlevel_max);
 
-        if ($request->has('likelevel_min'))
+        if ($request->likelevel_min)
             $query->where('avg_like_num', '>=', $request->likelevel_min);
 
-        if ($request->has('likelevel_max'))
+        if ($request->likelevel_max)
             $query->where('avg_like_num', '<', $request->likelevel_max);
 
-        if ($request->has('auth_type'))
+        if ($request->auth_type)
             $query->where('auth_type', $request->auth_type);
 
-        if ($request->has('weekend_status'))
+        if ($request->weekend_status)
             $query->where('weekend_status', $request->weekend_status);
 
-        if ($request->has('included_sataus'))
+        if ($request->included_sataus)
             $query->where('included_sataus', $request->included_sataus);
 
         return $query->paginate();
