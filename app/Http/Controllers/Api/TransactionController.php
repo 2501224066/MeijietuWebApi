@@ -26,11 +26,11 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['待付款']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['待付款'], '订单状态错误');
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 校验钱包状态
-        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
+        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用'], '钱包已被禁用');
         // 校验修改校验锁
         Wallet::checkChangLock($indentData->buyer_id);
         // 钱包余额是够足够
@@ -55,9 +55,9 @@ class TransactionController extends BaseController
         // 文档是否存在;
         $count = $indentData->demand_file ? 1 : 0;
         // 仅上传一次限制
-        Pub::checkCount($count, 0);
+        Pub::checkParm($count, 0, '只可上传一次');
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 添加
@@ -77,7 +77,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->buyer_id, $indentData->seller_id]);
         // 校验钱包状态
@@ -103,13 +103,13 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['已付款待接单']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
         // 检查议价状态
         IndentInfo::checkSaceBuyerIncomeStatus($indentData->bargaining_status, IndentInfo::BARGAINING_STATUS['已完成']);
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 校验钱包状态
-        Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
+        Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用'], '钱包已被禁用');
         // 校验修改校验锁
         Wallet::checkChangLock($indentData->seller_id);
         // 钱包余额是够足够
@@ -132,7 +132,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 校验卖家钱包状态
@@ -162,7 +162,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 校验买家钱包状态
@@ -187,7 +187,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['交易中']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 修改状态
@@ -210,9 +210,9 @@ class TransactionController extends BaseController
         // 文档是否存在;
         $count = $indentData->achievements_file ? 1 : 0;
         // 仅上传一次限制
-        Pub::checkCount($count, 0);
+        Pub::checkParm($count, 0, '只可上传一次');
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['卖方完成'], '订单状态错误');
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 添加
@@ -232,7 +232,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 检查订单状态
-        Pub::checkStatus($indentData->status, IndentInfo::STATUS['卖方完成']);
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['卖方完成'], '订单状态错误');
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 修改状态

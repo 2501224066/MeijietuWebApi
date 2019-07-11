@@ -78,6 +78,10 @@ $api->group(['version' => 'v1'], function ($api) {
             //  分配客服
             $api->post('distributionSalsesman', 'UserInfoController@distributionSalsesman');
 
+            // 客服
+            //  服务客户列表
+            $api->post('serveUserList', 'SalesmanController@serveUserList');
+
 
             // 文件处理
             //  图片上传

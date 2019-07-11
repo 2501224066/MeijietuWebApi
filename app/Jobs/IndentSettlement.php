@@ -38,7 +38,7 @@ class IndentSettlement implements ShouldQueue
                 if (!$indentData) throw new Exception('订单不存在');
 
                 // 检查订单状态
-                Pub::checkStatus($indentData->status, IndentInfo::STATUS['全部完成']);
+                Pub::checkParm($indentData->status, IndentInfo::STATUS['全部完成'], '订单状态错误');
 
                 $time = date('Y-m-d H:i:s');
                 // 赔偿保证费

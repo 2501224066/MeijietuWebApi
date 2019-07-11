@@ -62,7 +62,7 @@ class Transaction extends Base
                 $rules['indent_num'] = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
                 break;
 
-            // 卖家添加需求文档
+            // 卖家添加成果文档
             case 'addAchievementsFile':
                 $rules['indent_num']        = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
                 $rules['achievements_file'] = ['required', new SpecialChar];
@@ -82,8 +82,8 @@ class Transaction extends Base
         return [
             'indent_num.required'        => '订单编号不得为空',
             'indent_num.exists'          => '订单不存在',
-            'demand_file.required'       => '需求文件不得为空',
-            'achievements_file.required' => '成功文件不得为空',
+            'demand_file.required'       => '需求文档不得为空',
+            'achievements_file.required' => '成果文档不得为空',
             'cancel_cause.required'      => '取消原因不得为空'
         ];
     }

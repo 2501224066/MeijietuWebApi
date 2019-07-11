@@ -102,7 +102,7 @@ class AuthController extends BaseController
         // 验证账号密码
         $user = User::checkPass($request->phone, $request->password);
         // 检查用户状态
-        Pub::checkStatus($user->status, User::STATUS['启用']);
+        Pub::checkParm($user->status, User::STATUS['启用'], '账户状态异常');
         // 生成token
         $token = JWTAuth::fromUser($user);
         // 修改登录log为成功状态
@@ -128,7 +128,7 @@ class AuthController extends BaseController
         // 用户信息
         $user = User::wherePhone($request->phone)->first();
         // 检查用户状态
-        Pub::checkStatus($user->status, User::STATUS['启用']);
+        Pub::checkParm($user->status, User::STATUS['启用'],'账户状态异常');
         // 生成token
         $token = JWTAuth::fromUser($user);
         // 修改登录log为成功状态
@@ -166,7 +166,7 @@ class AuthController extends BaseController
         $user           = auth('api')->user();
         $realnamePeople = RealnamePeople::whereUid($user->uid)->first();
         $shopcartCount  = Shopcart::whereUid($user->uid)->count();
-        $collectionArr = Collection::whereUid($user->uid)->pluck('goods_id');
+        $collectionArr  = Collection::whereUid($user->uid)->pluck('goods_id');
         return $this->success([
             "head_portrait"   => $user->head_portrait,
             "truename"        => $realnamePeople ? $realnamePeople->truename : null,
@@ -180,7 +180,7 @@ class AuthController extends BaseController
             "realname_status" => $user->realname_status,
             "identity"        => $user->identity,
             'shopcart_count'  => $shopcartCount,
-            'collectionArr' => $collectionArr
+            'collectionArr'   => $collectionArr
         ]);
     }
 

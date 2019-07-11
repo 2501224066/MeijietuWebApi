@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Up\Wallet;
-use App\Models\User;
+use App\Service\Salesman;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -32,7 +32,7 @@ class RegisteredOP implements ShouldQueue
 
         try{
             // 分配客服
-            User::withSalesman($uid);
+            Salesman::withSalesman($uid);
             // 生成钱包
             Wallet::createWallet($uid);
         }catch (\Exception $e){

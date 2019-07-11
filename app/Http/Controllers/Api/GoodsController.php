@@ -141,7 +141,7 @@ class GoodsController extends BaseController
         // 商品数据
         $goods = Goods::whereGoodsNum($request->goods_num)->first();
         // 检查状态
-        Pub::checkStatus($goods->status, Goods::STATUS['上架']);
+        Pub::checkParm($goods->status, Goods::STATUS['上架'],'商品未上架');
         // 下架
         Goods::down($goods);
 

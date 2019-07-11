@@ -9,6 +9,7 @@ use App\Http\Requests\Indent;
 use App\Jobs\IndentCreatedOP;
 use App\Models\Indent\IndentInfo;
 use App\Models\User;
+use App\Service\Salesman;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class IndentController extends BaseController
@@ -23,7 +24,7 @@ class IndentController extends BaseController
         // 检查身份
         User::checkIdentity(User::IDENTIDY['广告主']);
         // 必须未拥有客服
-        User::checkUserHasSalesman(JWTAuth::user()->uid,'y');
+        Salesman::checkUserHasSalesman(JWTAuth::user()->uid,'y');
         // json转对象
         $info = json_decode($request->info, true);
         // 数据整理

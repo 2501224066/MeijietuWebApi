@@ -28,20 +28,11 @@ class Pub
         '订单文档' => 'indent_word'
     ];
 
-    // 检查状态
-    public static function checkStatus($status, $needStatus)
+    // 判断
+    public static function checkParm($parm, $needParm, $errStr)
     {
-        if ($status != $needStatus)
-            throw new Exception('状态非法');
-
-        return true;
-    }
-
-    // 限制次数
-    public static function checkCount($count, $needCount)
-    {
-        if ($count != $needCount)
-            throw new Exception('次数非法');
+        if ($parm != $needParm)
+            throw new Exception($errStr);
 
         return true;
     }

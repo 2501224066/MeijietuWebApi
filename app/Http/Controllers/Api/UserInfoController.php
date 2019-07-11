@@ -9,6 +9,7 @@ use App\Models\Captcha;
 use App\Models\RealnameEnterprise;
 use App\Models\RealnamePeople;
 use App\Models\User;
+use App\Service\Salesman;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserInfoController extends BaseController
@@ -129,7 +130,7 @@ class UserInfoController extends BaseController
      */
     public function userSalsesmanInfo()
     {
-        $data = User::salesmanInfo();
+        $data = Salesman::salesmanInfo();
         return $this->success($data);
     }
 
@@ -139,7 +140,7 @@ class UserInfoController extends BaseController
      */
     public function distributionSalsesman()
     {
-        User::withSalesman(JWTAuth::user()->uid);
+        Salesman::withSalesman(JWTAuth::user()->uid);
         return $this->success();
     }
 }
