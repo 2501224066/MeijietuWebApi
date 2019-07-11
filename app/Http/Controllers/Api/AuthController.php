@@ -52,9 +52,7 @@ class AuthController extends BaseController
             ->where('verify_status', Goods::VERIFY_STATUS['已通过'])
             ->where('delete_status', Goods::DELETE_STATUS['未删除'])
             ->get()
-            ->keyBy(function ($item) {
-                return strtoupper($item['modular_name']);
-            });
+            ->groupBy('modular_name');
         ;
         // ...
 
