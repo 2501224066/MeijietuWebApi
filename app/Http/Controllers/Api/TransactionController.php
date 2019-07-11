@@ -227,6 +227,8 @@ class TransactionController extends BaseController
      */
     public function buyerConfirmComplete(TransactionRequests $request)
     {
+        return \JWTAuth::user();
+        exit;
         // 检查身份
         User::checkIdentity(User::IDENTIDY['广告主']);
         // 订单数据
