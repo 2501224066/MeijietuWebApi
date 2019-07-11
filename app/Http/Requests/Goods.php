@@ -93,6 +93,7 @@ class Goods extends Base
                 $rules['platform_id']      = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
                 $rules['industry_id']      = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_industry,industry_id'];
                 $rules['region_id']        = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
+                $rules['priceclassify_id'] = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_priceclassify,priceclassify_id'];
                 $rules['fansnumlevel_min'] = ['nullable', 'present', new SpecialChar, 'numeric'];
                 $rules['fansnumlevel_max'] = ['nullable', 'present', new SpecialChar, 'numeric'];
                 $rules['readlevel_min']    = ['nullable', 'present', new SpecialChar, 'numeric'];
@@ -101,6 +102,8 @@ class Goods extends Base
                 $rules['likelevel_max']    = ['nullable', 'present', new SpecialChar, 'numeric'];
                 $rules['weekend_status']   = ['nullable', 'present', new SpecialChar, 'numeric'];
                 $rules['included_sataus']  = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['pricelevel_min']   = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['pricelevel_max']   = ['nullable', 'present', new SpecialChar, 'numeric'];
                 break;
 
             // 单个商品信息
@@ -132,20 +135,23 @@ class Goods extends Base
             'modular_id.numeric'  => '模块需为数字',
             'modular_id.exists'   => '模块不存在',
 
-            'theme_id.numeric'  => '主题需为数字',
-            'theme_id.exists'   => '主题不存在',
+            'theme_id.numeric' => '主题需为数字',
+            'theme_id.exists'  => '主题不存在',
 
-            'filed_id.numeric'  => '领域需为数字',
-            'filed_id.exists'   => '领域不存在',
+            'filed_id.numeric' => '领域需为数字',
+            'filed_id.exists'  => '领域不存在',
 
-            'Platfrom_id.numeric'  => '平台需为数字',
-            'Platfrom_id.exists'   => '平台不存在',
+            'Platfrom_id.numeric' => '平台需为数字',
+            'Platfrom_id.exists'  => '平台不存在',
 
-            'industry_id.numeric'  => '行业需为数字',
-            'industry_id.exists'   => '行业不存在',
+            'industry_id.numeric' => '行业需为数字',
+            'industry_id.exists'  => '行业不存在',
 
-            'region_id.numeric'  => '地区ID需为数字',
-            'region_id.exists'   => '地区ID不存在',
+            'region_id.numeric' => '地区需为数字',
+            'region_id.exists'  => '地区不存在',
+
+            'priceclassify_id.numeric' => '价格种类需为数字',
+            'priceclassify_id.exists'  => '价格种类不存在',
 
             'price_json.required' => '价格信息不得为空',
             'price_json.json'     => '价格信息非JSON格式',
