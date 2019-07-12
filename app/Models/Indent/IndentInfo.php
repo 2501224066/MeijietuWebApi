@@ -263,6 +263,7 @@ class IndentInfo extends Model
 
         $query = IndentInfo::whereRaw('buyer_id = ? or seller_id = ?', [$user->uid, $user->uid])
             ->with('indent_item')
+            ->where('delete_status', self::DELETE_STATUS['未删除'])
             ->orderBy('create_time', 'ASC');
 
         // 媒体主显示 已付款待接单 的状态节点后订单
