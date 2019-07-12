@@ -22,8 +22,6 @@ class PayController extends BaseController
     public function recharge(PayRequests $request)
     {
         $uid = JWTAuth::user()->uid;
-        // 检测是否拥有钱包
-        Wallet::checkHas($uid, TRUE);
         // 校验钱包状态
         Wallet::checkStatus($uid, Wallet::STATUS['启用']);
         // 生成充值流水
@@ -64,10 +62,6 @@ class PayController extends BaseController
         $user = JWTAuth::user();
         // 检测实名认证
         User::checkRealnameStatus($user->realname_status, 'n');
-        // 检测是否拥有钱包
-        Wallet::checkHas($user->uid, TRUE);
-        // 校验钱包状态
-        Wallet::checkStatus($user->uid, Wallet::STATUS['启用']);
         // 提现操作
         Runwater::extractOP($user->uid, $request->money);
 

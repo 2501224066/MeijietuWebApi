@@ -32,7 +32,7 @@ class Transaction
     {
         DB::transaction(function () use ($indent_num) {
             try {
-                // 订单数据
+                // 订单数据 *加锁
                 $indentData = IndentInfo::whereIndentNum($indent_num)->lockForUpdate()->first();
                 // 检查订单状态
                 Pub::checkParm($indentData->status, IndentInfo::STATUS['待付款'], '订单状态错误');
@@ -57,7 +57,7 @@ class Transaction
                 ]);
 
                 // 买家钱包资金扣除
-                $buyerMoney = Wallet::whereUid($U)->lockForUpdate()->value('available_money') - $M;
+                $buyerMoney = Wallet::whereUid($U)->value('available_money') - $M;
                 Wallet::whereUid($U)->update([
                     'available_money' => $buyerMoney,
                     'time'            => $time,
@@ -94,16 +94,26 @@ class Transaction
     }
 
     // 待接单取消订单/卖家拒单资金操作，录入取消原因
-    public static function fullRefundToBuyer($indentData, $cancelCause)
+    public static function fullRefundToBuyer($indent_num, $cancelCause)
     {
-        DB::transaction(function () use ($indentData, $cancelCause) {
+        DB::transaction(function () use ($indent_num, $cancelCause) {
             try {
+                // 订单数据 *加锁
+                $indentData = IndentInfo::whereIndentNum($indent_num)->lockForUpdate()->first();
+                // 检查订单状态
+                Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
+                // 检测订单归属
+                IndentInfo::checkIndentBelong([$indentData->buyer_id, $indentData->seller_id]);
+                // 校验钱包状态
+                Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
+                // 校验修改校验锁
+                Wallet::checkChangLock($indentData->buyer_id);
+
                 $time = date('Y-m-d H:i:s');
                 $M    = $indentData->indent_amount;
                 $U    = $indentData->buyer_id;
-
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') - $M;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $M;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -111,7 +121,7 @@ class Transaction
                 ]);
 
                 // 买家家钱包资金增加
-                $buyerMoney = Wallet::whereUid($U)->lockForUpdate()->value('available_money') + $M;
+                $buyerMoney = Wallet::whereUid($U)->value('available_money') + $M;
                 Wallet::whereUid($U)->update([
                     'available_money' => $buyerMoney,
                     'time'            => $time,
@@ -147,16 +157,30 @@ class Transaction
     }
 
     // 卖家支付赔偿保证费
-    public static function payCompensateFee($indentData)
+    public static function payCompensateFee($indent_num)
     {
-        DB::transaction(function () use ($indentData) {
+        DB::transaction(function () use ($indent_num) {
             try {
+                // 订单数据 *加锁
+                $indentData = IndentInfo::whereIndentNum($indent_num)->lockForUpdate()->first();
+                // 检查订单状态
+                Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
+                // 检查议价状态
+                IndentInfo::checkSaceBuyerIncomeStatus($indentData->bargaining_status, IndentInfo::BARGAINING_STATUS['已完成']);
+                // 检测订单归属
+                IndentInfo::checkIndentBelong([$indentData->seller_id]);
+                // 校验钱包状态
+                Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
+                // 校验修改校验锁
+                Wallet::checkChangLock($indentData->seller_id);
+                // 钱包余额是够足够
+                Wallet::hasEnoughMoney($indentData->compensate_fee);
+
                 $time = date('Y-m-d H:i:s');
                 $M    = $indentData->compensate_fee;
                 $U    = $indentData->seller_id;
-
                 // 公共钱包资金增加
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') + $M;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') + $M;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -164,7 +188,7 @@ class Transaction
                 ]);
 
                 // 卖家钱包资金扣除
-                $sellerMoney = Wallet::whereUid($U)->lockForUpdate()->value('available_money') - $M;
+                $sellerMoney = Wallet::whereUid($U)->value('available_money') - $M;
                 Wallet::whereUid($U)->update([
                     'available_money' => $sellerMoney,
                     'time'            => $time,
@@ -199,10 +223,25 @@ class Transaction
     }
 
     // 交易中买家取消订单资金操作
-    public static function inTransactionBuyerCancelMoneyOP($indentData, $cancelCause)
+    public static function inTransactionBuyerCancelMoneyOP($indent_num, $cancelCause)
     {
-        DB::transaction(function () use ($indentData, $cancelCause) {
+        DB::transaction(function () use ($indent_num, $cancelCause) {
             try {
+                // 订单数据 *加锁
+                $indentData = IndentInfo::whereIndentNum($indent_num)->lockForUpdate()->first();
+                // 检查订单状态
+                Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
+                // 检测订单归属
+                IndentInfo::checkIndentBelong([$indentData->buyer_id]);
+                // 校验卖家钱包状态
+                Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
+                // 校验卖家修改校验锁
+                Wallet::checkChangLock($indentData->seller_id);
+                // 校验买家钱包状态
+                Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
+                // 校验买家修改校验锁
+                Wallet::checkChangLock($indentData->buyer_id);
+
                 $time = date('Y-m-d H:i:s');
                 // 赔偿保证费
                 $C = $indentData->compensate_fee;
@@ -216,7 +255,7 @@ class Transaction
                 $centerM = $buyerM + $sellerM;
 
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') - $centerM;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $centerM;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -224,7 +263,7 @@ class Transaction
                 ]);
 
                 // 买家钱包资金增加
-                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->lockForUpdate()->value('available_money') + $buyerM;
+                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->value('available_money') + $buyerM;
                 Wallet::whereUid($indentData->buyer_id)->update([
                     'available_money' => $buyerMoney,
                     'time'            => $time,
@@ -248,7 +287,7 @@ class Transaction
                 Cache::increment($key);
 
                 // 卖家钱包资金增加
-                $sellerMoney = Wallet::whereUid($indentData->seller_id)->lockForUpdate()->value('available_money') + $sellerM;
+                $sellerMoney = Wallet::whereUid($indentData->seller_id)->value('available_money') + $sellerM;
                 Wallet::whereUid($indentData->seller_id)->update([
                     'available_money' => $sellerMoney,
                     'time'            => $time,
@@ -284,10 +323,21 @@ class Transaction
     }
 
     // 交易中卖家取消订单资金操作
-    public static function inTransactionSellerCancelMoneyOP($indentData, $cancelCause)
+    public static function inTransactionSellerCancelMoneyOP($indent_num, $cancelCause)
     {
-        DB::transaction(function () use ($indentData, $cancelCause) {
+        DB::transaction(function () use ($indent_num, $cancelCause) {
             try {
+                // 订单数据 *加锁
+                $indentData = IndentInfo::whereIndentNum($indent_num)->lockForUpdate()->first();
+                // 检查订单状态
+                Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
+                // 检测订单归属
+                IndentInfo::checkIndentBelong([$indentData->seller_id]);
+                // 校验买家钱包状态
+                Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
+                // 校验买家修改校验锁
+                Wallet::checkChangLock($indentData->buyer_id);
+
                 $time = date('Y-m-d H:i:s');
                 // 赔偿保证费
                 $C = $indentData->compensate_fee;
@@ -299,7 +349,7 @@ class Transaction
                 $centerM = $buyerM;
 
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') - $centerM;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $centerM;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -307,7 +357,7 @@ class Transaction
                 ]);
 
                 // 买家钱包资金增加
-                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->lockForUpdate()->value('available_money') + $buyerM;
+                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->value('available_money') + $buyerM;
                 Wallet::whereUid($indentData->buyer_id)->update([
                     'available_money' => $buyerMoney,
                     'time'            => $time,

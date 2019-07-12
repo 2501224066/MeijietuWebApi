@@ -29,16 +29,20 @@ class IndentSettlement implements ShouldQueue
 
     public function handle()
     {
-        // 订单数据
-        $indentData = IndentInfo::whereIndentNum($this->indentNum)->first();
+        $indentNum = $this->indentNum;
 
-        DB::transaction(function () use ($indentData) {
+        DB::transaction(function () use ($indentNum){
             try {
+                // 订单数据 *加锁
+                $indentData = IndentInfo::whereIndentNum($indentNum)->lockForUpdate()->first();
                 // 订单不存在跳出
                 if (!$indentData) throw new Exception('订单不存在');
-
                 // 检查订单状态
                 Pub::checkParm($indentData->status, IndentInfo::STATUS['全部完成'], '订单状态错误');
+                // 校验卖家钱包状态
+                Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
+                // 校验卖家修改校验锁
+                Wallet::checkChangLock($indentData->seller_id);
 
                 $time = date('Y-m-d H:i:s');
                 // 赔偿保证费
@@ -49,7 +53,7 @@ class IndentSettlement implements ShouldQueue
                 $centerM = $sellerM;
 
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') - $centerM;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $centerM;
                 DB::table('up_wallet')
                     ->where('uid', Wallet::CENTERID)->update([
                         'available_money' => $centerMoney,
@@ -58,7 +62,7 @@ class IndentSettlement implements ShouldQueue
                     ]);
 
                 // 卖家钱包资金增加
-                $sellerMoney = Wallet::whereUid($indentData->seller_id)->lockForUpdate()->value('available_money') + $sellerM;
+                $sellerMoney = Wallet::whereUid($indentData->seller_id)->value('available_money') + $sellerM;
                 DB::table('up_wallet')
                     ->where('uid', $indentData->seller_id)
                     ->update([

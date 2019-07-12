@@ -13,8 +13,6 @@ class WalletController extends BaseController
     public function createWallet()
     {
         $uid = JWTAuth::user()->uid;
-        // 检测是否已经拥有
-        Wallet::checkHas($uid, FALSE);
         // 创建
         Wallet::createWallet($uid);
 

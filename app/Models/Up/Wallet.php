@@ -4,6 +4,7 @@
 namespace App\Models\Up;
 
 
+use App\Service\Pub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
@@ -48,23 +49,17 @@ class Wallet extends Model
         '禁用' => 0
     ];
 
-    // 检测是否拥有钱包
-    public static function checkHas($uid, $status)
-    {
-        if (self::whereUid($uid)->count() != $status)
-            throw new Exception('钱包存在状态错误');
-
-        return true;
-    }
-
     // 生成钱包
     public static function createWallet($uid)
     {
+        if ($count = self::whereUid($uid)->count())
+            throw new Exception('钱包已创建');
+
         $time = date('Y-m-d H:i:s');
         $re   = self::create([
             'uid'             => $uid,
             'available_money' => 0,
-            'change_lock'      => createWalletChangeLock($uid, 0, $time),
+            'change_lock'     => createWalletChangeLock($uid, 0, $time),
             'time'            => $time
         ]);
         if (!$re)
@@ -73,8 +68,9 @@ class Wallet extends Model
         return true;
     }
 
-    // 钱包信息
-    public static function info()
+// 钱包信息
+    public
+    static function info()
     {
         $re = self::whereUid(JWTAuth::user()->uid)->first();
         if (!$re)
@@ -86,6 +82,9 @@ class Wallet extends Model
     // 校验钱包状态
     public static function checkStatus($uid, $status)
     {
+        if (!self::whereUid($uid)->count())
+            throw new Exception('钱包未创建');
+
         if (self::whereUid($uid)->value('status') != $status)
             throw new Exception('钱包状态错误');
 
@@ -100,7 +99,7 @@ class Wallet extends Model
             self::whereUid($uid)->update([
                 'status' => self::STATUS['禁用'],
                 'remark' => '校验修改校验锁失败, 禁用钱包'
-             ]);
+            ]);
 
             throw new Exception('校验修改校验锁失败, 禁用钱包, 请联系客服');
         }
@@ -112,7 +111,7 @@ class Wallet extends Model
     public static function hasEnoughMoney($money)
     {
         $available_money = self::whereUid(JWTAuth::user()->uid)->value('available_money');
-        if($available_money < $money)
+        if ($available_money < $money)
             throw new Exception('钱包余额不足');
 
         return true;

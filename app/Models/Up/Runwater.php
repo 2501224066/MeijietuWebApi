@@ -201,6 +201,13 @@ class Runwater extends Model
         $time = date('Y-m-d H:i:s');
         DB::transaction(function () use ($uid, $money, $time) {
             try {
+                // 校验钱包状态
+                Wallet::checkStatus($uid, Wallet::STATUS['启用']);
+                // 校验修改校验锁
+                Wallet::checkChangLock($uid);
+                // 钱包余额是够足够
+                Wallet::hasEnoughMoney($money);
+
                 // 用户资金扣除
                 $userMoney = Wallet::whereUid($uid)->value('available_money') - $money;
                 Wallet::whereUid($uid)->update([

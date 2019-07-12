@@ -84,18 +84,8 @@ class TransactionController extends BaseController
      */
     public function acceptIndentBeforeCancel(TransactionRequests $request)
     {
-        // 订单数据
-        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
-        // 检查订单状态
-        Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
-        // 检测订单归属
-        IndentInfo::checkIndentBelong([$indentData->buyer_id, $indentData->seller_id]);
-        // 校验钱包状态
-        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
-        // 校验修改校验锁
-        Wallet::checkChangLock($indentData->buyer_id);
         // 待接单取消订单/卖家拒单资金操作，录入取消原因
-        Transaction::fullRefundToBuyer($indentData, htmlspecialchars($request->cancel_cause));
+        Transaction::fullRefundToBuyer($request->indent_num, htmlspecialchars($request->cancel_cause));
 
         return $this->success();
     }
@@ -110,22 +100,8 @@ class TransactionController extends BaseController
     {
         // 检查身份
         User::checkIdentity(User::IDENTIDY['媒体主']);
-        // 订单数据
-        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
-        // 检查订单状态
-        Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
-        // 检查议价状态
-        IndentInfo::checkSaceBuyerIncomeStatus($indentData->bargaining_status, IndentInfo::BARGAINING_STATUS['已完成']);
-        // 检测订单归属
-        IndentInfo::checkIndentBelong([$indentData->seller_id]);
-        // 校验钱包状态
-        Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
-        // 校验修改校验锁
-        Wallet::checkChangLock($indentData->seller_id);
-        // 钱包余额是够足够
-        Wallet::hasEnoughMoney($indentData->compensate_fee);
         // 支付赔偿保证金
-        Transaction::payCompensateFee($indentData);
+        Transaction::payCompensateFee($request->indent_num);
 
         return $this->success();
     }
@@ -139,22 +115,8 @@ class TransactionController extends BaseController
     {
         // 检查身份
         User::checkIdentity(User::IDENTIDY['广告主']);
-        // 订单数据
-        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
-        // 检查订单状态
-        Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
-        // 检测订单归属
-        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
-        // 校验卖家钱包状态
-        Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
-        // 校验卖家修改校验锁
-        Wallet::checkChangLock($indentData->seller_id);
-        // 校验买家钱包状态
-        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
-        // 校验买家修改校验锁
-        Wallet::checkChangLock($indentData->buyer_id);
         // 交易中买家取消订单资金操作
-        Transaction::inTransactionBuyerCancelMoneyOP($indentData, htmlspecialchars($request->cancel_cause));
+        Transaction::inTransactionBuyerCancelMoneyOP($request->indent_num, htmlspecialchars($request->cancel_cause));
 
         return $this->success();
     }
@@ -169,18 +131,8 @@ class TransactionController extends BaseController
     {
         // 检查身份
         User::checkIdentity(User::IDENTIDY['媒体主']);
-        // 订单数据
-        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
-        // 检查订单状态
-        Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
-        // 检测订单归属
-        IndentInfo::checkIndentBelong([$indentData->seller_id]);
-        // 校验买家钱包状态
-        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
-        // 校验买家修改校验锁
-        Wallet::checkChangLock($indentData->buyer_id);
         // 交易中买家取消订单资金操作
-        Transaction::inTransactionSellerCancelMoneyOP($indentData, htmlspecialchars($request->cancel_cause));
+        Transaction::inTransactionSellerCancelMoneyOP($request->indent_num, htmlspecialchars($request->cancel_cause));
 
         return $this->success();
     }
