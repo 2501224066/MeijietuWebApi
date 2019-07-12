@@ -48,14 +48,11 @@ class GoodsPrice extends Model
         if ($request->priceclassify_id != null)
             $query = self::where('priceclassify_id', $request->priceclassify_id);
 
-        // 排除所有价格为0的商品降低结构集大小
-        $query->where('price','!=', 0);
-
         if ($request->pricelevel_min != null)
-            $query->where('price', '>=', $request->pricelevel_min);
+            $query->where('price', '>', $request->pricelevel_min);
 
         if ($request->pricelevel_max != null)
-            $query->where('price', '<', $request->pricelevel_max);
+            $query->where('price', '<=', $request->pricelevel_max);
 
         return $query->groupBy('goods_id')->pluck('goods_id');
     }

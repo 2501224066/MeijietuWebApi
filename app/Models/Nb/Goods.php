@@ -357,22 +357,22 @@ class Goods extends Model
             $query->where('region_id', $request->region_id);
 
         if ($request->fansnumlevel_min != null)
-            $query->where('fans_num', '>=', $request->fansnumlevel_min);
+            $query->where('fans_num', '>', $request->fansnumlevel_min);
 
         if ($request->fansnumlevel_max != null)
-            $query->where('fans_num', '<', $request->fansnumlevel_max);
+            $query->where('fans_num', '<=', $request->fansnumlevel_max);
 
         if ($request->readlevel_min != null)
-            $query->where('avg_read_num', '>=', $request->readlevel_min);
+            $query->where('avg_read_num', '>', $request->readlevel_min);
 
         if ($request->readlevel_max != null)
-            $query->where('avg_read_num', '<', $request->readlevel_max);
+            $query->where('avg_read_num', '<=', $request->readlevel_max);
 
         if ($request->likelevel_min != null)
-            $query->where('avg_like_num', '>=', $request->likelevel_min);
+            $query->where('avg_like_num', '>', $request->likelevel_min);
 
         if ($request->likelevel_max != null)
-            $query->where('avg_like_num', '<', $request->likelevel_max);
+            $query->where('avg_like_num', '<=', $request->likelevel_max);
 
         if ($request->auth_type != null)
             $query->where('auth_type', $request->auth_type);
