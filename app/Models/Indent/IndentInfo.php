@@ -261,9 +261,9 @@ class IndentInfo extends Model
     {
         $user = JWTAuth::user();
 
-        $query = IndentInfo::whereRaw('buyer_id = ? or seller_id = ?', [$user->uid, $user->uid])
+        $query = IndentInfo::whereDeleteStatus(self::DELETE_STATUS['未删除'])
+            ->whereRaw('buyer_id = ? or seller_id = ?', [$user->uid, $user->uid])
             ->with('indent_item')
-            ->where('delete_status', self::DELETE_STATUS['未删除'])
             ->orderBy('create_time', 'ASC');
 
         // 媒体主显示 已付款待接单 的状态节点后订单
@@ -278,7 +278,7 @@ class IndentInfo extends Model
     public static function del($indentData)
     {
         $indentData->delete_status = self::DELETE_STATUS['已删除'];
-        $re = $indentData->save();
+        $re                        = $indentData->save();
         if (!$re)
             throw new Exception('操作失败');
 
