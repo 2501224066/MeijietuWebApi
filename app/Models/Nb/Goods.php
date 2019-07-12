@@ -333,7 +333,7 @@ class Goods extends Model
             ->where('delete_status', self::DELETE_STATUS['未删除']);
 
         if (!empty($whereInGoodsIdArr))
-            $query->whereRaw('goods_id in ?', $whereInGoodsIdArr);
+            $query->whereRaw('goods_id in ?', [$whereInGoodsIdArr]);
 
         if ($request->modular_id != null)
             $query->where('modular_id', $request->modular_id);
