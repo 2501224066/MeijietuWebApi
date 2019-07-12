@@ -49,7 +49,7 @@ class Transaction
                 $M    = $indentData->indent_amount;
                 $U    = $indentData->buyer_id;
                 // 公共钱包资金增加
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') + $M;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') + $M;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -86,7 +86,7 @@ class Transaction
                 $indentData->pay_time   = $time;
                 $indentData->save();
             } catch (\Exception $e) {
-                throw new Exception('操作失败');
+                throw new Exception($e->getMessage());
             }
         });
 
