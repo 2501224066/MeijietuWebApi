@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\v1;
 
 use App\Http\Requests\Captcha as CaptchaRequests;
 use App\Jobs\SendEmail;

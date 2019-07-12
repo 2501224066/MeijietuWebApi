@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\v1;
 
 use App\Jobs\GoodsCreatedOP;
 use App\Models\Nb\Goods;
@@ -15,7 +15,6 @@ use App\Http\Requests\Goods as GoodsRequests;
 
 class GoodsController extends BaseController
 {
-
     /**
      * 获取商品属性
      * @return mixed

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\v1;
 
 
 use App\Http\Requests\UserInfo as UserInfoRequests;

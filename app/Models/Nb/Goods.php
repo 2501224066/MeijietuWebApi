@@ -18,6 +18,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -159,6 +160,32 @@ class Goods extends Model
     {
         return $this->hasOne(GoodsPrice::class, 'goods_id', 'goods_id');
     }
+
+    // 首页推荐商品
+    public static function indexPageRecommendGoods()
+    {
+        // 模块及主题
+        $mt = Modular::with('theme')->get();
+        // 获取推荐
+        $re = [];
+        foreach ($mt as $m) {
+            foreach ($m['theme'] as $t) {
+                $re[$m['modular_name']][$t['theme_name']] = self::with('goods_price')
+                    ->where('recommend_status', self::RECOMMEND_STATUS['是'])
+                    ->where('status', self::STATUS['上架'])
+                    ->where('verify_status', self::VERIFY_STATUS['已通过'])
+                    ->where('delete_status', self::DELETE_STATUS['未删除'])
+                    ->where('modular_id', $m['modular_id'])
+                    ->where('theme_id', $t['theme_id'])
+                    ->get()
+                    ->groupBy('filed_name');
+            }
+        }
+
+
+        return $re;
+    }
+
 
     // 检查商品信息
     public static function checkGoodsData($goodsData)

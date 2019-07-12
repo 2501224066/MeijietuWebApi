@@ -27,5 +27,11 @@ use Illuminate\Database\Eloquent\Model;
 class SystemSetting extends Model
 {
     protected $table = "system_setting";
+
+    // 首页banner
+    public static function indexPageBanner()
+    {
+        return self::whereSettingName('banner_img')->get();
+    }
 }
 

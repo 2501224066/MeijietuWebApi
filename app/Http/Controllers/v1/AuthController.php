@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\v1;
 
 use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
@@ -14,6 +14,7 @@ use App\Http\Requests\Auth as AuthRequests;
 use App\Models\Captcha;
 use App\Service\Pub;
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Support\Facades\Cache;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends BaseController
@@ -43,22 +44,18 @@ class AuthController extends BaseController
      */
     public function indexPage()
     {
-        // banner
-        $re['banner'] = SystemSetting::whereSettingName('banner_img')->get();
-        // 推荐商品
-        $re['recommendGoods'] = Goods::whereRecommendStatus(Goods::RECOMMEND_STATUS['是'])
-            ->with('goods_price')
-            ->where('status', Goods::STATUS['上架'])
-            ->where('verify_status', Goods::VERIFY_STATUS['已通过'])
-            ->where('delete_status', Goods::DELETE_STATUS['未删除'])
-            ->get()
-            ->groupBy('modular_name')
-            ->groupBy('theme_name');;;
-        // 随机客服
-        $salesman       = User::whereIdentity(User::IDENTIDY['业务员'])->where('status', User::STATUS['启用'])->inRandomOrder()->first();
-        $re['salesman'] = ['salesman_id' => $salesman->uid, 'salesman_qq_ID' => $salesman->qq_ID, 'salesman_weixin_ID' => $salesman->weixin_ID, 'salesman_name' => $salesman->nickname, 'salesman_head_portrait' => $salesman->head_portrait];
-        // ...
+//        if (Cache::has('indexPageData'))
+//            return json_decode(Cache::get('indexPageData'));
 
+        // banner
+        $re['banner'] = SystemSetting::indexPageBanner();
+        // 推荐商品
+        $re['recommendGoods'] = Goods::indexPageRecommendGoods();
+        // 随机客服
+        $re['salesman'] = User::indexPageSalesman();
+        // ...
+//
+        Cache::put('indexPageData', json_encode($re), 60 * 12);
         return $this->success($re);
     }
 

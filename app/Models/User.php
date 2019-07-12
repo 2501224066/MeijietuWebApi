@@ -100,7 +100,20 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    //添加用户
+    // 首页客服
+    public static function indexPageSalesman()
+    {
+        $salesman = self::whereIdentity(User::IDENTIDY['业务员'])->where('status', User::STATUS['启用'])->inRandomOrder()->first();
+        return [
+            'salesman_id'            => $salesman->uid,
+            'salesman_qq_ID'         => $salesman->qq_ID,
+            'salesman_weixin_ID'     => $salesman->weixin_ID,
+            'salesman_name'          => $salesman->nickname,
+            'salesman_head_portrait' => $salesman->head_portrait
+        ];
+    }
+
+    // 添加用户
     public static function add($request)
     {
         // 添加user
