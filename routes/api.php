@@ -134,26 +134,28 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('indentBelongSelf', 'IndentController@indentBelongSelf');
 
         // 交易
-        // 待付款删除订单
-        $api->post('deleteIndentBeforePayment', 'TransactionController@deleteIndentBeforePayment');
-        //  订单付款
-        $api->post('indentPayment', 'TransactionController@indentPayment');
-        //  买家添加需求文档
-        $api->post('addDemandFile', 'TransactionController@addDemandFile');
-        //  买家待接单取消订单
-        $api->post('acceptIndentBeforeCancel', 'TransactionController@acceptIndentBeforeCancel');
-        //  卖家接单
-        $api->post('acceptIndent', 'TransactionController@acceptIndent');
-        //  交易中买家取消订单
-        $api->post('inTransactionBuyerCancel', 'TransactionController@inTransactionBuyerCancel');
-        //  交易中卖家取消订单
-        $api->post('inTransactionSellerCancel', 'TransactionController@inTransactionSellerCancel');
-        //  卖家确认完成
-        $api->post('sellerConfirmComplete', 'TransactionController@sellerConfirmComplete');
-        //  卖家添加需求文档
-        $api->post('addAchievementsFile', 'TransactionController@addAchievementsFile');
-        //  买家确认完成
-        $api->post('buyerConfirmComplete', 'TransactionController@buyerConfirmComplete');
+        $api->group(['middleware'=>'throttle:1'], function ($api) {
+            // 待付款删除订单
+            $api->post('deleteIndentBeforePayment', 'TransactionController@deleteIndentBeforePayment');
+            //  订单付款
+            $api->post('indentPayment', 'TransactionController@indentPayment');
+            //  买家添加需求文档
+            $api->post('addDemandFile', 'TransactionController@addDemandFile');
+            //  买家待接单取消订单
+            $api->post('acceptIndentBeforeCancel', 'TransactionController@acceptIndentBeforeCancel');
+            //  卖家接单
+            $api->post('acceptIndent', 'TransactionController@acceptIndent');
+            //  交易中买家取消订单
+            $api->post('inTransactionBuyerCancel', 'TransactionController@inTransactionBuyerCancel');
+            //  交易中卖家取消订单
+            $api->post('inTransactionSellerCancel', 'TransactionController@inTransactionSellerCancel');
+            //  卖家确认完成
+            $api->post('sellerConfirmComplete', 'TransactionController@sellerConfirmComplete');
+            //  卖家添加需求文档
+            $api->post('addAchievementsFile', 'TransactionController@addAchievementsFile');
+            //  买家确认完成
+            $api->post('buyerConfirmComplete', 'TransactionController@buyerConfirmComplete');
+        });
 
         // 流水记录
         $api->post('runwaterList', 'RunwaterController@runWaterList');

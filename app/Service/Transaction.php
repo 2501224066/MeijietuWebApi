@@ -91,7 +91,7 @@ class Transaction
                 $U    = $indentData->buyer_id;
 
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $M;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') - $M;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -99,7 +99,7 @@ class Transaction
                 ]);
 
                 // 买家家钱包资金增加
-                $buyerMoney = Wallet::whereUid($U)->value('available_money') + $M;
+                $buyerMoney = Wallet::whereUid($U)->lockForUpdate()->value('available_money') + $M;
                 Wallet::whereUid($U)->update([
                     'available_money' => $buyerMoney,
                     'time'            => $time,
@@ -144,7 +144,7 @@ class Transaction
                 $U    = $indentData->seller_id;
 
                 // 公共钱包资金增加
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') + $M;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') + $M;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -152,7 +152,7 @@ class Transaction
                 ]);
 
                 // 卖家钱包资金扣除
-                $sellerMoney = Wallet::whereUid($U)->value('available_money') - $M;
+                $sellerMoney = Wallet::whereUid($U)->lockForUpdate()->value('available_money') - $M;
                 Wallet::whereUid($U)->update([
                     'available_money' => $sellerMoney,
                     'time'            => $time,
@@ -204,7 +204,7 @@ class Transaction
                 $centerM = $buyerM + $sellerM;
 
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $centerM;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') - $centerM;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -212,7 +212,7 @@ class Transaction
                 ]);
 
                 // 买家钱包资金增加
-                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->value('available_money') + $buyerM;
+                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->lockForUpdate()->value('available_money') + $buyerM;
                 Wallet::whereUid($indentData->buyer_id)->update([
                     'available_money' => $buyerMoney,
                     'time'            => $time,
@@ -236,7 +236,7 @@ class Transaction
                 Cache::increment($key);
 
                 // 卖家钱包资金增加
-                $sellerMoney = Wallet::whereUid($indentData->seller_id)->value('available_money') + $sellerM;
+                $sellerMoney = Wallet::whereUid($indentData->seller_id)->lockForUpdate()->value('available_money') + $sellerM;
                 Wallet::whereUid($indentData->seller_id)->update([
                     'available_money' => $sellerMoney,
                     'time'            => $time,
@@ -287,7 +287,7 @@ class Transaction
                 $centerM = $buyerM;
 
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $centerM;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') - $centerM;
                 Wallet::whereUid(Wallet::CENTERID)->update([
                     'available_money' => $centerMoney,
                     'time'            => $time,
@@ -295,7 +295,7 @@ class Transaction
                 ]);
 
                 // 买家钱包资金增加
-                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->value('available_money') + $buyerM;
+                $buyerMoney = Wallet::whereUid($indentData->buyer_id)->lockForUpdate()->value('available_money') + $buyerM;
                 Wallet::whereUid($indentData->buyer_id)->update([
                     'available_money' => $buyerMoney,
                     'time'            => $time,

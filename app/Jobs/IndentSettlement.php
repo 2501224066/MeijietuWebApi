@@ -49,7 +49,7 @@ class IndentSettlement implements ShouldQueue
                 $centerM = $sellerM;
 
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $centerM;
+                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') - $centerM;
                 DB::table('up_wallet')
                     ->where('uid', Wallet::CENTERID)->update([
                         'available_money' => $centerMoney,
@@ -58,7 +58,7 @@ class IndentSettlement implements ShouldQueue
                     ]);
 
                 // 卖家钱包资金增加
-                $sellerMoney = Wallet::whereUid($indentData->seller_id)->value('available_money') + $sellerM;
+                $sellerMoney = Wallet::whereUid($indentData->seller_id)->lockForUpdate()->value('available_money') + $sellerM;
                 DB::table('up_wallet')
                     ->where('uid', $indentData->seller_id)
                     ->update([
