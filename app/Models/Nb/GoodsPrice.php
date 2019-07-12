@@ -41,23 +41,25 @@ class GoodsPrice extends Model
     // 筛选价格
     public static function screePrice($request)
     {
-        if( ! $request->priceclassify_id)
+        // 价格种类为空直接跳出
+        if (!$request->priceclassify_id)
             return false;
 
-        if ($request->priceclassify_id)
+        if ($request->priceclassify_id != null)
             $query = self::where('priceclassify_id', $request->priceclassify_id);
 
-        if ($request->pricelevel_min)
+        if ($request->pricelevel_min != null)
             $query->where('price', '>=', $request->pricelevel_min);
 
-        if ($request->pricelevel_max)
+        if ($request->pricelevel_max != null)
             $query->where('price', '<', $request->pricelevel_max);
 
         return $query->groupBy('goods_id')->pluck('goods_id');
     }
 
     // 检查价格种类完整性
-    public static function checkPriceclassify($themeId, $priceArr){
+    public static function checkPriceclassify($themeId, $priceArr)
+    {
         $arr = DB::table('tb_theme_priceclassify')->where('theme_id', $themeId)->pluck('priceclassify_id')->toArray();
         asort($arr);
         $arr = array_values($arr);
@@ -66,7 +68,7 @@ class GoodsPrice extends Model
         asort($inputArr);
         $inputArr = array_values($inputArr);
 
-        if($arr != $inputArr)
+        if ($arr != $inputArr)
             throw new Exception('价格信息不完整');
 
         return true;

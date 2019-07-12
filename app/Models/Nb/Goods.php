@@ -332,55 +332,55 @@ class Goods extends Model
             ->where('verify_status', self::VERIFY_STATUS['已通过'])
             ->where('delete_status', self::DELETE_STATUS['未删除']);
 
-        if ($whereInGoodsIdArr)
+        if (!empty($whereInGoodsIdArr))
             $query->whereIn('goods_id', $whereInGoodsIdArr);
 
-        if ($request->modular_id)
+        if ($request->modular_id != null)
             $query->where('modular_id', $request->modular_id);
 
-        if ($request->theme_id)
+        if ($request->theme_id != null)
             $query->where('theme_id', $request->theme_id);
 
-        if ($request->key_word)
+        if ($request->key_word != null)
             $query->whereRaw('title like ? or title_about like ?', ["%{$request->key_word}%", "%{$request->key_word}%"]);
 
-        if ($request->filed_id)
+        if ($request->filed_id != null)
             $query->where('filed_id', $request->filed_id);
 
-        if ($request->platform_id)
+        if ($request->platform_id != null)
             $query->where('platform_id', $request->platform_id);
 
-        if ($request->industry_id)
+        if ($request->industry_id != null)
             $query->where('industry_id', $request->industry_id);
 
-        if ($request->region_id)
+        if ($request->region_id != null)
             $query->where('region_id', $request->region_id);
 
-        if ($request->fansnumlevel_min)
+        if ($request->fansnumlevel_min != null)
             $query->where('fans_num', '>=', $request->fansnumlevel_min);
 
-        if ($request->fansnumlevel_max)
+        if ($request->fansnumlevel_max != null)
             $query->where('fans_num', '<', $request->fansnumlevel_max);
 
-        if ($request->readlevel_min)
+        if ($request->readlevel_min != null)
             $query->where('avg_read_num', '>=', $request->readlevel_min);
 
-        if ($request->readlevel_max)
+        if ($request->readlevel_max != null)
             $query->where('avg_read_num', '<', $request->readlevel_max);
 
-        if ($request->likelevel_min)
+        if ($request->likelevel_min != null)
             $query->where('avg_like_num', '>=', $request->likelevel_min);
 
-        if ($request->likelevel_max)
+        if ($request->likelevel_max != null)
             $query->where('avg_like_num', '<', $request->likelevel_max);
 
-        if ($request->auth_type)
+        if ($request->auth_type != null)
             $query->where('auth_type', $request->auth_type);
 
-        if ($request->weekend_status)
+        if ($request->weekend_status != null)
             $query->where('weekend_status', $request->weekend_status);
 
-        if ($request->included_sataus)
+        if ($request->included_sataus != null)
             $query->where('included_sataus', $request->included_sataus);
 
         return $query->paginate();

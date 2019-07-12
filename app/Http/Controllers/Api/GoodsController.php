@@ -112,7 +112,7 @@ class GoodsController extends BaseController
     {
         // 筛选价格
         $whereInGoodsIdArr = GoodsPrice::screePrice($request);
-
+        // 搜索
         $re = Goods::getGoods($request, $whereInGoodsIdArr);
 
         return $this->success($re);
