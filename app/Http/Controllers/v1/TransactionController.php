@@ -45,20 +45,8 @@ class TransactionController extends BaseController
     {
         // 检查身份
         User::checkIdentity(User::IDENTIDY['广告主']);
-        // 订单数据
-        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
-        // 检查订单状态
-        Pub::checkParm($indentData->status, IndentInfo::STATUS['待付款'], '订单状态错误');
-        // 检测订单归属
-        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
-        // 校验钱包状态
-        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
-        // 校验修改校验锁
-        Wallet::checkChangLock($indentData->buyer_id);
-        // 钱包余额是够足够
-        Wallet::hasEnoughMoney($indentData->indent_amount);
         // 支付购买
-        Transaction::pay($indentData);
+        Transaction::pay($request->indent_num);
 
         return $this->success();
     }

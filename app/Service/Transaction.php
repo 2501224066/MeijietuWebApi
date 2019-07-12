@@ -28,14 +28,26 @@ class Transaction
     }
 
     // 支付购买
-    public static function pay($indentData)
+    public static function pay($indent_num)
     {
-        DB::transaction(function () use ($indentData) {
+        DB::transaction(function () use ($indent_num) {
             try {
+                // 订单数据
+                $indentData = IndentInfo::whereIndentNum($indent_num)->lockForUpdate()->first();
+                // 检查订单状态
+                Pub::checkParm($indentData->status, IndentInfo::STATUS['待付款'], '订单状态错误');
+                // 检测订单归属
+                IndentInfo::checkIndentBelong([$indentData->buyer_id]);
+                // 校验钱包状态
+                Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
+                // 校验修改校验锁
+                Wallet::checkChangLock($indentData->buyer_id);
+                // 钱包余额是够足够
+                Wallet::hasEnoughMoney($indentData->indent_amount);
+
                 $time = date('Y-m-d H:i:s');
                 $M    = $indentData->indent_amount;
                 $U    = $indentData->buyer_id;
-
                 // 公共钱包资金增加
                 $centerMoney = Wallet::whereUid(Wallet::CENTERID)->lockForUpdate()->value('available_money') + $M;
                 Wallet::whereUid(Wallet::CENTERID)->update([
