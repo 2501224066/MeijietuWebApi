@@ -133,7 +133,7 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         //  获取自己订单
         $api->post('indentBelongSelf', 'IndentController@indentBelongSelf');
 
-        // 交易
+        // 交易 降低请求频率为每分钟一次
         $api->group(['middleware'=>'throttle:1'], function ($api) {
             // 待付款删除订单
             $api->post('deleteIndentBeforePayment', 'TransactionController@deleteIndentBeforePayment');

@@ -63,13 +63,15 @@ class Shopcart extends Model
                         $query->where('goods_price_id', $goodsPriceId);
                     }])
                         ->where('goods_id', $goodsId)
+                        ->lockForUpdate()
                         ->first()
                         ->toArray();
 
                     // 检查商品信息
                     Goods::checkGoodsData($goodsData);
 
-                    self::firstOrCreate([
+                    // 加入
+                    self::updateOrCreate([
                         'uid'            => $uid,
                         'goods_id'       => $goodsId,
                         'goods_price_id' => $goodsPriceId

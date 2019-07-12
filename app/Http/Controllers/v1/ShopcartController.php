@@ -22,7 +22,7 @@ class ShopcartController extends BaseController
         User::checkIdentity(User::IDENTIDY['广告主']);
         // 转换数据类型
         $goodsIdArr = json_decode($request->goods_id_json);
-        // 添加收藏
+        // 添加
         Shopcart::join($goodsIdArr);
 
         return $this->success();
