@@ -10,9 +10,31 @@ use App\Models\Up\Wallet;
 use App\Models\User;
 use App\Service\Transaction;
 use App\Service\Pub;
+use Illuminate\Validation\Rules\In;
 
 class TransactionController extends BaseController
 {
+    /**
+     * 待付款删除订单
+     * @param TransactionRequests $request
+     * @return mixed
+     */
+    public function deleteIndentBeforePayment(TransactionRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['广告主']);
+        // 订单数据
+        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 检查订单状态
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['待付款'], '订单状态错误');
+        // 检测订单归属
+        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
+        // 删除
+        IndentInfo::del($indentData);
+
+        return $this->success();
+    }
+
     /**
      * 订单付款
      * 支付订单价格
@@ -30,7 +52,7 @@ class TransactionController extends BaseController
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->buyer_id]);
         // 校验钱包状态
-        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用'], '钱包已被禁用');
+        Wallet::checkStatus($indentData->buyer_id, Wallet::STATUS['启用']);
         // 校验修改校验锁
         Wallet::checkChangLock($indentData->buyer_id);
         // 钱包余额是够足够
@@ -109,7 +131,7 @@ class TransactionController extends BaseController
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 校验钱包状态
-        Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用'], '钱包已被禁用');
+        Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
         // 校验修改校验锁
         Wallet::checkChangLock($indentData->seller_id);
         // 钱包余额是够足够

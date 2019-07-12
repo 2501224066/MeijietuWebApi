@@ -89,6 +89,11 @@ class IndentInfo extends Model
         '已结算'       => 9
     ];
 
+    const DELETE_STATUS = [
+        '未删除' => 0,
+        '已删除' => 1
+    ];
+
     public function indent_item(): HasMany
     {
         return $this->hasMany(IndentItem::class, 'indent_id', 'indent_id');
@@ -266,6 +271,16 @@ class IndentInfo extends Model
         }
 
         return $query->paginate();
+    }
 
+    // 删除订单
+    public static function del($indentData)
+    {
+        $indentData->delete_status = self::DELETE_STATUS['已删除'];
+        $re = $indentData->save();
+        if (!$re)
+            throw new Exception('操作失败');
+
+        return true;
     }
 }

@@ -134,6 +134,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('indentBelongSelf', 'IndentController@indentBelongSelf');
 
         // 交易
+        // 待付款删除订单
+        $api->post('deleteIndentBeforePayment', 'TransactionController@deleteIndentBeforePayment');
         //  订单付款
         $api->post('indentPayment', 'TransactionController@indentPayment');
         //  买家添加需求文档
@@ -144,7 +146,7 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('acceptIndent', 'TransactionController@acceptIndent');
         //  交易中买家取消订单
         $api->post('inTransactionBuyerCancel', 'TransactionController@inTransactionBuyerCancel');
-        //  交易中买家取消订单
+        //  交易中卖家取消订单
         $api->post('inTransactionSellerCancel', 'TransactionController@inTransactionSellerCancel');
         //  卖家确认完成
         $api->post('sellerConfirmComplete', 'TransactionController@sellerConfirmComplete');

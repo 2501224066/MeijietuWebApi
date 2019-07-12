@@ -23,6 +23,11 @@ class Transaction extends Base
         $rules = [];
 
         switch ($this->getFunName()) {
+            // 待付款删除订单
+            case 'deleteIndentBeforePayment':
+                $rules['indent_num'] = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                break;
+
             // 订单付款
             case 'indentPayment':
                 $rules['indent_num'] = ['required', new SpecialChar, 'exists:indent_info,indent_num'];

@@ -54,8 +54,8 @@ class AuthController extends BaseController
         // 随机客服
         $re['salesman'] = User::indexPageSalesman();
         // ...
-//
-        Cache::put('indexPageData', json_encode($re), 60 * 12);
+
+//        Cache::put('indexPageData', json_encode($re), 60 * 12);
         return $this->success($re);
     }
 
