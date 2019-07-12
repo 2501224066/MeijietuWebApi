@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 
 
 use App\Rules\SpecialChar;
+use Mockery\Exception;
 
 class Pay extends Base
 {
@@ -25,12 +26,18 @@ class Pay extends Base
         switch ($this->getFunName()) {
             // 充值
             case 'recharge':
-                $rules['money'] = ['required', new SpecialChar, 'numeric'];
+                $rules['money'] = ['required', new SpecialChar, 'numeric', function($key,$value){
+                    if($value <= 0)
+                        throw new Exception('金额非法');
+                }];
                 break;
 
             // 提现
             case 'extract':
-                $rules['money'] = ['required', new SpecialChar, 'numeric'];
+                $rules['money'] = ['required', new SpecialChar, 'numeric', function($key,$value){
+                    if($value <= 0)
+                        throw new Exception('金额非法');
+                }];
                 break;
         }
 
