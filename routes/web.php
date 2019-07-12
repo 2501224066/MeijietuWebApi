@@ -11,12 +11,4 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('mailable', function () {
-    return new App\Mail\emailVerifCode('a','b');
-});
-
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
