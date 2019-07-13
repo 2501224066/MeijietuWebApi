@@ -4,9 +4,7 @@
 namespace App\Models\Nb;
 
 
-use App\Models\Tb\Theme;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 
 
@@ -17,6 +15,7 @@ use Mockery\Exception;
  * @property int $goods_id
  * @property int $priceclassify_id
  * @property string $priceclassify_name 价格种类
+ * @property string $tag 标记
  * @property float $floor_price 低价(软文模式使用)
  * @property float $price 真实价格
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice newModelQuery()
@@ -28,6 +27,7 @@ use Mockery\Exception;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice wherePriceclassifyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice wherePriceclassifyName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\GoodsPrice whereTag($value)
  * @mixin \Eloquent
  */
 class GoodsPrice extends Model
@@ -55,23 +55,6 @@ class GoodsPrice extends Model
             $query->where('price', '<=', $request->pricelevel_max);
 
         return $query->groupBy('goods_id')->pluck('goods_id');
-    }
-
-    // 检查价格种类完整性
-    public static function checkPriceclassify($themeId, $priceArr)
-    {
-        $arr = DB::table('tb_theme_priceclassify')->where('theme_id', $themeId)->pluck('priceclassify_id')->toArray();
-        asort($arr);
-        $arr = array_values($arr);
-
-        $inputArr = array_keys($priceArr);
-        asort($inputArr);
-        $inputArr = array_values($inputArr);
-
-        if ($arr != $inputArr)
-            throw new Exception('价格信息不完整');
-
-        return true;
     }
 
     // 检测价格数据合法性

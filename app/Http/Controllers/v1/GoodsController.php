@@ -7,6 +7,7 @@ use App\Jobs\GoodsCreatedOP;
 use App\Models\Nb\Goods;
 use App\Models\Nb\GoodsPrice;
 use App\Models\Tb\Modular;
+use App\Models\Tb\Priceclassify;
 use App\Models\User;
 use App\Service\Pub;
 use Illuminate\Support\Facades\Cache;
@@ -76,8 +77,6 @@ class GoodsController extends BaseController
         $arr = Goods::assembleArr($request);
         // 价格数据
         $priceArr = json_decode($request->price_json, true);
-        // 检查价格种类完整性
-        GoodsPrice::checkPriceclassify($arr['theme_id'], $priceArr);
         // 检测价格数据合法性
         GoodsPrice::checkPrice($priceArr);
         // 添加商品

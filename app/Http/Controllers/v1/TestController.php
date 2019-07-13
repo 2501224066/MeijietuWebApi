@@ -18,10 +18,9 @@ class TestController extends BaseController
         //$time = '2019-07-09 12:11:33';
         //return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money * 1 . $time);
 
-        // 上架
-//        Goods::whereVerifyStatus(0)->update([
-//            'status'=> 1,
-//            'verify_status' =>2
+//        Goods::wherePlatformName('小红书')->update([
+//            'filed_id'=> 42,
+//            'filed_name' => '其他'
 //        ]);
     }
 

@@ -8,10 +8,10 @@ use App\Models\Tb\Filed;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class zzWeiXinGoods extends Command
+class weiXinGoods extends Command
 {
 
-    protected $signature = 'zz:weixin-goods';
+    protected $signature = 'insert:weixin-goods {num}';
 
 
     protected $description = '导入微信数据';
@@ -25,9 +25,9 @@ class zzWeiXinGoods extends Command
 
     public function handle()
     {
-
-        $start = 1;
-        while ($start < 14100) {
+        $start = $this->argument('num');
+        $end   = $start + 5000;
+        while ($start <= $end) {
             echo $start;
             $start++;
 
@@ -60,7 +60,7 @@ class zzWeiXinGoods extends Command
                 $goodsId = Goods::insertGetId([
                     'goods_num'       => createGoodsNnm('W'),
                     'title'           => $v['BasicInfo']['OfficialAccount_Name'],
-                    'html_title'      => $v['BasicInfo']['Description'] ? $v['BasicInfo']['OfficialAccount_Name'] : '吃喝玩乐',
+                    'html_title'      => $v['BasicInfo']['OfficialAccount_Name'],
                     'title_about'     => $title_about,
                     'weixin_ID'       => $v['OfficialAccount_ID'],
                     'qq_ID'           => '1001001001',
@@ -115,19 +115,5 @@ class zzWeiXinGoods extends Command
             });
         }
 
-    }
-
-    // 判断是否含有emoji
-    function have_special_char($str)
-    {
-        $length = mb_strlen($str);
-        $array  = [];
-        for ($i = 0; $i < $length; $i++) {
-            $array[] = mb_substr($str, $i, 1, 'utf-8');
-            if (strlen($array[$i]) >= 4) {
-                return false;
-            }
-        }
-        return true;
     }
 }

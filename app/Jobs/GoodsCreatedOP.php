@@ -48,8 +48,8 @@ class GoodsCreatedOP implements ShouldQueue
                 break;
         }
 
-        // 消除制造商品
-        Goods::delZZGoods($goodsId);
+        // 消除初始商品
+        Goods::delSelfCreateGoods($goodsId);
     }
 
 

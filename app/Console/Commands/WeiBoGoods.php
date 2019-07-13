@@ -11,13 +11,13 @@ use App\Models\Tb\Theme;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class zzWeiBoGoods extends Command
+class weiBoGoods extends Command
 {
 
-    protected $signature = 'zz:weibo-goods';
+    protected $signature = 'insert:weibo-goods {num}';
 
 
-    protected $description = '制造微博商品';
+    protected $description = '导入微博商品';
 
 
     public function __construct()
@@ -28,9 +28,9 @@ class zzWeiBoGoods extends Command
 
     public function handle()
     {
-
-        $start = 13075;
-        while ($start < 16500) {
+        $start = $this->argument('num');
+        $end   = $start + 5000;
+        while ($start <= $end) {
             echo $start;
             $start++;
 
@@ -117,22 +117,6 @@ class zzWeiBoGoods extends Command
                     'price'              => 0
                 ]);
             });
-
         }
-
-    }
-
-    // 判断是否含有emoji
-    function have_special_char($str)
-    {
-        $length = mb_strlen($str);
-        $array  = [];
-        for ($i = 0; $i < $length; $i++) {
-            $array[] = mb_substr($str, $i, 1, 'utf-8');
-            if (strlen($array[$i]) >= 4) {
-                return false;
-            }
-        }
-        return true;
     }
 }

@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\Nb\Goods;
 use App\Models\Nb\GoodsPrice;
+use App\Models\Tb\Platform;
+use App\Models\Tb\Priceclassify;
 use Illuminate\Console\Command;
 
 class test extends Command
@@ -13,7 +15,7 @@ class test extends Command
      *
      * @var string
      */
-    protected $signature = 'text:go';
+    protected $signature = 'test:go';
 
     /**
      * The console command description.
@@ -32,17 +34,13 @@ class test extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-
-         Goods::whereStatus(1)->delete();
-         GoodsPrice::whereFloorPrice(0)->delete();
-
+        // 所有价格添加tag
+//        GoodsPrice::whereIn('priceclassify_name',['合集','单篇','视频'])
+//        ->update([
+//            'tag' => '小红书'
+//        ]);
 
     }
 }

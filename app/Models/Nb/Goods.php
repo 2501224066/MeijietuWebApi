@@ -134,6 +134,18 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereAvgRetweetNum($value)
  * @property int $recommend_status 推荐状态 0=否 1=是
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereRecommendStatus($value)
+ * @property string|null $level_name 级别名称
+ * @property int|null $all_like_num 总点赞数
+ * @property int|null $max_like_num 最大点赞数
+ * @property int|null $max_comment_num 最大评论数
+ * @property int|null $follows_num 关注数量
+ * @property int|null $notes_num 笔记数量
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereAllLikeNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereFollowsNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereLevelName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxCommentNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxLikeNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereNotesNum($value)
  */
 class Goods extends Model
 {
@@ -327,10 +339,12 @@ class Goods extends Model
                 }
 
                 foreach ($priceArr as $priceclassify_id => $price) {
+                    $PriceclassifyInfo = Priceclassify::wherePriceclassifyId($priceclassify_id)->first();
                     GoodsPrice::create([
                         'goods_id'           => $goodsId,
                         'priceclassify_id'   => $priceclassify_id,
-                        'priceclassify_name' => Priceclassify::wherePriceclassifyId($priceclassify_id)->value('priceclassify_name'),
+                        'priceclassify_name' => $PriceclassifyInfo->priceclassify_name,
+                        'tag'                => $PriceclassifyInfo->tag,
                         $P                   => $price
                     ]);
                 }
@@ -475,17 +489,19 @@ class Goods extends Model
     }
 
     /*
-     *  删除制造商品[微信公众号][微博]
+     *  删除初始商品[微信公众号][微博][短视频小红书]
      *  初始创造的一批商品,当用户录入商品后，判断初始商品中是否有重复的，有则删除初始商品
      */
-    public static function delZZGoods($goodsId)
+    public static function delSelfCreateGoods($goodsId)
     {
-        // 微信公众号
+        // 商品数据
         $goods = DB::table('nb_goods')->where('goods_id', $goodsId)->first();
-        echo $goods->weixin_ID;
+
+        // 微信公众号
         if ($goods->weixin_ID) {
             $arr = DB::table('nb_goods')
                 ->where('uid', User::GF)
+                ->where('modular_name', '微信营销')
                 ->where('theme_name', '公众号')
                 ->where('weixin_ID', $goods->weixin_ID)
                 ->pluck('goods_id');
@@ -500,6 +516,18 @@ class Goods extends Model
                 ->pluck('goods_id');
         }
 
+        // 小红书
+        if ($goods->room_ID) {
+            $arr = DB::table('nb_goods')
+                ->where('uid', User::GF)
+                ->where('modular_name', '视频营销')
+                ->where('theme_name', '短视频')
+                ->where('platform_name', '小红书')
+                ->where('room_ID', $goods->room_ID)
+                ->pluck('goods_id');
+        }
+
+        // 删除初始商品
         foreach ($arr as $goods_id) {
             Goods::whereGoodsId($goods_id)->delete();
             GoodsPrice::whereGoodsId($goods_id)->delete();

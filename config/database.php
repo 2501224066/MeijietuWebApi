@@ -80,20 +80,29 @@ return [
 
         'weixin_mongodb' => [
             'driver'   => 'mongodb',
-            'host'     => env('WEIXIN_MONGODB_HOST', '127.0.0.1'),
-            'port'     => env('WEIXIN_MONGODB_PORT', '27017'),
-            'database' => env('WEIXIN_MONGODB_DATABASE'),
-            'username' => env('WEIXIN_MONGODB_USERNAME'),
-            'password' => env('WEIXIN_MONGODB_PASSWORD'),
+            'host'     => env('MONGODB_HOST', '127.0.0.1'),
+            'port'     => env('MONGODB_PORT', '27017'),
+            'database' => env('MONGODB_DATABASE', 'WeiXin_OfficialAccount_OutPut_Data'),
+            'username' => env('MONGODB_USERNAME'),
+            'password' => env('MONGODB_PASSWORD'),
         ],
 
         'weibo_mongodb' => [
             'driver'   => 'mongodb',
-            'host'     => env('WEIBO_MONGODB_HOST', '127.0.0.1'),
-            'port'     => env('WEIBO_MONGODB_PORT', '27017'),
-            'database' => env('WEIBO_MONGODB_DATABASE'),
-            'username' => env('WEIBO_MONGODB_USERNAME'),
-            'password' => env('WEIBO_MONGODB_PASSWORD'),
+            'host'     => env('MONGODB_HOST', '127.0.0.1'),
+            'port'     => env('MONGODB_PORT', '27017'),
+            'database' => env('MONGODB_DATABASE', 'WeiBo_OutPut_Data'),
+            'username' => env('MONGODB_USERNAME'),
+            'password' => env('MONGODB_PASSWORD'),
+        ],
+
+        'xiaohongshu_mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('MONGODB_HOST', '127.0.0.1'),
+            'port'     => env('MONGODB_PORT', '27017'),
+            'database' => env('MONGODB_DATABASE', 'XiaoHongShu_OutPut_Data'),
+            'username' => env('MONGODB_USERNAME'),
+            'password' => env('MONGODB_PASSWORD'),
         ],
 
 
