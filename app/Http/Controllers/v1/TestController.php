@@ -13,9 +13,9 @@ class TestController extends BaseController
     {
         // ToDo...
         // 充钱
-        //$uid = 1000036;
+        //$uid = 1;
         //$avaiable_money = 1000000;
-        //$time = '2019-07-09 12:11:33';
+        //$time = '2019-07-15 16:16:25';
         //return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money * 1 . $time);
 
 //        Goods::wherePlatformName('小红书')->update([
