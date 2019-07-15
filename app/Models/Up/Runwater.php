@@ -176,9 +176,9 @@ class Runwater extends Model
                         'callback_time'         => date('Y-m-d H:i:s'),
                         'callback_oid_paybill'  => $data['oid_paybill'],
                         'callback_money_order'  => $data['money_order'],
-                        'callback_settle_order' => $data['settle_date'] ? $data['settle_date'] : null,
-                        'callback_pay_type'     => $data['pay_type'] ? $data['pay_type'] : null,
-                        'callback_bank_code'    => $data['bank_code'] ? $data['bank_code'] : null
+                        'callback_settle_order' => isset($data['settle_date']) ? $data['settle_date'] : null,
+                        'callback_pay_type'     => isset($data['pay_type']) ? $data['pay_type'] : null,
+                        'callback_bank_code'    => isset($data['bank_code']) ? $data['bank_code'] : null
                     ]);
 
                 // 修改资金
