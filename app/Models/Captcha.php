@@ -45,6 +45,5 @@ class Captcha
             throw new Exception('【验证码/令牌】错误');
 
         return true;
-
     }
 }

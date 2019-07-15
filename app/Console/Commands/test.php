@@ -36,11 +36,20 @@ class test extends Command
 
     public function handle()
     {
-        // 所有价格添加tag
-//        GoodsPrice::whereIn('priceclassify_name',['合集','单篇','视频'])
-//        ->update([
-//            'tag' => '小红书'
-//        ]);
+        $start = 0;
+        while ($start <= 250000) {
+            echo $start;
+            $start++;
+
+            $p = mt_rand(400,600)."0";
+            echo " ".$p."\n";
+            GoodsPrice::wherePrice(5000)
+                ->offset(0)
+                ->limit(1)
+                ->update([
+                'price' => $p
+            ]);
+        }
 
     }
 }

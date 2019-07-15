@@ -9,6 +9,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
 
     // 首页
     $api->get('indexPage', 'AuthController@indexPage');
+    // 资讯详情
+    $api->get('informationInfo', 'InformationController@informationInfo');
 
     // 充值回调
     $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
@@ -50,7 +52,6 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('refresh', 'AuthController@refresh');
         // 退出登录
         $api->post('signOut', 'AuthController@signOut');
-
 
         // 个人信息
         //  个人实名认证

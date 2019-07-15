@@ -3,9 +3,6 @@
 
 namespace App\Service;
 
-
-use App\Models\Nb\Goods;
-use App\Models\Nb\GoodsPrice;
 use Mockery\Exception;
 
 class Pub
