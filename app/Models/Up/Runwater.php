@@ -176,9 +176,9 @@ class Runwater extends Model
                         'callback_time'         => date('Y-m-d H:i:s'),
                         'callback_oid_paybill'  => $data['oid_paybill'],
                         'callback_money_order'  => $data['money_order'],
-                        'callback_settle_order' => $data['settle_date'],
-                        'callback_pay_type'     => $data['pay_type'],
-                        'callback_bank_code'    => $data['bank_code']
+                        'callback_settle_order' => $data['settle_date'] ? $data['settle_date'] : null,
+                        'callback_pay_type'     => $data['pay_type'] ? $data['pay_type'] : null,
+                        'callback_bank_code'    => $data['bank_code'] ? $data['bank_code'] : null
                     ]);
 
                 // 修改资金
@@ -190,7 +190,7 @@ class Runwater extends Model
                     'time'            => $time
                 ]);
             } catch (\Exception $e) {
-                throw new Exception('【连连回调】 修改金额失败:' .json_encode($data)." 失败原因: ". $e->getMessage() . "\n");
+                throw new Exception('【连连回调】 修改金额失败:' . json_encode($data) . " 失败原因: " . $e->getMessage() . "\n");
             }
         });
     }
