@@ -8,7 +8,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
 
 
     // 首页
-    $api->get('indexPage', 'AuthController@indexPage');
+    $api->get('indexPage', 'IndexController@indexPage');
+
     // 资讯详情
     $api->get('informationInfo', 'InformationController@informationInfo');
 

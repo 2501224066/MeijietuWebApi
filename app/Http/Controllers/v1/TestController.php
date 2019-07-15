@@ -24,7 +24,7 @@ class TestController extends BaseController
 //            'filed_name' => '其他'
 //        ]);
 
-        echo GoodsPrice::wherePrice(5000)->count();
+        //echo GoodsPrice::wherePrice(5000)->count();
     }
 
 
