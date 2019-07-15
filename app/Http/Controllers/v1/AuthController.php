@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1;
 
 use App\Jobs\RegisteredOP;
+use App\Models\dt\Information;
 use App\Models\Log\LogLogin;
 use App\Models\Nb\Collection;
 use App\Models\Nb\Goods;
@@ -53,9 +54,11 @@ class AuthController extends BaseController
         $re['recommendGoods'] = Goods::indexPageRecommendGoods();
         // 随机客服
         $re['salesman'] = User::indexPageSalesman();
+        // 资讯文章
+        $re['information'] = Information::indexPageInformation(3);
         // ...
 
-//        Cache::put('indexPageData', json_encode($re), 60 * 12);
+//      Cache::put('indexPageData', json_encode($re), 60 * 12);
         return $this->success($re);
     }
 

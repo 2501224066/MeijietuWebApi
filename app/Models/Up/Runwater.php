@@ -190,7 +190,7 @@ class Runwater extends Model
                     'time'            => $time
                 ]);
             } catch (\Exception $e) {
-                throw new Exception('【连连回调】 修改金额失败:' . json_encode($data) . "\n");
+                throw new Exception('【连连回调】 修改金额失败:' .$e->getMessage() ." 数据: ". json_encode($data) . "\n");
             }
         });
     }
