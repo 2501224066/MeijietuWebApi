@@ -154,6 +154,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereWeekendStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereWeixinID($value)
  * @mixin \Eloquent
+ * @property int|null $max_read_num 最大阅读数
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxReadNum($value)
  */
 class Goods extends Model
 {

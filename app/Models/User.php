@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Up\Wallet;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -16,6 +18,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * App\Models\User
  *
  * @property int $uid 用户id （初始值1000000）
+ * @property string $user_num 用户编号
  * @property string $nickname 昵称
  * @property string $email 邮箱
  * @property string $phone 电话
@@ -25,7 +28,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $birth 出生日期
  * @property string|null $qq_ID qq号
  * @property string|null $weixin_ID 微信号
- * @property int|null $identity 身份 1=广告主 2=流量主 3=业务员
+ * @property int|null $identity 身份 1=广告主 2=媒体主 3=业务员
  * @property int $realname_status 实名认证状态 0=未认证 1=个人认证 2=企业认证
  * @property string $ip 客户端最近一次登录ip
  * @property int|null $status 状态 0=禁用 1=启用
@@ -34,6 +37,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \App\Models\Up\Wallet $wallet
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
@@ -54,6 +58,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereWeixinID($value)
  * @mixin \Eloquent
  */
@@ -100,6 +105,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function wallet(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'uid', 'uid');
+    }
+
     // 首页客服
     public static function indexPageSalesman()
     {
@@ -118,6 +128,7 @@ class User extends Authenticatable implements JWTSubject
     {
         // 添加user
         $user = self::create([
+            'user_num'      => createUserNum(),
             'phone'         => htmlspecialchars($request->phone),
             'email'         => htmlspecialchars($request->email),
             'password'      => Hash::make(htmlspecialchars($request->password)),

@@ -6,6 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-openssl": "*",
         "barryvdh/laravel-cors": "^0.11.3",
         "dingo/api": "2.0.0",
         "fideloper/proxy": "~3.3",
@@ -18,10 +21,7 @@
         "mrgoon/aliyun-sms": "dev-master",
         "predis/predis": "^1.1",
         "rap2hpoutre/laravel-log-viewer": "^1.1",
-        "tymon/jwt-auth": "1.*@rc",
-        "ext-json": "*",
-        "ext-openssl": "*",
-        "ext-curl": "*"
+        "tymon/jwt-auth": "1.0.0-rc.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

@@ -21,10 +21,8 @@ class SalesmanController extends BaseController
         User::checkIdentity(User::IDENTIDY['业务员']);
         // 服务用户
         $re = User::whereSalesmanId(JWTAuth::user()->uid)
-            ->get()
-            ->each(function ($item) {
-                unset($item['email'], $item['phone'], $item['password'], $item['ip'], $item['salesman_id'], $item['salesman_name'], $item['created_at'], $item['updated_at']);
-            });
+            ->with('wallet:uid,available_money,status,remark')
+            ->get(['uid', 'user_num', 'phone', 'nickname', 'sex', 'created_at', 'identity', 'realname_status', 'status']);
 
         return $this->success($re);
     }

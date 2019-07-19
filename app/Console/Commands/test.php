@@ -37,40 +37,40 @@ class test extends Command
 
     public function handle()
     {
-        /*$start = 0;
+        $start = 0;
         while ($start <= 30000) {
-            echo $start;
-            $start++;
-
-            // 头像
-            $g = Goods::where('qq_ID', '1001001001')
-                ->where('goods_id','>','80000')
-                ->offset(0)
-                ->limit(1)
-                ->first();
-
-            if(!$g){
-                echo " null";
-            }
-
-            if ($g->avatar_url) {
-                try {
-                    $imgContent = file_get_contents($g->avatar_url);
-                    $path       = "images/head_portrait/" . str_random(30) . ".jpg";
-                    echo " ".$g->goods_id." ".$path."\n";
-                    $re         = Storage::put($path, $imgContent);
-                    if ($re) {
-                        $g->qq_ID      = '2501001001';
-                        $g->avatar_url = $path;
-                        $g->save();
-                    }
-                }catch (\Exception $e){
-                    echo " ".$g->goods_id." default"."\n";
-                    $g->qq_ID      = '2501001001';
-                    $g->avatar_url = 'images/head_portrait/teT9lkA17FB2XOq7kXFwnTozLSlwm8.jpg';
-                    $g->save();
-                }
-            }*/
+//            echo $start;
+//            $start++;
+//
+//            // 头像
+//            $g = Goods::where('qq_ID', '1001001001')
+//                ->where('goods_id','>','80000')
+//                ->offset(0)
+//                ->limit(1)
+//                ->first();
+//
+//            if(!$g){
+//                echo " null";
+//            }
+//
+//            if ($g->avatar_url) {
+//                try {
+//                    $imgContent = file_get_contents($g->avatar_url);
+//                    $path       = "images/head_portrait/" . str_random(30) . ".jpg";
+//                    echo " ".$g->goods_id." ".$path."\n";
+//                    $re         = Storage::put($path, $imgContent);
+//                    if ($re) {
+//                        $g->qq_ID      = '2501001001';
+//                        $g->avatar_url = $path;
+//                        $g->save();
+//                    }
+//                }catch (\Exception $e){
+//                    echo " ".$g->goods_id." default"."\n";
+//                    $g->qq_ID      = '2501001001';
+//                    $g->avatar_url = 'images/head_portrait/teT9lkA17FB2XOq7kXFwnTozLSlwm8.jpg';
+//                    $g->save();
+//                }
+//            }
 
 //            // 二维码
 //            $g = Goods::where('weixin_ID','!=', "")
