@@ -122,8 +122,8 @@ class Salesman
         $query = Goods::whereIn('uid', $userArr)
             ->orderBy('created_at', 'DESC');
 
-        if ($input->uid)
-            $query->where('uid', $input->uid);
+        if ($input->user_num)
+            $query->where('uid', User::whereUserNum($input->user_num)->value('uid'));
 
         if ($input->goods_num)
             $query->where('goods_num', $input->goods_num);
@@ -137,14 +137,11 @@ class Salesman
         $query = IndentInfo::whereSalesmanId(JWTAuth::user()->uid)
             ->orderBy('create_time', 'DESC');
 
-        if ($input->buyer_id)
-            $query->where('buyer_id', $input->buyer_id);
+        if ($input->buyer_num)
+            $query->where('buyer_id', User::whereUserNum($input->buyer_num)->value('uid'));
 
-        if ($input->buyer_id)
-            $query->where('buyer_id', $input->buyer_id);
-
-        if ($input->seller_id)
-            $query->where('seller_id', $input->seller_id);
+        if ($input->seller_num)
+            $query->where('seller_id', User::whereUserNum($input->seller_num)->value('uid'));
 
         if ($input->indent_num)
             $query->where('indent_num', $input->indent_num);

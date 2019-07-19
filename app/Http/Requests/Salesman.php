@@ -33,14 +33,14 @@ class Salesman extends Base
 
             // 服务商品搜索
             case 'serveGoodsSelect':
-                $rules['uid']       = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['user_num']       = ['nullable', 'present', new SpecialChar];
                 $rules['goods_num'] = ['nullable', 'present', new SpecialChar];
                 break;
 
             // 服务订单搜索
             case 'serveIndentSelect':
-                $rules['buyer_id']   = ['nullable', 'present', new SpecialChar, 'numeric'];
-                $rules['seller_id']  = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['buyer_num']   = ['nullable', 'present', new SpecialChar];
+                $rules['seller_num']  = ['nullable', 'present', new SpecialChar];
                 $rules['indent_num'] = ['nullable', 'present', new SpecialChar];
                 break;
         }
@@ -53,9 +53,6 @@ class Salesman extends Base
         return [
             'present'     => '参数不全',
             'uid.numeric' => '客户ID必须为数字',
-
-            'buyer_id.numeric'  => '买家ID必须为数字',
-            'seller_id.numeric' => '卖家ID必须为数字'
         ];
     }
 }

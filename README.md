@@ -1,5 +1,4 @@
-### 开启队列
-`php artisan queue:work --queue=AddWeiXinBasicsData,AddWeiBoBasicsData`
-
-### 开启交易完成延迟打款订阅
-`php artisan indent:settlement`
+## 上线注意事项
+1. 短信验证检查开启
+2. 首页缓存开启
+3. 服务器supervisor配置

@@ -148,6 +148,7 @@ class AuthController extends BaseController
         return $this->success([
             "head_portrait"   => $user->head_portrait,
             "truename"        => $realnamePeople ? $realnamePeople->truename : null,
+            "user_num"        => $user->user_num,
             "nickname"        => $user->nickname,
             "sex"             => $user->sex,
             "email"           => $user->email,
