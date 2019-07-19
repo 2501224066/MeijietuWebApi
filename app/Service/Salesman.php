@@ -93,6 +93,29 @@ class Salesman
         ];
     }
 
+    // 服务用户
+    public static function serveUser($input)
+    {
+        $query = User::whereSalesmanId(JWTAuth::user()->uid)
+            ->with('wallet:uid,available_money,status,remark')
+            ->select(['uid', 'user_num', 'phone', 'nickname', 'sex', 'created_at', 'identity', 'realname_status', 'status']);
+
+        if ($input->identity)
+            $query->where('identity', $input->identity);
+
+        if ($input->user_num)
+            $query->where('user_num', 'like', '%' . $input->user_num . '%');
+
+        if ($input->phone)
+            $query->where('user_num', $input->phone);
+
+        if ($input->nickname)
+            $query->where('nickname', 'like', '%' . $input->nickname . '%');
+
+        return $query->paginate();
+
+    }
+
     // 服务商品
     public static function serveGoods($input, $userArr)
     {

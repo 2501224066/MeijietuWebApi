@@ -12,18 +12,15 @@ use App\Http\Requests\Salesman as SalesmanRequests;
 class SalesmanController extends BaseController
 {
     /**
-     * 服务用户列表
+     * 服务用户搜索
      * @return mixed
      */
-    public function serveUserList()
+    public function serveUserSelect(SalesmanRequests $request)
     {
         // 身份必须为业务员
         User::checkIdentity(User::IDENTIDY['业务员']);
         // 服务用户
-        $re = User::whereSalesmanId(JWTAuth::user()->uid)
-            ->with('wallet:uid,available_money,status,remark')
-            ->get(['uid', 'user_num', 'phone', 'nickname', 'sex', 'created_at', 'identity', 'realname_status', 'status']);
-
+        $re = Salesman::serveUser($request);
         return $this->success($re);
     }
 
@@ -58,4 +55,8 @@ class SalesmanController extends BaseController
 
         return $this->success($re);
     }
+
+    /*
+     * 商品通过审核
+     */
 }

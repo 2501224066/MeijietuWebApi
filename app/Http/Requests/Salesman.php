@@ -23,9 +23,17 @@ class Salesman extends Base
         $rules = [];
 
         switch ($this->getFunName()) {
-            // 服务订单搜索
+            // 服务用户搜索
+            case 'serveUserSelect':
+                $rules['identity'] = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['user_num'] = ['nullable', 'present', new SpecialChar];
+                $rules['phone']    = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['nickname'] = ['nullable', 'present', new SpecialChar,];
+                break;
+
+            // 服务商品搜索
             case 'serveGoodsSelect':
-                $rules['uid']    = ['nullable', 'present', new SpecialChar, 'numeric'];
+                $rules['uid']       = ['nullable', 'present', new SpecialChar, 'numeric'];
                 $rules['goods_num'] = ['nullable', 'present', new SpecialChar];
                 break;
 

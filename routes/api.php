@@ -78,7 +78,7 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
 
         // 客服
         //  服务客户列表
-        $api->post('serveUserList', 'SalesmanController@serveUserList');
+        $api->post('serveUserSelect', 'SalesmanController@serveUserSelect');
         //  服务商品搜索
         $api->post('serveGoodsSelect', 'SalesmanController@serveGoodsSelect');
         //  服务订单搜索

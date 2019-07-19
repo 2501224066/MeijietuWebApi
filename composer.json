@@ -9,6 +9,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-openssl": "*",
+        "alibabacloud/sdk": "^1.7",
         "barryvdh/laravel-cors": "^0.11.3",
         "dingo/api": "2.0.0",
         "fideloper/proxy": "~3.3",
