@@ -33,14 +33,15 @@ class Salesman extends Base
 
             // 服务商品搜索
             case 'serveGoodsSelect':
-                $rules['user_num']       = ['nullable', 'present', new SpecialChar];
-                $rules['goods_num'] = ['nullable', 'present', new SpecialChar];
+                $rules['user_num']      = ['nullable', 'present', new SpecialChar];
+                $rules['goods_num']     = ['nullable', 'present', new SpecialChar];
+                $rules['verify_status'] = ['nullable', 'present', new SpecialChar, 'numeric'];
                 break;
 
             // 服务订单搜索
             case 'serveIndentSelect':
-                $rules['buyer_num']   = ['nullable', 'present', new SpecialChar];
-                $rules['seller_num']  = ['nullable', 'present', new SpecialChar];
+                $rules['buyer_num']  = ['nullable', 'present', new SpecialChar];
+                $rules['seller_num'] = ['nullable', 'present', new SpecialChar];
                 $rules['indent_num'] = ['nullable', 'present', new SpecialChar];
                 break;
         }

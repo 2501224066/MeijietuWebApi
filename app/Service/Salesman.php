@@ -97,6 +97,7 @@ class Salesman
     public static function serveUser($input)
     {
         $query = User::whereSalesmanId(JWTAuth::user()->uid)
+            ->where('status', User::STATUS['启用'])
             ->with('wallet:uid,available_money,status,remark')
             ->select(['uid', 'user_num', 'phone', 'nickname', 'sex', 'created_at', 'identity', 'realname_status', 'status']);
 
@@ -120,6 +121,8 @@ class Salesman
     public static function serveGoods($input, $userArr)
     {
         $query = Goods::whereIn('uid', $userArr)
+            ->where('satus', Goods::STATUS['上架'])
+            ->where('delete_status', Goods::DELETE_STATUS['未删除'])
             ->orderBy('created_at', 'DESC');
 
         if ($input->user_num)
@@ -128,6 +131,9 @@ class Salesman
         if ($input->goods_num)
             $query->where('goods_num', $input->goods_num);
 
+        if ($input->verify_status)
+            $query->where('verify_status', $input->verify_status);
+
         return $query->paginate();
     }
 
@@ -135,6 +141,7 @@ class Salesman
     public static function serveIndent($input)
     {
         $query = IndentInfo::whereSalesmanId(JWTAuth::user()->uid)
+            ->where('delete_status', IndentInfo::DELETE_STATUS['未删除'])
             ->orderBy('create_time', 'DESC');
 
         if ($input->buyer_num)
