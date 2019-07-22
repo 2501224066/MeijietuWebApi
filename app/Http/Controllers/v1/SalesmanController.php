@@ -59,7 +59,7 @@ class SalesmanController extends BaseController
     }
 
     /**
-     * 商品通过审核
+     * 商品审核
      * @param SalesmanRequests $request
      * @return mixed
      */
@@ -72,7 +72,22 @@ class SalesmanController extends BaseController
             Salesman::verifySuccess($request->goods_num);
         // 未通过审核
         if ($request->verify_status == Goods::VERIFY_STATUS['未通过'])
-            Salesman::verifyFail($request->goods_num, $request->verify_cause);
+            Salesman::verifyFail($request->goods_num, htmlspecialchars($request->verify_cause));
+
+        return $this->success();
+    }
+
+    /**
+     * 订单议价
+     * @param SalesmanRequests $request
+     * @return mixed
+     */
+    public function indentBargaining(SalesmanRequests $request)
+    {
+        // 身份必须为业务员
+        User::checkIdentity(User::IDENTIDY['业务员']);
+        // 议价操作
+        Salesman::bargainingOP($request->indent_num, htmlspecialchars($request->seller_income));
 
         return $this->success();
     }

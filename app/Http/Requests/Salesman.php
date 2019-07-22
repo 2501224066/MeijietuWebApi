@@ -40,9 +40,10 @@ class Salesman extends Base
 
             // 服务订单搜索
             case 'serveIndentSelect':
-                $rules['buyer_num']  = ['nullable', 'present', new SpecialChar];
-                $rules['seller_num'] = ['nullable', 'present', new SpecialChar];
-                $rules['indent_num'] = ['nullable', 'present', new SpecialChar];
+                $rules['buyer_num']         = ['nullable', 'present', new SpecialChar];
+                $rules['seller_num']        = ['nullable', 'present', new SpecialChar];
+                $rules['indent_num']        = ['nullable', 'present', new SpecialChar];
+                $rules['bargaining_status'] = ['nullable', 'present', new SpecialChar, 'numeric'];
                 break;
 
             // 商品审核
@@ -50,6 +51,12 @@ class Salesman extends Base
                 $rules['goods_num']     = ['required', new SpecialChar];
                 $rules['verify_status'] = ['required', new SpecialChar, 'numeric'];
                 $rules['verify_cause']  = ['nullable', 'present', new SpecialChar];
+                break;
+
+            // 订单议价
+            case 'indentBargaining':
+                $rules['indent_num']    = ['required', new SpecialChar];
+                $rules['seller_income'] = ['required', new SpecialChar, 'numeric'];
                 break;
         }
 

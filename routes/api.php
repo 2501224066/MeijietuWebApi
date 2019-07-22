@@ -85,6 +85,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('serveIndentSelect', 'SalesmanController@serveIndentSelect');
         //  商品审核
         $api->post('goodsVerify', 'SalesmanController@goodsVerify');
+        //  订单议价
+        $api->post('indentBargaining', 'SalesmanController@indentBargaining');
 
 
         // 文件处理

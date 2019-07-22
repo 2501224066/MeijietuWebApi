@@ -153,6 +153,9 @@ class Salesman
         if ($input->indent_num)
             $query->where('indent_num', $input->indent_num);
 
+        if ($input->bargaining_status)
+            $query->where('bargaining_status', $input->bargaining_status);
+
         $data = $query->paginate();
 
         foreach ($data->items() as &$item) {
@@ -195,6 +198,23 @@ class Salesman
         $goods->verify_status = Goods::VERIFY_STATUS['未通过'];
         $goods->verify_cause  = $verifyCause;
         $re                   = $goods->save();
+        if (!$re)
+            throw new Exception('操作失败');
+
+        return true;
+    }
+
+    // 议价操作
+    public static function bargainingOP($indentNum, $sellerIncome)
+    {
+        $indent = IndentInfo::whereIndentNum($indentNum)->first();
+        if ($sellerIncome > $indent->seller_income)
+            throw new Exception('议价卖家收入不得高于原始卖家收入');
+
+        $indent->bargaining_status = IndentInfo::BARGAINING_STATUS['已完成'];
+        $indent->bargaining_reduce = $indent->seller_income - $sellerIncome;
+        $indent->seller_income     = $sellerIncome;
+        $re                        = $indent->save();
         if (!$re)
             throw new Exception('操作失败');
 
