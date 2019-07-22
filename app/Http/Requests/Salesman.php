@@ -58,6 +58,11 @@ class Salesman extends Base
                 $rules['indent_num']    = ['required', new SpecialChar];
                 $rules['seller_income'] = ['required', new SpecialChar, 'numeric'];
                 break;
+
+            // 软文商品设置价格
+            case 'setSoftArticlePrice':
+                $rules['goods_num'] = ['required', new SpecialChar];
+                $rules['price']     = ['required', new SpecialChar, 'numeric'];
         }
 
         return $rules;

@@ -87,6 +87,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('goodsVerify', 'SalesmanController@goodsVerify');
         //  订单议价
         $api->post('indentBargaining', 'SalesmanController@indentBargaining');
+        //  软文商品设置价格
+        $api->post('setSoftArticlePrice', 'SalesmanController@setSoftArticlePrice');
 
 
         // 文件处理

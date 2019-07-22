@@ -6,6 +6,8 @@ namespace App\Service;
 
 use App\Models\Indent\IndentInfo;
 use App\Models\Nb\Goods;
+use App\Models\Nb\GoodsPrice;
+use App\Models\Tb\Modular;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Mockery\Exception;
@@ -179,6 +181,11 @@ class Salesman
         if ($goods->verify_status != Goods::VERIFY_STATUS['待审核'])
             throw new Exception('审核状态非法');
 
+        // 软文商品必须已经设置价格
+        if ((Modular::whereModularId($goods->modular_id)->value('tag') == Modular::TAG['软文营销'])
+            && (GoodsPrice::whereGoodsId($goods->goods_id)->value('price') * 1 == 0))
+            throw new Exception('软文商品必须优先设置价格');
+
         $goods->verify_status = Goods::VERIFY_STATUS['已通过'];
         $goods->status        = Goods::STATUS['上架'];
         $re                   = $goods->save();
@@ -215,6 +222,25 @@ class Salesman
         $indent->bargaining_reduce = $indent->seller_income - $sellerIncome;
         $indent->seller_income     = $sellerIncome;
         $re                        = $indent->save();
+        if (!$re)
+            throw new Exception('操作失败');
+
+        return true;
+    }
+
+    // 设置软文价格操作
+    public static function setSoftArticlePriceOP($goodsNum, $price)
+    {
+        $goods = Goods::whereGoodsNum($goodsNum)->first();
+
+        Pub::checkParm($goods->verify_status, Goods::VERIFY_STATUS['待审核'], '商品状态非法');
+
+        if ((Modular::whereModularId($goods->modular_id)->value('tag') != Modular::TAG['软文营销'])
+            || (GoodsPrice::whereGoodsId($goods->goods_id)->value('price') * 1 != 0)
+            || ($price <= 0))
+            throw new Exception('非法操作');
+
+        $re = GoodsPrice::whereGoodsId($goods->goods_id)->update(['price' => $price]);
         if (!$re)
             throw new Exception('操作失败');
 
