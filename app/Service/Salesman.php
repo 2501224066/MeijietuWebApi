@@ -153,6 +153,19 @@ class Salesman
         if ($input->indent_num)
             $query->where('indent_num', $input->indent_num);
 
-        return $query->paginate();
+        $data = $query->paginate();
+
+        foreach ($data->items() as &$item) {
+            $buyer              = User::whereUid($item->buyer_id)->first();
+            $item->buyer_name   = $buyer->nickname;
+            $item->buyer_phone  = $buyer->phone;
+            $item->buyer_num    = $buyer->user_num;
+            $seller             = User::whereUid($item->seller_id)->first();
+            $item->seller_name  = $seller->nickname;
+            $item->seller_phone = $seller->phone;
+            $item->seller_num   = $buyer->user_num;
+        }
+
+        return $data;
     }
 }
