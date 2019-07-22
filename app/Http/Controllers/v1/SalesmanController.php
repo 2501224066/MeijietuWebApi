@@ -4,6 +4,8 @@
 namespace App\Http\Controllers\v1;
 
 
+use App\Models\Indent\IndentInfo;
+use App\Models\Nb\Goods;
 use App\Models\User;
 use App\Service\Salesman;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -56,7 +58,22 @@ class SalesmanController extends BaseController
         return $this->success($re);
     }
 
-    /*
+    /**
      * 商品通过审核
+     * @param SalesmanRequests $request
+     * @return mixed
      */
+    public function goodsVerify(SalesmanRequests $request)
+    {
+        // 身份必须为业务员
+        User::checkIdentity(User::IDENTIDY['业务员']);
+        // 通过审核
+        if ($request->verify_status == Goods::VERIFY_STATUS['已通过'])
+            Salesman::verifySuccess($request->goods_num);
+        // 未通过审核
+        if ($request->verify_status == Goods::VERIFY_STATUS['未通过'])
+            Salesman::verifyFail($request->goods_num, $request->verify_cause);
+
+        return $this->success();
+    }
 }

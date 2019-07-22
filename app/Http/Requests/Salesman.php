@@ -44,6 +44,13 @@ class Salesman extends Base
                 $rules['seller_num'] = ['nullable', 'present', new SpecialChar];
                 $rules['indent_num'] = ['nullable', 'present', new SpecialChar];
                 break;
+
+            // 商品审核
+            case 'goodsVerify':
+                $rules['goods_num']     = ['required', new SpecialChar];
+                $rules['verify_status'] = ['required', new SpecialChar, 'numeric'];
+                $rules['verify_cause']  = ['nullable', 'present', new SpecialChar];
+                break;
         }
 
         return $rules;

@@ -3,9 +3,6 @@
 
 namespace App\Models\Nb;
 
-
-use App\Jobs\AddWeiBoBasicsData;
-use App\Jobs\AddWeiXinBasicsData;
 use App\Models\Tb\Filed;
 use App\Models\Tb\Industry;
 use App\Models\Tb\Modular;
@@ -18,7 +15,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -68,6 +64,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $phone_weightlevel_img 移动端权重 图片
  * @property int|null $pc_weightlevel_id
  * @property string|null $pc_weightlevel_img PC端权重 图片
+ * @property string|null $verify_cause 审核原因
  * @property int $verify_status 审核状态 0=待审核 1=未通过 2=通过
  * @property int $status 上架状态 0=未上架 1=上架
  * @property int $recommend_status 推荐状态 0=否 1=是
@@ -77,6 +74,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $level_name 级别名称
  * @property int|null $fans_num 粉丝数
  * @property int|null $avg_read_num 平均阅读数
+ * @property int|null $max_read_num 最大阅读数
  * @property int|null $total_like_num 合计点赞数
  * @property int|null $avg_like_num 平均点赞数
  * @property int|null $max_like_num 最大点赞数
@@ -119,6 +117,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereLinkType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxCommentNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxLikeNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxReadNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxRetweetNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxTitleLong($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereModularId($value)
@@ -150,12 +149,11 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereTotalRetweetNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereVerifyCause($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereVerifyStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereWeekendStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereWeixinID($value)
  * @mixin \Eloquent
- * @property int|null $max_read_num 最大阅读数
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Nb\Goods whereMaxReadNum($value)
  */
 class Goods extends Model
 {

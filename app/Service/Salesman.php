@@ -168,4 +168,36 @@ class Salesman
 
         return $data;
     }
+
+    // 通过审核
+    public static function verifySuccess($goodsNum)
+    {
+        $goods = Goods::whereGoodsNum($goodsNum)->first();
+        if ($goods->verify_status != Goods::VERIFY_STATUS['待审核'])
+            throw new Exception('审核状态非法');
+
+        $goods->verify_status = Goods::VERIFY_STATUS['已通过'];
+        $goods->status        = Goods::STATUS['上架'];
+        $re                   = $goods->save();
+        if (!$re)
+            throw new Exception('操作失败');
+
+        return true;
+    }
+
+    // 未通过审核
+    public static function verifyFail($goodsNum, $verifyCause)
+    {
+        $goods = Goods::whereGoodsNum($goodsNum)->first();
+        if ($goods->verify_status != Goods::VERIFY_STATUS['待审核'])
+            throw new Exception('审核状态非法');
+
+        $goods->verify_status = Goods::VERIFY_STATUS['未通过'];
+        $goods->verify_cause  = $verifyCause;
+        $re                   = $goods->save();
+        if (!$re)
+            throw new Exception('操作失败');
+
+        return true;
+    }
 }
