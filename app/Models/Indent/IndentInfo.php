@@ -16,7 +16,6 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-
 /**
  * App\Models\Indent\IndentInfo
  *
@@ -97,6 +96,12 @@ class IndentInfo extends Model
         '已删除' => 1
     ];
 
+    // 无需赔偿保证费模块
+    const NO_COMPENSATE_FEE_MODULAR_TAG = [
+        Modular::TAG['软文营销'],
+        Modular::TAG['自身业务']
+    ];
+
     public function indent_item(): HasMany
     {
         return $this->hasMany(IndentItem::class, 'indent_id', 'indent_id');
@@ -151,13 +156,12 @@ class IndentInfo extends Model
     // 添加订单
     public static function add($data)
     {
-        $indent_num = "";
-
+        $indent_num  = "";
         $uid         = JWTAuth::user()->uid;
         $salesman_id = JWTAuth::user()->salesman_id;
         $time        = date('Y-m-d H:i:s');
         $key         = 'INDENTCOUNT' . date('Ymd'); // 订单数key
-        DB::transaction(function () use ($data, $uid, $salesman_id, $time, $key, &$indent_mum) {
+        DB::transaction(function () use ($data, $uid, $salesman_id, $time, $key, &$indent_num) {
             try {
                 foreach ($data as $seller_id => $dt) {
                     // 赔偿保证费
@@ -167,15 +171,8 @@ class IndentInfo extends Model
                     $bargaining_status = IndentInfo::BARGAINING_STATUS['未完成'];
 
                     // 部分模块无需赔偿保证费
-                    switch (Modular::whereModularId($dt['modular_id'])->value('tag')) {
-                        case Modular::TAG['软文营销']:
-                            $compensate_fee = 0;
-                            break;
-
-                        case Modular::TAG['自身业务']:
-                            $compensate_fee = 0;
-                            break;
-                    }
+                    $tag = Modular::whereModularId($dt['modular_id'])->value('tag');
+                    if (in_array($tag, self::NO_COMPENSATE_FEE_MODULAR_TAG)) $compensate_fee = 0;
 
                     // 不同模式下卖家收入
                     switch (Modular::whereModularId($dt['modular_id'])->value('settlement_type')) {
@@ -199,9 +196,9 @@ class IndentInfo extends Model
 
 
                     // 创建订单信息
-                    $indent_mum = createIndentNnm($key);
-                    $indentId   = self::insertGetId([
-                        'indent_num'        => $indent_mum,
+                    $$indent_num = createIndentNnm($key);
+                    $indentId    = self::insertGetId([
+                        'indent_num'        => $indent_num,
                         'buyer_id'          => $uid,
                         'seller_id'         => $seller_id,
                         'salesman_id'       => $salesman_id,
@@ -238,7 +235,7 @@ class IndentInfo extends Model
             }
         });
 
-        return $indent_mum;
+        return $indent_num;
     }
 
     // 检查订单归属
