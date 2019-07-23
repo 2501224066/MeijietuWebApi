@@ -94,7 +94,9 @@ class SalesmanController extends BaseController
     }
 
     /**
-     * 软文商品设置价格
+     * return $this->success();
+     * @param SalesmanRequests $request
+     * @return mixed
      */
     public function setSoftArticlePrice(SalesmanRequests $request)
     {
@@ -102,5 +104,7 @@ class SalesmanController extends BaseController
         User::checkIdentity(User::IDENTIDY['业务员']);
         // 设置软文价格操作
         Salesman::setSoftArticlePriceOP($request->goods_num, htmlspecialchars($request->price));
+
+        return $this->success();
     }
 }
