@@ -94,7 +94,7 @@ class SalesmanController extends BaseController
     }
 
     /**
-     * return $this->success();
+     * 软文商品设置价格
      * @param SalesmanRequests $request
      * @return mixed
      */
@@ -106,5 +106,13 @@ class SalesmanController extends BaseController
         Salesman::setSoftArticlePriceOP($request->goods_num, htmlspecialchars($request->price));
 
         return $this->success();
+    }
+
+    /**
+     * 软文套餐创建订单
+     */
+    public function softArticleMealCreateIndnet()
+    {
+
     }
 }
