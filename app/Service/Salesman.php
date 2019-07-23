@@ -123,6 +123,7 @@ class Salesman
     public static function serveGoods($input, $userArr)
     {
         $query = Goods::whereIn('uid', $userArr)
+            ->with('goods_price')
             ->where('status', Goods::STATUS['上架'])
             ->where('delete_status', Goods::DELETE_STATUS['未删除'])
             ->orderBy('created_at', 'DESC');
