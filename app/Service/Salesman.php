@@ -136,7 +136,16 @@ class Salesman
         if ($input->verify_status)
             $query->where('verify_status', $input->verify_status);
 
-        return $query->paginate();
+        $data = $query->paginate();
+
+        foreach ($data->items() as &$item) {
+            $user                = User::whereUid($item->uid)->first();
+            $item->user_nickname = $user->nickname;
+            $item->user_phone    = $user->phone;
+            $item->user_num      = $user->user_num;
+        }
+
+        return $data;
     }
 
     // 服务订单
