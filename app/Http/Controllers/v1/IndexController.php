@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\v1;
 
 
-use App\Models\dt\Information;
+use App\Models\Dt\Information;
 use App\Models\Nb\Goods;
 use App\Models\SystemSetting;
 use App\Models\User;

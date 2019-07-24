@@ -126,14 +126,14 @@ class weiBoGoodsRenew extends Command
                         'goods_id'           => $goodsId,
                         'priceclassify_id'   => 7,
                         'priceclassify_name' => '微任务直发',
-                        'price'              => 0
+                        'price'              => $v['Price_ZhiFa'] ? $v['Price_ZhiFa'] : 0
                     ]);
 
                     GoodsPrice::create([
                         'goods_id'           => $goodsId,
                         'priceclassify_id'   => 8,
                         'priceclassify_name' => '微任务转发',
-                        'price'              => 0
+                        'price'              => $v['Price_ZhuanFa'] ? $v['Price_ZhuanFa'] : 0
                     ]);
 
                     // 头像转到oss

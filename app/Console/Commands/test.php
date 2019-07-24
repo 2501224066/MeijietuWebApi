@@ -37,57 +37,12 @@ class test extends Command
 
     public function handle()
     {
-        $start = 0;
-        while ($start <= 30000) {
-//            echo $start;
-//            $start++;
-//
-//            // 头像
-//            $g = Goods::where('qq_ID', '1001001001')
-//                ->where('goods_id','>','80000')
-//                ->offset(0)
-//                ->limit(1)
-//                ->first();
-//
-//            if(!$g){
-//                echo " null";
-//            }
-//
-//            if ($g->avatar_url) {
-//                try {
-//                    $imgContent = file_get_contents($g->avatar_url);
-//                    $path       = "images/head_portrait/" . str_random(30) . ".jpg";
-//                    echo " ".$g->goods_id." ".$path."\n";
-//                    $re         = Storage::put($path, $imgContent);
-//                    if ($re) {
-//                        $g->qq_ID      = '2501001001';
-//                        $g->avatar_url = $path;
-//                        $g->save();
-//                    }
-//                }catch (\Exception $e){
-//                    echo " ".$g->goods_id." default"."\n";
-//                    $g->qq_ID      = '2501001001';
-//                    $g->avatar_url = 'images/head_portrait/teT9lkA17FB2XOq7kXFwnTozLSlwm8.jpg';
-//                    $g->save();
-//                }
-//            }
+        $start = -1;
+        while ($start < 17000) {
+            echo $start;
+            $start ++;
 
-//            // 二维码
-//            $g = Goods::where('weixin_ID','!=', "")
-//                ->where('goods_id',$start)
-//                ->first();
-//
-//            if(!$g){
-//                echo " null \n";
-//                continue;
-//            }
-//
-//            $g->qrcode_url = 'https://open.weixin.qq.com/qr/code?username='.$g->weixin_ID;
-//            $g->save();
-//            echo " save \n";
-
-
-
+         //TODO...
         }
 
     }

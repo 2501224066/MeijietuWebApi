@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\v1;
 
 
+use App\Models\Dt\MealPool;
 use App\Models\Indent\IndentInfo;
 use App\Models\Nb\Goods;
 use App\Models\User;
@@ -104,6 +105,19 @@ class SalesmanController extends BaseController
         User::checkIdentity(User::IDENTIDY['业务员']);
         // 设置软文价格操作
         Salesman::setSoftArticlePriceOP($request->goods_num, htmlspecialchars($request->price));
+
+        return $this->success();
+    }
+
+    /**
+     * 创建套餐池
+     */
+    public function createMealPool(SalesmanRequests $request)
+    {
+        // json转array
+        $goodIdArr = json_decode($request->goods_id_json, true);
+        // 创建连接池操作
+        MealPool::createMealPoolOP($goodIdArr, htmlspecialchars($request->pool_name));
 
         return $this->success();
     }

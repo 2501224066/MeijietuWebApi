@@ -63,6 +63,13 @@ class Salesman extends Base
             case 'setSoftArticlePrice':
                 $rules['goods_num'] = ['required', new SpecialChar];
                 $rules['price']     = ['required', new SpecialChar, 'numeric'];
+                break;
+
+            // 创建套餐池
+            case 'createMealPool':
+                $rules['goods_id_json']  = ['required', new SpecialChar, 'json'];
+                $rules['pool_name'] = ['required', new SpecialChar];
+                break;
         }
 
         return $rules;
@@ -71,8 +78,9 @@ class Salesman extends Base
     public function messages()
     {
         return [
-            'present'     => '参数不全',
-            'uid.numeric' => '客户ID必须为数字',
+            'present' => '参数不全',
+            'numeric' => '参数格式错误',
+            'json'    => '参数格式错误',
         ];
     }
 }

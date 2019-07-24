@@ -62,6 +62,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereTotalAmount($value)
  * @mixin \Eloquent
+ * @property string|null $bind_indent_num 绑定订单编号 （例如为软文套餐生成的大量订单）
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBindIndentNum($value)
  */
 class IndentInfo extends Model
 {

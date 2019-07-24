@@ -6,8 +6,8 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Requests\UserInfo as UserInfoRequests;
 use App\Models\Captcha;
-use App\Models\RealnameEnterprise;
-use App\Models\RealnamePeople;
+use App\Models\Realname\RealnameEnterprise;
+use App\Models\Realname\RealnamePeople;
 use App\Models\User;
 use App\Service\Salesman;
 use Tymon\JWTAuth\Facades\JWTAuth;

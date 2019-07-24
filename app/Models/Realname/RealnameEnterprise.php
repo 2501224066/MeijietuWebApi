@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Models;
+namespace App\Models\Realname;
 
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +11,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\DB;
 
 /**
- * App\Models\RealnameEnterprise
+ * App\Models\Realname\RealnameEnterprise
  *
  * @property int $uid
  * @property string $enterprise_name 公司名称
@@ -26,25 +26,25 @@ use Illuminate\Support\Facades\DB;
  * @property int $verify_status 审核状态 0=失败 1=成功
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankBandPhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankBranch($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankCard($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankDeposit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankPorv($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBusinessLicense($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereEnterpriseName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereSocialCreditCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereUid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereVerifyStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereBankBandPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereBankBranch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereBankCard($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereBankCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereBankDeposit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereBankPorv($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereBusinessLicense($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereEnterpriseName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereSocialCreditCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereVerifyStatus($value)
  * @mixin \Eloquent
  * @property string $bank_prov 开户省
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnameEnterprise whereBankProv($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnameEnterprise whereBankProv($value)
  */
 class RealnameEnterprise extends Model
 {

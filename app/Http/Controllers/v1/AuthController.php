@@ -6,7 +6,7 @@ use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
 use App\Models\Nb\Collection;
 use App\Models\Nb\Shopcart;
-use App\Models\RealnamePeople;
+use App\Models\Realname\RealnamePeople;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
 use App\Models\Captcha;

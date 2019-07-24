@@ -196,6 +196,7 @@ class Salesman
             && (GoodsPrice::whereGoodsId($goods->goods_id)->value('price') * 1 == 0))
             throw new Exception('软文商品必须优先设置价格');
 
+        $goods->verify_cause  = "";
         $goods->verify_status = Goods::VERIFY_STATUS['已通过'];
         $goods->status        = Goods::STATUS['上架'];
         $re                   = $goods->save();

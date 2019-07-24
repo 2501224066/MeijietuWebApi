@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Models;
+namespace App\Models\Realname;
 
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 /**
- * App\Models\RealnamePeople
+ * App\Models\Realname\RealnamePeople
  *
  * @property int $uid
  * @property string $truename 真实姓名
@@ -28,24 +28,24 @@ use Illuminate\Support\Facades\DB;
  * @property int $verify_status 审核状态 0=失败 1=成功
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankBandPhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankBranch($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankCard($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankDeposit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereBankProv($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereIdentityCardBack($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereIdentityCardFace($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereIdentityCardHold($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereIdentityCardID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereTruename($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereUid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RealnamePeople whereVerifyStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereBankBandPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereBankBranch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereBankCard($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereBankCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereBankDeposit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereBankProv($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereIdentityCardBack($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereIdentityCardFace($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereIdentityCardHold($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereIdentityCardID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereTruename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Realname\RealnamePeople whereVerifyStatus($value)
  * @mixin \Eloquent
  */
 class RealnamePeople extends Model
