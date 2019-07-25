@@ -60,7 +60,7 @@ class MealPool extends Model
                     }
                 }
             } catch (Exception $e) {
-                throw new $e->getMessage();//Exception('操作失败');
+                throw new Exception('操作失败');
             }
         });
 
