@@ -57,7 +57,7 @@ class SoftArticleMealCreateIndentOP implements ShouldQueue
                 $indent_num = createIndentNnm($key);
                 $indentId   = IndentInfo::insertGetId([
                     'indent_num'        => $indent_num,
-                    'buyer_id'          => User::GF,
+                    'buyer_id'          => User::GF_BUYER,
                     'seller_id'         => $goodsData['uid'],
                     'salesman_id'       => null,
                     'total_amount'      => $goodsData['one_goods_price']['price'],

@@ -74,7 +74,11 @@ class User extends Authenticatable implements JWTSubject
 
     public $guarded = [];
 
-    const GF = 1;
+    // 官方卖家
+    const GF_SELLER = 1;
+
+    // 官方买家
+    const GF_BUYER = 2;
 
     const REALNAME_STATUS = [
         '未认证'  => 0,
