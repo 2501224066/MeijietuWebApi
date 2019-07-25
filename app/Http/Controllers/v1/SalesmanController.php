@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\v1;
 
 
+use App\Jobs\SoftArticleMealCreateIndentOP;
 use App\Models\Dt\MealPool;
 use App\Models\Indent\IndentInfo;
 use App\Models\Nb\Goods;
@@ -111,9 +112,13 @@ class SalesmanController extends BaseController
 
     /**
      * 创建套餐池
+     * @param SalesmanRequests $request
+     * @return mixed
      */
     public function createMealPool(SalesmanRequests $request)
     {
+        // 身份必须为业务员
+        User::checkIdentity(User::IDENTIDY['业务员']);
         // json转array
         $goodIdArr = json_decode($request->goods_id_json, true);
         // 创建连接池操作
@@ -125,8 +130,15 @@ class SalesmanController extends BaseController
     /**
      * 软文套餐创建订单
      */
-    public function softArticleMealCreateIndnet()
+    public function softArticleMealCreateIndnet(SalesmanRequests $request)
     {
+        // 身份必须为业务员
+        User::checkIdentity(User::IDENTIDY['业务员']);
+        // json转array
+        $goodIdArr = json_decode($request->goods_id_json, true);
+        // 创建订单
+        SoftArticleMealCreateIndentOP::dispatch($request->indent_num, $goodIdArr)->onQueue('SoftArticleMealCreateIndentOP');
 
+        return $this->success('稍等片刻，订单正在创建中');
     }
 }

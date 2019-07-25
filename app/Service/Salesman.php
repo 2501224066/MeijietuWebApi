@@ -256,6 +256,4 @@ class Salesman
 
         return true;
     }
-
-
 }

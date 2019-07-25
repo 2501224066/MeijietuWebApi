@@ -91,6 +91,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('setSoftArticlePrice', 'SalesmanController@setSoftArticlePrice');
         //  创建套餐池
         $api->post('createMealPool', 'SalesmanController@createMealPool');
+        //  软文套餐创建订单
+        $api->post('softArticleMealCreateIndnet', 'SalesmanController@softArticleMealCreateIndnet');
 
 
         // 文件处理

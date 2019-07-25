@@ -38,11 +38,11 @@ class test extends Command
     public function handle()
     {
         $start = -1;
-        while ($start < 17000) {
+        while ($start < 50000) {
             echo $start;
             $start ++;
 
-         //TODO...
+            // TODO...
         }
 
     }

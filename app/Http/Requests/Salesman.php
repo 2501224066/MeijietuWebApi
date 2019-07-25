@@ -67,8 +67,14 @@ class Salesman extends Base
 
             // 创建套餐池
             case 'createMealPool':
-                $rules['goods_id_json']  = ['required', new SpecialChar, 'json'];
-                $rules['pool_name'] = ['required', new SpecialChar];
+                $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
+                $rules['pool_name']     = ['required', new SpecialChar];
+                break;
+
+            // 软文套餐创建订单
+            case 'softArticleMealCreateIndnet':
+                $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
+                $rules['indent_num']    = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
                 break;
         }
 
@@ -81,6 +87,8 @@ class Salesman extends Base
             'present' => '参数不全',
             'numeric' => '参数格式错误',
             'json'    => '参数格式错误',
+
+            'indent_num.exists' => '订单不存在'
         ];
     }
 }
