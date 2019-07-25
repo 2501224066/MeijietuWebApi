@@ -7,6 +7,7 @@ namespace App\Models\Up;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -136,34 +137,6 @@ class Runwater extends Model
         return true;
     }
 
-    // 回调金额异常
-    public static function backAbnormalOP($data, $uid)
-    {
-        DB::transaction(function () use ($data, $uid) {
-            try {
-                // 添加异常记录
-                self::whereRunwaterNum($data['no_order'])
-                    ->update([
-                        'status'                => self::STATUS['异常'],
-                        'callback_time'         => date('Y-m-d H:i:s'),
-                        'callback_oid_paybill'  => $data['oid_paybill'],
-                        'callback_money_order'  => $data['money_order'],
-                        'callback_settle_order' => $data['settle_date'],
-                        'callback_pay_type'     => $data['pay_type'],
-                        'callback_bank_code'    => $data['bank_code']
-                    ]);
-
-                // 钱包禁用
-                Wallet::whereUid($uid)->updata([
-                    'status' => Wallet::STATUS['禁用'],
-                    'remark' => '充值回调金额异常'
-                ]);
-            } catch (\Exception $e) {
-                throw new Exception('【连连回调】 金额异常操作失败:' . json_encode($data) . "\n");
-            }
-        });
-    }
-
     // 回调成功操作
     public static function backSuccOP($data, $uid)
     {
@@ -189,8 +162,9 @@ class Runwater extends Model
                     'change_lock'     => createWalletChangeLock($uid, $money, $time),
                     'time'            => $time
                 ]);
-            } catch (\Exception $e) {
-                throw new Exception('【连连回调】 修改金额失败:' . json_encode($data) . " 失败原因: " . $e->getMessage() . "\n");
+            } catch (Exception $e) {
+                Log::notice('连连回调修改金额失败,' . '失败原因：' . $e->getMessage());
+                throw new Exception('操作失败');
             }
         });
     }

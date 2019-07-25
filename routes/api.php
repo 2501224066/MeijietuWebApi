@@ -94,7 +94,6 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         //  软文套餐创建订单
         $api->post('softArticleMealCreateIndnet', 'SalesmanController@softArticleMealCreateIndnet');
 
-
         // 文件处理
         //  图片上传
         $api->post('uploadImg', 'FileController@uploadImg');

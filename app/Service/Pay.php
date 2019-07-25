@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Models\Up\Runwater;
 use App\Models\Up\Wallet;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Mockery\Exception;
@@ -168,26 +169,25 @@ class Pay
      */
     public static function backOP($data)
     {
-        Log::info('【连连回调】 回调参数:' . json_encode($data) . "\n");
+        Log::notice('连连回调参数：' . json_encode($data));
+
+        $sign = $data['sign'];
+        unset($data['sign']);
 
         // 检查流水是否存在
         $runWater = Runwater::checkHas($data['no_order']);
-
         // 检测是否为重复回调
         Runwater::checkMoreBack($data['oid_paybill']);
-
         // 验参
-        $sign = $data['sign'];
-        unset($data['sign']);
-        $re = self::RSAverify($data, $sign);
-        if (!$re)
-            throw new Exception('【连连回调】 RSA验签失败:' . json_encode($data) . "\n");
-        
+        if (!self::RSAverify($data, $sign)) {
+            Log::notice('连连回调RSA验签失败');
+            throw new Exception('操作失败');
+        }
+
         // 金额比对
         if ($runWater->money != $data['money_order']) {
-            // 流水异常操作
-            Runwater::backAbnormalOP($data, $runWater->to_uid);
-            throw new Exception('【连连回调】 金额异常:' . json_encode($data) . "\n");
+            Log::notice('连连回调金额异常：' . '[流水金额' . $runWater->money . '] [回调金额' . $data['money_order'] . "]");
+            throw new Exception('操作失败');
         }
 
         // 校验修改校验锁
@@ -195,6 +195,8 @@ class Pay
 
         // 记录流水并修改用户资金
         Runwater::backSuccOp($data, $runWater->to_uid);
+
+        Log::info('用户' . User::whereUid($runWater->to_uid)->value('nickname') . '充值' . $data['money_order'] . '元');
 
         return true;
     }

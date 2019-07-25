@@ -85,7 +85,7 @@ class SoftArticleMealCreateIndentOP implements ShouldQueue
                 // 订单数自增
                 Cache::increment($key);
             } catch (\Exception $e) {
-                Log::error('【软文套餐创建订单】 报错: ' . $e->getMessage());
+                Log::error('软文套餐创建订单失败： ' . $e->getMessage());
                 continue;
             }
         }

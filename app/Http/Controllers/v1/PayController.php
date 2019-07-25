@@ -10,6 +10,7 @@ use App\Models\Up\Wallet;
 use App\Models\User;
 use App\Service\Pay;
 use App\Service\Pub;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PayController extends BaseController

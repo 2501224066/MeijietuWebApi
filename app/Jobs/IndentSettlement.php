@@ -93,7 +93,7 @@ class IndentSettlement implements ShouldQueue
                 $indentData->status = IndentInfo::STATUS['已结算'];
                 $indentData->save();
             } catch (\Exception $e) {
-                Log::error('【订单结算】 单号:' . $this->indentNum . ' 报错:' . $e->getMessage());
+                Log::notice('订单' . $this->indentNum . '结算失败：' . $e->getMessage());
             }
         });
     }
