@@ -65,7 +65,7 @@ class xiaoHongShuGoodsRenew extends Command
                     $filed_id  = $filed_arr[array_rand($filed_arr)];
 
                     $goodsId = Goods::insertGetId([
-                        'goods_num'       => createGoodsNnm('W'),
+                        'goods_num'       => createNum('GOODS'),
                         'title'           => $v['BasicInfo']['XiaoHongShu__NickName'],
                         'room_ID'         => $v['BasicInfo']['XiaoHongShu_Id'],
                         'html_title'      => $v['BasicInfo']['XiaoHongShu__NickName'],

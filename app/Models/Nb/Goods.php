@@ -246,7 +246,7 @@ class Goods extends Model
         $arr['avatar_url']   = $request->avatar_url ? htmlspecialchars($request->avatar_url) : JWTAuth::user()->head_portrait;
         $arr['created_at']   = $time;
         $arr['updated_at']   = $time;
-        $arr['goods_num']    = createGoodsNnm($modualrData->abbreviation);
+        $arr['goods_num']    = createNum('GOODS');
         $arr['uid']          = JWTAuth::user()->uid;
 
         if ($request->has('weixin_ID'))

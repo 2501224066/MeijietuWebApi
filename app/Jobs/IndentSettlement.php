@@ -6,6 +6,7 @@ use App\Models\Indent\IndentInfo;
 use App\Models\Up\Runwater;
 use App\Models\Up\Wallet;
 use App\Service\Pub;
+use App\Service\Transaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,11 +28,14 @@ class IndentSettlement implements ShouldQueue
         $this->indentNum = $indentNum;
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function handle()
     {
         $indentNum = $this->indentNum;
 
-        DB::transaction(function () use ($indentNum){
+        DB::transaction(function () use ($indentNum) {
             try {
                 // 订单数据 *加锁
                 $indentData = IndentInfo::whereIndentNum($indentNum)->lockForUpdate()->first();
@@ -43,58 +47,27 @@ class IndentSettlement implements ShouldQueue
                 Wallet::checkStatus($indentData->seller_id, Wallet::STATUS['启用']);
                 // 校验卖家修改校验锁
                 Wallet::checkChangLock($indentData->seller_id);
-
-                $time = date('Y-m-d H:i:s');
-                // 赔偿保证费
-                $C = $indentData->compensate_fee;
-                // 卖家获得资金 (抵押赔偿保证费 + 订单数据中卖家收入)
-                $sellerM = $C + $indentData->seller_income;
-                // 公共钱包退还
-                $centerM = $sellerM;
-
+                // 订单结算资金计算
+                $countMoney = Transaction::indentSettlementCountMoney($indentData->compensate_fee, $indentData->seller_income);
                 // 公共钱包资金减少
-                $centerMoney = Wallet::whereUid(Wallet::CENTERID)->value('available_money') - $centerM;
-                DB::table('up_wallet')
-                    ->where('uid', Wallet::CENTERID)->update([
-                        'available_money' => $centerMoney,
-                        'time'            => $time,
-                        'change_lock'     => createWalletChangeLock(Wallet::CENTERID, $centerMoney, $time)
-                    ]);
-
+                Wallet::updateWallet(Wallet::CENTERID, $countMoney['centerDown'], Wallet::UP_OR_DOWN['减少']);
                 // 卖家钱包资金增加
-                $sellerMoney = Wallet::whereUid($indentData->seller_id)->value('available_money') + $sellerM;
-                DB::table('up_wallet')
-                    ->where('uid', $indentData->seller_id)
-                    ->update([
-                        'available_money' => $sellerMoney,
-                        'time'            => $time,
-                        'change_lock'     => createWalletChangeLock($indentData->seller_id, $sellerMoney, $time)
-                    ]);
-
+                Wallet::updateWallet($indentData->seller_id, $countMoney['sellerUp'], Wallet::UP_OR_DOWN['增加']);
                 // 生成交易流水
-                $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key
-                $runwaterNum = createRunwaterNum($key);
-                DB::table('up_runwater')
-                    ->insert([
-                        'runwater_num' => $runwaterNum,
-                        'from_uid'     => Wallet::CENTERID,
-                        'to_uid'       => $indentData->seller_id,
-                        'indent_id'    => $indentData->indent_id,
-                        'indent_num'   => $indentData->indent_num,
-                        'type'         => Runwater::TYPE['订单完成结算'],
-                        'direction'    => Runwater::DIRECTION['转入'],
-                        'money'        => $sellerM,
-                        'status'       => Runwater::STATUS['成功'],
-                        'updated_at'   => $time
-                    ]);
-                Cache::increment($key);
-
+                Runwater::createTransRunwater(Wallet::CENTERID,
+                    $indentData->seller_id,
+                    $indentData->indent_id,
+                    $indentData->indent_num,
+                    Runwater::TYPE['订单完成结算'],
+                    Runwater::DIRECTION['转入'],
+                    $countMoney['sellerUp']);
                 // 修改订单信息
-                $indentData->status = IndentInfo::STATUS['已结算'];
-                $indentData->save();
+                IndentInfo::updateIndent($indentData, IndentInfo::STATUS['已结算']);
             } catch (\Exception $e) {
-                Log::notice('订单' . $this->indentNum . '结算失败：' . $e->getMessage());
+                Log::notice('订单' . $indentNum . '结算失败：' . $e->getMessage());
             }
         });
+
+        Log::info('订单' . $indentNum . '完成结算');
     }
 }

@@ -75,7 +75,7 @@ class weiBoGoodsRenew extends Command
                     $filed_id  = $filed_arr[array_rand($filed_arr)];
 
                     $goodsId = Goods::insertGetId([
-                        'goods_num'         => createGoodsNnm('B'),
+                        'goods_num'         => createNum('GOODS'),
                         'title'             => $v['BasicInfo']['WeiBo_Name'],
                         'html_title'        => $v['BasicInfo']['WeiBo_Name'],
                         'title_about'       => $v['BasicInfo']['Description'],

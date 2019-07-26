@@ -98,10 +98,8 @@ class Runwater extends Model
     //生成充值流水
     public static function createRechargeRunwater($money)
     {
-        $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key
-        $runwaterNum = createRunwaterNum($key);
-
-        $re = self::create([
+        $runwaterNum = createNum('RUNWATER');
+        $re          = self::create([
             'runwater_num' => $runwaterNum,
             'to_uid'       => JWTAuth::user()->uid,
             'type'         => self::TYPE['充值'],
@@ -110,9 +108,6 @@ class Runwater extends Model
         ]);
         if (!$re)
             throw new Exception('操作失败');
-
-        // 单数自增
-        Cache::increment($key);
 
         return $runwaterNum;
     }
@@ -191,17 +186,14 @@ class Runwater extends Model
                 ]);
 
                 // 生成交易流水
-                $key         = 'RUNWATERCOUNT' . date('Ymd'); // 单数key
-                $runwaterNum = createRunwaterNum($key);
                 Runwater::create([
-                    'runwater_num' => $runwaterNum,
+                    'runwater_num' => createNum('RUNWATER'),
                     'from_uid'     => $uid,
                     'type'         => Runwater::TYPE['提现'],
                     'direction'    => Runwater::DIRECTION['转出'],
                     'money'        => $money,
                     'status'       => Runwater::STATUS['进行中']
                 ]);
-                Cache::increment($key);
             } catch (\Exception $e) {
                 throw new Exception('操作失败');
             }
@@ -209,5 +201,23 @@ class Runwater extends Model
         });
 
         return true;
+    }
+
+    // 生成交易流水
+    public static function createTransRunwater($from_uid, $to_uid, $indent_id, $indent_num, $type, $direction, $money, $status = self::STATUS['成功'])
+    {
+        $re = Runwater::create([
+            'runwater_num' => createNum('RUNWATER'),
+            'from_uid'     => $from_uid,
+            'to_uid'       => $to_uid,
+            'indent_id'    => $indent_id,
+            'indent_num'   => $indent_num,
+            'type'         => $type,
+            'direction'    => $direction,
+            'money'        => $money,
+            'status'       => $status
+        ]);
+        if (!$re)
+            throw new Exception('生成交易流水失败');
     }
 }

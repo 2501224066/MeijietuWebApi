@@ -16,7 +16,6 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-
 /**
  * App\Models\Indent\IndentInfo
  *
@@ -39,7 +38,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string|null $demand_file 需求文档
  * @property string|null $achievements_file 成果文档
  * @property int $delete_status 删除状态 0=未删除 1=删除
- * @property string|null $bind_indent_num 绑定订单编号 （例如为软文套餐生成的大量订单）
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Indent\IndentItem[] $indent_item
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo newQuery()
@@ -47,7 +45,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereAchievementsFile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBargainingReduce($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBargainingStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBindIndentNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereBuyerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereCancelCause($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Indent\IndentInfo whereCompensateFee($value)
@@ -163,8 +160,7 @@ class IndentInfo extends Model
         $uid         = JWTAuth::user()->uid;
         $salesman_id = JWTAuth::user()->salesman_id;
         $time        = date('Y-m-d H:i:s');
-        $key         = 'INDENTCOUNT' . date('Ymd'); // 订单数key
-        DB::transaction(function () use ($data, $uid, $salesman_id, $time, $key, &$indent_num) {
+        DB::transaction(function () use ($data, $uid, $salesman_id, $time, &$indent_num) {
             try {
                 foreach ($data as $seller_id => $dt) {
                     // 赔偿保证费
@@ -199,9 +195,8 @@ class IndentInfo extends Model
 
 
                     // 创建订单信息
-                    $indent_num = createIndentNnm($key);
-                    $indentId    = self::insertGetId([
-                        'indent_num'        => $indent_num,
+                    $indentId = self::insertGetId([
+                        'indent_num'        => createNum('INDENT'),
                         'buyer_id'          => $uid,
                         'seller_id'         => $seller_id,
                         'salesman_id'       => $salesman_id,
@@ -229,9 +224,6 @@ class IndentInfo extends Model
                             'create_time'        => $time
                         ]);
                     }
-
-                    // 订单数自增
-                    Cache::increment($key);
                 }
             } catch (\Exception $e) {
                 throw new Exception('操作失败');
@@ -277,14 +269,23 @@ class IndentInfo extends Model
         return $query->paginate();
     }
 
-    // 删除订单
-    public static function del($indentData)
+    // 修改订单信息
+    public static function updateIndent($indentData, $status, $pay_amount = null, $cancel_cause = null)
     {
-        $indentData->delete_status = self::DELETE_STATUS['已删除'];
-        $re                        = $indentData->save();
-        if (!$re)
-            throw new Exception('操作失败');
+        if ($status != null)
+            $indentData->status = $status;
 
-        return true;
+        if ($pay_amount != null) {
+            $indentData->pay_amount = $pay_amount;
+            $indentData->pay_time   = date('Y-m-d H:i:s');
+        }
+
+        if ($cancel_cause != null)
+            $indentData->cancel_cause = $cancel_cause;
+
+        if (!$indentData->save()) {
+            throw new Exception('订单修改失败');
+        }
     }
+
 }

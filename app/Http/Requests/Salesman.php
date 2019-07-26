@@ -71,8 +71,8 @@ class Salesman extends Base
                 $rules['pool_name']     = ['required', new SpecialChar];
                 break;
 
-            // 软文套餐创建订单
-            case 'softArticleMealCreateIndnet':
+            // 软文套餐创建需求
+            case 'softArticleMealCreateDemand':
                 $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
                 $rules['indent_num']    = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
                 break;

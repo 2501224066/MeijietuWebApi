@@ -49,6 +49,11 @@ class Wallet extends Model
         '禁用' => 0
     ];
 
+    const UP_OR_DOWN = [
+        '增加' => 1,
+        '减少' => 0
+    ];
+
     // 生成钱包
     public static function createWallet($uid)
     {
@@ -115,5 +120,18 @@ class Wallet extends Model
             throw new Exception('钱包余额不足');
 
         return true;
+    }
+
+    // 修改钱包数据
+    public static function updateWallet($uid, $money, $upOrDown)
+    {
+        $time   = date('Y-m-d h:i:s');
+        $wallet = Wallet::whereUid($uid)->first();
+
+        $wallet->available_money = $upOrDown == self::UP_OR_DOWN['增加'] ? $wallet->available_money + $money : $wallet->available_money - $money;
+        $wallet->time            = $time;
+        $wallet->change_lock     = createWalletChangeLock(Wallet::CENTERID, $money, $time);
+        if (!$wallet->save())
+            throw new Exception('修改钱包数据失败');
     }
 }

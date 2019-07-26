@@ -65,7 +65,7 @@ class weiXinGoodsRenew extends Command
 
                     $filed_id = mt_rand(1, 13);
                     $goodsId  = Goods::insertGetId([
-                        'goods_num'       => createGoodsNnm('W'),
+                        'goods_num'       => createNum('GOODS'),
                         'title'           => $v['BasicInfo']['OfficialAccount_Name'],
                         'html_title'      => $v['BasicInfo']['OfficialAccount_Name'],
                         'title_about'     => $v['BasicInfo']['Description'],

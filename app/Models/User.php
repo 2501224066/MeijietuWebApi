@@ -132,7 +132,7 @@ class User extends Authenticatable implements JWTSubject
     {
         // 添加user
         $user = self::create([
-            'user_num'      => createUserNum(),
+            'user_num'      => createNum('USER'),
             'phone'         => htmlspecialchars($request->phone),
             'email'         => htmlspecialchars($request->email),
             'password'      => Hash::make(htmlspecialchars($request->password)),
