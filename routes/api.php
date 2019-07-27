@@ -96,8 +96,11 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         //  软文套餐创建需求
         $api->post('softArticleMealCreateDemand', 'MealPoolController@softArticleMealCreateDemand');
         //  套餐池列表
-        $api->post('mealPoolList','MealPoolController@mealPoolList');
+        $api->post('mealPoolList', 'MealPoolController@mealPoolList');
 
+        // 需求
+        //  拒绝需求
+        $api->post('refuseDemand', 'DemandController@refuseDemand');
 
         // 文件处理
         //  图片上传

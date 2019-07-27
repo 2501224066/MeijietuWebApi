@@ -49,5 +49,4 @@ class Demand extends Model
         '拒绝' => 3,
         '完成' => 4
     ];
-
 }

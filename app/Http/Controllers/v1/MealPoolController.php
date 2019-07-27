@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\v1;
 
 
-use App\Http\Requests\Salesman as SalesmanRequests;
+use App\Http\Requests\MealPool as MealPoolRequests;
 use App\Jobs\SoftArticleMealCreateDemandOP;
 use App\Models\Dt\MealPool;
 use App\Models\User;
@@ -13,11 +13,11 @@ class MealPoolController extends BaseController
 {
     /**
      * 创建套餐池
-     * @param SalesmanRequests $request
+     * @param MealPoolRequests $request
      * @return mixed
      * @throws \Throwable
      */
-    public function createMealPool(SalesmanRequests $request)
+    public function createMealPool(MealPoolRequests $request)
     {
         // 身份必须为业务员
         User::checkIdentity(User::IDENTIDY['业务员']);
@@ -31,10 +31,10 @@ class MealPoolController extends BaseController
 
     /**
      * 软文套餐创建需求
-     * @param SalesmanRequests $request
+     * @param MealPoolRequests $request
      * @return mixed
      */
-    public function softArticleMealCreateDemand(SalesmanRequests $request)
+    public function softArticleMealCreateDemand(MealPoolRequests $request)
     {
         // 身份必须为业务员
         User::checkIdentity(User::IDENTIDY['业务员']);
