@@ -75,11 +75,10 @@ class TransactionController extends BaseController
                 // 生成交易流水
                 Runwater::createTransRunwater($indentData->buyer_id,
                     Wallet::CENTERID,
-                    $indentData->indent_id,
-                    $indentData->indent_num,
                     Runwater::TYPE['订单付款'],
                     Runwater::DIRECTION['转出'],
-                    $indentData->indent_amount);
+                    $indentData->indent_amount,
+                    $indentData->indent_id);
                 // 修改订单信息
                 IndentInfo::updateIndent($indentData, IndentInfo::STATUS['已付款待接单'], $indentData->indent_amount);
             } catch (Exception $e) {
@@ -144,11 +143,10 @@ class TransactionController extends BaseController
                 // 生成交易流水
                 Runwater::createTransRunwater(Wallet::CENTERID,
                     $indentData->buyer_id,
-                    $indentData->indent_id,
-                    $indentData->indent_num,
                     Runwater::TYPE['取消订单全额退款'],
                     Runwater::DIRECTION['转入'],
-                    $indentData->indent_amount);
+                    $indentData->indent_amount,
+                    $indentData->indent_id);
                 // 修改订单信息
                 $status = (JWTAuth::user()->uid == $indentData->buyer_id) ? IndentInfo::STATUS['待接单买家取消订单'] : IndentInfo::STATUS['卖家拒单'];
                 IndentInfo::updateIndent($indentData, $status, null, htmlspecialchars($request->cancel_cause));
@@ -196,11 +194,10 @@ class TransactionController extends BaseController
                     // 生成交易流水
                     Runwater::createTransRunwater($indentData->buyer_id,
                         Wallet::CENTERID,
-                        $indentData->indent_id,
-                        $indentData->indent_num,
                         Runwater::TYPE['支付赔偿保证费'],
                         Runwater::DIRECTION['转出'],
-                        $indentData->compensate_fee);
+                        $indentData->compensate_fee,
+                        $indentData->indent_id);
                 }
                 // 修改订单信息
                 IndentInfo::updateIndent($indentData, IndentInfo::STATUS['交易中']);
@@ -250,21 +247,19 @@ class TransactionController extends BaseController
                 // 生成交易流水
                 Runwater::createTransRunwater(Wallet::CENTERID,
                     $indentData->buyer_id,
-                    $indentData->indent_id,
-                    $indentData->indent_num,
                     Runwater::TYPE['取消订单非全额退款'],
                     Runwater::DIRECTION['转入'],
-                    $countMoney['buyerUp']);
+                    $countMoney['buyerUp'],
+                    $indentData->indent_id);
                 // 卖家钱包资金增加
                 Wallet::updateWallet($indentData->seller_id, $countMoney['sellerUp'], Wallet::UP_OR_DOWN['增加']);
                 // 生成交易流水
                 Runwater::createTransRunwater(Wallet::CENTERID,
                     $indentData->seller_id,
-                    $indentData->indent_id,
-                    $indentData->indent_num,
                     Runwater::TYPE['对方取消订单退款'],
                     Runwater::DIRECTION['转入'],
-                    $countMoney['sellerUp']);
+                    $countMoney['sellerUp'],
+                    $indentData->indent_id);
                 // 修改订单信息
                 IndentInfo::updateIndent($indentData,
                     IndentInfo::STATUS['交易中买家取消订单'],
@@ -311,11 +306,10 @@ class TransactionController extends BaseController
                 // 生成交易流水
                 Runwater::createTransRunwater(Wallet::CENTERID,
                     $indentData->buyer_id,
-                    $indentData->indent_id,
-                    $indentData->indent_num,
                     Runwater::TYPE['对方取消订单退款'],
                     Runwater::DIRECTION['转入'],
-                    $countMoney['buyerUp']);
+                    $countMoney['buyerUp'],
+                    $indentData->indent_id);
                 // 修改订单信息
                 IndentInfo::updateIndent($indentData,
                     IndentInfo::STATUS['交易中卖家取消订单'],

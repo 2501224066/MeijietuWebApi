@@ -4,11 +4,14 @@
 namespace App\Models\Up;
 
 
+use App\Models\Indent\IndentInfo;
+use DemeterChain\C;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
+use phpDocumentor\Reflection\Types\Object_;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
@@ -86,17 +89,12 @@ class Runwater extends Model
         '异常'  => 2
     ];
 
-    // 当天订单数
-    public static function todayRunwaterCount($key)
-    {
-        if (!Cache::has($key))
-            Cache::put($key, 1, 60 * 24);
-
-        return sprintf("%04d", Cache::get($key));
-    }
-
-    //生成充值流水
-    public static function createRechargeRunwater($money)
+    /**
+     * 生成充值流水
+     * @param float $money 充值金额
+     * @return string
+     */
+    public static function createRechargeRunwater($money): string
     {
         $runwaterNum = createNum('RUNWATER');
         $re          = self::create([
@@ -112,8 +110,12 @@ class Runwater extends Model
         return $runwaterNum;
     }
 
-    // 检测流水是否存在
-    public static function checkHas($runwater_num)
+    /**
+     * 检测流水是否存在
+     * @param string $runwater_num 流水编号
+     * @return Runwater|\Illuminate\Database\Eloquent\Builder|Model|object|null
+     */
+    public static function checkHas($runwater_num): Runwater
     {
         $re = self::whereRunwaterNum($runwater_num)->first();
         if (!$re)
@@ -122,17 +124,23 @@ class Runwater extends Model
         return $re;
     }
 
-    // 检测是否为重复回调
+    /**
+     * 检测是否为重复回调
+     * @param string $callback_oid_paybill 回调单号
+     */
     public static function checkMoreBack($callback_oid_paybill)
     {
         $count = self::whereCallbackOidPaybill($callback_oid_paybill)->count();
         if ($count)
             throw new Exception('重复回调 连连支付单号:' . $callback_oid_paybill);
-
-        return true;
     }
 
-    // 回调成功操作
+    /**
+     * 回调成功操作
+     * @param array $data 回调数据
+     * @param string $uid 用户id
+     * @throws \Throwable
+     */
     public static function backSuccOP($data, $uid)
     {
         DB::transaction(function () use ($data, $uid) {
@@ -158,17 +166,21 @@ class Runwater extends Model
                     'time'            => $time
                 ]);
             } catch (Exception $e) {
-                Log::notice('连连回调修改金额失败,' . '失败原因：' . $e->getMessage());
+                Log::notice('连连回调修改金额失败 ' . $e->getMessage());
                 throw new Exception('操作失败');
             }
         });
     }
 
-    // 提现操作
+    /**
+     * 提现操作
+     * @param string $uid 用户id
+     * @param float $money 提现金额
+     * @throws \Throwable
+     */
     public static function extractOP($uid, $money)
     {
-        $time = date('Y-m-d H:i:s');
-        DB::transaction(function () use ($uid, $money, $time) {
+        DB::transaction(function () use ($uid, $money) {
             try {
                 // 校验钱包状态
                 Wallet::checkStatus($uid, Wallet::STATUS['启用']);
@@ -176,46 +188,45 @@ class Runwater extends Model
                 Wallet::checkChangLock($uid);
                 // 钱包余额是够足够
                 Wallet::hasEnoughMoney($money);
-
-                // 用户资金扣除
-                $userMoney = Wallet::whereUid($uid)->value('available_money') - $money;
-                Wallet::whereUid($uid)->update([
-                    'available_money' => $userMoney,
-                    'time'            => $time,
-                    'change_lock'     => createWalletChangeLock($uid, $userMoney, $time)
-                ]);
-
+                // 用户资金减少
+                Wallet::updateWallet($uid, $money, Wallet::UP_OR_DOWN['减少']);
                 // 生成交易流水
-                Runwater::create([
-                    'runwater_num' => createNum('RUNWATER'),
-                    'from_uid'     => $uid,
-                    'type'         => Runwater::TYPE['提现'],
-                    'direction'    => Runwater::DIRECTION['转出'],
-                    'money'        => $money,
-                    'status'       => Runwater::STATUS['进行中']
-                ]);
+                Runwater::createTransRunwater($uid,
+                    null,
+                    Runwater::TYPE['提现'],
+                    Runwater::DIRECTION['转出'],
+                    $money,
+                    null,
+                    Runwater::STATUS['进行中']
+                );
             } catch (\Exception $e) {
                 throw new Exception('操作失败');
             }
-
         });
-
-        return true;
     }
 
-    // 生成交易流水
-    public static function createTransRunwater($from_uid, $to_uid, $indent_id, $indent_num, $type, $direction, $money, $status = self::STATUS['成功'])
+    /**
+     * 生成交易流水
+     * @param string $from_uid 来源uid
+     * @param string $to_uid 去往uid
+     * @param int $type 类型
+     * @param int $direction 方向
+     * @param float $money 流水金额
+     * @param string $indent_id 订单id
+     * @param int $status 流水状态
+     */
+    public static function createTransRunwater($from_uid, $to_uid, $type, $direction, $money, $indent_id = null, $status = self::STATUS['成功'])
     {
         $re = Runwater::create([
             'runwater_num' => createNum('RUNWATER'),
             'from_uid'     => $from_uid,
             'to_uid'       => $to_uid,
-            'indent_id'    => $indent_id,
-            'indent_num'   => $indent_num,
             'type'         => $type,
             'direction'    => $direction,
             'money'        => $money,
-            'status'       => $status
+            'status'       => $status,
+            'indent_id'    => $indent_id,
+            'indent_num'   => $indent_id ? IndentInfo::whereIndentId($indent_id)->value('indent_num') : null
         ]);
         if (!$re)
             throw new Exception('生成交易流水失败');

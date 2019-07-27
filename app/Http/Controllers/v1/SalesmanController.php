@@ -3,13 +3,8 @@
 
 namespace App\Http\Controllers\v1;
 
-
-use App\Jobs\SoftArticleMealCreateDemandOP;
-use App\Models\Dt\MealPool;
-use App\Models\Indent\IndentInfo;
 use App\Models\Nb\Goods;
 use App\Models\User;
-use App\Service\Pub;
 use App\Service\Salesman;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\Salesman as SalesmanRequests;
@@ -108,39 +103,5 @@ class SalesmanController extends BaseController
         Salesman::setSoftArticlePriceOP($request->goods_num, htmlspecialchars($request->price));
 
         return $this->success();
-    }
-
-    /**
-     * 创建套餐池
-     * @param SalesmanRequests $request
-     * @return mixed
-     */
-    public function createMealPool(SalesmanRequests $request)
-    {
-        // 身份必须为业务员
-        User::checkIdentity(User::IDENTIDY['业务员']);
-        // json转array
-        $goodIdArr = json_decode($request->goods_id_json, true);
-        // 创建连接池操作
-        MealPool::createMealPoolOP($goodIdArr, htmlspecialchars($request->pool_name));
-
-        return $this->success();
-    }
-
-    /**
-     * 软文套餐创建需求
-     * @param SalesmanRequests $request
-     * @return mixed
-     */
-    public function softArticleMealCreateDemand(SalesmanRequests $request)
-    {
-        // 身份必须为业务员
-        User::checkIdentity(User::IDENTIDY['业务员']);
-        // json转array
-        $goodIdArr = json_decode($request->goods_id_json, true);
-        // 创建订单
-        SoftArticleMealCreateDemandOP::dispatch($request->indent_num, $goodIdArr)->onQueue('SoftArticleMealCreateDemandOP');
-
-        return $this->success('稍等片刻，需求正在创建中');
     }
 }

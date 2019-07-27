@@ -2,8 +2,10 @@
 
 /**
  * 生成编号
+ * @param string $numType 具有标识属性的，组成key的元素
+ * @return string
  */
-function createNum($numType)
+function createNum($numType): string
 {
     // 订单数key
     $key = $numType . date('Ymd');

@@ -29,6 +29,7 @@ class IndentSettlement implements ShouldQueue
     }
 
     /**
+     * 订单结算操作
      * @throws \Throwable
      */
     public function handle()
@@ -56,15 +57,14 @@ class IndentSettlement implements ShouldQueue
                 // 生成交易流水
                 Runwater::createTransRunwater(Wallet::CENTERID,
                     $indentData->seller_id,
-                    $indentData->indent_id,
-                    $indentData->indent_num,
                     Runwater::TYPE['订单完成结算'],
                     Runwater::DIRECTION['转入'],
-                    $countMoney['sellerUp']);
+                    $countMoney['sellerUp'],
+                    $indentData->indent_id);
                 // 修改订单信息
                 IndentInfo::updateIndent($indentData, IndentInfo::STATUS['已结算']);
             } catch (\Exception $e) {
-                Log::notice('订单' . $indentNum . '结算失败：' . $e->getMessage());
+                Log::notice('订单' . $indentNum . '结算失败 ' . $e->getMessage());
             }
         });
 

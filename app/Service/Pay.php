@@ -87,7 +87,7 @@ class Pay
      * @param float $money 充值金额
      * @return array
      */
-    public static function lianlianRequestData($runwaterNum, $money)
+    public static function lianlianRequestData($runwaterNum, $money): array
     {
         $data = [
             'version'      => '1.1', // 版本号
@@ -119,11 +119,10 @@ class Pay
 
     /**
      * RSA签名
-     * $data签名数据(需要先排序，然后拼接)
-     * 签名用商户私钥，必须是没有经过pkcs8转换的私钥
-     * 最后的签名，需要用base64编码
-     * @param $data
-     * @param $priKey
+     * @param array $data 签名数据(需要先排序，然后拼接)
+     *  签名用商户私钥，必须是没有经过pkcs8转换的私钥
+     *  最后的签名，需要用base64编码
+     * @param string $priKey 私钥
      * @return string Sign签名
      */
     protected static function RSAsign($data, $priKey)
@@ -144,12 +143,12 @@ class Pay
 
     /**
      * RSA验签
-     * $data待签名数据(需要先排序，然后拼接)
-     * $sign需要验签的签名,需要base64_decode解码
-     * 验签用连连支付公钥
-     * return 验签是否通过 bool值
+     * @param array $data 待签名数据(需要先排序，然后拼接)
+     * @param string $sign 需要验签的签名,需要base64_decode解码
+     *  验签用连连支付公钥
+     * @return bool 验签是否通过
      */
-    public static function RSAverify($data, $sign)
+    public static function RSAverify($data, $sign): bool
     {
         // 排序
         ksort($data);
@@ -163,13 +162,14 @@ class Pay
         return $result;
     }
 
-
     /**
-     * 回调操作
+     * 连连回调操作
+     * @param array $data 回调数据
+     * @throws \Throwable
      */
     public static function backOP($data)
     {
-        Log::notice('连连回调参数：' . json_encode($data));
+        Log::notice('连连回调参数', $data);
 
         $sign = $data['sign'];
         unset($data['sign']);
@@ -186,7 +186,7 @@ class Pay
 
         // 金额比对
         if ($runWater->money != $data['money_order']) {
-            Log::notice('连连回调金额异常：' . '[流水金额' . $runWater->money . '] [回调金额' . $data['money_order'] . "]");
+            Log::notice('连连回调金额异常', ['流水金额' => $runWater->money, '回调金额' => $data['money_order']]);
             throw new Exception('操作失败');
         }
 
@@ -197,7 +197,5 @@ class Pay
         Runwater::backSuccOp($data, $runWater->to_uid);
 
         Log::info('用户' . User::whereUid($runWater->to_uid)->value('nickname') . '充值' . $data['money_order'] . '元');
-
-        return true;
     }
 }

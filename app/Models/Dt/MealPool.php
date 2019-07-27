@@ -37,7 +37,12 @@ class MealPool extends Model
 
     public $timestamps = false;
 
-    // 创建套餐池操作
+    /**
+     * 创建套餐池操作
+     * @param array $goodsIdArr 商品id数组
+     * @param string $poolName 池名称
+     * @throws \Throwable
+     */
     public static function createMealPoolOP($goodsIdArr, $poolName)
     {
         DB::transaction(function () use ($goodsIdArr, $poolName) {
@@ -63,7 +68,5 @@ class MealPool extends Model
                 throw new Exception('操作失败');
             }
         });
-
-        return true;
     }
 }

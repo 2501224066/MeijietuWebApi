@@ -43,7 +43,10 @@ class Information extends Model
         return self::offset(0)->limit($co)->orderBy('time', 'DESC')->get();
     }
 
-    // 增加阅读量
+    /**
+     * 增加阅读量
+     * @param int $informationId 资讯id
+     */
     public static function addReadNum($informationId)
     {
         self::whereInformationId($informationId)->increment('read_num');

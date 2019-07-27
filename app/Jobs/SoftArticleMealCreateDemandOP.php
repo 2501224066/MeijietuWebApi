@@ -57,7 +57,7 @@ class SoftArticleMealCreateDemandOP implements ShouldQueue
                     'updated_at'      => $time,
                 ]);
             } catch (\Exception $e) {
-                Log::error('软文套餐创建需求失败，' . $e->getMessage());
+                Log::error('软文套餐创建需求失败 ' . $e->getMessage());
                 continue;
             }
         }

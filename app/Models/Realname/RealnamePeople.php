@@ -59,18 +59,26 @@ class RealnamePeople extends Model
         1 => '审核成功'
     ];
 
-    // 银行卡四要素查询
+    /**
+     * 银行卡四要素查询
+     * @param string $acct_name 真实姓名
+     * @param string $acct_pan 银行卡号
+     * @param string $cert_id 身份证号码
+     * @param string $phone_num 绑定手机号
+     */
     public static function checkBankInfo($acct_name, $acct_pan, $cert_id, $phone_num)
     {
         // 请求银行卡信息外部接口
         $data = BankInfo_API($acct_name, $acct_pan, $cert_id, $phone_num);
-        if (!$data->showapi_res_body->msg == "认证通过")
+        if (!$data['showapi_res_body']['msg'] == "认证通过")
             throw new Exception("【真实姓名】，【银行卡号】，【身份证号码】，【绑定手机号】中有错误");
-
-        return true;
     }
 
-    // 证件号验证
+    /**
+     * 证件号验证
+     * @param string $identity_card_face 身份证正面照存储路径
+     * @param string $truename 真实姓名
+     */
     public static function IDcheck($identity_card_face, $truename)
     {
         if (!Storage::exists($identity_card_face))
@@ -82,16 +90,18 @@ class RealnamePeople extends Model
 
         // 请求证件识别外部接口
         $data = IDcard_API($img_base64);
-        if (!($data->message->value == "识别完成"))
+        if (!($data['message']['value'] == "识别完成"))
             throw new Exception("身份证识别失败");
 
-        if (!($data->cardsinfo[0]->items[1]->content == $truename))
+        if (!($data['cardsinfo'][0]['items'][1]->content == $truename))
             throw new Exception("身份证与个人信息不匹配");
-
-        return true;
     }
 
-    // 添加个人认证信息
+    /**
+     * 添加个人认证信息
+     * @param mixed $request 表单信息
+     * @throws \Throwable
+     */
     public static function add($request)
     {
         if (!Storage::exists($request->identity_card_face))
@@ -132,12 +142,13 @@ class RealnamePeople extends Model
                 throw new Exception('保存失败');
             }
         });
-
-        return true;
     }
 
-    // 获取个人认证信息
-    public static function info()
+    /**
+     * 获取个人认证信息
+     * @return array
+     */
+    public static function info(): array
     {
         $uid  = JWTAuth::user()->uid;
         $data = self::whereUid($uid)->first();

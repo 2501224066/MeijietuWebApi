@@ -4,6 +4,7 @@
 namespace App\Models\Realname;
 
 
+use DemeterChain\C;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Exception;
 use Illuminate\Support\Facades\Storage;
@@ -52,7 +53,12 @@ class RealnameEnterprise extends Model
 
     public $guarded = [];
 
-    // 检查营业执照信息
+    /**
+     * 检查营业执照信息
+     * @param string $business_license 营业执照存储地址
+     * @param string $enterprise_name 企业名称
+     * @param string $social_credit_code 统一社会信用代码
+     */
     public static function checkBusinessLicense($business_license, $enterprise_name, $social_credit_code)
     {
         if (!Storage::exists($business_license))
@@ -64,15 +70,17 @@ class RealnameEnterprise extends Model
 
         // 请求营业执照信息外部接口
         $data = businessLicense_API($img_base64);
-        if ($data->name != $enterprise_name)
+        if ($data['name'] != $enterprise_name)
             throw new Exception("企业名称与营业执照上信息不符");
-        if ($data->credit != $social_credit_code)
+        if ($data['credit'] != $social_credit_code)
             throw new Exception("统一社会信用代码与营业执照上信息不符");
-
-        return true;
     }
 
-    // 添加企业认证信息
+    /**
+     * 添加企业认证信息
+     * @param  mixed $request 表单信息
+     * @throws \Throwable
+     */
     public static function add($request)
     {
         if (!Storage::exists($request->business_license))
@@ -112,12 +120,13 @@ class RealnameEnterprise extends Model
                 throw new Exception('保存失败');
             }
         });
-
-        return true;
     }
 
-    // 获取企业认证信息
-    public static function info()
+    /**
+     * 获取企业认证信息
+     * @return array
+     */
+    public static function info(): array
     {
         $uid  = JWTAuth::user()->uid;
         $data = self::whereUid($uid)->first();

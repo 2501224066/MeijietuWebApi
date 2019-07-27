@@ -89,10 +89,15 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('indentBargaining', 'SalesmanController@indentBargaining');
         //  软文商品设置价格
         $api->post('setSoftArticlePrice', 'SalesmanController@setSoftArticlePrice');
+
+        // 套餐池
         //  创建套餐池
-        $api->post('createMealPool', 'SalesmanController@createMealPool');
+        $api->post('createMealPool', 'MealPoolController@createMealPool');
         //  软文套餐创建需求
-        $api->post('softArticleMealCreateDemand', 'SalesmanController@softArticleMealCreateDemand');
+        $api->post('softArticleMealCreateDemand', 'MealPoolController@softArticleMealCreateDemand');
+        //  套餐池列表
+        $api->post('mealPoolList','MealPoolController@mealPoolList');
+
 
         // 文件处理
         //  图片上传

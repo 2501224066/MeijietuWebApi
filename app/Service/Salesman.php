@@ -10,6 +10,7 @@ use App\Models\Nb\GoodsPrice;
 use App\Models\Tb\Modular;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -202,7 +203,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        return true;
+        Log::info('商品'.$goodsNum.'审核通过');
     }
 
     // 未通过审核
@@ -218,7 +219,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        return true;
+        Log::info('商品'.$goodsNum.'审核不通过');
     }
 
     // 议价操作
@@ -235,7 +236,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        return true;
+        Log::info('订单'.$indentNum.'议价完成');
     }
 
     // 设置软文价格操作
@@ -254,6 +255,6 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        return true;
+        Log::info('商品'.$goodsNum.'设置软文价格完成');
     }
 }
