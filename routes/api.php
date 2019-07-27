@@ -89,6 +89,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('indentBargaining', 'SalesmanController@indentBargaining');
         //  软文商品设置价格
         $api->post('setSoftArticlePrice', 'SalesmanController@setSoftArticlePrice');
+        //  软文商品设置价格
+        $api->post('invalidDemand', 'SalesmanController@invalidDemand');
 
         // 套餐池
         //  创建套餐池

@@ -64,6 +64,11 @@ class Salesman extends Base
                 $rules['goods_num'] = ['required', new SpecialChar];
                 $rules['price']     = ['required', new SpecialChar, 'numeric'];
                 break;
+
+            // 需求失效
+            case 'invalidDemand':
+                $rules['demand_id'] = ['required', new SpecialChar, 'exists:dt_demand,demand_id'];
+                break;
         }
 
         return $rules;
@@ -72,9 +77,13 @@ class Salesman extends Base
     public function messages()
     {
         return [
-            'present' => '参数不全',
-            'numeric' => '参数格式错误',
-            'json'    => '参数格式错误',
+            'required' => '参数不全',
+            'present'  => '参数不全',
+            'numeric'  => '参数格式错误',
+            'json'     => '参数格式错误',
+
+            'demand_id.required' => '需求不得为空',
+            'demand_id.exists' => '需求不存在'
         ];
     }
 }

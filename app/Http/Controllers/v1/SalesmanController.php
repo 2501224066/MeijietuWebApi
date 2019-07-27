@@ -3,9 +3,12 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Models\Dt\Demand;
 use App\Models\Nb\Goods;
 use App\Models\User;
+use App\Service\Pub;
 use App\Service\Salesman;
+use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\Salesman as SalesmanRequests;
 
@@ -103,5 +106,24 @@ class SalesmanController extends BaseController
         Salesman::setSoftArticlePriceOP($request->goods_num, htmlspecialchars($request->price));
 
         return $this->success();
+    }
+
+    /**
+     * 需求失效
+     * @param SalesmanRequests $request
+     */
+    public function invalidDemand(SalesmanRequests $request)
+    {
+        // 身份必须为业务员
+        User::checkIdentity(User::IDENTIDY['业务员']);
+        // 需求数据
+        $demand = Demand::whereDemandId($request->demand_id)->first();
+        // 状态需为等待
+        Pub::checkParm($demand->status, Demand::STATUS['等待'], '需求状态错误');
+        // 修改
+        $demand->status = Demand::STATUS['失效'];
+        if (!$demand->save()) throw new Exception('操作失败');
+
+        $this->success();
     }
 }
