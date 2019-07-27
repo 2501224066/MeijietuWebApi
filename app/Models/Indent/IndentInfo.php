@@ -9,8 +9,7 @@ use App\Models\SystemSetting;
 use App\Models\Tb\Modular;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -102,135 +101,171 @@ class IndentInfo extends Model
         Modular::TAG['自身业务']
     ];
 
-    public function indent_item(): HasMany
+    public function indent_item(): HasOne
     {
-        return $this->hasMany(IndentItem::class, 'indent_id', 'indent_id');
+        return $this->hasOne(IndentItem::class, 'indent_id', 'indent_id');
     }
 
-    // 数据整理
-    public static function dataSorting($info)
+    /**
+     * 数据整理
+     *  1.一个商品一个订单
+     * @param array $input 接受数据
+     * @return array
+     * @throws \Throwable
+     */
+    public static function dataSorting($input): array
     {
-        $data = [];
+        $indentNumArr = [];
 
-        foreach ($info as &$it) {
+        foreach ($input as &$in) {
             // 验证数据完整性
-            if (!($it['goods_id'] && $it['goods_price_id'] && $it['goods_count']))
+            if (!($in['goods_id'] && $in['goods_price_id'] && $in['goods_count']))
                 throw new Exception('数据错误');
 
             // 获取商品信息
-            $goodsData = Goods::with(['one_goods_price' => function ($query) use ($it) {
-                $query->where('goods_price_id', $it['goods_price_id']);
+            $goodsData = Goods::with(['one_goods_price' => function ($query) use ($in) {
+                $query->where('goods_price_id', $in['goods_price_id']);
             }])
-                ->where('goods_id', $it['goods_id'])
+                ->where('goods_id', $in['goods_id'])
                 ->first()
                 ->toArray();
 
             // 检查商品信息
             Goods::checkGoodsData($goodsData);
 
-            // 根据不同卖家生成订单
-            $seller_id                = $goodsData['uid'];
-            $goodsData['goods_count'] = $it['goods_count'];
-
-            // 订单总价
-            if (isset($data[$seller_id]['amount'])) {
-                $data[$seller_id]['amount'] += $goodsData['one_goods_price']['price'] * $goodsData['goods_count'];
-            } else {
-                $data[$seller_id]['amount'] = $goodsData['one_goods_price']['price'] * $goodsData['goods_count'];
-            }
-
-            // 底价总价
-            if (isset($data[$seller_id]['floor_amount'])) {
-                $data[$seller_id]['floor_amount'] += $goodsData['one_goods_price']['floor_price'] * $goodsData['goods_count'];
-            } else {
-                $data[$seller_id]['floor_amount'] = $goodsData['one_goods_price']['floor_price'] * $goodsData['goods_count'];
-            }
-
-            $data[$seller_id]['modular_id']    = $goodsData['modular_id'];
-            $data[$seller_id]['indentGoods'][] = $goodsData;
+            // 创建订单
+            $indentNumArr[] = self::createIndent($goodsData, $in['goods_count']);
         }
 
-        return $data;
+        return $indentNumArr;
     }
 
-    // 添加订单
-    public static function add($data)
+    /**
+     * 添加订单
+     * @param array $goodsData 商品数据
+     * @param $goodsCount
+     * @return string
+     * @throws \Throwable
+     */
+    public static function createIndent($goodsData, $goodsCount): string
     {
-        $indent_num  = "";
-        $uid         = JWTAuth::user()->uid;
-        $salesman_id = JWTAuth::user()->salesman_id;
-        $time        = date('Y-m-d H:i:s');
-        DB::transaction(function () use ($data, $uid, $salesman_id, $time, &$indent_num) {
+        $indent_num = "";
+        DB::transaction(function () use ($goodsData, $goodsCount, &$indent_num) {
             try {
-                foreach ($data as $seller_id => $dt) {
-                    // 赔偿保证费
-                    $compensate_fee = floor($dt['amount'] * SystemSetting::whereSettingName('compensate_fee_ratio')->value('value'));
+                // 订单价格
+                $indentPrice = $goodsData['one_goods_price']['price'];
+                // 订单底价
+                $indentFloorPrice = $goodsData['one_goods_price']['floor_price'];
+                // 模块id
+                $modularId = $goodsData['modular_id'];
+                // 赔偿保证费
+                $compensateFee = self::countCompensateFee($indentPrice, $modularId);
+                // 卖家收入与议价状态
+                $sellerIncomeAndBargainingStatus = self::sellerIncomeAndBargainingStatusForType($indentPrice, $modularId, $indentFloorPrice);
+                // 买家
+                $buyer_id = JWTAuth::user()->uid;
+                // 卖家
+                $seller_id = $goodsData['uid'];
+                // 客服
+                $salesman_id = JWTAuth::user()->salesman_id;
+                // 时间
+                $time = date('Y-m-d H:i:s');
+                // 订单号
+                $indent_num = createNum('INDENT');
 
-                    // 议价状态
-                    $bargaining_status = IndentInfo::BARGAINING_STATUS['未完成'];
+                // 创建订单信息
+                $indentId = self::insertGetId([
+                    'indent_num'        => $indent_num,
+                    'buyer_id'          => $buyer_id,
+                    'seller_id'         => $seller_id,
+                    'salesman_id'       => $salesman_id,
+                    'total_amount'      => $indentPrice,
+                    'indent_amount'     => $indentPrice,
+                    'compensate_fee'    => $compensateFee,
+                    'seller_income'     => $sellerIncomeAndBargainingStatus['sellerIncome'],
+                    'bargaining_status' => $sellerIncomeAndBargainingStatus['bargainingStatus'],
+                    'create_time'       => $time
+                ]);
 
-                    // 部分模块无需赔偿保证费
-                    $tag = Modular::whereModularId($dt['modular_id'])->value('tag');
-                    if (in_array($tag, self::NO_COMPENSATE_FEE_MODULAR_TAG)) $compensate_fee = 0;
-
-                    // 不同模式下卖家收入
-                    switch (Modular::whereModularId($dt['modular_id'])->value('settlement_type')) {
-                        // 标准模式下卖家收入默认为 订单价格*（1-服务费率） 仍需议价
-                        case Modular::SETTLEMENT_TYPE['标准模式']:
-                            $seller_income = floor($dt['amount'] * (1 - SystemSetting::whereSettingName('service_fee_ratio')->value('value')));
-                            break;
-
-                        // 软文模式下卖家收入为商品底价 无需议价
-                        case Modular::SETTLEMENT_TYPE['软文模式']:
-                            $seller_income     = $dt['floor_amount'];
-                            $bargaining_status = IndentInfo::BARGAINING_STATUS['已完成'];
-                            break;
-
-                        // 自身模式下卖家(平台自己)收入订单价格 无需议价
-                        case Modular::SETTLEMENT_TYPE['自身模式']:
-                            $seller_income     = $dt['amount'];
-                            $bargaining_status = IndentInfo::BARGAINING_STATUS['已完成'];
-                            break;
-                    }
-
-
-                    // 创建订单信息
-                    $indentId = self::insertGetId([
-                        'indent_num'        => createNum('INDENT'),
-                        'buyer_id'          => $uid,
-                        'seller_id'         => $seller_id,
-                        'salesman_id'       => $salesman_id,
-                        'total_amount'      => $dt['amount'],
-                        'indent_amount'     => $dt['amount'],
-                        'compensate_fee'    => $compensate_fee,
-                        'seller_income'     => $seller_income,
-                        'bargaining_status' => $bargaining_status,
-                        'create_time'       => $time
-                    ]);
-
-                    // 创建订单子项
-                    foreach ($dt['indentGoods'] as $it) {
-                        IndentItem::create([
-                            'indent_id'          => $indentId,
-                            'goods_id'           => $it['goods_id'],
-                            'goods_num'          => $it['goods_num'],
-                            'goods_title'        => $it['title'],
-                            'modular_name'       => $it['modular_name'],
-                            'theme_name'         => $it['theme_name'],
-                            'priceclassify_name' => $it['one_goods_price']['priceclassify_name'],
-                            'goods_price'        => $it['one_goods_price']['price'],
-                            'goods_count'        => $it['goods_count'],
-                            'goods_amount'       => $it['one_goods_price']['price'] * $it['goods_count'],
-                            'create_time'        => $time
-                        ]);
-                    }
-                }
+                // 创建订单子项
+                IndentItem::create([
+                    'indent_id'          => $indentId,
+                    'goods_id'           => $goodsData['goods_id'],
+                    'goods_num'          => $goodsData['goods_num'],
+                    'goods_title'        => $goodsData['title'],
+                    'modular_name'       => $goodsData['modular_name'],
+                    'theme_name'         => $goodsData['theme_name'],
+                    'priceclassify_name' => $goodsData['one_goods_price']['priceclassify_name'],
+                    'goods_price'        => $goodsData['one_goods_price']['price'],
+                    'goods_count'        => $goodsCount,
+                    'goods_amount'       => $goodsData['one_goods_price']['price'] * $goodsCount,
+                    'create_time'        => $time
+                ]);
             } catch (\Exception $e) {
-                throw new Exception('操作失败');
+                throw new Exception('操作失败' . $e->getMessage());
             }
         });
 
         return $indent_num;
+    }
+
+    /**
+     * 计算赔偿保证费
+     *  1.部分模块无需赔偿保证费
+     * @param float $indentPrice 订单价格
+     * @param int $modularId 模块id
+     * @return float
+     */
+    public static function countCompensateFee($indentPrice, $modularId)
+    {
+        // 赔偿保证费率
+        $compensateFeeRatio = SystemSetting::whereSettingName('compensate_fee_ratio')->value('value');
+        // 赔偿保证费
+        $compensateFee = floor($indentPrice * $compensateFeeRatio);
+        // 部分模块无需赔偿保证费
+        $tag = Modular::whereModularId($modularId)->value('tag');
+        if (in_array($tag, self::NO_COMPENSATE_FEE_MODULAR_TAG))
+            $compensateFee = 0;
+
+        return $compensateFee;
+    }
+
+    /**
+     * 不同模式下卖家收入与议价状态
+     * @param float $indentPrice 订单价格
+     * @param int $modularId 模块id
+     * @param float $indentFloorPrice 订单底价
+     * @return array
+     */
+    public static function sellerIncomeAndBargainingStatusForType($indentPrice, $modularId, $indentFloorPrice)
+    {
+        // 卖家收入模式
+        $type = Modular::whereModularId($modularId)->value('settlement_type');
+        // 服务费率
+        $serviceFeeRatio = SystemSetting::whereSettingName('service_fee_ratio')->value('value');
+        // 议价状态
+        $bargainingStatus = IndentInfo::BARGAINING_STATUS['未完成'];
+
+        switch ($type) {
+            // 标准模式下卖家收入默认为 订单价格*（1-服务费率） 仍需议价
+            case Modular::SETTLEMENT_TYPE['标准模式']:
+                $sellerIncome = floor($indentPrice * $serviceFeeRatio);
+                break;
+
+            // 软文模式下卖家收入为商品底价 无需议价
+            case Modular::SETTLEMENT_TYPE['软文模式']:
+                $sellerIncome     = $indentFloorPrice;
+                $bargainingStatus = IndentInfo::BARGAINING_STATUS['已完成'];
+                break;
+
+            // 自身模式下卖家(平台自己)收入订单价格 无需议价
+            case Modular::SETTLEMENT_TYPE['自身模式']:
+                $sellerIncome     = $indentPrice;
+                $bargainingStatus = IndentInfo::BARGAINING_STATUS['已完成'];
+                break;
+        }
+
+        return ['sellerIncome' => $sellerIncome, 'bargainingStatus' => $bargainingStatus];
     }
 
     // 检查订单归属
@@ -287,5 +322,4 @@ class IndentInfo extends Model
             throw new Exception('订单修改失败');
         }
     }
-
 }

@@ -117,7 +117,7 @@ class TransactionController extends BaseController
 
     /**
      * 待接单买家取消订单/卖家拒单
-     * 全额退款给买家
+     *  全额退款给买家
      * @param TransactionRequests $request
      * @return mixed
      * @throws \Throwable
@@ -161,7 +161,7 @@ class TransactionController extends BaseController
 
     /**
      * 卖家接单
-     * 支付赔偿保证金
+     *  支付赔偿保证金
      * @param TransactionRequests $request
      * @return mixed
      * @throws \Throwable
@@ -212,8 +212,10 @@ class TransactionController extends BaseController
 
     /**
      * 交易中买家取消订单
-     * 扣除赔偿保证费退给买家
-     * 将卖家自己的赔偿保证费与分成的买家赔偿退给卖家
+     *  1.扣除赔偿保证费退给买家
+     *    将卖家自己的赔偿保证费与分成的买家赔偿退给卖家
+     *
+     *  2.软文套餐禁止取消
      * @param TransactionRequests $request
      * @return mixed
      * @throws \Throwable
@@ -226,6 +228,10 @@ class TransactionController extends BaseController
                 User::checkIdentity(User::IDENTIDY['广告主']);
                 // 订单数据 *加锁
                 $indentData = IndentInfo::whereIndentNum($request->indent_num)->lockForUpdate()->first();
+                // 部分主题禁止取消
+                $themeName = IndentItem::where($indentData->indent_id)->value('theme_name');
+                if (in_array($themeName, Transaction::TRANS_NO_CANCEL_THEME))
+                    throw new Exception('此主题禁止取消');
                 // 检查订单状态
                 Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
                 // 检测订单归属

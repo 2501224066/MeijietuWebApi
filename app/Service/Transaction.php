@@ -16,6 +16,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Transaction
 {
+    // 交易中禁止取消主题
+    const TRANS_NO_CANCEL_THEME = ['软文套餐'];
+
     // 交易中买家取消订单资金计算
     public static function inTransactionBuyerCancelCountMoney($indentAmount, $compensateFee)
     {

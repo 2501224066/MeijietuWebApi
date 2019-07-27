@@ -21,9 +21,9 @@ function createNum($numType): string
 /**
  * 当天单数
  * @param string $key 键
- * @return int
+ * @return string
  */
-function todayCount($key): int
+function todayCount($key): string
 {
     if (!Cache::has($key))
         Cache::put($key, 1, 60 * 24);

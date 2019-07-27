@@ -16,8 +16,9 @@ class IndentController extends BaseController
 {
     /**
      * 创建订单
-     * @param IndentRequests $request
+     * @param Indent $request
      * @return mixed
+     * @throws \Throwable
      */
     public function createIndent(IndentRequests $request)
     {
@@ -26,15 +27,13 @@ class IndentController extends BaseController
         // 必须未拥有客服
         Salesman::checkUserHasSalesman(JWTAuth::user()->uid,'y');
         // json转对象
-        $info = json_decode($request->info, true);
-        // 数据整理
-        $data = IndentInfo::dataSorting($info);
-        // 添加
-        $indent_mum = IndentInfo::add($data);
+        $input = json_decode($request->info, true);
+        // 验证数据并创建订单
+        $indent_num_arr = IndentInfo::dataSorting($input);
         // 删除购物车中对应商品
-        IndentCreatedOP::dispatch($info)->onQueue('IndentCreatedOP');
+        IndentCreatedOP::dispatch($input)->onQueue('IndentCreatedOP');
 
-        return $this->success(['indent_num' => $indent_mum]);
+        return $this->success(['indent_num_arr' => $indent_num_arr]);
     }
 
     /**
