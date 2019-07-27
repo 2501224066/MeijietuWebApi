@@ -103,6 +103,10 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         // 需求
         //  拒绝需求
         $api->post('refuseDemand', 'DemandController@refuseDemand');
+        //  接受需求
+        $api->post('acceptDemand', 'DemandController@acceptDemand');
+        //  完成需求
+        $api->post('completeDemand', 'DemandController@completeDemand');
 
         // 文件处理
         //  图片上传

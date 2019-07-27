@@ -67,7 +67,7 @@ class Salesman extends Base
 
             // 需求失效
             case 'invalidDemand':
-                $rules['demand_id'] = ['required', new SpecialChar, 'exists:dt_demand,demand_id'];
+                $rules['demand_num'] = ['required', new SpecialChar, 'exists:dt_demand,demand_num'];
                 break;
         }
 
@@ -82,8 +82,8 @@ class Salesman extends Base
             'numeric'  => '参数格式错误',
             'json'     => '参数格式错误',
 
-            'demand_id.required' => '需求不得为空',
-            'demand_id.exists' => '需求不存在'
+            'demand_num.required' => '需求不得为空',
+            'demand_num.exists' => '需求不存在'
         ];
     }
 }

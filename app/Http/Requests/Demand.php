@@ -21,18 +21,29 @@ class Demand extends Base
         switch ($this->getFunName()) {
             // 拒绝需求
             case 'refuseDemand':
-                $rules['demand_id'] = ['required', new SpecialChar, 'exists:dt_demand, demand_id'];
+                $rules['demand_num'] = ['required', new SpecialChar, 'exists:dt_demand, demand_num'];
+                break;
+            // 接受需求
+            case 'acceptDemand':
+                $rules['demand_num'] = ['required', new SpecialChar, 'exists:dt_demand, demand_num'];
+                break;
+            // 完成需求
+            case 'completeDemand':
+                $rules['demand_num'] = ['required', new SpecialChar, 'exists:dt_demand, demand_num'];
+                $rules['back_link'] = ['required'];
                 break;
         }
 
         return $rules;
     }
 
+
     public function messages()
     {
         return [
-            'demand_id.required' => '需求不得为空',
-            'demand_id.exists'   => '需求不存在'
+            'demand_num.required' => '需求不得为空',
+            'demand_num.exists'   => '需求不存在',
+            'back_link'          => '链接不得为空'
         ];
     }
 }

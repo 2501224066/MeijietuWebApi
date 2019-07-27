@@ -40,7 +40,7 @@ class MealPoolController extends BaseController
         User::checkIdentity(User::IDENTIDY['业务员']);
         // json转array
         $goodIdArr = json_decode($request->goods_id_json, true);
-        // 创建订单
+        // 创建需求
         SoftArticleMealCreateDemandOP::dispatch($request->indent_num, $goodIdArr)->onQueue('SoftArticleMealCreateDemandOP');
 
         return $this->success('稍等片刻，需求正在创建中');

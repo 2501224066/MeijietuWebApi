@@ -18,19 +18,20 @@ class SoftArticleMealCreateDemandOP implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $indentNum;
+    protected $indentData;
 
     protected $goodsIdArr;
 
     public function __construct($indentNum, $goodsIdArr)
     {
-        $this->indentNum  = $indentNum;
+        $this->indentData = IndentInfo::whereIndentNum($indentNum)->first();
         $this->goodsIdArr = $goodsIdArr;
     }
 
     public function handle()
     {
-        $indentNum  = $this->indentNum;
+        $indentId   = $this->indentData->indent_id;
+        $word       = $this->indentData->demand_file;
         $goodsIdArr = $this->goodsIdArr;
         foreach ($goodsIdArr as $goodsId) {
             try {
@@ -48,13 +49,14 @@ class SoftArticleMealCreateDemandOP implements ShouldQueue
                 // 创建需求
                 $time = date('Y-m-d H:i:s');
                 Demand::insertGetId([
-                    'demand_id'       => createNum('DEMAND'),
-                    'bind_indent_num' => $indentNum,
-                    'title'           => $goodsData['title'],
-                    'word'            => IndentInfo::whereIndentNum($indentNum)->value('demand_file'),
-                    'price'           => $goodsData['one_goods_price']['price'],
-                    'created_at'      => $time,
-                    'updated_at'      => $time,
+                    'demand_id'      => createNum('DEMAND'),
+                    'bind_indent_id' => $indentId,
+                    'uid'            => $goodsData['uid'],
+                    'title'          => $goodsData['title'],
+                    'word'           => $word,
+                    'price'          => $goodsData['one_goods_price']['floor_price'],
+                    'created_at'     => $time,
+                    'updated_at'     => $time,
                 ]);
             } catch (\Exception $e) {
                 Log::error('软文套餐创建需求失败 ' . $e->getMessage());

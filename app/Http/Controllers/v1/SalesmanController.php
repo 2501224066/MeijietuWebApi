@@ -117,7 +117,7 @@ class SalesmanController extends BaseController
         // 身份必须为业务员
         User::checkIdentity(User::IDENTIDY['业务员']);
         // 需求数据
-        $demand = Demand::whereDemandId($request->demand_id)->first();
+        $demand = Demand::whereDemandNum($request->demand_num)->first();
         // 状态需为等待
         Pub::checkParm($demand->status, Demand::STATUS['等待'], '需求状态错误');
         // 修改

@@ -393,9 +393,9 @@ class TransactionController extends BaseController
                 IndentInfo::checkIndentBelong([$indentData->buyer_id]);
                 // 修改订单信息
                 IndentInfo::updateIndent($indentData, IndentInfo::STATUS['全部完成']);
-                // 存入延迟队列
+                // 存入延迟队列结算
                 $delayTime = SystemSetting::whereSettingName('trans_payment_delay')->value('value');
-                IndentSettlement::dispatch($indentData->indent_num)->delay($delayTime);
+                IndentSettlement::dispatch($indentData->indent_num)->onQueue('IndentSettlement')->delay($delayTime);
             } catch (Exception $e) {
                 throw new Exception($e->getMessage());
             }
