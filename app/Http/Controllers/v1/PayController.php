@@ -69,7 +69,7 @@ class PayController extends BaseController
         $order = [
             'out_trade_no' => $runwaterNum,
             'total_amount' => $request->money,
-            'subject' => '支付宝充值',
+            'subject'      => '支付宝充值',
         ];
 
         return Pay::alipay()->web($order);
@@ -81,8 +81,8 @@ class PayController extends BaseController
     public function aliPayRechargeBack()
     {
         $alipay = Pay::alipay();
-        $uid = JWTAuth::user()->uid;
-        try{
+        $uid    = JWTAuth::user()->uid;
+        try {
             // 验参
             $data = $alipay->verify(); // 是的，验签就这么简单！
             // 检查流水是否存在

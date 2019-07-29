@@ -181,7 +181,7 @@ class LianLianPay
                 if (!self::RSAverify($data, $sign)) throw new Exception('验签失败');
                 // 检查流水是否存在
                 $runWater = Runwater::checkHas($data['no_order']);
-                $uid = $runWater->to_uid;
+                $uid      = $runWater->to_uid;
                 // 检测是否为重复回调
                 Runwater::checkMoreBack($data['oid_paybill']);
                 // 金额比对
