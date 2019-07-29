@@ -40,7 +40,7 @@ class Auth extends Base
             // 注册
             case 'register':
                 $rules['phone']                 = ['required', new SpecialChar, 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/', 'unique:user,phone'];
-                $rules['email']                 = ['required', new SpecialChar, 'email', 'unique:user,email'];
+                $rules['email']                 = ['required', 'email', 'unique:user,email'];
                 $rules['password']              = ['required', new SpecialChar, 'between:6,18'];
                 $rules['password_confirmation'] = ['required', new SpecialChar, 'same:password'];
                 $rules['nickname']              = ['required', new SpecialChar, 'between:3,10'];
