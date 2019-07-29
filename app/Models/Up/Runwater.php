@@ -5,7 +5,6 @@ namespace App\Models\Up;
 
 
 use App\Models\Indent\IndentInfo;
-use DemeterChain\C;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -28,10 +27,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property float $money 金额
  * @property int $status 状态 0=进行中 1=成功 2=异常
  * @property string|null $callback_time 回调时间
- * @property string|null $callback_oid_paybill 连连支付单号
+ * @property string|null $callback_trade_no 交易凭证
  * @property float|null $callback_money_order 交易金额
- * @property string|null $callback_settle_order 清算日期
- * @property string|null $callback_pay_type 支付方式 0:余额支付 1:网银借记卡支付 8:网银信用卡支付 9:企业网银信用卡支付 2:快捷支付(借记卡) 3:快捷支付(信用卡) D:认证支付 I:微信主扫 L:支付宝主扫
+ * @property string|null $callback_pay_type 支付方式 0:余额支付 1:网银借记卡支付 8:网银信用卡支付 9:企业网银信用卡支付 2:快捷支付(借记卡) 3:快捷支付(信用卡) D:认证支付 I:微信主扫 L:支付宝主扫 aliPay:支付宝支付
  * @property string|null $callback_bank_code 银行编号
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -40,10 +38,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackBankCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackMoneyOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackOidPaybill($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackPayType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackSettleOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackTradeNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereDirection($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereFromUid($value)

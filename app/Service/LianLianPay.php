@@ -99,7 +99,7 @@ class LianLianPay
             'busi_partner' => '101001', // 商户业务类型
             'no_order'     => $runwaterNum, // 商户唯一订单
             'dt_order'     => date('YmdHid'), // 商户订单时间
-            'name_goods'   => '用户资金充值', // 商品名称
+            'name_goods'   => '连连充值', // 商品名称
             'money_order'  => $money, // 交易金额
             'notify_url'   => env('PAY_NOTIFY_URL'), // 服务器异步通知 地址
             'url_return'   => env('PAY_URL_RETURN'), // 支付结束回显 url
@@ -171,9 +171,8 @@ class LianLianPay
     public static function backOP($data)
     {
         Log::notice('连连回调参数', $data);
-        $uid = JWTAuth::user()->uid;
 
-        DB::transaction(function () use ($uid, $data) {
+        DB::transaction(function () use ($data) {
             try {
                 // 验参
                 $sign = $data['sign'];
@@ -195,7 +194,7 @@ class LianLianPay
                     $data['pay_type'],
                     $data['bank_code']);
                 // 用户资金增加
-                Wallet::updateWallet($uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
+                Wallet::updateWallet($runWater->to_uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
             } catch (Exception $e) {
                 Log::error('连连回调失败 ' . $e->getMessage());
                 throw new Exception($e->getMessage());
