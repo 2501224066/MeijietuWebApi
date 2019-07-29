@@ -391,7 +391,7 @@ class Goods extends Model
             $query->where('theme_id', $request->theme_id);
 
         if ($request->key_word != null)
-            $query->whereRaw('title like ? or title_about like ?', ["%{$request->key_word}%", "%{$request->key_word}%"]);
+            $query->whereRaw('(title like ? or title_about like ?)', ["%{$request->key_word}%", "%{$request->key_word}%"]);
 
         if ($request->filed_id != null)
             $query->where('filed_id', $request->filed_id);
