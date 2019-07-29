@@ -171,8 +171,9 @@ class LianLianPay
     public static function backOP($data)
     {
         Log::notice('连连回调参数', $data);
+        $uid = null;
 
-        DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data, &$uid) {
             try {
                 // 验参
                 $sign = $data['sign'];
@@ -180,6 +181,7 @@ class LianLianPay
                 if (!self::RSAverify($data, $sign)) throw new Exception('验签失败');
                 // 检查流水是否存在
                 $runWater = Runwater::checkHas($data['no_order']);
+                $uid = $runWater->to_uid;
                 // 检测是否为重复回调
                 Runwater::checkMoreBack($data['oid_paybill']);
                 // 金额比对
@@ -194,7 +196,7 @@ class LianLianPay
                     $data['pay_type'],
                     $data['bank_code']);
                 // 用户资金增加
-                Wallet::updateWallet($runWater->to_uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
+                Wallet::updateWallet($uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
             } catch (Exception $e) {
                 Log::error('连连回调失败 ' . $e->getMessage());
                 throw new Exception($e->getMessage());
