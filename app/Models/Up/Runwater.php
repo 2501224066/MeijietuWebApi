@@ -89,9 +89,10 @@ class Runwater extends Model
     /**
      * 生成充值流水
      * @param float $money 充值金额
+     * @param string $payType 支付方式
      * @return string
      */
-    public static function createRechargeRunwater($money): string
+    public static function createRechargeRunwater($money, $payType): string
     {
         $runwaterNum = createNum('RUNWATER');
         $re          = self::create([
@@ -100,6 +101,7 @@ class Runwater extends Model
             'type'         => self::TYPE['充值'],
             'direction'    => self::DIRECTION['转入'],
             'money'        => htmlspecialchars($money),
+            'pay_type'     => $payType
         ]);
         if (!$re)
             throw new Exception('操作失败');
@@ -197,19 +199,15 @@ class Runwater extends Model
      * @param string $runwaterNum 流水编号
      * @param string $callbackRradeNo 交易单号（支付平台单号）
      * @param float $callbackMoneyOrder 回调金额
-     * @param string $callbackPayType 交易方式类型
-     * @param string $callbackBankCode 回调银行编号
      */
-    public static function rechargeBackSuccessUpdate($runwaterNum, $callbackRradeNo, $callbackMoneyOrder, $callbackPayType, $callbackBankCode = null)
+    public static function rechargeBackSuccessUpdate($runwaterNum, $callbackRradeNo, $callbackMoneyOrder)
     {
         $b = self::whereRunwaterNum($runwaterNum)
             ->update([
                 'status'               => self::STATUS['成功'],
                 'callback_time'        => date('Y-m-d H:i:s'),
                 'callback_trade_no'    => $callbackRradeNo,
-                'callback_money_order' => $callbackMoneyOrder,
-                'callback_pay_type'    => isset($callbackPayType) ? $callbackPayType : null,
-                'callback_bank_code'   => isset($callbackBankCode) ? $callbackBankCode : null
+                'callback_money_order' => $callbackMoneyOrder
             ]);
         if (!$b)
             throw new Exception('流水修改失败');

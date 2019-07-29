@@ -27,7 +27,7 @@ class PayController extends BaseController
         // 校验钱包状态
         Wallet::checkStatus($uid, Wallet::STATUS['启用']);
         // 生成充值流水
-        $runwaterNum = Runwater::createRechargeRunwater($request->money);
+        $runwaterNum = Runwater::createRechargeRunwater($request->money, 'lianLianPay');
         // 组合请求连连数据
         $data = LianLianPay::lianlianRequestData($runwaterNum, htmlspecialchars($request->money));
 
@@ -64,7 +64,7 @@ class PayController extends BaseController
         // 校验钱包状态
         Wallet::checkStatus($uid, Wallet::STATUS['启用']);
         // 生成充值流水
-        $runwaterNum = Runwater::createRechargeRunwater($request->money);
+        $runwaterNum = Runwater::createRechargeRunwater($request->money, 'aliPay');
         // 数据
         $order = [
             'out_trade_no' => $runwaterNum,
@@ -100,8 +100,7 @@ class PayController extends BaseController
             Runwater::rechargeBackSuccessUpdate(
                 $data['out_trade_no'],
                 $data['trade_no'],
-                $data['total_amount'],
-                'aliPay');
+                $data['total_amount']);
             // 用户资金增加
             Wallet::updateWallet($uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
         } catch (\Exception $e) {

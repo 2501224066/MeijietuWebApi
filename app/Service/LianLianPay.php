@@ -192,9 +192,7 @@ class LianLianPay
                 Runwater::rechargeBackSuccessUpdate(
                     $data['no_order'],
                     $data['oid_paybill'],
-                    $data['money_order'],
-                    $data['pay_type'],
-                    $data['bank_code']);
+                    $data['money_order']);
                 // 用户资金增加
                 Wallet::updateWallet($uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
             } catch (Exception $e) {
