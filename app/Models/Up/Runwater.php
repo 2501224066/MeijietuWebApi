@@ -123,13 +123,13 @@ class Runwater extends Model
 
     /**
      * 检测是否为重复回调
-     * @param string $callback_oid_paybill 回调单号
+     * @param string $callbackTradeNo 支付凭证
      */
-    public static function checkMoreBack($callback_oid_paybill)
+    public static function checkMoreBack($callbackTradeNo)
     {
-        $count = self::whereCallbackOidPaybill($callback_oid_paybill)->count();
+        $count = self::whereCallbackTradeNo($callbackTradeNo)->count();
         if ($count)
-            throw new Exception('重复回调 连连支付单号:' . $callback_oid_paybill);
+            throw new Exception('重复回调 连连支付单号:' . $callbackTradeNo);
     }
 
     /**
