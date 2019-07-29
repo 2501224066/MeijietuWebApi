@@ -59,7 +59,7 @@ class AuthController extends BaseController
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
         // 数据添加到数据库
         $uid = User::add($request);
-        // 支出后续操作
+        // 注册后续操作
         RegisteredOP::dispatch($uid)->onQueue('RegisteredOP');
 
         return $this->success();
