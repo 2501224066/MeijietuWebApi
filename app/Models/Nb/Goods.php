@@ -504,10 +504,11 @@ class Goods extends Model
     {
         // 商品数据
         $goods = DB::table('nb_goods')->where('goods_id', $goodsId)->first();
+        $delArr = [];
 
         // 微信公众号
         if ($goods->weixin_ID) {
-            $arr = DB::table('nb_goods')
+            $delArr = DB::table('nb_goods')
                 ->where('uid', User::GF_SELLER)
                 ->where('modular_name', '微信营销')
                 ->where('theme_name', '公众号')
@@ -517,7 +518,7 @@ class Goods extends Model
 
         // 微博
         if ($goods->link) {
-            $arr = DB::table('nb_goods')
+            $delArr = DB::table('nb_goods')
                 ->where('uid', User::GF_SELLER)
                 ->where('modular_name', '微博营销')
                 ->where('link', $goods->link)
@@ -526,7 +527,7 @@ class Goods extends Model
 
         // 小红书
         if ($goods->room_ID) {
-            $arr = DB::table('nb_goods')
+            $delArr = DB::table('nb_goods')
                 ->where('uid', User::GF_SELLER)
                 ->where('modular_name', '视频营销')
                 ->where('theme_name', '短视频')
@@ -536,7 +537,7 @@ class Goods extends Model
         }
 
         // 删除初始商品
-        foreach ($arr as $goods_id) {
+        foreach ($delArr as $goods_id) {
             Goods::whereGoodsId($goods_id)->delete();
             GoodsPrice::whereGoodsId($goods_id)->delete();
         }
