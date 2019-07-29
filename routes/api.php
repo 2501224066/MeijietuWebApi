@@ -107,6 +107,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('acceptDemand', 'DemandController@acceptDemand');
         //  完成需求
         $api->post('completeDemand', 'DemandController@completeDemand');
+        //  自己的需求
+        $api->post('demandBelongSelf', 'DemandController@demandBelongSelf');
 
         // 文件处理
         //  图片上传

@@ -12,10 +12,27 @@ use App\Models\User;
 use App\Service\Pub;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
 
 class DemandController extends BaseController
 {
+    /**
+     * 自己的需求
+     * @return mixed
+     */
+    public function demandBelongSelf()
+    {
+        // 身份必须为媒体主
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        // 需求
+        $re = Demand::whereUid(JWTAuth::user()->uid)
+            ->where('status', '!=', Demand::STATUS['失效'])
+            ->paginate();
+
+        return $this->success($re);
+    }
+
     /**
      * 拒绝需求
      * @param DemandRequests $request
