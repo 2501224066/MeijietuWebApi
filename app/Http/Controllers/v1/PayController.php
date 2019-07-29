@@ -81,7 +81,6 @@ class PayController extends BaseController
     public function aliPayRechargeBack()
     {
         $alipay = Pay::alipay();
-        $uid    = JWTAuth::user()->uid;
         try {
             // 验参
             $data = $alipay->verify(); // 是的，验签就这么简单！
@@ -89,13 +88,14 @@ class PayController extends BaseController
             $runWater = Runwater::checkHas($data['out_trade_no']);
             // 检测是否为重复回调
             Runwater::checkMoreBack($data['trade_no']);
+            $uid = $runWater->to_uid;
             // 金额比对
             if ($runWater->money != $data['total_amount']) {
                 Log::notice('支付宝回调金额异常', ['流水金额' => $runWater->money, '回调金额' => $data['total_amount']]);
                 throw new Exception('操作失败');
             }
             // 校验修改校验锁
-            Wallet::checkChangLock($runWater->to_uid);
+            Wallet::checkChangLock($uid);
             // 充值成功流水修改
             Runwater::rechargeBackSuccessUpdate(
                 $data['out_trade_no'],

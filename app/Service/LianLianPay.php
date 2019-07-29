@@ -187,7 +187,7 @@ class LianLianPay
                 // 金额比对
                 if ($runWater->money != $data['money_order']) throw new Exception('回调金额异常');
                 // 校验修改校验锁
-                Wallet::checkChangLock($runWater->to_uid);
+                Wallet::checkChangLock($uid);
                 // 充值成功流水修改
                 Runwater::rechargeBackSuccessUpdate(
                     $data['no_order'],
