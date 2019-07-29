@@ -14,7 +14,10 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
     $api->get('informationInfo', 'InformationController@informationInfo');
 
     // 充值回调
+    //  连连充值回调
     $api->post('lianLianPayRechargeBack', 'PayController@lianLianPayRechargeBack');
+    //  支付宝充值回调
+    $api->post('aliPayRechargeBack', 'PayController@aliPayRechargeBack');
 
     // 注册登录
     //  检查手机号
@@ -142,9 +145,11 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         //  删除购物车商品
         $api->post('delShopcart', 'ShopcartController@delShopcart');
 
-        // 连连三方
-        //  充值
-        $api->post('recharge', 'PayController@recharge');
+        // 充值提现
+        //  连连充值
+        $api->post('lianLianPayRecharge', 'PayController@lianLianPayRecharge');
+        //  支付宝充值
+        $api->post('aliPayRecharge', 'PayController@aliPayRecharge');
         //  提现
         $api->post('extract', 'PayController@extract');
 

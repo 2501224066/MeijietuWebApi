@@ -6,12 +6,13 @@ namespace App\Service;
 use App\Models\Up\Runwater;
 use App\Models\Up\Wallet;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class Pay
+class LianLianPay
 {
     // 商户号
     private static $oid_partner = '201906120002511007';
@@ -170,32 +171,37 @@ class Pay
     public static function backOP($data)
     {
         Log::notice('连连回调参数', $data);
+        $uid = JWTAuth::user()->uid;
 
-        $sign = $data['sign'];
-        unset($data['sign']);
+        DB::transaction(function () use ($uid, $data) {
+            try {
+                // 验参
+                $sign = $data['sign'];
+                unset($data['sign']);
+                if (!self::RSAverify($data, $sign)) throw new Exception('验签失败');
+                // 检查流水是否存在
+                $runWater = Runwater::checkHas($data['no_order']);
+                // 检测是否为重复回调
+                Runwater::checkMoreBack($data['oid_paybill']);
+                // 金额比对
+                if ($runWater->money != $data['money_order']) throw new Exception('回调金额异常');
+                // 校验修改校验锁
+                Wallet::checkChangLock($runWater->to_uid);
+                // 充值成功流水修改
+                Runwater::rechargeBackSuccessUpdate(
+                    $data['no_order'],
+                    $data['oid_paybill'],
+                    $data['money_order'],
+                    $data['pay_type'],
+                    $data['bank_code']);
+                // 用户资金增加
+                Wallet::updateWallet($uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
+            } catch (Exception $e) {
+                Log::error('连连回调失败 ' . $e->getMessage());
+                throw new Exception($e->getMessage());
+            }
+        });
 
-        // 检查流水是否存在
-        $runWater = Runwater::checkHas($data['no_order']);
-        // 检测是否为重复回调
-        Runwater::checkMoreBack($data['oid_paybill']);
-        // 验参
-        if (!self::RSAverify($data, $sign)) {
-            Log::notice('连连回调RSA验签失败');
-            throw new Exception('操作失败');
-        }
-
-        // 金额比对
-        if ($runWater->money != $data['money_order']) {
-            Log::notice('连连回调金额异常', ['流水金额' => $runWater->money, '回调金额' => $data['money_order']]);
-            throw new Exception('操作失败');
-        }
-
-        // 校验修改校验锁
-        Wallet::checkChangLock($runWater->to_uid);
-
-        // 记录流水并修改用户资金
-        Runwater::backSuccOp($data, $runWater->to_uid);
-
-        Log::info('用户' . User::whereUid($runWater->to_uid)->value('nickname') . '充值' . $data['money_order'] . '元');
+        Log::info('用户' . User::whereUid($uid)->value('nickname') . '充值' . $data['money_order'] . '元');
     }
 }

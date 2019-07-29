@@ -24,18 +24,24 @@ class Pay extends Base
         $rules = [];
 
         switch ($this->getFunName()) {
-            // 充值
-            case 'recharge':
-                $rules['money'] = ['required', new SpecialChar, 'numeric', function($key,$value){
-                    if($value <= 0)
+            // 连连充值
+            case 'lianLianRecharge':
+                $rules['money'] = ['required', new SpecialChar, 'numeric', function ($key, $value) {
+                    if ($value <= 0)
                         throw new Exception('金额非法');
                 }];
                 break;
-
+            // 支付宝充值
+            case 'aliPayRecharge':
+                $rules['money'] = ['required', new SpecialChar, 'numeric', function ($key, $value) {
+                    if ($value <= 0)
+                        throw new Exception('金额非法');
+                }];
+                break;
             // 提现
             case 'extract':
-                $rules['money'] = ['required', new SpecialChar, 'numeric', function($key,$value){
-                    if($value <= 0)
+                $rules['money'] = ['required', new SpecialChar, 'numeric', function ($key, $value) {
+                    if ($value <= 0)
                         throw new Exception('金额非法');
                 }];
                 break;

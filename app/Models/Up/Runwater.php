@@ -136,43 +136,6 @@ class Runwater extends Model
     }
 
     /**
-     * 回调成功操作
-     * @param array $data 回调数据
-     * @param string $uid 用户id
-     * @throws \Throwable
-     */
-    public static function backSuccOP($data, $uid)
-    {
-        DB::transaction(function () use ($data, $uid) {
-            try {
-                // 记录流水
-                self::whereRunwaterNum($data['no_order'])
-                    ->update([
-                        'status'                => self::STATUS['成功'],
-                        'callback_time'         => date('Y-m-d H:i:s'),
-                        'callback_oid_paybill'  => $data['oid_paybill'],
-                        'callback_money_order'  => $data['money_order'],
-                        'callback_settle_order' => isset($data['settle_date']) ? $data['settle_date'] : null,
-                        'callback_pay_type'     => isset($data['pay_type']) ? $data['pay_type'] : null,
-                        'callback_bank_code'    => isset($data['bank_code']) ? $data['bank_code'] : null
-                    ]);
-
-                // 修改资金
-                $money = Wallet::whereUid($uid)->value('available_money') + $data['money_order'];
-                $time  = date('Y-m-d H:i:s');
-                Wallet::whereUid($uid)->update([
-                    'available_money' => $money,
-                    'change_lock'     => createWalletChangeLock($uid, $money, $time),
-                    'time'            => $time
-                ]);
-            } catch (Exception $e) {
-                Log::notice('连连回调修改金额失败 ' . $e->getMessage());
-                throw new Exception('操作失败');
-            }
-        });
-    }
-
-    /**
      * 提现操作
      * @param string $uid 用户id
      * @param float $money 提现金额
@@ -230,5 +193,28 @@ class Runwater extends Model
         ]);
         if (!$re)
             throw new Exception('生成交易流水失败');
+    }
+
+    /**
+     * 充值成功流水修改
+     * @param string $runwaterNum 流水编号
+     * @param string $callbackRradeNo 交易单号（支付平台单号）
+     * @param float $callbackMoneyOrder 回调金额
+     * @param string $callbackPayType 交易方式类型
+     * @param string $callbackBankCode 回调银行编号
+     */
+    public static function rechargeBackSuccessUpdate($runwaterNum, $callbackRradeNo, $callbackMoneyOrder, $callbackPayType, $callbackBankCode = null)
+    {
+        $b = self::whereRunwaterNum($runwaterNum)
+            ->update([
+                'status'               => self::STATUS['成功'],
+                'callback_time'        => date('Y-m-d H:i:s'),
+                'callback_trade_no'    => $callbackRradeNo,
+                'callback_money_order' => $callbackMoneyOrder,
+                'callback_pay_type'    => isset($callbackPayType) ? $callbackPayType : null,
+                'callback_bank_code'   => isset($callbackBankCode) ? $callbackBankCode : null
+            ]);
+        if (!$b)
+            throw new Exception('流水修改失败');
     }
 }
