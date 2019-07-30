@@ -31,9 +31,9 @@ class AliPay
                 $money = $data['total_amount'];
                 // 检查流水是否存在
                 $runWater = Runwater::checkHas($data['out_trade_no']);
+                $uid = $runWater->to_uid;
                 // 检测是否为重复回调
                 Runwater::checkMoreBack($data['trade_no']);
-                $uid = $runWater->to_uid;
                 // 金额比对
                 if ($runWater->money != $data['total_amount']) throw new Exception('回调金额异常');
                 // 校验修改校验锁
@@ -44,7 +44,7 @@ class AliPay
                     $data['trade_no'],
                     $data['total_amount']);
                 // 用户资金增加
-                Wallet::updateWallet($uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
+                Wallet::updateWallet($uid, $data['total_amount'], Wallet::UP_OR_DOWN['增加']);
             } catch (Exception $e) {
                 Log::error('支付宝回调失败 ' . $e->getMessage());
                 throw new Exception($e->getMessage());
