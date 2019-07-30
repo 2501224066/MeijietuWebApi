@@ -39,7 +39,7 @@ class AliPay
                 // 充值成功流水修改
                 Runwater::rechargeBackSuccessUpdate(
                     $data['out_trade_no'],
-                    $data['timestamp'],
+                    $data['gmt_create'],
                     $data['trade_no'],
                     $data['total_amount']);
                 // 用户资金增加
