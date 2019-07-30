@@ -42,7 +42,7 @@ class Wallet extends Model
 
     public $timestamps = false;
 
-    const CENTERID = 0; //中间账户ID
+    const CENTERID = 1; //中间账户ID
 
     const STATUS = [
         '启用' => 1,
