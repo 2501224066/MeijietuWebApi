@@ -14,12 +14,13 @@ function createNum($numType): string
     // 单数自增
     Cache::increment($key);
 
-    return substr(date('Ymd'), 2) . $todayCount;
+    return substr(date('Ymd'), 2) . mt_rand(1000, 9999) . $todayCount;
 
 }
 
 /**
  * 当天单数
+ *  1.容纳量-千万
  * @param string $key 键
  * @return string
  */
@@ -28,7 +29,7 @@ function todayCount($key): string
     if (!Cache::has($key))
         Cache::put($key, 1, 60 * 24);
 
-    return sprintf("%04d", Cache::get($key));
+    return sprintf("%08d", Cache::get($key));
 }
 
 /**
