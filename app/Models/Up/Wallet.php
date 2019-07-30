@@ -104,10 +104,9 @@ class Wallet extends Model
     {
         $wallet = self::whereUid($uid)->first();
         if (createWalletChangeLock($uid, $wallet->available_money, $wallet->time) != $wallet->change_lock) {
-            self::whereUid($uid)->update([
-                'status' => self::STATUS['禁用'],
-                'remark' => '校验修改校验锁失败, 禁用钱包'
-            ]);
+            $wallet->status = self::STATUS['禁用'];
+            $wallet->remark = '校验修改校验锁失败, 禁用钱包';
+            $wallet->save();
 
             throw new Exception('校验修改校验锁失败, 禁用钱包, 请联系客服');
         }
@@ -132,12 +131,13 @@ class Wallet extends Model
      */
     public static function updateWallet($uid, $money, $upOrDown)
     {
-        $time   = date('Y-m-d h:i:s');
-        $wallet = Wallet::whereUid($uid)->first();
+        $time            = date('Y-m-d h:i:s');
+        $wallet          = Wallet::whereUid($uid)->first();
+        $available_money = $upOrDown == self::UP_OR_DOWN['增加'] ? $wallet->available_money + $money : $wallet->available_money - $money;
 
-        $wallet->available_money = $upOrDown == self::UP_OR_DOWN['增加'] ? $wallet->available_money + $money : $wallet->available_money - $money;
+        $wallet->available_money = $available_money;
         $wallet->time            = $time;
-        $wallet->change_lock     = createWalletChangeLock(Wallet::CENTERID, $money, $time);
+        $wallet->change_lock     = createWalletChangeLock(Wallet::CENTERID, $available_money, $time);
         if (!$wallet->save())
             throw new Exception('修改钱包数据失败');
     }
