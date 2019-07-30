@@ -73,7 +73,7 @@ class PayController extends BaseController
             'subject'      => '支付宝充值',
         ];
 
-        return Pay::alipay()->web($order);
+        return Pay::alipay()->web($order)->pay();
     }
 
     /**

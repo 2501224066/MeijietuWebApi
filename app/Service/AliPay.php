@@ -15,12 +15,12 @@ class AliPay
 {
     /**
      * 连连回调操作
-     * @param array $alipay 回调数据
+     * @param mixed $alipay 回调数据
      * @throws \Throwable
      */
     public static function backOP($alipay)
     {
-        Log::notice('连连回调参数', $alipay);
+        Log::notice('连连回调参数', $alipay->toArray());
         $uid   = null;
         $money = null;
 
@@ -45,7 +45,7 @@ class AliPay
                     $data['total_amount']);
                 // 用户资金增加
                 Wallet::updateWallet($uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error('支付宝回调失败 ' . $e->getMessage());
                 throw new Exception($e->getMessage());
             }
