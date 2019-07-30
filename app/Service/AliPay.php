@@ -37,7 +37,7 @@ class AliPay
                 // 金额比对
                 if ($runWater->money != $data['total_amount']) throw new Exception('回调金额异常');
                 // 校验修改校验锁
-                Wallet::checkChangLock($uid);
+                //Wallet::checkChangLock($uid);
                 // 充值成功流水修改
                 Runwater::rechargeBackSuccessUpdate(
                     $data['out_trade_no'],
