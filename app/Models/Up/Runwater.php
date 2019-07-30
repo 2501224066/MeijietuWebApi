@@ -25,20 +25,17 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property int $type 类型 1=充值 2=提现 3=订单付款 4=支付赔偿保证费 5=取消订单全额退款 6=取消订单非全额退款 7=对方取消订单退款 8=订单完成结算 9=需求结算
  * @property int $direction 方向 1=转入 2=转出
  * @property float $money 金额
+ * @property string|null $pay_type 支付方式
  * @property int $status 状态 0=进行中 1=成功 2=异常
  * @property string|null $callback_time 回调时间
  * @property string|null $callback_trade_no 交易凭证
  * @property float|null $callback_money_order 交易金额
- * @property string|null $callback_pay_type 支付方式 0:余额支付 1:网银借记卡支付 8:网银信用卡支付 9:企业网银信用卡支付 2:快捷支付(借记卡) 3:快捷支付(信用卡) D:认证支付 I:微信主扫 L:支付宝主扫 aliPay:支付宝支付
- * @property string|null $callback_bank_code 银行编号
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackBankCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackMoneyOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackPayType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackTradeNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCreatedAt($value)
@@ -47,6 +44,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereIndentNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereMoney($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater wherePayType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereRunwaterId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereRunwaterNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereStatus($value)
