@@ -9,7 +9,7 @@ return [
         'notify_url'     => env('ALI_PAY_NOTIFY_URL', ''),
 
         // 支付成功后同步通知地址
-        'return_url'     => '',
+        'return_url'     => env('ALI_PAY_PAY_URL_RETURN', ''),
 
         // 阿里公共密钥，验证签名时使用
         'ali_public_key' => env('ALI_PUBLIC_KEY', ''),
