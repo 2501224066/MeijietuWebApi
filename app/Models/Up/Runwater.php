@@ -11,6 +11,7 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
+
 /**
  * App\Models\Up\Runwater
  *
@@ -23,9 +24,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property int $type 类型 1=充值 2=提现 3=订单付款 4=支付赔偿保证费 5=取消订单全额退款 6=取消订单非全额退款 7=对方取消订单退款 8=订单完成结算 9=需求结算
  * @property int $direction 方向 1=转入 2=转出
  * @property float $money 金额
- * @property string|null $pay_type 支付方式
+ * @property string $pay_type 支付方式
  * @property int $status 状态 0=进行中 1=成功 2=异常
  * @property string|null $callback_time 回调时间
+ * @property string|null $callback_success_time 真实充值时间
  * @property string|null $callback_trade_no 交易凭证
  * @property float|null $callback_money_order 交易金额
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -34,6 +36,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackMoneyOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackSuccessTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCallbackTradeNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Up\Runwater whereCreatedAt($value)

@@ -78,6 +78,8 @@ class PayController extends BaseController
 
     /**
      * 支付宝充值回调
+     * @return mixed
+     * @throws \Throwable
      */
     public function aliPayRechargeBack()
     {
