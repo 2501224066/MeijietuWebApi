@@ -19,31 +19,44 @@ class SendSms implements ShouldQueue
 
     protected $type;
 
-    protected $content;
+    protected $contentArr;
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * SendSms constructor.
+     * @param int $type 短信类型
+     * @param string $phone 手机号
+     * @param array $contentArr 内容
      */
-    public function __construct($type, $phone, $content)
+    public function __construct($type, $phone, $contentArr)
     {
-        $this->type    = $type;
-        $this->phone   = $phone;
-        $this->content = $content;
+        $this->type       = $type;
+        $this->phone      = $phone;
+        $this->contentArr = $contentArr;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
-        switch ($this->type) {
+        $type       = $this->type;
+        $phone      = $this->phone;
+        $contentArr = $this->contentArr;
+
+        switch ($type) {
             case Captcha::TYPE['验证码']:
                 $ali_sms = new AliSms();
-                $ali_sms->sendSms($this->phone, env('ALIYUN_SMS_TEMPLATE_CODE'), ['code' => $this->content]);
+                $ali_sms->sendSms($phone,
+                    env('ALIYUN_SMS_TEMPLATE_CODE_A'),
+                    ['code' => $contentArr['code']]);
+                break;
+
+            case Captcha::TYPE['订单通知']:
+                $ali_sms = new AliSms();
+                $ali_sms->sendSms($phone,
+                    env('ALIYUN_SMS_TEMPLATE_CODE_B'),
+                    [
+                        'name'       => $contentArr['name'],
+                        'indent_num' => $contentArr['indent_num'],
+                        'status'     => $contentArr['status'],
+                    ]);
                 break;
         }
     }

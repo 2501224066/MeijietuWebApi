@@ -2,12 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Nb\Goods;
-use App\Models\Nb\GoodsPrice;
-use App\Models\Tb\Platform;
-use App\Models\Tb\Priceclassify;
+
+use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 
 class test extends Command
 {
@@ -38,11 +35,20 @@ class test extends Command
     public function handle()
     {
         $start = -1;
-        while ($start < 50000) {
+        while ($start < 1000000) {
             echo $start;
-            $start ++;
+            $start++;
 
             // TODO...
+            $t = User::where('uid', '!=', '')
+                ->offset($start)
+                ->limit(1)
+                ->first();
+
+            $num = createNum('USER');
+            echo " " . $num . "\n";
+            $t->user_num = $num;
+            $t->save();
         }
 
     }

@@ -28,7 +28,11 @@ class CaptchaController extends BaseController
     public function smsVerifCode(CaptchaRequests $request)
     {
         $code = Captcha::createAndKeepCode($request->code_type, $request->phone);
-        SendSms::dispatch(Captcha::TYPE['验证码'], $request->phone, $code)->onQueue('SendSms');
+        SendSms::dispatch(
+            Captcha::TYPE['验证码'],
+            $request->phone,
+            ['code' => $code])
+            ->onQueue('SendSms');
 
         return $this->success();
     }

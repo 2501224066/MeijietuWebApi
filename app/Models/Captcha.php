@@ -10,7 +10,9 @@ use Mockery\Exception;
 class Captcha
 {
     const TYPE = [
-        '验证码' => 1
+        '验证码'  => 1,
+        '订单通知' => 2,
+        '资金变动' => 3
     ];
 
     //检查请求验证码类型

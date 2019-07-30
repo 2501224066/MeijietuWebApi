@@ -3,9 +3,10 @@
 
 namespace App\Http\Controllers\v1;
 
-
 use App\Http\Requests\Transaction as TransactionRequests;
 use App\Jobs\IndentSettlement;
+use App\Jobs\SendSms;
+use App\Models\Captcha;
 use App\Models\Indent\IndentInfo;
 use App\Models\Indent\IndentItem;
 use App\Models\SystemSetting;
@@ -52,7 +53,8 @@ class TransactionController extends BaseController
      */
     public function indentPayment(TransactionRequests $request)
     {
-        DB::transaction(function () use ($request) {
+        $indentData = null;
+        DB::transaction(function () use ($request, &$indentData) {
             try {
                 // 检查身份
                 User::checkIdentity(User::IDENTIDY['广告主']);
@@ -86,6 +88,7 @@ class TransactionController extends BaseController
             }
         });
 
+        Transaction::sms($indentData, 'seller', '买家已付款');
         Log::info('订单' . $request->indent_num . '付款完成');
         return $this->success();
     }

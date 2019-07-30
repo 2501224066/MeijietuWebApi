@@ -5,10 +5,13 @@ namespace App\Service;
 
 
 use App\Jobs\IndentSettlement;
+use App\Jobs\SendSms;
+use App\Models\Captcha;
 use App\Models\Indent\IndentInfo;
 use App\Models\SystemSetting;
 use App\Models\Up\Runwater;
 use App\Models\Up\Wallet;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
@@ -60,5 +63,33 @@ class Transaction
         $re['centerDown'] = $re['sellerUp'];
 
         return $re;
+    }
+
+    /**
+     * 短信通知
+     * @param mixed $indentData 订单数据
+     * @param string $toUser 发送对象
+     * @param string $status 状态描述
+     */
+    public static function sms($indentData, $toUser, $status)
+    {
+        switch ($toUser) {
+            case 'buyer':
+                $user = User::whereUid($indentData->buyer_id)->first();
+                break;
+            case 'seller':
+                $user = User::whereUid($indentData->seller_id)->first();
+                break;
+        }
+
+        SendSms::dispatch(
+            Captcha::TYPE['订单通知'],
+            $user->phone,
+            [
+                'name'       => $user->nickname,
+                'indent_num' => $indentData->indent_num,
+                'status'     => $status
+            ])
+            ->onQueue('SendSms');
     }
 }
