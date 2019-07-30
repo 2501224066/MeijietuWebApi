@@ -145,22 +145,24 @@ class LianLianPay
     /**
      * RSA验签
      * @param array $data 待签名数据(需要先排序，然后拼接)
-     * @param string $sign 需要验签的签名,需要base64_decode解码
-     *  验签用连连支付公钥
-     * @return bool 验签是否通过
+     *  1.验签用连连支付公钥
      */
-    public static function RSAverify($data, $sign): bool
+    public static function RSAverify($data)
     {
+        // 需要验签的签名,需要base64_decode解码
+        $sign = base64_decode($data['sign']);
+        unset($data['sign']);
         // 排序
         ksort($data);
         //转换为openssl格式密钥
         $res = openssl_get_publickey(self::$lianLianPublicKey);
         //调用openssl内置方法验签，返回bool值
-        $result = (bool)openssl_verify(KVstring($data), base64_decode($sign), $res, OPENSSL_ALGO_MD5);
+        $result = (bool)openssl_verify(KVstring($data), $sign, $res, OPENSSL_ALGO_MD5);
         //释放资源
         openssl_free_key($res);
         //返回资源是否成功
-        return $result;
+        if (!$result)
+            throw new Exception('验签失败');
     }
 
     /**
@@ -175,10 +177,6 @@ class LianLianPay
 
         DB::transaction(function () use ($data, &$uid) {
             try {
-                // 验参
-                $sign = $data['sign'];
-                unset($data['sign']);
-                if (!self::RSAverify($data, $sign)) throw new Exception('验签失败');
                 // 检查流水是否存在
                 $runWater = Runwater::checkHas($data['no_order']);
                 $uid      = $runWater->to_uid;
@@ -196,8 +194,7 @@ class LianLianPay
                 // 用户资金增加
                 Wallet::updateWallet($uid, $data['money_order'], Wallet::UP_OR_DOWN['增加']);
             } catch (Exception $e) {
-                Log::error('连连回调失败 ' . $e->getMessage());
-                throw new Exception($e->getMessage());
+                throw new Exception('连连回调失败 ' . $e->getMessage());
             }
         });
 

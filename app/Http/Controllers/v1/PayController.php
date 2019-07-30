@@ -10,8 +10,6 @@ use App\Models\Up\Wallet;
 use App\Models\User;
 use App\Service\AliPay;
 use App\Service\LianLianPay;
-use Illuminate\Support\Facades\Log;
-use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Yansongda\LaravelPay\Facades\Pay;
 
@@ -48,6 +46,8 @@ class PayController extends BaseController
         // 接收数据
         $data = file_get_contents("php://input");
         $data = json_decode($data, TRUE);
+        // 验参
+        LianLianPay::RSAverify($data);
         // 回调操作
         LianLianPay::backOP($data);
         // 返回连连响应参数
@@ -83,8 +83,10 @@ class PayController extends BaseController
     {
         // 回调参数
         $alipay = Pay::alipay();
+        // 验参
+        $data = $alipay->verify()->toArray();
         // 回调操作
-        AliPay::backOP($alipay);
+        AliPay::backOP($data);
         // 返回连连响应参数
         return $alipay->success();
     }

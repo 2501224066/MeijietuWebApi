@@ -54,7 +54,10 @@ class Wallet extends Model
         '减少' => 0
     ];
 
-    // 生成钱包
+    /**
+     * 生成钱包
+     * @param string $uid 用户id
+     */
     public static function createWallet($uid)
     {
         if ($count = self::whereUid($uid)->count())
@@ -69,13 +72,10 @@ class Wallet extends Model
         ]);
         if (!$re)
             throw new Exception('生成钱包失败');
-
-        return true;
     }
 
-// 钱包信息
-    public
-    static function info()
+    // 钱包信息
+    public static function info()
     {
         $re = self::whereUid(JWTAuth::user()->uid)->first();
         if (!$re)
@@ -96,7 +96,10 @@ class Wallet extends Model
         return true;
     }
 
-    // 校验修改校验锁
+    /**
+     * 校验修改校验锁
+     * @param string $uid 用户id
+     */
     public static function checkChangLock($uid)
     {
         $wallet = self::whereUid($uid)->first();
@@ -108,21 +111,25 @@ class Wallet extends Model
 
             throw new Exception('校验修改校验锁失败, 禁用钱包, 请联系客服');
         }
-
-        return true;
     }
 
-    // 钱包余额是够足够购买
+    /**
+     * 钱包余额是够足够购买
+     * @param float $money 金额
+     */
     public static function hasEnoughMoney($money)
     {
         $available_money = self::whereUid(JWTAuth::user()->uid)->value('available_money');
         if ($available_money < $money)
             throw new Exception('钱包余额不足');
-
-        return true;
     }
 
-    // 修改钱包数据
+    /**
+     * 修改钱包数据
+     * @param string $uid 用户id
+     * @param float $money 金额
+     * @param int $upOrDown 增加或减少
+     */
     public static function updateWallet($uid, $money, $upOrDown)
     {
         $time   = date('Y-m-d h:i:s');
