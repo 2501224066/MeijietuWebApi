@@ -20,7 +20,7 @@ class AliPay
      */
     public static function backOP($alipay)
     {
-        Log::notice('连连回调参数', $alipay->toArray());
+        //Log::notice('连连回调参数', $alipay->toArray());
         $uid   = null;
         $money = null;
 
