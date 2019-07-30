@@ -15,7 +15,7 @@ class AliPay
 {
     /**
      * 连连回调操作
-     * @param array $data 回调数据
+     * @param array $alipay 回调数据
      * @throws \Throwable
      */
     public static function backOP($alipay)

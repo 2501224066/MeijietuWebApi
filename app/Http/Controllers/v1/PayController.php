@@ -33,7 +33,7 @@ class PayController extends BaseController
         $data = LianLianPay::lianlianRequestData($runwaterNum, htmlspecialchars($request->money));
 
         return $this->success([
-            'link' => env('PAY_LIANLIAN_URL'),
+            'link' => env('LIANLIAN_PAY_LIANLIAN_URL'),
             'post' => $data
         ]);
     }
@@ -67,7 +67,7 @@ class PayController extends BaseController
         // 生成充值流水
         $runwaterNum = Runwater::createRechargeRunwater($request->money, 'aliPay');
         // 数据
-        $order = [
+        $order                = [
             'out_trade_no' => $runwaterNum,
             'total_amount' => $request->money,
             'subject'      => '支付宝充值',

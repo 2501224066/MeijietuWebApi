@@ -101,8 +101,8 @@ class LianLianPay
             'dt_order'     => date('YmdHid'), // 商户订单时间
             'name_goods'   => '连连充值', // 商品名称
             'money_order'  => $money, // 交易金额
-            'notify_url'   => env('PAY_NOTIFY_URL'), // 服务器异步通知 地址
-            'url_return'   => env('PAY_URL_RETURN'), // 支付结束回显 url
+            'notify_url'   => env('LIANLIAN_PAY_NOTIFY_URL'), // 服务器异步通知 地址
+            'url_return'   => env('LIANLIAN_PAY_URL_RETURN'), // 支付结束回显 url
             'userreq_ip'   => Request::getClientIp(), // 用户端申请IP
             'risk_item'    => json_encode([ // 风险控制参数
                 'frms_ware_category '      => '1008', // 商品类目传1008
