@@ -162,7 +162,7 @@ class LianLianPay
         openssl_free_key($res);
         //返回资源是否成功
         if (!$result)
-            throw new Exception('验签失败');
+            throw new Exception('连连回调验签失败 ', $data);
     }
 
     /**
