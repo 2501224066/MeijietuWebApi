@@ -189,6 +189,7 @@ class LianLianPay
                 // 充值成功流水修改
                 Runwater::rechargeBackSuccessUpdate(
                     $data['no_order'],
+                    $data['dt_order'],
                     $data['oid_paybill'],
                     $data['money_order']);
                 // 用户资金增加

@@ -196,14 +196,15 @@ class Runwater extends Model
      * @param string $callbackRradeNo 交易单号（支付平台单号）
      * @param float $callbackMoneyOrder 回调金额
      */
-    public static function rechargeBackSuccessUpdate($runwaterNum, $callbackRradeNo, $callbackMoneyOrder)
+    public static function rechargeBackSuccessUpdate($runwaterNum, $callbackSuccessTime, $callbackRradeNo, $callbackMoneyOrder)
     {
         $b = self::whereRunwaterNum($runwaterNum)
             ->update([
-                'status'               => self::STATUS['成功'],
-                'callback_time'        => date('Y-m-d H:i:s'),
-                'callback_trade_no'    => $callbackRradeNo,
-                'callback_money_order' => $callbackMoneyOrder
+                'status'                => self::STATUS['成功'],
+                'callback_time'         => date('Y-m-d H:i:s'),
+                'callback_success_time' => $callbackSuccessTime,
+                'callback_trade_no'     => $callbackRradeNo,
+                'callback_money_order'  => $callbackMoneyOrder
             ]);
         if (!$b)
             throw new Exception('流水修改失败');
