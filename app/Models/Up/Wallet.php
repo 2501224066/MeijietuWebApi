@@ -137,7 +137,7 @@ class Wallet extends Model
 
         $wallet->available_money = $available_money;
         $wallet->time            = $time;
-        $wallet->change_lock     = createWalletChangeLock(Wallet::CENTERID, $available_money, $time);
+        $wallet->change_lock     = createWalletChangeLock($uid, $available_money, $time);
         if (!$wallet->save())
             throw new Exception('修改钱包数据失败');
     }
