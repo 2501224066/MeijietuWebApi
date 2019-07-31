@@ -12,7 +12,7 @@ class File
 {
     const IMG_PREFIX = 'images/';
 
-    const FILE_PREFIX = 'file/';
+    const FILE_PREFIX = 'files/';
 
     // 检查格式
     public static function checkExt($file, $key)
