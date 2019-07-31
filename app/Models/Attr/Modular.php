@@ -56,6 +56,6 @@ class Modular extends Model
 
     public function theme(): BelongsToMany
     {
-        return $this->belongsToMany(Theme::class, 'tb_modular_theme', 'modular_id', 'theme_id');
+        return $this->belongsToMany(Theme::class, 'attr_modular_theme', 'modular_id', 'theme_id');
     }
 }

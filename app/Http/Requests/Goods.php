@@ -30,9 +30,9 @@ class Goods extends Base
                 $rules['title']       = ['required', new SpecialChar];
                 $rules['title_about'] = ['required', new SpecialChar];
                 $rules['qq_ID']       = ['required', 'numeric'];
-                $rules['modular_id']  = ['required', 'numeric', 'exists:tb_modular,modular_id'];
-                $rules['theme_id']    = ['required', 'numeric', 'exists:tb_theme,theme_id'];
-                $rules['filed_id']    = ['required', 'numeric', 'exists:tb_filed,filed_id'];
+                $rules['modular_id']  = ['required', 'numeric', 'exists:attr_modular,modular_id'];
+                $rules['theme_id']    = ['required', 'numeric', 'exists:attr_theme,theme_id'];
+                $rules['filed_id']    = ['required', 'numeric', 'exists:attr_filed,filed_id'];
                 $rules['price_json']  = ['required', 'json'];
                 $rules['remarks']     = ['nullable', 'present', new SpecialChar];
                 $rules['avatar_url']  = ['nullable', 'present', new SpecialChar];
@@ -43,27 +43,27 @@ class Goods extends Base
                         $rules['weixin_ID']      = ['required', new SpecialChar];
                         $rules['fans_num']       = ['required', 'numeric'];
                         $rules['reserve_status'] = ['required', new SpecialChar];
-                        $rules['region_id']      = ['required', 'numeric', 'exists:tb_region,region_id'];
+                        $rules['region_id']      = ['required', 'numeric', 'exists:attr_region,region_id'];
                         break;
 
                     case Modular::TAG['微博营销']:
                         $rules['link']           = ['required'];
                         $rules['auth_type']      = ['required', new SpecialChar, 'numeric'];
                         $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
-                        $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
+                        $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:attr_region,region_id'];
                         break;
 
                     case Modular::TAG['视频营销']:
                         $rules['room_ID']     = ['required', new SpecialChar];
                         $rules['fans_num']    = ['required', new SpecialChar, 'numeric'];
-                        $rules['platform_id'] = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
-                        $rules['region_id']   = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
+                        $rules['platform_id'] = ['required', new SpecialChar, 'numeric', 'exists:attr_platform,platform_id'];
+                        $rules['region_id']   = ['required', new SpecialChar, 'numeric', 'exists:attr_region,region_id'];
                         break;
 
                     case Modular::TAG['自媒体营销']:
                         $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
-                        $rules['platform_id']    = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
-                        $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
+                        $rules['platform_id']    = ['required', new SpecialChar, 'numeric', 'exists:attr_platform,platform_id'];
+                        $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:attr_region,region_id'];
                         break;
 
                     case Modular::TAG['软文营销']:
@@ -75,25 +75,25 @@ class Goods extends Base
                         $rules['case_link']            = ['required'];
                         $rules['link_type']            = ['required', new SpecialChar, 'numeric'];
                         $rules['weekend_status']       = ['required', new SpecialChar, 'numeric'];
-                        $rules['platform_id']          = ['required', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
-                        $rules['industry_id']          = ['required', new SpecialChar, 'numeric', 'exists:tb_industry,industry_id'];
-                        $rules['region_id']            = ['required', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
-                        $rules['phone_weightlevel_id'] = ['required', new SpecialChar, 'numeric', 'exists:tb_weightlevel,weightlevel_id'];
-                        $rules['pc_weightlevel_id']    = ['required', new SpecialChar, 'numeric', 'exists:tb_weightlevel,weightlevel_id'];
+                        $rules['platform_id']          = ['required', new SpecialChar, 'numeric', 'exists:attr_platform,platform_id'];
+                        $rules['industry_id']          = ['required', new SpecialChar, 'numeric', 'exists:attr_industry,industry_id'];
+                        $rules['region_id']            = ['required', new SpecialChar, 'numeric', 'exists:attr_region,region_id'];
+                        $rules['phone_weightlevel_id'] = ['required', new SpecialChar, 'numeric', 'exists:attr_weightlevel,weightlevel_id'];
+                        $rules['pc_weightlevel_id']    = ['required', new SpecialChar, 'numeric', 'exists:attr_weightlevel,weightlevel_id'];
                         break;
                 }
                 break;
 
             // 搜索商品
             case 'selectGoods':
-                $rules['modular_id']       = ['required', new SpecialChar, 'numeric', 'exists:tb_modular,modular_id'];
-                $rules['theme_id']         = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_theme,theme_id'];
+                $rules['modular_id']       = ['required', new SpecialChar, 'numeric', 'exists:attr_modular,modular_id'];
+                $rules['theme_id']         = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:attr_theme,theme_id'];
                 $rules['key_word']         = ['nullable', 'present', new SpecialChar];
-                $rules['filed_id']         = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_filed,filed_id'];
-                $rules['platform_id']      = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_platform,platform_id'];
-                $rules['industry_id']      = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_industry,industry_id'];
-                $rules['region_id']        = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_region,region_id'];
-                $rules['priceclassify_id'] = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:tb_priceclassify,priceclassify_id'];
+                $rules['filed_id']         = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:attr_filed,filed_id'];
+                $rules['platform_id']      = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:attr_platform,platform_id'];
+                $rules['industry_id']      = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:attr_industry,industry_id'];
+                $rules['region_id']        = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:attr_region,region_id'];
+                $rules['priceclassify_id'] = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:attr_priceclassify,priceclassify_id'];
                 $rules['fansnumlevel_min'] = ['nullable', 'present', new SpecialChar, 'numeric'];
                 $rules['fansnumlevel_max'] = ['nullable', 'present', new SpecialChar, 'numeric'];
                 $rules['readlevel_min']    = ['nullable', 'present', new SpecialChar, 'numeric'];

@@ -6,6 +6,7 @@ namespace App\Server;
 
 use App\Jobs\IndentSettlement;
 use App\Jobs\SendSms;
+use App\Models\Data\News;
 use App\Server\Captcha;
 use App\Models\Data\IndentInfo;
 use App\Models\System\Setting;
@@ -67,27 +68,20 @@ class Transaction
 
     /**
      * 短信通知
-     * @param mixed $indentData 订单数据
-     * @param string $toUser 发送对象
+     * @param mixed $indentData 订单编号
+     * @param string $uid 发送对象
      * @param string $status 状态描述
      */
-    public static function sms($indentData, $toUser, $status)
+    public static function sms($indent_num, $uid, $status)
     {
-        switch ($toUser) {
-            case 'buyer':
-                $user = User::whereUid($indentData->buyer_id)->first();
-                break;
-            case 'seller':
-                $user = User::whereUid($indentData->seller_id)->first();
-                break;
-        }
+        $user = User::whereUid($uid)->first();
 
         SendSms::dispatch(
             Captcha::TYPE['订单通知'],
             $user->phone,
             [
                 'name'       => $user->nickname,
-                'indent_num' => $indentData->indent_num,
+                'indent_num' => $indent_num,
                 'status'     => $status
             ])
             ->onQueue('SendSms');

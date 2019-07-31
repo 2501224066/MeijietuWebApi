@@ -88,7 +88,8 @@ class TransactionController extends BaseController
             }
         });
 
-        Transaction::sms($indentData, 'seller', '买家已付款');
+        // 发送短信
+        Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家已付款');
         Log::info('订单' . $request->indent_num . '付款完成');
         return $this->success();
     }
@@ -114,6 +115,8 @@ class TransactionController extends BaseController
         $indentData->demand_file = $request->demand_file;
         if (!$indentData->save()) throw new Exception('操作失败');
 
+        // 发送短信
+        Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家已添加需求文档');
         Log::info('订单' . $request->indent_num . '添加需求文档完成');
         return $this->success();
     }

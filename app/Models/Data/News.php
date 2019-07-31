@@ -38,4 +38,22 @@ class News extends Model
         '未删除' => 0,
         '已删除' => 1
     ];
+
+    /**
+     * 消息推送
+     * @param string $uid 推送对象id
+     * @param string $title 标题
+     * @param string $content 内容
+     */
+    public static function put($uid, $title, $content)
+    {
+        $news_id = News::insertGetId([
+            'title'        => $title,
+            'content'      => $content,
+            'release_time' => date('Y-m-d H:i:s')
+        ]);
+
+        if ($news_id && $uid)
+            NewsUser::create(['news_id' => $news_id, 'uid' => $uid]);
+    }
 }
