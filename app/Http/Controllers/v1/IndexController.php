@@ -4,9 +4,9 @@
 namespace App\Http\Controllers\v1;
 
 
-use App\Models\Dt\Information;
-use App\Models\Nb\Goods;
-use App\Models\SystemSetting;
+use App\Models\System\Information;
+use App\Models\Data\Goods;
+use App\Models\System\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
@@ -22,7 +22,7 @@ class IndexController extends BaseController
 //            return json_decode(Cache::get('indexPageData'));
 
         // banner
-        $re['banner'] = SystemSetting::indexPageBanner();
+        $re['banner'] = Setting::indexPageBanner();
         // 推荐商品
         $re['recommendGoods'] = Goods::indexPageRecommendGoods();
         // 随机客服

@@ -6,7 +6,7 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Requests\MealPool as MealPoolRequests;
 use App\Jobs\SoftArticleMealCreateDemandOP;
-use App\Models\Dt\MealPool;
+use App\Models\Data\MealPool;
 use App\Models\User;
 
 class MealPoolController extends BaseController

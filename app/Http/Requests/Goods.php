@@ -4,7 +4,7 @@
 namespace App\Http\Requests;
 
 
-use App\Models\Tb\Modular;
+use App\Models\Attr\Modular;
 use Illuminate\Http\Request;
 use App\Rules\SpecialChar;
 
@@ -108,12 +108,12 @@ class Goods extends Base
 
             // 单个商品信息
             case 'oneGoodsInfo':
-                $rules['goods_num'] = ['required', new SpecialChar, 'exists:nb_goods,goods_num'];
+                $rules['goods_num'] = ['required', new SpecialChar, 'exists:data_goods,goods_num'];
                 break;
 
             // 商品下架
             case 'goodsDown':
-                $rules['goods_num'] = ['required', new SpecialChar, 'exists:nb_goods,goods_num'];
+                $rules['goods_num'] = ['required', new SpecialChar, 'exists:data_goods,goods_num'];
                 break;
         }
 

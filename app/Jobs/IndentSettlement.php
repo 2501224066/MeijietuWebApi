@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Models\Indent\IndentInfo;
-use App\Models\Up\Runwater;
-use App\Models\Up\Wallet;
-use App\Service\Pub;
-use App\Service\Transaction;
+use App\Models\Data\IndentInfo;
+use App\Models\Pay\Runwater;
+use App\Models\Pay\Wallet;
+use App\Server\Pub;
+use App\Server\Transaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

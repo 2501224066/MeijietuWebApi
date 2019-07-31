@@ -6,15 +6,15 @@ namespace App\Http\Controllers\v1;
 use App\Http\Requests\Transaction as TransactionRequests;
 use App\Jobs\IndentSettlement;
 use App\Jobs\SendSms;
-use App\Models\Captcha;
-use App\Models\Indent\IndentInfo;
-use App\Models\Indent\IndentItem;
-use App\Models\SystemSetting;
-use App\Models\Up\Runwater;
-use App\Models\Up\Wallet;
+use App\Server\Captcha;
+use App\Models\Data\IndentInfo;
+use App\Models\Data\IndentItem;
+use App\Models\System\Setting;
+use App\Models\Pay\Runwater;
+use App\Models\Pay\Wallet;
 use App\Models\User;
-use App\Service\Transaction;
-use App\Service\Pub;
+use App\Server\Transaction;
+use App\Server\Pub;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
@@ -403,7 +403,7 @@ class TransactionController extends BaseController
                 // 修改订单信息
                 IndentInfo::updateIndent($indentData, IndentInfo::STATUS['全部完成']);
                 // 存入延迟队列结算
-                $delayTime = SystemSetting::whereSettingName('trans_payment_delay')->value('value');
+                $delayTime = Setting::whereSettingName('trans_payment_delay')->value('value');
                 IndentSettlement::dispatch($indentData->indent_num)->onQueue('IndentSettlement')->delay($delayTime);
             } catch (Exception $e) {
                 throw new Exception($e->getMessage());

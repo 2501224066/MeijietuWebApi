@@ -79,6 +79,14 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         //  分配客服
         $api->post('distributionSalsesman', 'UserInfoController@distributionSalsesman');
 
+        // 消息
+        //  用户消息
+        $api->post('newsBelongSelf', 'NewsController@newsBelongSelf');
+        //  消息内容
+        $api->post('newsInfo', 'NewsController@newsInfo');
+        //  消息已读
+        $api->post('newsReaded', 'NewsController@newsReaded');
+
         // 客服
         //  服务客户列表
         $api->post('serveUserSelect', 'SalesmanController@serveUserSelect');

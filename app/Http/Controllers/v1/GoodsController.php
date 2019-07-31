@@ -4,12 +4,11 @@
 namespace App\Http\Controllers\v1;
 
 use App\Jobs\GoodsCreatedOP;
-use App\Models\Nb\Goods;
-use App\Models\Nb\GoodsPrice;
-use App\Models\Tb\Modular;
-use App\Models\Tb\Priceclassify;
+use App\Models\Data\Goods;
+use App\Models\Data\GoodsPrice;
+use App\Models\Attr\Modular;
 use App\Models\User;
-use App\Service\Pub;
+use App\Server\Pub;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Goods as GoodsRequests;
 

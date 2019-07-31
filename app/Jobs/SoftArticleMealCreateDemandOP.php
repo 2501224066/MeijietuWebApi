@@ -3,10 +3,10 @@
 
 namespace App\Jobs;
 
-use App\Models\Dt\Demand;
-use App\Models\Indent\IndentInfo;
-use App\Models\Nb\Goods;
-use App\Models\Nb\GoodsPrice;
+use App\Models\Data\Demand;
+use App\Models\Data\IndentInfo;
+use App\Models\Data\Goods;
+use App\Models\Data\GoodsPrice;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

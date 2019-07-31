@@ -31,7 +31,7 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param \Exception $exception
      * @return void
      */
     public function report(Exception $exception)
@@ -42,12 +42,26 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $exception
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $class = get_class($exception);
+        if ((!env('API_DEBUG'))
+            && in_array($class, self::SHIELD_ERR)) {
+            return [
+                'status_code' => 500,
+                'message'     => '服务异常',
+                'data'        => []
+            ];
+        }
     }
+
+    // 屏蔽报错列表
+    const SHIELD_ERR = [
+        'Illuminate\Database\QueryException'
+    ];
+
 }

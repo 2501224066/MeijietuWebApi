@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Nb\Goods;
-use App\Models\Tb\Modular;
+use App\Models\Data\Goods;
+use App\Models\Attr\Modular;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

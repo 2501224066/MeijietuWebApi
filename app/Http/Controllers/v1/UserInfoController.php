@@ -5,11 +5,11 @@ namespace App\Http\Controllers\v1;
 
 
 use App\Http\Requests\UserInfo as UserInfoRequests;
-use App\Models\Captcha;
+use App\Server\Captcha;
 use App\Models\Realname\RealnameEnterprise;
 use App\Models\Realname\RealnamePeople;
 use App\Models\User;
-use App\Service\Salesman;
+use App\Server\Salesman;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserInfoController extends BaseController
@@ -18,6 +18,7 @@ class UserInfoController extends BaseController
      * 个人实名认证
      * @param UserInfoRequests $request
      * @return mixed
+     * @throws \Throwable
      */
     public function realnamePeople(UserInfoRequests $request)
     {
@@ -49,6 +50,7 @@ class UserInfoController extends BaseController
      * 企业实名认证
      * @param UserInfoRequests $request
      * @return mixed
+     * @throws \Throwable
      */
     public function realnameEnterprise(UserInfoRequests $request)
     {

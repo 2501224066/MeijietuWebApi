@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\v1;
 
 use App\Models\Log\LogUpload;
-use App\Service\File;
+use App\Server\File;
 use App\Http\Requests\File as FileRequest;
 
 class FileController extends BaseController

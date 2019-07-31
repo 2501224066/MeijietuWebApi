@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 
+use App\Models\Data\Goods;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -34,20 +35,20 @@ class test extends Command
 
     public function handle()
     {
-        $start = -1;
+        $start = 65000;
         while ($start < 1000000) {
             echo $start;
             $start++;
 
             // TODO...
-            $t = User::where('uid', '!=', '')
+            $t = Goods::where('uid', '!=', '')
                 ->offset($start)
                 ->limit(1)
                 ->first();
 
-            $num = createNum('USER');
+            $num = createNum('GOODS');
             echo " " . $num . "\n";
-            $t->user_num = $num;
+            $t->goods_num = $num;
             $t->save();
         }
 

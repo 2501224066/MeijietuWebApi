@@ -4,13 +4,15 @@ namespace App\Http\Controllers\v1;
 
 use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
-use App\Models\Nb\Collection;
-use App\Models\Nb\Shopcart;
+use App\Models\Data\Collection;
+use App\Models\Data\Shopcart;
+use App\Models\Data\News;
+use App\Models\Data\NewsUser;
 use App\Models\Realname\RealnamePeople;
 use App\Models\User;
 use App\Http\Requests\Auth as AuthRequests;
-use App\Models\Captcha;
-use App\Service\Pub;
+use App\Server\Captcha;
+use App\Server\Pub;
 use Dingo\Api\Routing\Helpers;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -141,25 +143,27 @@ class AuthController extends BaseController
      */
     public function me()
     {
-        $user           = auth('api')->user();
-        $realnamePeople = RealnamePeople::whereUid($user->uid)->first();
-        $shopcartCount  = Shopcart::whereUid($user->uid)->count();
-        $collectionArr  = Collection::whereUid($user->uid)->pluck('goods_id');
+        $user             = auth('api')->user();
+        $realnamePeople   = RealnamePeople::whereUid($user->uid)->first();
+        $shopcartCount    = Shopcart::whereUid($user->uid)->count();
+        $collectionArr    = Collection::whereUid($user->uid)->pluck('goods_id');
+        $unreadNewsConunt = NewsUser::unreRadNewsConunt($user->uid);
         return $this->success([
-            "head_portrait"   => $user->head_portrait,
-            "truename"        => $realnamePeople ? $realnamePeople->truename : null,
-            "user_num"        => $user->user_num,
-            "nickname"        => $user->nickname,
-            "sex"             => $user->sex,
-            "email"           => $user->email,
-            "phone"           => $user->phone,
-            "birth"           => $user->birth,
-            "qq_ID"           => $user->qq_ID,
-            "weixin_ID"       => $user->weixin_ID,
-            "realname_status" => $user->realname_status,
-            "identity"        => $user->identity,
-            'shopcart_count'  => $shopcartCount,
-            'collectionArr'   => $collectionArr
+            "head_portrait"    => $user->head_portrait,
+            "truename"         => $realnamePeople ? $realnamePeople->truename : null,
+            "user_num"         => $user->user_num,
+            "nickname"         => $user->nickname,
+            "sex"              => $user->sex,
+            "email"            => $user->email,
+            "phone"            => $user->phone,
+            "birth"            => $user->birth,
+            "qq_ID"            => $user->qq_ID,
+            "weixin_ID"        => $user->weixin_ID,
+            "realname_status"  => $user->realname_status,
+            "identity"         => $user->identity,
+            'shopcart_count'   => $shopcartCount,
+            'collectionArr'    => $collectionArr,
+            'unreadNewsConunt' => $unreadNewsConunt
         ]);
     }
 

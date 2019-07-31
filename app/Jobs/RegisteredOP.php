@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Models\Up\Wallet;
+use App\Models\Pay\Wallet;
 use App\Models\User;
-use App\Service\Salesman;
+use App\Server\Salesman;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

@@ -5,11 +5,11 @@ namespace App\Http\Controllers\v1;
 
 
 use App\Http\Requests\Pay as PayRequests;
-use App\Models\Up\Runwater;
-use App\Models\Up\Wallet;
+use App\Models\Pay\Runwater;
+use App\Models\Pay\Wallet;
 use App\Models\User;
-use App\Service\AliPay;
-use App\Service\LianLianPay;
+use App\Server\AliPay;
+use App\Server\LianLianPay;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Yansongda\LaravelPay\Facades\Pay;
 

@@ -4,7 +4,7 @@
 namespace App\Models\Log;
 
 
-use App\Service\Pub;
+use App\Server\Pub;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Facades\JWTAuth;
 

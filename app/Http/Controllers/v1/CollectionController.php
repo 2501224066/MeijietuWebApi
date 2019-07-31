@@ -5,7 +5,7 @@ namespace App\Http\Controllers\v1;
 
 
 use App\Http\Requests\Goods as GoodsRequests;
-use App\Models\Nb\Collection;
+use App\Models\Data\Collection;
 use App\Models\User;
 
 class CollectionController extends BaseController

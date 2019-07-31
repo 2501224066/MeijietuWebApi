@@ -26,7 +26,7 @@ class IndentCreatedOP implements ShouldQueue
         $info = $this->info;
 
         foreach ($info as $i) {
-            DB::table('nb_shopcart')
+            DB::table('data_shopcart')
                 ->where('goods_id', $i['goods_id'])
                 ->delete();
         }

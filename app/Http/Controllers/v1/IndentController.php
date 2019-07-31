@@ -7,9 +7,9 @@ namespace App\Http\Controllers\v1;
 use App\Http\Requests\Indent as IndentRequests;
 use App\Http\Requests\Indent;
 use App\Jobs\IndentCreatedOP;
-use App\Models\Indent\IndentInfo;
+use App\Models\Data\IndentInfo;
 use App\Models\User;
-use App\Service\Salesman;
+use App\Server\Salesman;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class IndentController extends BaseController

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\v1;
 
 
 use App\Http\Requests\Goods as GoodsRequests;
-use App\Models\Nb\Shopcart;
+use App\Models\Data\Shopcart;
 use App\Models\User;
 
 class ShopcartController extends BaseController

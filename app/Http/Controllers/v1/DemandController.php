@@ -6,10 +6,10 @@ namespace App\Http\Controllers\v1;
 
 use \App\Http\Requests\Demand as DemandRequests;
 use App\Jobs\DemandSettlement;
-use App\Models\Dt\Demand;
-use App\Models\SystemSetting;
+use App\Models\Data\Demand;
+use App\Models\System\Setting;
 use App\Models\User;
-use App\Service\Pub;
+use App\Server\Pub;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -91,7 +91,7 @@ class DemandController extends BaseController
         $demand->back_link = htmlspecialchars($request->back_link);
         if (!$demand->save()) throw new Exception('操作失败');
         // 存入延迟队列结算
-        $delayTime = SystemSetting::whereSettingName('trans_payment_delay')->value('value');
+        $delayTime = Setting::whereSettingName('trans_payment_delay')->value('value');
         DemandSettlement::dispatch($request->demand_id)->onQueue('DemandSettlement')->delay($delayTime);
 
         Log::info('媒体主' . JWTFactory::user()->nickname . '完成需求', [

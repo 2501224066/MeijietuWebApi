@@ -4,7 +4,7 @@
 namespace App\Jobs;
 
 use App\Mail\emailVerifCode;
-use App\Models\Captcha;
+use App\Server\Captcha;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

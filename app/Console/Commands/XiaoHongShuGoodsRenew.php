@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Nb\Goods;
-use App\Models\Nb\GoodsPrice;
-use App\Models\Tb\Filed;
+use App\Models\Data\Goods;
+use App\Models\Data\GoodsPrice;
+use App\Models\Attr\Filed;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;

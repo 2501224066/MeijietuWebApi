@@ -3,11 +3,11 @@
 
 namespace App\Http\Controllers\v1;
 
-use App\Models\Dt\Demand;
-use App\Models\Nb\Goods;
+use App\Models\Data\Demand;
+use App\Models\Data\Goods;
 use App\Models\User;
-use App\Service\Pub;
-use App\Service\Salesman;
+use App\Server\Pub;
+use App\Server\Salesman;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\Salesman as SalesmanRequests;

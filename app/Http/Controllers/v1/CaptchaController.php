@@ -5,7 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Requests\Captcha as CaptchaRequests;
 use App\Jobs\SendEmail;
 use App\Jobs\SendSms;
-use App\Models\Captcha;
+use App\Server\Captcha;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Support\Facades\Cache;
 

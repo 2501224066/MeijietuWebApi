@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Up\Wallet;
+use App\Models\Pay\Wallet;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +37,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read \App\Models\Up\Wallet $wallet
+ * @property-read \App\Models\Pay\Wallet $wallet
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
@@ -140,7 +140,7 @@ class User extends Authenticatable implements JWTSubject
             'nickname'      => htmlspecialchars($request->nickname),
             'identity'      => htmlspecialchars($request->identity),
             'ip'            => $request->getClientIp(),
-            'head_portrait' => SystemSetting::whereSettingName('default_head_portrait')->value('img'),
+            'head_portrait' => Setting::whereSettingName('default_head_portrait')->value('img'),
             'salesman_id'   => $request->salesman_id,
             'salesman_name' => $request->salesman_id ? User::whereUid($request->salesman_id)->value('nickname') : null,
             'created_at'    => $time,

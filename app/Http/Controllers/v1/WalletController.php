@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\v1;
 
 
-use App\Models\Up\Wallet;
+use App\Models\Pay\Wallet;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class WalletController extends BaseController

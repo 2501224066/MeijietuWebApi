@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\v1;
 
 
-use App\Models\Up\Runwater;
+use App\Models\Pay\Runwater;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class RunwaterController extends BaseController

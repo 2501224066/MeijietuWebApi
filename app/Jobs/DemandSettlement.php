@@ -4,10 +4,10 @@
 namespace App\Jobs;
 
 
-use App\Models\Dt\Demand;
-use App\Models\Up\Runwater;
-use App\Models\Up\Wallet;
-use App\Service\Pub;
+use App\Models\Data\Demand;
+use App\Models\Pay\Runwater;
+use App\Models\Pay\Wallet;
+use App\Server\Pub;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

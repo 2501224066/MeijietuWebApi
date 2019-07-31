@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Requests\Information as InformationRequests;
-use App\Models\Dt\Information;
+use App\Models\System\Information;
 
 class InformationController extends BaseController
 {
