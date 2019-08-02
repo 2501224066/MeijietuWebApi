@@ -290,7 +290,7 @@ class IndentInfo extends Model
         $query = IndentInfo::whereDeleteStatus(self::DELETE_STATUS['未删除'])
             ->whereRaw('buyer_id = ? or seller_id = ?', [$user->uid, $user->uid])
             ->with('indent_item')
-            ->orderBy('create_time', 'ASC');
+            ->orderBy('create_time', 'DESC');
 
         // 媒体主显示 已付款待接单 的状态节点后订单
         if ($user->identity == User::IDENTIDY['媒体主']) {
