@@ -47,7 +47,7 @@ class Goods extends Base
                         break;
 
                     case Modular::TAG['微博营销']:
-                        $rules['link']           = ['required'];
+                        $rules['link']           = ['required', 'active_url'];
                         $rules['auth_type']      = ['required', new SpecialChar, 'numeric'];
                         $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
                         $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:attr_region,region_id'];
@@ -71,8 +71,8 @@ class Goods extends Base
                         $rules['news_source_status']   = ['required', new SpecialChar, 'numeric'];
                         $rules['entry_status']         = ['required', new SpecialChar, 'numeric'];
                         $rules['included_sataus']      = ['required', new SpecialChar, 'numeric'];
-                        $rules['link']                 = ['required'];
-                        $rules['case_link']            = ['required'];
+                        $rules['link']                 = ['required', 'active_url'];
+                        $rules['case_link']            = ['required', 'active_url'];
                         $rules['link_type']            = ['required', new SpecialChar, 'numeric'];
                         $rules['weekend_status']       = ['required', new SpecialChar, 'numeric'];
                         $rules['platform_id']          = ['required', new SpecialChar, 'numeric', 'exists:attr_platform,platform_id'];
@@ -124,6 +124,7 @@ class Goods extends Base
     {
         return [
             'present'              => '参数不全',
+            'active_url'           => '非有效链接',
             'title.required'       => '商品标题不得为空',
             'title.unique'         => '商品标题已存在',
             'title_about.required' => '标题简介不得为空',

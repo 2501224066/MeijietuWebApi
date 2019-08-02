@@ -47,6 +47,7 @@ class Auth extends Base
                 $rules['nextToken']             = ['required', new SpecialChar];
                 $rules['identity']              = ['required', new SpecialChar, 'numeric'];
                 $rules['salesman_id']           = ['nullable', 'present', new SpecialChar, 'numeric', 'exists:user,uid'];
+                $rules['agent_domain']          = ['nullable', 'present', 'active_url'];
                 break;
 
             // 登录
@@ -78,6 +79,8 @@ class Auth extends Base
     public function messages()
     {
         return [
+            'active_url'           => '非有效链接',
+
             'phone.required' => '手机号不得为空',
             'phone.regex'    => '手机号无效',
             'phone.unique'   => '手机号已被使用',

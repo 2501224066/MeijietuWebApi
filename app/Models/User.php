@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Data\Agent;
 use App\Models\Pay\Wallet;
+use App\Models\System\Setting;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -61,6 +63,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereWeixinID($value)
  * @mixin \Eloquent
+ * @property string $agent_num 代理编号
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAgentNum($value)
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -130,6 +134,12 @@ class User extends Authenticatable implements JWTSubject
     // 添加用户
     public static function add($request)
     {
+        // 代理身份
+        $agent_num = null;
+        if ($request->agent_domain != null) {
+            $agent_num = Agent::where('domain', 'like', '%' . $request . '%')->value('agent_num');
+        }
+
         // 添加user
         $time = date('Y-m-d H:i:s');
         $uid  = self::insertGetId([
@@ -137,6 +147,7 @@ class User extends Authenticatable implements JWTSubject
             'phone'         => htmlspecialchars($request->phone),
             'email'         => htmlspecialchars($request->email),
             'password'      => Hash::make(htmlspecialchars($request->password)),
+            'agent_num'     => $agent_num,
             'nickname'      => htmlspecialchars($request->nickname),
             'identity'      => htmlspecialchars($request->identity),
             'ip'            => $request->getClientIp(),
@@ -145,7 +156,6 @@ class User extends Authenticatable implements JWTSubject
             'salesman_name' => $request->salesman_id ? User::whereUid($request->salesman_id)->value('nickname') : null,
             'created_at'    => $time,
             'updated_at'    => $time
-
         ]);
         if (!$uid)
             throw new Exception('注册失败');

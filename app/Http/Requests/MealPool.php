@@ -6,7 +6,7 @@ namespace App\Http\Requests;
 
 use App\Rules\SpecialChar;
 
-class MealPool  extends Base
+class MealPool extends Base
 {
     public function authorize()
     {
@@ -21,7 +21,7 @@ class MealPool  extends Base
             // 创建套餐池
             case 'createMealPool':
                 $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
-                $rules['pool_name']     = ['required', new SpecialChar];
+                $rules['pool_name']     = ['required', new SpecialChar, 'unique:data_mealpool,pool_name'];
                 break;
 
             // 软文套餐创建需求
@@ -37,9 +37,10 @@ class MealPool  extends Base
     public function messages()
     {
         return [
-            'json'    => '参数格式错误',
+            'json' => '参数格式错误',
 
-            'indent_num.exists' => '订单不存在'
+            'indent_num.exists' => '订单不存在',
+            'pool_name.unique'  => '池名称重复'
         ];
     }
 }
