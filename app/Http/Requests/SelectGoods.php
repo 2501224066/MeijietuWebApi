@@ -25,7 +25,7 @@ class SelectGoods extends Base
         switch ($this->getFunName()) {
             // 搜索微信商品
             case 'selectWeixinGoods':
-                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:weixin_theme,theme_id'];
+                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:attr_theme,theme_id'];
                 $rules['keyword']          = ['nullable', new SpecialChar];
                 $rules['filed_id']         = ['nullable', new SpecialChar, 'numeric'];
                 $rules['fansnumlevel_min'] = ['nullable', new SpecialChar, 'numeric'];
@@ -40,7 +40,7 @@ class SelectGoods extends Base
 
             // 搜索微博商品
             case 'selectWeiboGoods':
-                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:weibo_theme,theme_id'];
+                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:attr_theme,theme_id'];
                 $rules['keyword']          = ['nullable', new SpecialChar];
                 $rules['filed_id']         = ['nullable', new SpecialChar, 'numeric'];
                 $rules['fansnumlevel_min'] = ['nullable', new SpecialChar, 'numeric'];
@@ -54,7 +54,7 @@ class SelectGoods extends Base
 
             // 搜索视频商品
             case 'selectVideoGoods':
-                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:video_theme,theme_id'];
+                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:attr_theme,theme_id'];
                 $rules['keyword']          = ['nullable', new SpecialChar];
                 $rules['filed_id']         = ['nullable', new SpecialChar, 'numeric'];
                 $rules['platform_id']      = ['nullable', new SpecialChar, 'numeric'];
@@ -68,7 +68,7 @@ class SelectGoods extends Base
 
             // 搜索自媒体商品
             case 'selectSelfmediaGoods':
-                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:selfmedia_theme,theme_id'];
+                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:attr_theme,theme_id'];
                 $rules['keyword']          = ['nullable', new SpecialChar];
                 $rules['filed_id']         = ['nullable', new SpecialChar, 'numeric'];
                 $rules['platform_id']      = ['nullable', new SpecialChar, 'numeric'];
@@ -81,7 +81,7 @@ class SelectGoods extends Base
 
             // 搜索软文商品
             case 'selectSoftarticleGoods':
-                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:softarticle_theme,theme_id'];
+                $rules['theme_id']         = ['required', new SpecialChar, 'numeric', 'exists:attr_theme,theme_id'];
                 $rules['keyword']          = ['nullable', new SpecialChar];
                 $rules['filed_id']         = ['nullable', new SpecialChar, 'numeric'];
                 $rules['platform_id']      = ['nullable', new SpecialChar, 'numeric'];

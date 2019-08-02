@@ -21,7 +21,7 @@ class Information extends Base
         switch ($this->getFunName()) {
             // 资讯详情
             case 'informationInfo':
-                $rules['information_id'] = ['required', new SpecialChar, 'numeric','exists:dt_information,information_id'];
+                $rules['information_id'] = ['required', new SpecialChar, 'numeric','exists:system_information,information_id'];
                 break;
         }
 

@@ -25,57 +25,57 @@ class Transaction extends Base
         switch ($this->getFunName()) {
             // 待付款删除订单
             case 'deleteIndentBeforePayment':
-                $rules['indent_num'] = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num'] = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 break;
 
             // 订单付款
             case 'indentPayment':
-                $rules['indent_num'] = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num'] = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 break;
 
             // 买家添加需求文档
             case 'addDemandFile':
-                $rules['indent_num']  = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num']  = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 $rules['demand_file'] = ['required', new SpecialChar];
                 break;
 
             // 待接单取消订单
             case 'acceptIndentBeforeCancel':
-                $rules['indent_num']   = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num']   = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 $rules['cancel_cause'] = ['required', new SpecialChar];
                 break;
 
             // 卖家接单
             case 'acceptIndent':
-                $rules['indent_num'] = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num'] = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 break;
 
             // 交易中买家取消订单
             case 'inTransactionBuyerCancel':
-                $rules['indent_num']   = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num']   = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 $rules['cancel_cause'] = ['required', new SpecialChar];
                 break;
 
             // 交易中卖家取消订单
             case 'inTransactionSellerCancel':
-                $rules['indent_num']   = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num']   = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 $rules['cancel_cause'] = ['required', new SpecialChar];
                 break;
 
             // 卖家确认完成
             case 'sellerConfirmComplete':
-                $rules['indent_num'] = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num'] = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 break;
 
             // 卖家添加成果文档
             case 'addAchievementsFile':
-                $rules['indent_num']        = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num']        = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 $rules['achievements_file'] = ['required', new SpecialChar];
                 break;
 
             // 买家确认完成
             case 'buyerConfirmComplete':
-                $rules['indent_num'] = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num'] = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 break;
         }
 
