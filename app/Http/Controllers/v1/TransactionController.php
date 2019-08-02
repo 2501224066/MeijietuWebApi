@@ -205,7 +205,7 @@ class TransactionController extends BaseController
                     // 卖家钱包资金减少
                     Wallet::updateWallet($indentData->seller_id, $indentData->compensate_fee, Wallet::UP_OR_DOWN['减少']);
                     // 生成交易流水
-                    Runwater::createTransRunwater($indentData->buyer_id,
+                    Runwater::createTransRunwater($indentData->seller_id,
                         Wallet::CENTERID,
                         Runwater::TYPE['支付赔偿保证费'],
                         Runwater::DIRECTION['转出'],
