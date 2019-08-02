@@ -4,7 +4,9 @@
 namespace App\Models\Pay;
 
 
+use App\Jobs\SendSms;
 use App\Models\User;
+use App\Server\Captcha;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
@@ -141,5 +143,20 @@ class Wallet extends Model
         $wallet->change_lock     = createWalletChangeLock($uid, $available_money, $time);
         if (!$wallet->save())
             throw new Exception('修改钱包数据失败');
+
+        if ($uid != self::CENTERID) self::sms();
+    }
+
+    public static function sms($uid, $money, $upOrDown, $available_money)
+    {
+        $user = User::whereUid($uid)->first();
+        SendSms::dispatch(Captcha::TYPE['资金变动'],
+            $user->phone,
+            [
+                'name'      => $user->nickname,
+                'money'     => $money,
+                'direction' => $upOrDown == self::UP_OR_DOWN['增加'] ? '转入' : '转出',
+                'amount'    => $available_money
+            ])->onQueue('SendSms');
     }
 }
