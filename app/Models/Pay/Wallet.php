@@ -144,8 +144,7 @@ class Wallet extends Model
         if (!$wallet->save())
             throw new Exception('修改钱包数据失败');
 
-        if ($uid != self::CENTERID)
-            self::sms($uid, $money, $upOrDown, $available_money);
+        self::sms($uid, $money, $upOrDown, $available_money);
     }
 
     /**
@@ -157,14 +156,18 @@ class Wallet extends Model
      */
     public static function sms($uid, $money, $upOrDown, $available_money)
     {
-        $user = User::whereUid($uid)->first();
-        SendSms::dispatch(Captcha::TYPE['资金变动'],
-            $user->phone,
-            [
-                'name'      => $user->nickname,
-                'money'     => $money,
-                'direction' => $upOrDown == self::UP_OR_DOWN['增加'] ? '转入' : '转出',
-                'amount'    => $available_money
-            ])->onQueue('SendSms');
+        // 中心账号资金变动不发送短信
+        if ($uid != self::CENTERID) {
+
+            $user = User::whereUid($uid)->first();
+            SendSms::dispatch(Captcha::TYPE['资金变动'],
+                $user->phone,
+                [
+                    'name'      => $user->nickname,
+                    'money'     => $money,
+                    'direction' => $upOrDown == self::UP_OR_DOWN['增加'] ? '转入' : '转出',
+                    'amount'    => $available_money
+                ])->onQueue('SendSms');
+        }
     }
 }
