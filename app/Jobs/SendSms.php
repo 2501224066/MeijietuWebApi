@@ -49,6 +49,7 @@ class SendSms implements ShouldQueue
                 break;
 
             case Captcha::TYPE['订单通知']:
+                echo  2;
                 $ali_sms = new AliSms();
                 $ali_sms->sendSms($phone,
                     env('ALIYUN_SMS_TEMPLATE_CODE_B'),
