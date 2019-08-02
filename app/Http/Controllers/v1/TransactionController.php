@@ -414,6 +414,8 @@ class TransactionController extends BaseController
                 User::checkIdentity(User::IDENTIDY['广告主']);
                 // 订单数据
                 $indentData = IndentInfo::whereIndentNum($request->indent_num)->lockForUpdate()->first();
+                // 检查成果文档
+                Pub::checkParm($indentData->achievements_file, true, '尚未上传需求文档');
                 // 检查订单状态
                 Pub::checkParm($indentData->status, IndentInfo::STATUS['卖方完成'], '订单状态错误');
                 // 检测订单归属
