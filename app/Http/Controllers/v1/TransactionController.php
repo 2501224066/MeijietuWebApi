@@ -390,7 +390,7 @@ class TransactionController extends BaseController
         // 检测订单归属
         IndentInfo::checkIndentBelong([$indentData->seller_id]);
         // 添加
-        $indentData->achievements_file = $request->demand_file;
+        $indentData->achievements_file = $request->achievements_file;
         if (!$indentData->save()) throw new Exception('操作失败');
 
         Transaction::sms($indentData->indent_num, $indentData->buyer_id, '卖家添加成果文档');
