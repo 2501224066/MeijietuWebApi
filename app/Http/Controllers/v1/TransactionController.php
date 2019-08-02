@@ -46,6 +46,33 @@ class TransactionController extends BaseController
     }
 
     /**
+     * 买家添加需求文档
+     * @param TransactionRequests $request
+     * @return mixed
+     */
+    public function addDemandFile(TransactionRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['广告主']);
+        // 订单数据
+        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 仅上传一次限制
+        Pub::checkParm($indentData->demand_file, false, '只可上传一次');
+        // 检查订单状态
+        Pub::checkParm($indentData->status, IndentInfo::STATUS['待付款'], '订单状态错误');
+        // 检测订单归属
+        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
+        // 添加
+        $indentData->demand_file = $request->demand_file;
+        if (!$indentData->save()) throw new Exception('操作失败');
+
+        // 发送短信
+        Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家已添加需求文档');
+        Log::info('订单' . $request->indent_num . '添加需求文档完成');
+        return $this->success();
+    }
+
+    /**
      * 订单付款
      * @param TransactionRequests $request
      * @return mixed
@@ -60,6 +87,8 @@ class TransactionController extends BaseController
                 User::checkIdentity(User::IDENTIDY['广告主']);
                 // 订单数据 *加锁
                 $indentData = IndentInfo::whereIndentNum($request->indent_num)->lockForUpdate()->first();
+                // 检查需求文档
+                Pub::checkParm($indentData->demand_file, true, '尚未上传需求文档');
                 // 检查订单状态
                 Pub::checkParm($indentData->status, IndentInfo::STATUS['待付款'], '订单状态错误');
                 // 检测订单归属
@@ -91,33 +120,6 @@ class TransactionController extends BaseController
         // 发送短信
         Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家已付款');
         Log::info('订单' . $request->indent_num . '付款完成');
-        return $this->success();
-    }
-
-    /**
-     * 买家添加需求文档
-     * @param TransactionRequests $request
-     * @return mixed
-     */
-    public function addDemandFile(TransactionRequests $request)
-    {
-        // 检查身份
-        User::checkIdentity(User::IDENTIDY['广告主']);
-        // 订单数据
-        $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
-        // 仅上传一次限制
-        Pub::checkParm($indentData->demand_file, false, '只可上传一次');
-        // 检查订单状态
-        Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
-        // 检测订单归属
-        IndentInfo::checkIndentBelong([$indentData->buyer_id]);
-        // 添加
-        $indentData->demand_file = $request->demand_file;
-        if (!$indentData->save()) throw new Exception('操作失败');
-
-        // 发送短信
-        Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家已添加需求文档');
-        Log::info('订单' . $request->indent_num . '添加需求文档完成');
         return $this->success();
     }
 
@@ -358,8 +360,6 @@ class TransactionController extends BaseController
         User::checkIdentity(User::IDENTIDY['媒体主']);
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
-        // 检查需求文档
-        Pub::checkParm($indentData->demand_file, true, '买家尚未上传需求文档');
         // 检查订单状态
         Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
         // 检测订单归属
