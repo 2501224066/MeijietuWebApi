@@ -358,6 +358,8 @@ class TransactionController extends BaseController
         User::checkIdentity(User::IDENTIDY['媒体主']);
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
+        // 检查需求文档
+        Pub::checkParm($indentData->demand_file, true, '买家尚未上传需求文档');
         // 检查订单状态
         Pub::checkParm($indentData->status, IndentInfo::STATUS['交易中'], '订单状态错误');
         // 检测订单归属
