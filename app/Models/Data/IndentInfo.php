@@ -245,7 +245,7 @@ class IndentInfo extends Model
         switch ($type) {
             // 标准模式下卖家收入默认为 订单价格*（1-服务费率） 仍需议价
             case Modular::SETTLEMENT_TYPE['标准模式']:
-                $sellerIncome = floor($indentPrice * $serviceFeeRatio);
+                $sellerIncome = floor($indentPrice * (1 - $serviceFeeRatio));
                 break;
 
             // 软文模式下卖家收入为商品底价 无需议价
