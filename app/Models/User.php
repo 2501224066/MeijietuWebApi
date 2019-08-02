@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Data\Agent;
 use App\Models\Pay\Wallet;
 use App\Models\System\Setting;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -16,6 +15,7 @@ use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
+
 /**
  * App\Models\User
  *
@@ -26,16 +26,19 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property string $phone 电话
  * @property string $password 密码
  * @property string|null $head_portrait 头像
+ * @property string|null $domain 域名
+ * @property string|null $authorize_maturity 授权截止日期
  * @property int|null $sex 性别 1=男 0=女
  * @property string|null $birth 出生日期
  * @property string|null $qq_ID qq号
  * @property string|null $weixin_ID 微信号
- * @property int|null $identity 身份 1=广告主 2=媒体主 3=业务员
+ * @property int|null $identity 身份 1=广告主 2=媒体主 3=业务员 4=代理
  * @property int $realname_status 实名认证状态 0=未认证 1=个人认证 2=企业认证
  * @property string $ip 客户端最近一次登录ip
  * @property int|null $status 状态 0=禁用 1=启用
- * @property int|null $salesman_id 客服id
+ * @property int|null $salesman_id 客服uid
  * @property string|null $salesman_name 客服名称
+ * @property string|null $agent_id 代理uid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -43,8 +46,11 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAgentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAuthorizeMaturity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirth($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereDomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereHeadPortrait($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIdentity($value)
@@ -63,8 +69,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereWeixinID($value)
  * @mixin \Eloquent
- * @property string $agent_num 代理编号
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAgentNum($value)
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -82,7 +86,7 @@ class User extends Authenticatable implements JWTSubject
     const GF_SELLER = 1;
 
     // 官方买家
-    const GF_BUYER = 2;
+    //const GF_BUYER = 2;
 
     const REALNAME_STATUS = [
         '未认证'  => 0,
@@ -135,9 +139,9 @@ class User extends Authenticatable implements JWTSubject
     public static function add($request)
     {
         // 代理身份
-        $agent_num = null;
+        $agent_id = null;
         if ($request->agent_domain != null) {
-            $agent_num = Agent::where('domain', 'like', '%' . $request . '%')->value('agent_num');
+            $agent_id = User::where('domain', 'like', '%' . $request . '%')->value('uid');
         }
 
         // 添加user
@@ -147,7 +151,7 @@ class User extends Authenticatable implements JWTSubject
             'phone'         => htmlspecialchars($request->phone),
             'email'         => htmlspecialchars($request->email),
             'password'      => Hash::make(htmlspecialchars($request->password)),
-            'agent_num'     => $agent_num,
+            'agent_id'     => $agent_id,
             'nickname'      => htmlspecialchars($request->nickname),
             'identity'      => htmlspecialchars($request->identity),
             'ip'            => $request->getClientIp(),
