@@ -35,8 +35,8 @@ class IndentSettlement implements ShouldQueue
     public function handle()
     {
         $indentNum = $this->indentNum;
-
-        DB::transaction(function () use ($indentNum) {
+        $indentData = null;
+        DB::transaction(function () use ($indentNum, &$indentData) {
             try {
                 // 订单数据 *加锁
                 $indentData = IndentInfo::whereIndentNum($indentNum)->lockForUpdate()->first();
@@ -68,6 +68,7 @@ class IndentSettlement implements ShouldQueue
             }
         });
 
+        Transaction::sms($indentData->indent_num, $indentData->seller_id, '完成结算');
         Log::info('订单' . $indentNum . '完成结算');
     }
 }

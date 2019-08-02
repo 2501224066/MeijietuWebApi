@@ -41,6 +41,8 @@ class TransactionController extends BaseController
         $indentData->delete_status = IndentInfo::DELETE_STATUS['已删除'];
         $indentData->save();
 
+        // 发送短信
+        Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家取消此订单');
         Log::info('订单' . $request->indent_num . '被删除');
         return $this->success();
     }
@@ -130,7 +132,8 @@ class TransactionController extends BaseController
      */
     public function acceptIndentBeforeCancel(TransactionRequests $request)
     {
-        DB::transaction(function () use ($request) {
+        $indentData = null;
+        DB::transaction(function () use ($request, &$indentData) {
             try {
                 // 订单数据 *加锁
                 $indentData = IndentInfo::whereIndentNum($request->indent_num)->lockForUpdate()->first();
@@ -161,6 +164,9 @@ class TransactionController extends BaseController
             }
         });
 
+        // 发送短信
+        Transaction::sms($indentData->indent_num, $indentData->buyer_id, '待接单时订单被取消');
+        Transaction::sms($indentData->indent_num, $indentData->seller_id, '待接单时订单被取消');
         Log::info('订单' . $request->indent_num . '待接单买家取消订单/卖家拒单');
         return $this->success();
     }
@@ -174,7 +180,8 @@ class TransactionController extends BaseController
      */
     public function acceptIndent(TransactionRequests $request)
     {
-        DB::transaction(function () use ($request) {
+        $indentData = null;
+        DB::transaction(function () use ($request, &$indentData) {
             try {
                 // 检查身份
                 User::checkIdentity(User::IDENTIDY['媒体主']);
@@ -212,6 +219,7 @@ class TransactionController extends BaseController
             }
         });
 
+        Transaction::sms($indentData->indent_num, $indentData->buyer_id, '卖家接单');
         Log::info('订单' . $request->indent_num . '卖家接单');
         return $this->success();
     }
@@ -228,7 +236,8 @@ class TransactionController extends BaseController
      */
     public function inTransactionBuyerCancel(TransactionRequests $request)
     {
-        DB::transaction(function () use ($request) {
+        $indentData = null;
+        DB::transaction(function () use ($request, &$indentData) {
             try {
                 // 检查身份
                 User::checkIdentity(User::IDENTIDY['广告主']);
@@ -282,6 +291,7 @@ class TransactionController extends BaseController
             }
         });
 
+        Transaction::sms($indentData->indent_num, $indentData->seller_id, '交易中买家取消订单');
         Log::info('订单' . $request->indent_num . '交易中买家取消订单');
         return $this->success();
     }
@@ -295,7 +305,8 @@ class TransactionController extends BaseController
      */
     public function inTransactionSellerCancel(TransactionRequests $request)
     {
-        DB::transaction(function () use ($request) {
+        $indentData = null;
+        DB::transaction(function () use ($request, &$indentData) {
             try {
                 // 检查身份
                 User::checkIdentity(User::IDENTIDY['媒体主']);
@@ -332,6 +343,7 @@ class TransactionController extends BaseController
             }
         });
 
+        Transaction::sms($indentData->indent_num, $indentData->buyer_id, '交易中卖家取消订单');
         Log::info('订单' . $request->indent_num . '交易中卖家取消订单');
         return $this->success();
     }
@@ -355,6 +367,7 @@ class TransactionController extends BaseController
         // 修改订单信息
         IndentInfo::updateIndent($indentData, IndentInfo::STATUS['卖方完成']);
 
+        Transaction::sms($indentData->indent_num, $indentData->buyer_id, '卖家确认完成');
         Log::info('订单' . $request->indent_num . '卖家确认完成');
         return $this->success();
     }
@@ -380,6 +393,7 @@ class TransactionController extends BaseController
         $indentData->achievements_file = $request->demand_file;
         if (!$indentData->save()) throw new Exception('操作失败');
 
+        Transaction::sms($indentData->indent_num, $indentData->buyer_id, '卖家添加成果文档');
         Log::info('订单' . $request->indent_num . '卖家添加成果文档');
         return $this->success();
     }
@@ -393,7 +407,8 @@ class TransactionController extends BaseController
      */
     public function buyerConfirmComplete(TransactionRequests $request)
     {
-        DB::transaction(function () use ($request) {
+        $indentData = null;
+        DB::transaction(function () use ($request, &$indentData) {
             try {
                 // 检查身份
                 User::checkIdentity(User::IDENTIDY['广告主']);
@@ -413,6 +428,7 @@ class TransactionController extends BaseController
             }
         });
 
+        Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家确认完成，等待结算');
         Log::info('订单' . $request->indent_num . '买家确认完成');
         return $this->success();
     }

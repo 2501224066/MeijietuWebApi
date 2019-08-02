@@ -8,6 +8,7 @@ use App\Models\Data\Goods;
 use App\Models\System\Setting;
 use App\Models\Attr\Modular;
 use App\Models\User;
+use App\Server\Transaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
@@ -110,13 +111,10 @@ class IndentInfo extends Model
      * 数据整理
      *  1.一个商品一个订单
      * @param array $input 接受数据
-     * @return array
      * @throws \Throwable
      */
-    public static function dataSorting($input): array
+    public static function dataSorting($input)
     {
-        $indentNumArr = [];
-
         foreach ($input as &$in) {
             // 验证数据完整性
             if (!($in['goods_id'] && $in['goods_price_id'] && $in['goods_count']))
@@ -134,20 +132,17 @@ class IndentInfo extends Model
             Goods::checkGoodsData($goodsData);
 
             // 创建订单
-            $indentNumArr[] = self::createIndent($goodsData, $in['goods_count']);
+            self::createIndent($goodsData, $in['goods_count']);
         }
-
-        return $indentNumArr;
     }
 
     /**
-     * 添加订单
+     * 创建订单
      * @param array $goodsData 商品数据
-     * @param $goodsCount
-     * @return string
+     * @param int $goodsCount 购买数量
      * @throws \Throwable
      */
-    public static function createIndent($goodsData, $goodsCount): string
+    public static function createIndent($goodsData, $goodsCount)
     {
         $indent_num = "";
         DB::transaction(function () use ($goodsData, $goodsCount, &$indent_num) {
@@ -202,11 +197,12 @@ class IndentInfo extends Model
                     'create_time'        => $time
                 ]);
             } catch (\Exception $e) {
-                throw new Exception('操作失败' . $e->getMessage());
+                throw new Exception('操作失败');
             }
         });
 
-        return $indent_num;
+        // 发送短信
+        Transaction::sms($indent_num, $goodsData['uid'], '买家选中您的商品创建了一笔订单');
     }
 
     /**

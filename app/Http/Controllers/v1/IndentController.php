@@ -29,11 +29,11 @@ class IndentController extends BaseController
         // json转对象
         $input = json_decode($request->info, true);
         // 验证数据并创建订单
-        $indent_num_arr = IndentInfo::dataSorting($input);
+        IndentInfo::dataSorting($input);
         // 删除购物车中对应商品
         IndentCreatedOP::dispatch($input)->onQueue('IndentCreatedOP');
 
-        return $this->success(['indent_num_arr' => $indent_num_arr]);
+        return $this->success();
     }
 
     /**
