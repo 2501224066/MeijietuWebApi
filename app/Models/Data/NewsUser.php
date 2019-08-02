@@ -38,7 +38,7 @@ class NewsUser extends Model
      * @param string $uid 用户id
      * @return int
      */
-    public static function unreadNewsConunt($uid): int
+    public static function unreadNewsCount($uid): int
     {
         $count = self::with(['news' => function ($query) {
             $query->where('delete_status', News::DELETE_STATUS['未删除'])

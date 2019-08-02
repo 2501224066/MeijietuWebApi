@@ -143,27 +143,27 @@ class AuthController extends BaseController
      */
     public function me()
     {
-        $user             = auth('api')->user();
-        $realnamePeople   = RealnamePeople::whereUid($user->uid)->first();
-        $shopcartCount    = Shopcart::whereUid($user->uid)->count();
-        $collectionArr    = Collection::whereUid($user->uid)->pluck('goods_id');
-        $unreadNewsConunt = NewsUser::unreRadNewsConunt($user->uid);
+        $user            = auth('api')->user();
+        $realnamePeople  = RealnamePeople::whereUid($user->uid)->first();
+        $shopcartCount   = Shopcart::whereUid($user->uid)->count();
+        $collectionArr   = Collection::whereUid($user->uid)->pluck('goods_id');
+        $unreadNewsCount = NewsUser::unreadNewsCount($user->uid);
         return $this->success([
-            "head_portrait"    => $user->head_portrait,
-            "truename"         => $realnamePeople ? $realnamePeople->truename : null,
-            "user_num"         => $user->user_num,
-            "nickname"         => $user->nickname,
-            "sex"              => $user->sex,
-            "email"            => $user->email,
-            "phone"            => $user->phone,
-            "birth"            => $user->birth,
-            "qq_ID"            => $user->qq_ID,
-            "weixin_ID"        => $user->weixin_ID,
-            "realname_status"  => $user->realname_status,
-            "identity"         => $user->identity,
-            'shopcart_count'   => $shopcartCount,
-            'collectionArr'    => $collectionArr,
-            'unreadNewsConunt' => $unreadNewsConunt
+            "head_portrait"   => $user->head_portrait,
+            "truename"        => $realnamePeople ? $realnamePeople->truename : null,
+            "user_num"        => $user->user_num,
+            "nickname"        => $user->nickname,
+            "sex"             => $user->sex,
+            "email"           => $user->email,
+            "phone"           => $user->phone,
+            "birth"           => $user->birth,
+            "qq_ID"           => $user->qq_ID,
+            "weixin_ID"       => $user->weixin_ID,
+            "realname_status" => $user->realname_status,
+            "identity"        => $user->identity,
+            'shopcart_count'  => $shopcartCount,
+            'collectionArr'   => $collectionArr,
+            'unreadNewsCount' => $unreadNewsCount
         ]);
     }
 
