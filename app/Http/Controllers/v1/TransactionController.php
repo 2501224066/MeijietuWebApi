@@ -106,7 +106,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 仅上传一次限制
-        Pub::checkParm($indentData->demand_file, true, '只可上传一次');
+        Pub::checkParm($indentData->demand_file, false, '只可上传一次');
         // 检查订单状态
         Pub::checkParm($indentData->status, IndentInfo::STATUS['已付款待接单'], '订单状态错误');
         // 检测订单归属
@@ -382,7 +382,7 @@ class TransactionController extends BaseController
         // 订单数据
         $indentData = IndentInfo::whereIndentNum($request->indent_num)->first();
         // 仅上传一次限制
-        Pub::checkParm($indentData->achievements_file, true, '只可上传一次');
+        Pub::checkParm($indentData->achievements_file, false, '只可上传一次');
         // 检查订单状态
         Pub::checkParm($indentData->status, IndentInfo::STATUS['卖方完成'], '订单状态错误');
         // 检测订单归属
