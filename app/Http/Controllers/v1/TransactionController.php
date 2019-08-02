@@ -5,8 +5,6 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Requests\Transaction as TransactionRequests;
 use App\Jobs\IndentSettlement;
-use App\Jobs\SendSms;
-use App\Server\Captcha;
 use App\Models\Data\IndentInfo;
 use App\Models\Data\IndentItem;
 use App\Models\System\Setting;
@@ -203,7 +201,7 @@ class TransactionController extends BaseController
                     // 公共钱包资金增加
                     Wallet::updateWallet(Wallet::CENTERID, $indentData->compensate_fee, Wallet::UP_OR_DOWN['增加']);
                     // 卖家钱包资金减少
-                    Wallet::updateWallet($indentData->buyer_id, $indentData->compensate_fee, Wallet::UP_OR_DOWN['减少']);
+                    Wallet::updateWallet($indentData->seller_id, $indentData->compensate_fee, Wallet::UP_OR_DOWN['减少']);
                     // 生成交易流水
                     Runwater::createTransRunwater($indentData->buyer_id,
                         Wallet::CENTERID,
