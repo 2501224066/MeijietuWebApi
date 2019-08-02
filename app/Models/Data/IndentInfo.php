@@ -202,7 +202,7 @@ class IndentInfo extends Model
         });
 
         // 发送短信
-        Transaction::sms($indent_num, $goodsData['uid'], '买家选中您的商品创建了一笔订单');
+        Transaction::sms($indent_num, $goodsData['uid'], '买家选中您的商品创建了一笔订单，请联系客服');
     }
 
     /**

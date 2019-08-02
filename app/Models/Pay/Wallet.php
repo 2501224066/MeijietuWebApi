@@ -144,9 +144,17 @@ class Wallet extends Model
         if (!$wallet->save())
             throw new Exception('修改钱包数据失败');
 
-        if ($uid != self::CENTERID) self::sms();
+        if ($uid != self::CENTERID)
+            self::sms($uid, $money, $upOrDown, $available_money);
     }
 
+    /**
+     * 发送资金变动短信
+     * @param string $uid 用户id
+     * @param float $money 变动资金
+     * @param int $upOrDown 方向
+     * @param float $available_money 计算后金额
+     */
     public static function sms($uid, $money, $upOrDown, $available_money)
     {
         $user = User::whereUid($uid)->first();
