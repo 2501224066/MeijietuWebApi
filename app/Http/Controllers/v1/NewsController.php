@@ -37,24 +37,6 @@ class NewsController extends BaseController
     }
 
     /**
-     * 消息内容
-     * @param NewsRequest $request
-     * @return mixed
-     */
-    public function newsInfo(NewsRequest $request)
-    {
-        $new_id = $request->news_id;
-        $news   = News::whereNewsId($new_id)->first();
-
-        if ((!$news)
-            || ($news->status == News::STATUS['禁用'])
-            || ($news->release_time > date('Y-m-d H:i:s')))
-            throw new Exception('未找到此条消息');
-
-        return $this->success($news);
-    }
-
-    /**
      * 消息已读
      * @param NewsRequest $request
      * @return mixed
