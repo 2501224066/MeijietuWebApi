@@ -30,7 +30,7 @@ class NewsController extends BaseController
             ->where('status', News::STATUS['启用'])
             ->where('release_time', '<=', date('Y-m-d H:i:s'))
             ->orderBy('release_time', 'DESC')
-            ->select('title')
+            ->select('content')
             ->paginate();
 
         return $this->success($data);
