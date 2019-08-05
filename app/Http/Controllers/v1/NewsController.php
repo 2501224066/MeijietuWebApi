@@ -27,7 +27,7 @@ class NewsController extends BaseController
 
         $newsIdArr = $query->pluck('news_id');
         $data      = News::whereIn('news_id', $newsIdArr)
-            ->where('delete_status', News::DELETE_STATUS['未删除'])
+            ->where('status', News::STATUS['启用'])
             ->where('release_time', '<=', date('Y-m-d H:i:s'))
             ->orderBy('release_time', 'DESC')
             ->select('title')
@@ -47,7 +47,7 @@ class NewsController extends BaseController
         $news   = News::whereNewsId($new_id)->first();
 
         if ((!$news)
-            || ($news->delete_status == News::DELETE_STATUS['已删除'])
+            || ($news->status == News::STATUS['禁用'])
             || ($news->release_time > date('Y-m-d H:i:s')))
             throw new Exception('未找到此条消息');
 

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $title 消息标题
  * @property string $content 消息内容
  * @property string $release_time 发布时间
- * @property int $delete_status 删除状态 0=删除 1=删除
+ * @property int $status 状态 0=启用 1=禁用
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\News newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\News newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\News query()
@@ -34,9 +34,9 @@ class News extends Model
 
     protected $guarded = [];
 
-    const DELETE_STATUS = [
-        '未删除' => 0,
-        '已删除' => 1
+    const STATUS = [
+        '禁用' => 0,
+        '启用' => 1
     ];
 
     /**

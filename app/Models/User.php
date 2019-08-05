@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Log\LogSaveuserinfo;
 use App\Models\Pay\Wallet;
 use App\Models\System\Setting;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
 
 
 /**
@@ -151,7 +152,7 @@ class User extends Authenticatable implements JWTSubject
             'phone'         => htmlspecialchars($request->phone),
             'email'         => htmlspecialchars($request->email),
             'password'      => Hash::make(htmlspecialchars($request->password)),
-            'agent_id'     => $agent_id,
+            'agent_id'      => $agent_id,
             'nickname'      => htmlspecialchars($request->nickname),
             'identity'      => htmlspecialchars($request->identity),
             'ip'            => $request->getClientIp(),
@@ -192,47 +193,51 @@ class User extends Authenticatable implements JWTSubject
     // 修改信息
     public static function saveInfo($data)
     {
-        $user     = JWTAuth::user();
-        $old_info = [
-            'head_portrait' => $user->head_portrait,
-            'nickname'      => $user->nickname,
-            'sex'           => $user->sex,
-            'birth'         => $user->birth,
-            'qq_ID'         => $user->qq_ID,
-            'weixin_ID'     => $user->weixin_ID,
-        ];
-        $new_info = [
-            'head_portrait' => htmlspecialchars($data->head_portrait),
-            'nickname'      => htmlspecialchars($data->nickname),
-            'sex'           => htmlspecialchars($data->sex),
-            'birth'         => htmlspecialchars($data->birth),
-            'qq_ID'         => htmlspecialchars($data->qq_ID),
-            'weixin_ID'     => htmlspecialchars($data->weixin_ID),
-        ];
+        $user    = JWTAuth::user();
+        $saveArr = [];
 
-        DB::transaction(function () use ($user, $old_info, $new_info) {
-            try {
-                // 修改信息
-                DB::table('user', $old_info, $new_info)
-                    ->where('uid', $user->uid)
-                    ->update($new_info);
+        if ($user->head_portrait != htmlspecialchars($data->head_portrait)) {
+            $user->head_portrait      = htmlspecialchars($data->head_portrait);
+            $saveArr['head_portrait'] = $user->head_portrait . "->" . $user->head_portrait;
+        }
 
-                // 记录
-                DB::table('log_saveuserinfo')
-                    ->insert([
-                        'uid'      => JWTAuth::user()->uid,
-                        'ip'       => \Request::getClientIp(),
-                        'old_info' => json_encode($old_info),
-                        'new_info' => json_encode($new_info),
-                        'time_at'  => date('Y-m-d H:i:s')
-                    ]);
+        if ($user->nickname != htmlspecialchars($data->nickname)) {
+            $user->nickname      = htmlspecialchars($data->nickname);
+            $saveArr['nickname'] = $user->nickname . "->" . htmlspecialchars($data->nickname);
+        }
 
-            } catch (\Exception $e) {
-                throw new Exception('保存失败');
-            }
-        });
+        if ($user->sex != htmlspecialchars($data->sex)) {
+            $user->sex      = htmlspecialchars($data->sex);
+            $saveArr['sex'] = $user->sex . "->" . htmlspecialchars($data->sex);
+        }
 
-        return true;
+        if ($user->birth != htmlspecialchars($data->birth)) {
+            $user->birth      = htmlspecialchars($data->birth);
+            $saveArr['birth'] = $user->birth . "->" . htmlspecialchars($data->birth);
+        }
+
+        if ($user->qq_ID != htmlspecialchars($data->qq_ID)) {
+            $user->qq_ID      = htmlspecialchars($data->qq_ID);
+            $saveArr['qq_ID'] = $user->qq_ID . "->" . htmlspecialchars($data->qq_ID);
+        }
+
+        if ($user->weixin_ID != htmlspecialchars($data->weixin_ID)) {
+            $user->weixin_ID      = htmlspecialchars($data->weixin_ID);
+            $saveArr['weixin_ID'] = $user->weixin_ID . "->" . htmlspecialchars($data->weixin_ID);
+        }
+
+        // 修改
+        $user->save();
+
+        // 记录
+        if (!empty($saveArr)) {
+            LogSaveuserinfo::create([
+                'uid'       => JWTAuth::user()->uid,
+                'ip'        => Request::getClientIp(),
+                'save_info' => json_encode($saveArr),
+                'time_at'   => date('Y-m-d H:i:s')
+            ]);
+        }
     }
 
     // 检查手机号是否为当前用户手机号

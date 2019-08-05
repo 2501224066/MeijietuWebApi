@@ -32,6 +32,8 @@ class LogSaveuserinfo extends Model
 
     protected $primaryKey = 'log_saveuserinfo_id';
 
+    public $timestamps = false;
+
     public $guarded = [];
 
 
