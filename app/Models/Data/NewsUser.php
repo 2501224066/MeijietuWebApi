@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $news_id
  * @property int $uid
- * @property int $read_status 阅读状态 0=未阅读 1=已阅读
+ * @property int $read_status 阅读状态 0=未读 1=已读
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\NewsUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\NewsUser newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\NewsUser query()
@@ -29,8 +29,8 @@ class NewsUser extends Model
     public $timestamps = false;
 
     const READ_STATUS = [
-        '未阅读' => 0,
-        '已阅读' => 1
+        '未读' => 0,
+        '已读' => 1
     ];
 
     /**
@@ -41,11 +41,11 @@ class NewsUser extends Model
     public static function unreadNewsCount($uid): int
     {
         $count = self::with(['news' => function ($query) {
-            $query->where('delete_status', News::DELETE_STATUS['未删除'])
+            $query->where('delete_status', News::STATUS['启用'])
                 ->where('release_time', '<=', date('Y-m-d H:i:s'));
         }])
             ->where('uid', $uid)
-            ->where('read_status', self::READ_STATUS['未阅读'])
+            ->where('read_status', self::READ_STATUS['未读'])
             ->count();
 
         return $count;

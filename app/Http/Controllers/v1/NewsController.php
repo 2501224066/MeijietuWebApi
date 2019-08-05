@@ -30,28 +30,12 @@ class NewsController extends BaseController
             ->where('status', News::STATUS['启用'])
             ->where('release_time', '<=', date('Y-m-d H:i:s'))
             ->orderBy('release_time', 'DESC')
-            ->select('content')
+            ->select('news_id', 'content', 'read_status')
             ->paginate();
+
+        // 该用户消息全部已读
+        NewsUser::whereUid($uid)->update(['read_status'=> NewsUser::READ_STATUS['已读']]);
 
         return $this->success($data);
     }
-
-    /**
-     * 消息已读
-     * @param NewsRequest $request
-     * @return mixed
-     */
-    public function newsReaded(NewsRequest $request)
-    {
-        $news_id_arr = json_decode($request->news_id_json, true);
-        foreach ($news_id_arr as $news_id) {
-            NewsUser::whereNewsId($news_id)
-                ->update([
-                    'read_status' => NewsUser::READ_STATUS['已阅读']
-                ]);
-        }
-
-        return $this->success();
-    }
-
 }
