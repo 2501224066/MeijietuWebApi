@@ -42,13 +42,11 @@ class News extends Model
     /**
      * 消息推送
      * @param string $uid 推送对象id
-     * @param string $title 标题
-     * @param string $content 内容
+     * @param string $content 消息内容
      */
-    public static function put($uid, $title, $content)
+    public static function put($uid, $content)
     {
         $news_id = News::insertGetId([
-            'title'        => $title,
             'content'      => $content,
             'release_time' => date('Y-m-d H:i:s')
         ]);

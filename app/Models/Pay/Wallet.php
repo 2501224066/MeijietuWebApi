@@ -5,6 +5,7 @@ namespace App\Models\Pay;
 
 
 use App\Jobs\SendSms;
+use App\Models\Data\News;
 use App\Models\User;
 use App\Server\Captcha;
 use Illuminate\Database\Eloquent\Model;
@@ -74,6 +75,9 @@ class Wallet extends Model
         ]);
         if (!$re)
             throw new Exception('生成钱包失败');
+
+        // 消息推送
+        News::put($uid, "资金账户创建成功");
     }
 
     // 钱包信息
