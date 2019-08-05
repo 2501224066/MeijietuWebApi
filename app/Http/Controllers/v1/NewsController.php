@@ -30,7 +30,7 @@ class NewsController extends BaseController
             ->where('status', News::STATUS['启用'])
             ->where('release_time', '<=', date('Y-m-d H:i:s'))
             ->orderBy('release_time', 'DESC')
-            ->select('news_id', 'content', 'read_status')
+            ->select('news_id', 'content')
             ->paginate();
 
         // 该用户消息全部已读
