@@ -203,7 +203,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        Log::info('商品'.$goodsNum.'审核通过');
+        Log::info('【商品】 '.$goodsNum.'审核通过');
     }
 
     // 未通过审核
@@ -219,7 +219,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        Log::info('商品'.$goodsNum.'审核不通过');
+        Log::info('【商品】 '.$goodsNum.'审核不通过');
     }
 
     // 议价操作
@@ -236,7 +236,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        Log::info('订单'.$indentNum.'议价完成');
+        Log::info('【订单】 '.$indentNum.'议价完成');
     }
 
     // 设置软文价格操作
@@ -255,6 +255,6 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        Log::info('商品'.$goodsNum.'设置软文价格完成');
+        Log::info('【商品】 '.$goodsNum.'设置软文价格完成');
     }
 }

@@ -20,7 +20,7 @@ class AliPay
      */
     public static function backOP($data)
     {
-        Log::notice('支付宝回调参数', $data);
+        Log::info('【充值】 支付宝回调参数', $data);
         $uid   = null;
         $money = null;
 
@@ -49,6 +49,6 @@ class AliPay
             }
         });
 
-        Log::info('用户' . User::whereUid($uid)->value('nickname') . '充值' . $money . '元');
+        Log::info('【充值】 用户' . User::whereUid($uid)->value('nickname') . '充值' . $money . '元');
     }
 }

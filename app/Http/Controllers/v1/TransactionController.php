@@ -41,7 +41,7 @@ class TransactionController extends BaseController
 
         // 发送短信
         Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家取消此订单');
-        Log::info('订单' . $request->indent_num . '被删除');
+        Log::info('【订单】 ' . $request->indent_num . '被删除');
         return $this->success();
     }
 
@@ -68,7 +68,7 @@ class TransactionController extends BaseController
 
         // 发送短信
         Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家已添加需求文档');
-        Log::info('订单' . $request->indent_num . '添加需求文档完成');
+        Log::info('【订单】 ' . $request->indent_num . '添加需求文档完成');
         return $this->success();
     }
 
@@ -119,7 +119,7 @@ class TransactionController extends BaseController
 
         // 发送短信
         Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家已付款');
-        Log::info('订单' . $request->indent_num . '付款完成');
+        Log::info('【订单】 ' . $request->indent_num . '付款完成');
         return $this->success();
     }
 
@@ -167,7 +167,7 @@ class TransactionController extends BaseController
         // 发送短信
         Transaction::sms($indentData->indent_num, $indentData->buyer_id, '待接单时订单被取消');
         Transaction::sms($indentData->indent_num, $indentData->seller_id, '待接单时订单被取消');
-        Log::info('订单' . $request->indent_num . '待接单买家取消订单/卖家拒单');
+        Log::info('【订单】 ' . $request->indent_num . '待接单买家取消订单/卖家拒单');
         return $this->success();
     }
 
@@ -220,7 +220,7 @@ class TransactionController extends BaseController
         });
 
         Transaction::sms($indentData->indent_num, $indentData->buyer_id, '卖家接单');
-        Log::info('订单' . $request->indent_num . '卖家接单');
+        Log::info('【订单】 ' . $request->indent_num . '卖家接单');
         return $this->success();
     }
 
@@ -292,7 +292,7 @@ class TransactionController extends BaseController
         });
 
         Transaction::sms($indentData->indent_num, $indentData->seller_id, '交易中买家取消订单');
-        Log::info('订单' . $request->indent_num . '交易中买家取消订单');
+        Log::info('【订单】 ' . $request->indent_num . '交易中买家取消订单');
         return $this->success();
     }
 
@@ -344,7 +344,7 @@ class TransactionController extends BaseController
         });
 
         Transaction::sms($indentData->indent_num, $indentData->buyer_id, '交易中卖家取消订单');
-        Log::info('订单' . $request->indent_num . '交易中卖家取消订单');
+        Log::info('【订单】 ' . $request->indent_num . '交易中卖家取消订单');
         return $this->success();
     }
 
@@ -368,7 +368,7 @@ class TransactionController extends BaseController
         IndentInfo::updateIndent($indentData, IndentInfo::STATUS['卖方完成']);
 
         Transaction::sms($indentData->indent_num, $indentData->buyer_id, '卖家确认完成');
-        Log::info('订单' . $request->indent_num . '卖家确认完成');
+        Log::info('【订单】 ' . $request->indent_num . '卖家确认完成');
         return $this->success();
     }
 
@@ -394,7 +394,7 @@ class TransactionController extends BaseController
         if (!$indentData->save()) throw new Exception('操作失败');
 
         Transaction::sms($indentData->indent_num, $indentData->buyer_id, '卖家添加成果文档');
-        Log::info('订单' . $request->indent_num . '卖家添加成果文档');
+        Log::info('【订单】 ' . $request->indent_num . '卖家添加成果文档');
         return $this->success();
     }
 
@@ -431,7 +431,7 @@ class TransactionController extends BaseController
         });
 
         Transaction::sms($indentData->indent_num, $indentData->seller_id, '买家确认完成，等待结算');
-        Log::info('订单' . $request->indent_num . '买家确认完成');
+        Log::info('【订单】 ' . $request->indent_num . '买家确认完成');
         return $this->success();
     }
 }

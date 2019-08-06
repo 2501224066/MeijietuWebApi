@@ -63,10 +63,10 @@ class DemandSettlement implements ShouldQueue
                 $demandData->status = Demand::STATUS['结算'];
                 if (!$demandData->save()) throw new Exception('需求结算失败');
             } catch (\Exception $e) {
-                Log::notice('需求' . $demandNum . '结算失败 ' . $e->getMessage());
+                Log::notice('【需求】 ' . $demandNum . '结算失败 ' . $e->getMessage());
             }
         });
 
-        Log::info('需求' . $demandNum . '完成结算');
+        Log::info('【需求】 ' . $demandNum . '完成结算');
     }
 }

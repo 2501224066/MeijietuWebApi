@@ -14,6 +14,7 @@ use App\Http\Requests\Auth as AuthRequests;
 use App\Server\Captcha;
 use App\Server\Pub;
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends BaseController
@@ -65,7 +66,6 @@ class AuthController extends BaseController
         RegisteredOP::dispatch($uid)->onQueue('RegisteredOP');
 
         return $this->success();
-
     }
 
     /**

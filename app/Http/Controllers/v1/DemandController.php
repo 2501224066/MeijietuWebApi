@@ -49,7 +49,7 @@ class DemandController extends BaseController
         $demand->status = Demand::STATUS['拒绝'];
         if (!$demand->save()) throw new Exception('操作失败');
 
-        Log::info('媒体主' . JWTFactory::user()->nickname . '拒绝需求', ['demand_id' => $request->demand_id]);
+        Log::info('【需求】 媒体主' . JWTFactory::user()->nickname . '拒绝需求', ['demand_id' => $request->demand_id]);
         $this->success();
     }
 
@@ -69,7 +69,7 @@ class DemandController extends BaseController
         $demand->status = Demand::STATUS['接受'];
         if (!$demand->save()) throw new Exception('操作失败');
 
-        Log::info('媒体主' . JWTFactory::user()->nickname . '接受需求', [
+        Log::info('【需求】 媒体主' . JWTFactory::user()->nickname . '接受需求', [
             'demand_id' => $request->demand_id]);
         $this->success();
     }
@@ -94,7 +94,7 @@ class DemandController extends BaseController
         $delayTime = Setting::whereSettingName('trans_payment_delay')->value('value');
         DemandSettlement::dispatch($request->demand_id)->onQueue('DemandSettlement')->delay($delayTime);
 
-        Log::info('媒体主' . JWTFactory::user()->nickname . '完成需求', [
+        Log::info('【需求】 媒体主' . JWTFactory::user()->nickname . '完成需求', [
             'demand_id' => $request->demand_id,
             'back_link' => $request->back_link]);
         $this->success();

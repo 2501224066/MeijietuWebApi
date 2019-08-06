@@ -172,7 +172,7 @@ class LianLianPay
      */
     public static function backOP($data)
     {
-        Log::notice('连连回调参数', $data);
+        Log::info('【充值】 连连回调参数', $data);
         $uid = null;
 
         DB::transaction(function () use ($data, &$uid) {
@@ -199,6 +199,6 @@ class LianLianPay
             }
         });
 
-        Log::info('用户' . User::whereUid($uid)->value('nickname') . '充值' . $data['money_order'] . '元');
+        Log::info('【充值】 用户' . User::whereUid($uid)->value('nickname') . '充值' . $data['money_order'] . '元');
     }
 }

@@ -114,7 +114,7 @@ class Wallet extends Model
             $wallet->remark = '校验修改校验锁失败, 禁用钱包';
             $wallet->save();
 
-            Log::info('用户 ' . User::whereUid($uid)->value('nickname') . ' 校验修改校验锁失败, 禁用钱包');
+            Log::notice('【资金】 用户 ' . User::whereUid($uid)->value('nickname') . ' 校验修改校验锁失败, 禁用钱包');
             throw new Exception('校验修改校验锁失败, 禁用钱包, 请联系客服');
         }
     }
@@ -148,6 +148,7 @@ class Wallet extends Model
         if (!$wallet->save())
             throw new Exception('修改钱包数据失败');
 
+        Log::info('【资金】 ' . User::whereUid($uid)->value('nickname') . "钱包资金" . $upOrDown ? '增加' : '减少' . $money . '元，变更后资金' . $available_money);
         self::sms($uid, $money, $upOrDown, $available_money);
     }
 

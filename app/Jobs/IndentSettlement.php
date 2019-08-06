@@ -64,11 +64,11 @@ class IndentSettlement implements ShouldQueue
                 // 修改订单信息
                 IndentInfo::updateIndent($indentData, IndentInfo::STATUS['已结算']);
             } catch (\Exception $e) {
-                Log::notice('订单' . $indentNum . '结算失败 ' . $e->getMessage());
+                Log::notice('【订单】 ' . $indentNum . '结算失败 ' . $e->getMessage());
             }
         });
 
         Transaction::sms($indentData->indent_num, $indentData->seller_id, '完成结算');
-        Log::info('订单' . $indentNum . '完成结算');
+        Log::info('【订单】 ' . $indentNum . '完成结算');
     }
 }
