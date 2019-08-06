@@ -153,6 +153,7 @@ class Salesman
     public static function serveIndent($input)
     {
         $query = IndentInfo::whereSalesmanId(JWTAuth::user()->uid)
+            ->with('indent_item')
             ->where('delete_status', IndentInfo::DELETE_STATUS['未删除'])
             ->orderBy('create_time', 'DESC');
 
