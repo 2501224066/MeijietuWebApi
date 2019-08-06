@@ -13,6 +13,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Mockery\Exception;
 
 class SoftArticleMealCreateDemandOP implements ShouldQueue
 {
@@ -33,6 +34,7 @@ class SoftArticleMealCreateDemandOP implements ShouldQueue
         $indentId   = $this->indentData->indent_id;
         $word       = $this->indentData->demand_file;
         $goodsIdArr = $this->goodsIdArr;
+
         foreach ($goodsIdArr as $goodsId) {
             try {
                 // 获取信息
@@ -40,16 +42,17 @@ class SoftArticleMealCreateDemandOP implements ShouldQueue
                     $query->where('goods_price_id', GoodsPrice::whereGoodsId($goodsId)->value('goods_price_id'));
                 }])
                     ->where('goods_id', $goodsId)
-                    ->first()
-                    ->toArray();
+                    ->first();
+
+                if (!$goodsData) throw new Exception("【需求】 软文套餐创建需求-商品" . $goodsId . "未找到");
 
                 // 检查商品信息
-                Goods::checkGoodsData($goodsData);
+                Goods::checkGoodsData($goodsData->toArray());
 
                 // 创建需求
                 $time = date('Y-m-d H:i:s');
                 Demand::insertGetId([
-                    'demand_num'      => createNum('DEMAND'),
+                    'demand_num'     => createNum('DEMAND'),
                     'bind_indent_id' => $indentId,
                     'uid'            => $goodsData['uid'],
                     'title'          => $goodsData['title'],
@@ -58,8 +61,9 @@ class SoftArticleMealCreateDemandOP implements ShouldQueue
                     'created_at'     => $time,
                     'updated_at'     => $time,
                 ]);
+
             } catch (\Exception $e) {
-                Log::error('【需求】 软文套餐创建需求失败 ' . $e->getMessage());
+                Log:info('【需求】 软文套餐创建需求错误' . $e->getMessage());
                 continue;
             }
         }
