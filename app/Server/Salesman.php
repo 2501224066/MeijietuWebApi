@@ -132,7 +132,7 @@ class Salesman
             $query->where('uid', User::whereUserNum($input->user_num)->value('uid'));
 
         if ($input->goods_num != null)
-            $query->where('goods_num', $input->goods_num);
+            $query->where('goods_num', 'like',  '%'.$input->goods_num.'%');
 
         if ($input->verify_status != null)
             $query->where('verify_status', $input->verify_status);
