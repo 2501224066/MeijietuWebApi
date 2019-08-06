@@ -27,7 +27,7 @@ class MealPool extends Base
             // 软文套餐创建需求
             case 'softArticleMealCreateDemand':
                 $rules['goods_id_json'] = ['required', new SpecialChar, 'json'];
-                $rules['indent_num']    = ['required', new SpecialChar, 'exists:indent_info,indent_num'];
+                $rules['indent_num']    = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
                 break;
         }
 
