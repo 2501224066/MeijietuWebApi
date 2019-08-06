@@ -49,7 +49,7 @@ class SoftArticleMealCreateDemandOP implements ShouldQueue
                 // 创建需求
                 $time = date('Y-m-d H:i:s');
                 Demand::insertGetId([
-                    'demand_id'      => createNum('DEMAND'),
+                    'demand_num'      => createNum('DEMAND'),
                     'bind_indent_id' => $indentId,
                     'uid'            => $goodsData['uid'],
                     'title'          => $goodsData['title'],
