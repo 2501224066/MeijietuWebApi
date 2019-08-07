@@ -111,6 +111,7 @@ class SalesmanController extends BaseController
     /**
      * 需求失效
      * @param SalesmanRequests $request
+     * @return mixed
      */
     public function invalidDemand(SalesmanRequests $request)
     {
