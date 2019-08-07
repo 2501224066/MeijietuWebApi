@@ -20,6 +20,7 @@ class DemandController extends BaseController
     /**
      * 自己的需求
      * @return mixed
+     * @return mixed
      */
     public function demandBelongSelf()
     {
@@ -36,6 +37,7 @@ class DemandController extends BaseController
     /**
      * 拒绝需求
      * @param DemandRequests $request
+     * @return mixed
      */
     public function refuseDemand(DemandRequests $request)
     {
@@ -50,12 +52,13 @@ class DemandController extends BaseController
         if (!$demand->save()) throw new Exception('操作失败');
 
         Log::info('【需求】 媒体主' . JWTFactory::user()->nickname . '拒绝需求', ['demand_id' => $request->demand_id]);
-        $this->success();
+        return $this->success();
     }
 
     /**
      * 接受需求
      * @param DemandRequests $request
+     * @return mixed
      */
     public function acceptDemand(DemandRequests $request)
     {
@@ -72,13 +75,13 @@ class DemandController extends BaseController
 
         Log::info('【需求】 媒体主' . JWTFactory::user()->nickname . '接受需求',
             ['demand_id' => $request->demand_id]);
-
-        $this->success();
+        return $this->success();
     }
 
     /**
      * 完成需求
      * @param DemandRequests $request
+     * @return mixed
      */
     public function completeDemand(DemandRequests $request)
     {
@@ -99,6 +102,6 @@ class DemandController extends BaseController
         Log::info('【需求】 媒体主' . JWTFactory::user()->nickname . '完成需求', [
             'demand_id' => $request->demand_id,
             'back_link' => $request->back_link]);
-        $this->success();
+        return $this->success();
     }
 }

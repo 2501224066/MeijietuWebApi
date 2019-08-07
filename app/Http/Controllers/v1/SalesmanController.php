@@ -124,6 +124,6 @@ class SalesmanController extends BaseController
         $demand->status = Demand::STATUS['失效'];
         if (!$demand->save()) throw new Exception('操作失败');
 
-        $this->success();
+        return $this->success();
     }
 }
