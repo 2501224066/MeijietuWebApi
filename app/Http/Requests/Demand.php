@@ -21,15 +21,15 @@ class Demand extends Base
         switch ($this->getFunName()) {
             // 拒绝需求
             case 'refuseDemand':
-                $rules['demand_num'] = ['required', new SpecialChar, 'exists:dt_demand, demand_num'];
+                $rules['demand_num'] = ['required', new SpecialChar, 'exists:data_demand, demand_num'];
                 break;
             // 接受需求
             case 'acceptDemand':
-                $rules['demand_num'] = ['required', new SpecialChar, 'exists:dt_demand, demand_num'];
+                $rules['demand_num'] = ['required', new SpecialChar, 'exists:data_demand, demand_num'];
                 break;
             // 完成需求
             case 'completeDemand':
-                $rules['demand_num'] = ['required', new SpecialChar, 'exists:dt_demand, demand_num'];
+                $rules['demand_num'] = ['required', new SpecialChar, 'exists:data_demand, demand_num'];
                 $rules['back_link'] = ['required'];
                 break;
         }
