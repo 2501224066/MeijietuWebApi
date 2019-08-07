@@ -1,4 +1,1 @@
-## 上线注意事项
-1. 短信验证检查开启
-2. 首页缓存开启
-3. 服务器supervisor配置
+meijietu project

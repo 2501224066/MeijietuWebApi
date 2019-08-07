@@ -21,8 +21,8 @@ class GoodsController extends BaseController
      */
     public function getGoodsAttribute()
     {
-        /*if (Cache::has('goodsAttribute'))
-            return $this->success(json_decode(Cache::get('goodsAttribute'), false));*/
+        if (Cache::has('goodsAttribute'))
+            return $this->success(json_decode(Cache::get('goodsAttribute'), false));
 
         // 获取模块
         $re = Modular::with(['theme.filed' => function ($query) {
@@ -57,7 +57,7 @@ class GoodsController extends BaseController
             }])
             ->get();
 
-        //Cache::put('goodsAttribute', json_encode($re), 30);
+        Cache::put('goodsAttribute', json_encode($re), 30);
 
         return $this->success($re);
     }

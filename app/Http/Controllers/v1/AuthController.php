@@ -127,7 +127,6 @@ class AuthController extends BaseController
      */
     public function resetPass(AuthRequests $request)
     {
-        //dd(JWTAuth::user()->uid);
         // 检查下一步令牌
         Captcha::checkCode($request->nextToken, $request->phone, 'nextToken');
         // 修改密码

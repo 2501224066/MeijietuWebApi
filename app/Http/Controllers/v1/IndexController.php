@@ -18,8 +18,8 @@ class IndexController extends BaseController
      */
     public function indexPage()
     {
-//        if (Cache::has('indexPageData'))
-//            return json_decode(Cache::get('indexPageData'));
+        if (Cache::has('indexPageData'))
+            return json_decode(Cache::get('indexPageData'));
 
         // banner
         $re['banner'] = Setting::indexPageBanner();
@@ -31,7 +31,7 @@ class IndexController extends BaseController
         $re['information'] = Information::indexPageInformation(3);
         // ...
 
-//      Cache::put('indexPageData', json_encode($re), 60 * 12);
+      Cache::put('indexPageData', json_encode($re), 60 * 12);
         return $this->success($re);
     }
 }
