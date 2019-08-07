@@ -7,13 +7,12 @@ namespace App\Models\Data;
 use Illuminate\Database\Eloquent\Model;
 
 
-
 /**
  * App\Models\Data\Demand
  *
  * @property int $demand_id
  * @property string $demand_num 需求编号
- * @property int $bind_indent_id
+ * @property string $bind_indent_id
  * @property int $uid 媒体主id
  * @property string $title 需求名称
  * @property string|null $word 文档

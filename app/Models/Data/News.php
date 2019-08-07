@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\News whereReleaseTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\News whereTitle($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\News whereStatus($value)
  */
 class News extends Model
 {

@@ -69,8 +69,9 @@ class DemandController extends BaseController
         $demand->status = Demand::STATUS['接受'];
         if (!$demand->save()) throw new Exception('操作失败');
 
-        Log::info('【需求】 媒体主' . JWTFactory::user()->nickname . '接受需求', [
-            'demand_id' => $request->demand_id]);
+        Log::info('【需求】 媒体主' . JWTFactory::user()->nickname . '接受需求',
+            ['demand_id' => $request->demand_id]);
+
         $this->success();
     }
 
