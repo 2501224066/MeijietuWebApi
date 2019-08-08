@@ -13,22 +13,6 @@ use App\Models\User;
 class OpenParamController extends BaseController
 {
     /**
-     * 资源路径
-     * @return mixed
-     */
-    public function staticUrl()
-    {
-        if (Cache::has('staticUrl'))
-            return $this->success(json_decode(Cache::get('staticUrl')));
-
-        $re['static_url'] = Setting::staticUrl();
-
-        Cache::put('staticUrl', json_encode($re), 60 * 12);
-
-        return $this->success($re);
-    }
-
-    /**
      * 推荐商品
      * @return mixed
      */

@@ -32,12 +32,13 @@ class RegisteredOP implements ShouldQueue
         $uid = $this->uid;
 
         try {
+            // 生成钱包
+            Wallet::createWallet($uid);
+
             // 如果没有客服则分配客服
             if (!User::whereUid($uid)->value('salesman_id')) {
                 Salesman::withSalesman($uid);
             }
-            // 生成钱包
-            Wallet::createWallet($uid);
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

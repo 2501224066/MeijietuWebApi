@@ -4,8 +4,6 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api) {
 
     // 开发参数
-    //  资源路径
-    $api->get('staticUrl', 'OpenParamController@staticUrl');
     //  推荐商品
     $api->get('recommendGoods', 'OpenParamController@recommendGoods');
     //  资讯文章
