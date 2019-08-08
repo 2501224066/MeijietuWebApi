@@ -3,10 +3,6 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api) {
 
-    // 测试
-    $api->get('test', 'TestController@index');
-
-
     // 首页
     $api->get('indexPage', 'IndexController@indexPage');
 
