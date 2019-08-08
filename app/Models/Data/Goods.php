@@ -181,8 +181,8 @@ class Goods extends Model
         return $this->hasOne(GoodsPrice::class, 'goods_id', 'goods_id');
     }
 
-    // 首页推荐商品
-    public static function indexPageRecommendGoods()
+    // 推荐商品
+    public static function recommendGoods()
     {
         // 模块及主题
         $mt = Modular::with('theme')->get();

@@ -3,11 +3,17 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api) {
 
-    // 首页
-    $api->get('indexPage', 'IndexController@indexPage');
-
-    // 资讯详情
-    $api->get('informationInfo', 'InformationController@informationInfo');
+    // 开发参数
+    //  资源路径
+    $api->get('staticUrl', 'OpenParamController@staticUrl');
+    //  推荐商品
+    $api->get('recommendGoods', 'OpenParamController@recommendGoods');
+    //  资讯文章
+    $api->get('information', 'OpenParamController@information');
+    //  随机客服
+    $api->get('randomSalesman', 'OpenParamController@randomSalesman');
+    //  banner
+    $api->get('banner', 'OpenParamController@banner');
 
     // 充值回调
     //  连连充值回调

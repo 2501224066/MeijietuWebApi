@@ -29,10 +29,16 @@ class Setting extends Model
 {
     protected $table = "system_setting";
 
-    // 首页banner
-    public static function indexPageBanner()
+    // banner
+    public static function banner()
     {
         return self::whereSettingName('banner_img')->get();
+    }
+
+    // static_url
+    public static function staticUrl()
+    {
+        return self::whereSettingName('static_url')->get();
     }
 }
 

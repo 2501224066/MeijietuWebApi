@@ -4,6 +4,7 @@
 namespace App\Models\Realname;
 
 
+use App\Models\System\Setting;
 use DemeterChain\C;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Exception;
@@ -65,7 +66,7 @@ class RealnameEnterprise extends Model
             throw new Exception("获取营业执照图片失败");
 
         // 营业执照图片转base64编码
-        $img_content = file_get_contents(env('ALIOSS_URL') . $business_license);
+        $img_content = file_get_contents(Setting::staticUrl() . $business_license);
         $img_base64  = urlencode(base64_encode($img_content));
 
         // 请求营业执照信息外部接口
@@ -78,7 +79,7 @@ class RealnameEnterprise extends Model
 
     /**
      * 添加企业认证信息
-     * @param  mixed $request 表单信息
+     * @param mixed $request 表单信息
      * @throws \Throwable
      */
     public static function add($request)

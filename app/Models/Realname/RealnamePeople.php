@@ -4,6 +4,7 @@
 namespace App\Models\Realname;
 
 
+use App\Models\System\Setting;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -85,7 +86,7 @@ class RealnamePeople extends Model
             throw new Exception("获取身份证正面图片失败");
 
         // 身份证正面图片转base64编码
-        $img_content = file_get_contents(env('ALIOSS_URL') . $identity_card_face);
+        $img_content = file_get_contents(Setting::staticUrl() . $identity_card_face);
         $img_base64  = base64_encode($img_content);
 
         // 请求证件识别外部接口

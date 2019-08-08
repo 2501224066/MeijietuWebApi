@@ -123,8 +123,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Wallet::class, 'uid', 'uid');
     }
 
-    // 首页客服
-    public static function indexPageSalesman()
+    // 随机客服
+    public static function randomSalesman()
     {
         $salesman = self::whereIdentity(User::IDENTIDY['业务员'])->where('status', User::STATUS['启用'])->inRandomOrder()->first();
         return [
