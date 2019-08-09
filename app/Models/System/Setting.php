@@ -38,7 +38,7 @@ class Setting extends Model
     // staticUrl()
     public static function staticUrl()
     {
-        return self::whereSettingName('staticUrl')->get();
+        return self::whereSettingName('staticUrl')->value('value');
     }
 }
 
