@@ -93,8 +93,8 @@ class RealnamePeople extends Model
         $data = IDcard_API($img_base64);
         if ($data['message']['value'] != "识别完成")
             throw new Exception("身份证识别失败");
-dd($data);
-        if ($data['cardsinfo'][0]['items'][1]->content != $truename)
+
+        if ($data['cardsinfo'][0]['items'][1]['content'] != $truename)
             throw new Exception("身份证与个人信息不匹配");
     }
 
