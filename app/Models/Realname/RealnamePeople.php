@@ -91,7 +91,6 @@ class RealnamePeople extends Model
 
         // 请求证件识别外部接口
         $data = IDcard_API($img_base64);
-        dd($data);
         if (!($data['message']['value'] == "识别完成"))
             throw new Exception("身份证识别失败");
 
