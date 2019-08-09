@@ -43,7 +43,7 @@ class Captcha
         if (!Cache::has($key))
             throw new Exception('【验证码/令牌】过期');
 
-        if (Cache::get($key) !== $code)
+        if (Cache::get($key) != $code)
             throw new Exception('【验证码/令牌】错误');
     }
 }

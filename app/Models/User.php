@@ -251,31 +251,21 @@ class User extends Authenticatable implements JWTSubject
 
 
     // 修改手机号并记录
-    public static function savePhoneAndLog($phone, $new_phone)
+    public static function savePhone($phone, $new_phone)
     {
-        $old_info = [
-            'phone' => $phone
-        ];
-        $new_info = [
-            'phone' => $new_phone
-        ];
 
-        DB::transaction(function () use ($phone, $old_info, $new_info) {
+        DB::transaction(function () use ($phone, $new_phone) {
             try {
                 // 修改手机号
-                DB::table('user')
-                    ->where('phone', $phone)
-                    ->update($new_info);
+                User::where('phone', $phone)->update(['phone' => $new_phone]);
 
                 // 记录
-                DB::table('log_saveuserinfo')
-                    ->insert([
-                        'uid'      => JWTAuth::user()->uid,
-                        'ip'       => \Request::getClientIp(),
-                        'old_info' => json_encode($old_info),
-                        'new_info' => json_encode($new_info),
-                        'time_at'  => date('Y-m-d H:i:s')
-                    ]);
+                LogSaveuserinfo::create([
+                    'uid'       => JWTAuth::user()->uid,
+                    'ip'        => \Request::getClientIp(),
+                    'save_info' => json_encode(['phone' => $phone . "->" . $new_phone]),
+                    'time_at'   => date('Y-m-d H:i:s')
+                ]);
             } catch (\Exception $e) {
                 throw new Exception('保存失败');
             }

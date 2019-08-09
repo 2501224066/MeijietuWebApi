@@ -102,8 +102,8 @@ class UserInfoController extends BaseController
         User::checkUserPhone($request->phone);
         // 检查短信验证码
         Captcha::checkCode($request->smsCode, $request->phone, 'savePhone');
-        // 修改手机号并记录
-        User::savePhoneAndLog($request->phone, $request->new_phone);
+        // 修改手机号
+        User::savePhone($request->phone, $request->new_phone);
 
         return $this->success();
     }
