@@ -45,7 +45,5 @@ class Captcha
 
         if (Cache::get($key) !== $code)
             throw new Exception('【验证码/令牌】错误');
-
-        return true;
     }
 }

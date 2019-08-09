@@ -117,7 +117,7 @@ class UserInfoController extends BaseController
     {
         $phone = JWTAuth::user()->phone;
         // 检查短信验证码
-        Captcha::checkCode($request->smsCode, $phone, 'savePhone');
+        Captcha::checkCode($request->smsCode, $phone, 'savePass');
         // 检查密码
         User::checkPass($phone, $request->password);
         // 修改密码
