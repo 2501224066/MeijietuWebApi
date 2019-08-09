@@ -24,8 +24,14 @@ class Captcha
         return true;
     }
 
-    //生成并存储验证码
-    public static function createAndKeepCode($codeType, $parm, $randstr = false)
+    /**
+     * 生成并存储验证码
+     * @param string $codeType 验证码类型
+     * @param string $parm 标记参数
+     * @param bool $randstr 是否为字母
+     * @return string
+     */
+    public static function createAndKeepCode($codeType, $parm, $randstr = false): string
     {
         self::checkCodeType($codeType);
 
@@ -36,7 +42,12 @@ class Captcha
         return $code;
     }
 
-    //验证验证码
+    /**
+     * 验证验证码
+     * @param string $code 验证码
+     * @param string $parm 标记参数
+     * @param string $codeType 验证码类型
+     */
     public static function checkCode($code, $parm, $codeType)
     {
         $key = $codeType . ":" . $parm;
