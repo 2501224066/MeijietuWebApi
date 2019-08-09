@@ -11,7 +11,7 @@ class Pub
         '检查手机号'  => 'checkPhone',
         '下一步令牌'  => 'nextToken',
         '动态登录'   => 'codeSignIn',
-        '重置密码'   => 'resetPassCode',
+        '重置密码'   => 'resetPass',
         '个人实名认证' => 'realnamePeople',
         '企业实名认证' => 'realnameEnterprise',
         '修改手机号'  => 'savePhone',
