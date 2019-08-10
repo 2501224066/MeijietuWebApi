@@ -190,8 +190,6 @@ return [
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         //AliOSS
         Jacobcyl\AliOSS\AliOssServiceProvider::class,
-        //Mongodb
-        Jenssegers\Mongodb\MongodbServiceProvider::class,
     ],
 
     /*
@@ -245,8 +243,6 @@ return [
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         // AliSms
         'AliSms'=> Mrgoon\AliSms\ServiceProvider::class,
-        // Mongodb
-        'Mongo'     => Jenssegers\Mongodb\MongodbServiceProvider::class,
     ],
 
 ];
