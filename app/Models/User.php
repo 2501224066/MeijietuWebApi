@@ -194,26 +194,25 @@ class User extends Authenticatable implements JWTSubject
     public static function saveInfo($data)
     {
         $user    = JWTAuth::user();
-        $update  = [];
         $saveArr = [];
 
         if ($user->head_portrait != htmlspecialchars($data->head_portrait)) {
-            $update['head_portrait']  = htmlspecialchars($data->head_portrait);
+            $user->head_portrait      = htmlspecialchars($data->head_portrait);
             $saveArr['head_portrait'] = $user->head_portrait . "->" . $user->head_portrait;
         }
 
         if ($user->nickname != htmlspecialchars($data->nickname)) {
-            $update['nickname']  = htmlspecialchars($data->nickname);
+            $user->nickname      = htmlspecialchars($data->nickname);
             $saveArr['nickname'] = $user->nickname . "->" . htmlspecialchars($data->nickname);
         }
 
         if ($user->sex != htmlspecialchars($data->sex)) {
-            $update['sex']  = htmlspecialchars($data->sex);
+            $user->sex      = htmlspecialchars($data->sex);
             $saveArr['sex'] = $user->sex . "->" . htmlspecialchars($data->sex);
         }
 
         if ($user->birth != htmlspecialchars($data->birth)) {
-            $update['birth']  = htmlspecialchars($data->birth);
+            $user->birth      = htmlspecialchars($data->birth);
             $saveArr['birth'] = $user->birth . "->" . htmlspecialchars($data->birth);
         }
 
@@ -223,12 +222,12 @@ class User extends Authenticatable implements JWTSubject
         }
 
         if ($user->weixin_ID != htmlspecialchars($data->weixin_ID)) {
-            $update['weixin_ID']  = htmlspecialchars($data->weixin_ID);
+            $user->weixin_ID      = htmlspecialchars($data->weixin_ID);
             $saveArr['weixin_ID'] = $user->weixin_ID . "->" . htmlspecialchars($data->weixin_ID);
         }
 
         // 修改
-        $user->update($update);
+        $user->save();
 
         // 记录
         if (!empty($saveArr)) {
