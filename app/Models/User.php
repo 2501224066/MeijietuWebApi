@@ -227,7 +227,7 @@ class User extends Authenticatable implements JWTSubject
         }
 
         // 修改
-        $user->save();
+        $user->update($user);
 
         // 记录
         if (!empty($saveArr)) {
