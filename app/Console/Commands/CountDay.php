@@ -30,6 +30,7 @@ class CountDay extends Command
         $c['goods']    = Goods::where('created_at', 'like', '%' . $t . '%')->count();
         $c['indent']   = IndentInfo::where('create_time', 'like', '%' . $t . '%')->count();
         $c['demand']   = Demand::where('created_at', 'like', '%' . $t . '%')->count();
+        $c['time']     = $t;
         Day::create($c);
 
         Log::info('【日统计】 ' . $t . '统计完成');
