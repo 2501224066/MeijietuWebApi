@@ -57,6 +57,8 @@ class Handler extends ExceptionHandler
                 'data'        => []
             ];
         }
+
+        return parent::render($request, $exception);
     }
 
     // 屏蔽报错列表
