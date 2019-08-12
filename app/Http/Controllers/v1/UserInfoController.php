@@ -58,7 +58,7 @@ class UserInfoController extends BaseController
         // 检查是否已经认证
         User::checkRealnameStatus($user->realname_status, 'y');
         // 绑定手机号检验
-        Captcha::checkCode($request->smsCode, $request->bank_band_phone, 'realnameEnterprise');
+        Captcha::checkCode($request->smsCode, $user->phone, 'realnameEnterprise');
         // 检查营业执照信息
         RealnameEnterprise::checkBusinessLicense($request->business_license, $request->enterprise_name, $request->social_credit_code);
         // 数据存入数据库
