@@ -199,4 +199,3 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         $api->post('runwaterList', 'RunwaterController@runWaterList');
     });
 });
-
