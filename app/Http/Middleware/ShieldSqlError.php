@@ -14,6 +14,7 @@ class ShieldSqlError
         $response = $next($request);
 
         if ((!env('API_DEBUG'))
+            && isset($response->original['message'])
             && strstr($response->original['message'], 'SQLSTATE')) {
 
             return response()->json(['status_code' => 500,
