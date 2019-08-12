@@ -3,8 +3,6 @@
 
 namespace App\Models\Realname;
 
-
-use App\Models\System\Setting;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -77,8 +75,9 @@ class RealnamePeople extends Model
 
     /**
      * 证件号验证
-     * @param string $identity_card_face 身份证正面照存储路径
-     * @param string $truename 真实姓名
+     * @param $identity_card_face
+     * @param $truename
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public static function IDcheck($identity_card_face, $truename)
     {
@@ -86,7 +85,7 @@ class RealnamePeople extends Model
             throw new Exception("获取身份证正面图片失败");
 
         // 身份证正面图片转base64编码
-        $img_content = file_get_contents(Setting::staticUrl() . $identity_card_face);
+        $img_content = Storage::get($identity_card_face);
         $img_base64  = base64_encode($img_content);
 
         // 请求证件识别外部接口
