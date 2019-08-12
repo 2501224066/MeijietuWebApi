@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Count\Day whereRegister($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Count\Day whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $time
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Count\Day whereTime($value)
  */
 class Day extends Model
 {
