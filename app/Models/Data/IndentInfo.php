@@ -192,6 +192,8 @@ class IndentInfo extends Model
                     'theme_name'         => $goodsData['theme_name'],
                     'priceclassify_name' => $goodsData['one_goods_price']['priceclassify_name'],
                     'goods_price'        => $goodsData['one_goods_price']['price'],
+                    'avater_url'         => $goodsData['avater_url'],
+                    'qrcode_url'         => $goodsData['qrcode_url'],
                     'goods_count'        => $goodsCount,
                     'goods_amount'       => $goodsData['one_goods_price']['price'] * $goodsCount,
                     'create_time'        => $time
