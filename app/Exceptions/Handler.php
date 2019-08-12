@@ -51,10 +51,4 @@ class Handler extends ExceptionHandler
 
         return parent::render($request, $exception);
     }
-
-    // 屏蔽报错列表
-    const SHIELD_ERR = [
-        'Illuminate\Database\QueryException'
-    ];
-
 }
