@@ -203,6 +203,6 @@ class AuthController extends BaseController
             'expires_in'   => auth('api')->factory()->getTTL() * 60
         ];
 
-        return response()->json(array_merge($data, $JWTAuthResponse));
+        return $this->success(array_merge($data, $JWTAuthResponse));
     }
 }
