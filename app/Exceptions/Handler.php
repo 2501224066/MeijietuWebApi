@@ -48,6 +48,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // 设置返回格式JSON
+        $request->headers->set('Accept', 'application/json');
+
+        // 屏蔽SQL错误
         $class = get_class($exception);
         if ((!env('API_DEBUG'))
             && in_array($class, self::SHIELD_ERR)) {

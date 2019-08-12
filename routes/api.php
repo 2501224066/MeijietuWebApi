@@ -195,10 +195,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         //  买家确认完成
         $api->post('buyerConfirmComplete', 'TransactionController@buyerConfirmComplete');
 
-
         // 流水记录
         $api->post('runwaterList', 'RunwaterController@runWaterList');
     });
-
 });
 
