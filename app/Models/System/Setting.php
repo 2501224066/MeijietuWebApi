@@ -34,11 +34,5 @@ class Setting extends Model
     {
         return self::whereSettingName('banner_img')->get();
     }
-
-    // staticUrl()
-    public static function staticUrl()
-    {
-        return self::whereSettingName('staticUrl')->value('value');
-    }
 }
 

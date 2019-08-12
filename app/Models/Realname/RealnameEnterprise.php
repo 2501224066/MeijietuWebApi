@@ -4,8 +4,6 @@
 namespace App\Models\Realname;
 
 
-use App\Models\System\Setting;
-use DemeterChain\C;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Exception;
 use Illuminate\Support\Facades\Storage;
@@ -59,6 +57,7 @@ class RealnameEnterprise extends Model
      * @param string $business_license 营业执照存储地址
      * @param string $enterprise_name 企业名称
      * @param string $social_credit_code 统一社会信用代码
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public static function checkBusinessLicense($business_license, $enterprise_name, $social_credit_code)
     {
@@ -66,7 +65,7 @@ class RealnameEnterprise extends Model
             throw new Exception("获取营业执照图片失败");
 
         // 营业执照图片转base64编码
-        $img_content = file_get_contents(Setting::staticUrl() . $business_license);
+        $img_content = Storage::get($business_license);
         $img_base64  = urlencode(base64_encode($img_content));
 
         // 请求营业执照信息外部接口
