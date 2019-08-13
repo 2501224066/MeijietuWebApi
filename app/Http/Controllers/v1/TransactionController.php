@@ -244,7 +244,7 @@ class TransactionController extends BaseController
                 // 订单数据 *加锁
                 $indentData = IndentInfo::whereIndentNum($request->indent_num)->lockForUpdate()->first();
                 // 部分主题禁止取消
-                $themeName = IndentItem::where($indentData->indent_id)->value('theme_name');
+                $themeName = IndentItem::whereIndentId($indentData->indent_id)->value('theme_name');
                 if (in_array($themeName, Transaction::TRANS_NO_CANCEL_THEME))
                     throw new Exception('此主题禁止取消');
                 // 检查订单状态
