@@ -277,7 +277,7 @@ class TransactionController extends BaseController
                 // 生成交易流水
                 Runwater::createTransRunwater(Wallet::CENTERID,
                     $indentData->seller_id,
-                    Runwater::TYPE['对方取消订单退款'],
+                    Runwater::TYPE['取消订单退款加补偿'],
                     Runwater::DIRECTION['转入'],
                     $countMoney['sellerUp'],
                     $indentData->indent_id);
@@ -329,7 +329,7 @@ class TransactionController extends BaseController
                 // 生成交易流水
                 Runwater::createTransRunwater(Wallet::CENTERID,
                     $indentData->buyer_id,
-                    Runwater::TYPE['对方取消订单退款'],
+                    Runwater::TYPE['取消订单退款加补偿'],
                     Runwater::DIRECTION['转入'],
                     $countMoney['buyerUp'],
                     $indentData->indent_id);

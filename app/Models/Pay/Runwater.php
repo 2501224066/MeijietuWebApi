@@ -21,7 +21,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property int|null $to_uid 去往处
  * @property int|null $indent_id 订单id
  * @property string|null $indent_num 订单号
- * @property int $type 类型 1=充值 2=提现 3=订单付款 4=支付赔偿保证费 5=取消订单全额退款 6=取消订单非全额退款 7=对方取消订单退款 8=订单完成结算 9=需求结算
+ * @property int $type 类型 1=充值 2=提现 3=订单付款 4=支付赔偿保证费 5=取消订单全额退款 6=取消订单非全额退款 7=取消订单退款加补偿 8=订单完成结算 9=需求结算
  * @property int $direction 方向 1=转入 2=转出
  * @property float $money 金额
  * @property string $pay_type 支付方式
@@ -69,7 +69,7 @@ class Runwater extends Model
         '支付赔偿保证费'   => 4,
         '取消订单全额退款'  => 5,
         '取消订单非全额退款' => 6,
-        '对方取消订单退款'  => 7,
+        '取消订单退款加补偿'  => 7,
         '订单完成结算'    => 8,
         '需求结算'      => 9
     ];
