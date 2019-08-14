@@ -67,9 +67,11 @@ class Goods extends Base
                         break;
 
                     case Modular::TAG['软文营销']:
+                        $rules['max_title_long']       = ['nullable', 'present', new SpecialChar, 'numeric'];
                         $rules['news_source_status']   = ['required', new SpecialChar, 'numeric'];
                         $rules['entry_status']         = ['required', new SpecialChar, 'numeric'];
                         $rules['included_sataus']      = ['required', new SpecialChar, 'numeric'];
+                        $rules['link']                 = ['nullable', 'present', 'active_url'];
                         $rules['case_link']            = ['required', 'active_url'];
                         $rules['link_type']            = ['required', new SpecialChar, 'numeric'];
                         $rules['weekend_status']       = ['required', new SpecialChar, 'numeric'];
