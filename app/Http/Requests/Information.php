@@ -21,7 +21,7 @@ class Information extends Base
         switch ($this->getFunName()) {
             // 资讯详情
             case 'informationInfo':
-                $rules['information_id'] = ['required', new SpecialChar, 'numeric','exists:system_information,information_id'];
+                $rules['information_id'] = ['nullable', 'present', new SpecialChar, 'numeric','exists:system_information,information_id'];
                 break;
         }
 
@@ -31,7 +31,7 @@ class Information extends Base
     public function messages()
     {
         return [
-            'required' => '参数不全',
+            'present' => '参数不全',
             'numeric'  => '参数格式错误',
 
             'information_id.exists' => '资讯已被删除'

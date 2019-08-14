@@ -5,7 +5,6 @@ namespace App\Http\Controllers\v1;
 
 
 use App\Models\Data\Goods;
-use App\Models\System\Information;
 use App\Models\System\Setting;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
@@ -24,22 +23,6 @@ class OpenParamController extends BaseController
         $re = Goods::recommendGoods();
 
         Cache::put('recommendGoods', json_encode($re), 60 * 12);
-
-        return $this->success($re);
-    }
-
-    /**
-     * 资讯文章
-     * @return mixed
-     */
-    public function information()
-    {
-        if (Cache::has('information'))
-            return $this->success(json_decode(Cache::get('information')));
-
-        $re = Information::indexPageInformation(3);
-
-        Cache::put('information', json_encode($re), 60 * 12);
 
         return $this->success($re);
     }

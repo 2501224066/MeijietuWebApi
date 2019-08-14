@@ -7,7 +7,7 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
     //  推荐商品
     $api->get('recommendGoods', 'OpenParamController@recommendGoods');
     //  资讯文章
-    $api->get('information', 'OpenParamController@information');
+    $api->get('information', 'InformationController@information');
     //  随机客服
     $api->get('randomSalesman', 'OpenParamController@randomSalesman');
     //  banner
