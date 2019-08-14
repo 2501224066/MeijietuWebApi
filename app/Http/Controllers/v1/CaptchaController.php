@@ -7,6 +7,7 @@ use App\Jobs\SendEmail;
 use App\Jobs\SendSms;
 use App\Server\Captcha;
 use Gregwar\Captcha\CaptchaBuilder;
+use Gregwar\Captcha\PhraseBuilder;
 use Illuminate\Support\Facades\Cache;
 
 class CaptchaController extends BaseController
@@ -42,7 +43,8 @@ class CaptchaController extends BaseController
      */
     public function getImgCode()
     {
-        $builder = new CaptchaBuilder;
+        $phraseBuilder = new PhraseBuilder(5, '1234567890');
+        $builder       = new CaptchaBuilder(null, $phraseBuilder);
         $builder->build(100, 40);
         $code = $builder->getPhrase();
 
