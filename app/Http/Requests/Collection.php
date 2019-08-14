@@ -40,7 +40,7 @@ class Collection
     public function messages()
     {
         return [
-            'required' => '参数不全',
+            'required' => '参数不得为空',
             'json'     => '格式错误'
         ];
     }

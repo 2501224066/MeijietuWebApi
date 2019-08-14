@@ -67,11 +67,9 @@ class Goods extends Base
                         break;
 
                     case Modular::TAG['软文营销']:
-                        $rules['max_title_long']       = ['required', new SpecialChar, 'numeric'];
                         $rules['news_source_status']   = ['required', new SpecialChar, 'numeric'];
                         $rules['entry_status']         = ['required', new SpecialChar, 'numeric'];
                         $rules['included_sataus']      = ['required', new SpecialChar, 'numeric'];
-                        $rules['link']                 = ['required', 'active_url'];
                         $rules['case_link']            = ['required', 'active_url'];
                         $rules['link_type']            = ['required', new SpecialChar, 'numeric'];
                         $rules['weekend_status']       = ['required', new SpecialChar, 'numeric'];
@@ -123,7 +121,8 @@ class Goods extends Base
     public function messages()
     {
         return [
-            'present'              => '参数不全',
+            'required'             => '参数不得为空',
+            'present'              => '参数不得为空',
             'active_url'           => '非有效链接',
             'title.required'       => '商品标题不得为空',
             'title.unique'         => '商品标题已存在',
