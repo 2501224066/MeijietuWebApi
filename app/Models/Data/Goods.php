@@ -357,7 +357,7 @@ class Goods extends Model
                     ]);
                 }
             } catch (\Exception $e) {
-                throw new Exception('保存失败');
+                throw new Exception($e->getMessage());
             }
         });
 
