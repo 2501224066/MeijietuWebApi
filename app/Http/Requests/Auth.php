@@ -80,6 +80,7 @@ class Auth extends Base
     {
         return [
             'active_url'           => '非有效链接',
+            'password_confirmation.same' => '两次输入密码不一致',
 
             'phone.required' => '手机号不得为空',
             'phone.regex'    => '手机号无效',
