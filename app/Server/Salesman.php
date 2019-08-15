@@ -242,7 +242,7 @@ class Salesman
     }
 
     // 设置软文价格操作
-    public static function setSoftArticlePriceOP($goodsNum, $price)
+    public static function setPriceOP($goodsNum, $price)
     {
         $goods = Goods::whereGoodsNum($goodsNum)->first();
 

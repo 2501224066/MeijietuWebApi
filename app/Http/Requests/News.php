@@ -30,7 +30,7 @@ class News extends Base
     public function messages()
     {
         return [
-            'present'  => '参数缺少',
+            'present'  => '参数缺失',
         ];
     }
 }

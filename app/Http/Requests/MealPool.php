@@ -37,7 +37,7 @@ class MealPool extends Base
     public function messages()
     {
         return [
-            'json' => '参数格式错误',
+            'json' => '参数格式需为json',
 
             'indent_num.exists' => '订单不存在',
             'pool_name.unique'  => '池名称重复'

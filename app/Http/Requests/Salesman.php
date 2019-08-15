@@ -77,10 +77,10 @@ class Salesman extends Base
     public function messages()
     {
         return [
-            'required' => '参数不得为空',
-            'present'  => '参数不得为空',
-            'numeric'  => '参数格式错误',
-            'json'     => '参数格式错误',
+            'required' => '有必填参数未填写',
+            'present'  => '参数缺失',
+            'numeric'  => '参数格式需为数字',
+            'json'     => '参数格式需为json',
 
             'demand_num.required' => '需求不得为空',
             'demand_num.exists' => '需求不存在'

@@ -99,12 +99,12 @@ class SalesmanController extends BaseController
      * @param SalesmanRequests $request
      * @return mixed
      */
-    public function setSoftArticlePrice(SalesmanRequests $request)
+    public function setPrice(SalesmanRequests $request)
     {
         // 身份必须为业务员
         User::checkIdentity(User::IDENTIDY['业务员']);
         // 设置价格
-        Salesman::setSoftArticlePriceOP($request->goods_num, htmlspecialchars($request->price));
+        Salesman::setPriceOP($request->goods_num, htmlspecialchars($request->price));
 
         return $this->success();
     }

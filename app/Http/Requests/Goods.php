@@ -123,46 +123,40 @@ class Goods extends Base
     public function messages()
     {
         return [
-            'required'             => '参数不得为空',
-            'present'              => '参数不得为空',
-            'active_url'           => '非有效链接',
+            'required'   => '有必填参数未填写',
+            'present'    => '参数缺失',
+            'active_url' => '非有效链接',
+            'numeric'    => '参数需为数字',
+
+            'title.unique' => '商品标题已存在',
+
             'title.required'       => '商品标题不得为空',
-            'title.unique'         => '商品标题已存在',
             'title_about.required' => '标题简介不得为空',
+            'qq_ID.required'       => 'QQ号不得为空',
+            'goods_num.required'   => '商品编号不得为空',
+            'modular_id.required'  => '模块不得为空',
+            'price_json.required'  => '价格信息不得为空',
 
-            'qq_ID.required' => 'QQ号不得为空',
-            'qq_ID.numeric'  => 'QQ号需为数字',
+            'modular_id.exists'       => '模块不存在',
+            'theme_id.exists'         => '主题不存在',
+            'filed_id.exists'         => '领域不存在',
+            'Platfrom_id.exists'      => '平台不存在',
+            'industry_id.exists'      => '行业不存在',
+            'region_id.exists'        => '地区不存在',
+            'priceclassify_id.exists' => '价格种类不存在',
+            'goods_num.exists'        => '商品编号不存在',
 
-            'modular_id.required' => '模块不得为空',
-            'modular_id.numeric'  => '模块需为数字',
-            'modular_id.exists'   => '模块不存在',
+            'price_json.json' => '价格信息非JSON格式',
 
-            'theme_id.numeric' => '主题需为数字',
-            'theme_id.exists'  => '主题不存在',
-
-            'filed_id.numeric' => '领域需为数字',
-            'filed_id.exists'  => '领域不存在',
-
-            'Platfrom_id.numeric' => '平台需为数字',
-            'Platfrom_id.exists'  => '平台不存在',
-
-            'industry_id.numeric' => '行业需为数字',
-            'industry_id.exists'  => '行业不存在',
-
-            'region_id.numeric' => '地区需为数字',
-            'region_id.exists'  => '地区不存在',
-
+            'qq_ID.numeric'            => 'QQ号需为数字',
+            'modular_id.numeric'       => '模块需为数字',
+            'theme_id.numeric'         => '主题需为数字',
+            'filed_id.numeric'         => '领域需为数字',
+            'Platfrom_id.numeric'      => '平台需为数字',
+            'industry_id.numeric'      => '行业需为数字',
+            'region_id.numeric'        => '地区需为数字',
             'priceclassify_id.numeric' => '价格种类需为数字',
-            'priceclassify_id.exists'  => '价格种类不存在',
-
-            'price_json.required' => '价格信息不得为空',
-            'price_json.json'     => '价格信息非JSON格式',
-
-            'goods_num.required' => '商品编号不得为空',
-            'goods_num.exists'   => '商品编号不存在',
-
-            'numeric' => '参数格式错误',
-            'exists'  => '参数不存在'
+            'fans_num.numeric'         => '粉丝数量需为数字',
         ];
     }
 }

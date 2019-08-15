@@ -40,7 +40,7 @@ class Shopcart
     public function messages()
     {
         return [
-            'required' => '参数不得为空',
+            'required' => '有必填参数未填写',
             'json'     => '格式错误'
         ];
     }

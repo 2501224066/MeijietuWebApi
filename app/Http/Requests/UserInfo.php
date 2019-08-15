@@ -84,7 +84,7 @@ class UserInfo extends Base
         return [
             'date'    => '日期格式错误',
             'numeric' => '参数类型错误',
-            'present' => '参数不得为空',
+            'present' => '参数缺失',
 
             'truename.required'           => "真实姓名不得为空",
             'identity_card_ID.required'   => "身份证号码不得为空",

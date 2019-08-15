@@ -31,8 +31,8 @@ class Information extends Base
     public function messages()
     {
         return [
-            'present' => '参数不得为空',
-            'numeric'  => '参数格式错误',
+            'present' => '参数缺失',
+            'numeric'  => '参数格式需为数字',
 
             'information_id.exists' => '资讯已被删除'
         ];
