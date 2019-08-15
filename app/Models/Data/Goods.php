@@ -16,9 +16,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
 
 
 /**
@@ -357,6 +357,7 @@ class Goods extends Model
                     ]);
                 }
             } catch (\Exception $e) {
+                Log::error('【商品】 创建失败，' . $e->getMessage());
                 throw new Exception('保存失败');
             }
         });
@@ -503,7 +504,7 @@ class Goods extends Model
     public static function delSelfCreateGoods($goodsId)
     {
         // 商品数据
-        $goods = DB::table('data_goods')->where('goods_id', $goodsId)->first();
+        $goods  = DB::table('data_goods')->where('goods_id', $goodsId)->first();
         $delArr = [];
 
         // 微信公众号

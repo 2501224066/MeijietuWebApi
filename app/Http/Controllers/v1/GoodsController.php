@@ -123,13 +123,15 @@ class GoodsController extends BaseController
     public function oneGoodsInfo(GoodsRequests $request)
     {
         $goodsId = Goods::whereGoodsNum($request->goods_num)->value('goods_id');
-        $re = Goods::getGoods($request, [$goodsId]);
+        $re      = Goods::getGoods($request, [$goodsId]);
 
         return $this->success($re);
     }
 
     /**
      * 商品下架
+     * @param GoodsRequests $request
+     * @return mixed
      */
     public function goodsDown(GoodsRequests $request)
     {
@@ -138,7 +140,7 @@ class GoodsController extends BaseController
         // 商品数据
         $goods = Goods::whereGoodsNum($request->goods_num)->first();
         // 检查状态
-        Pub::checkParm($goods->status, Goods::STATUS['上架'],'商品未上架');
+        Pub::checkParm($goods->status, Goods::STATUS['上架'], '商品未上架');
         // 下架
         Goods::down($goods);
 
