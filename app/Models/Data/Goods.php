@@ -202,12 +202,15 @@ class Goods extends Model
             }
         }
 
-
         return $re;
     }
 
 
-    // 检查商品信息
+    /**
+     * 检查商品信息
+     * @param array $goodsData 商品信息数组
+     * @return bool
+     */
     public static function checkGoodsData($goodsData)
     {
         if ($goodsData['status'] == Goods::STATUS['下架'])
@@ -230,7 +233,6 @@ class Goods extends Model
     public static function assembleArr($request)
     {
         $arr                 = [];
-        $time                = date('Y-m-d H:i:s');
         $arr['title']        = htmlspecialchars($request->title);
         $arr['html_title']   = htmlspecialchars($request->title);
         $arr['title_about']  = htmlspecialchars($request->title_about);
@@ -244,9 +246,6 @@ class Goods extends Model
         $arr['filed_name']   = Filed::whereFiledId($request->filed_id)->value('filed_name');
         $arr['remarks']      = htmlspecialchars($request->remarks);
         $arr['avatar_url']   = $request->avatar_url ? htmlspecialchars($request->avatar_url) : JWTAuth::user()->head_portrait;
-        $arr['created_at']   = $time;
-        $arr['updated_at']   = $time;
-        $arr['goods_num']    = createNum('GOODS');
         $arr['uid']          = JWTAuth::user()->uid;
 
         if ($request->has('weixin_ID'))
@@ -331,7 +330,11 @@ class Goods extends Model
         DB::transaction(function () use ($arr, $priceArr, &$goodsId) {
             try {
                 // 插入商品
-                $goodsId = self::insertGetId($arr);
+                $arr['goods_num']  = createNum('GOODS');
+                $time              = date('Y-m-d H:i:s');
+                $arr['created_at'] = $time;
+                $arr['updated_at'] = $time;
+                $goodsId           = self::insertGetId($arr);
 
                 // 不同模式卖家输入价格
                 switch (Modular::whereModularId($arr['modular_id'])->value('settlement_type')) {
@@ -365,6 +368,55 @@ class Goods extends Model
         return $goodsId;
     }
 
+    /**
+     * 修改商品
+     * @param string $goodsId 商品id
+     * @param array $arr 商品信息数组
+     * @param array $priceArr 商品价格信息数组
+     * @throws \Throwable
+     */
+    public static function updateOP($goodsId, $arr, $priceArr)
+    {
+        DB::transaction(function () use ($goodsId, $arr, $priceArr) {
+            try {
+                // 修改商品信息
+                $arr['verify_status'] = Goods::VERIFY_STATUS['待审核'];
+                $arr['status']        = Goods::STATUS['下架'];
+                Goods::whereGoodsId($goodsId)->update($arr);
+
+                // 删除商品价格重新创建
+                GoodsPrice::whereGoodsId($goodsId)->delete();
+
+                // 不同模式卖家输入价格
+                switch (Modular::whereModularId($arr['modular_id'])->value('settlement_type')) {
+                    // 标准模式卖家输入的为price
+                    case Modular::SETTLEMENT_TYPE['标准模式']:
+                        $P = 'price';
+                        break;
+
+                    // 软文模式卖家输入的为底价
+                    case Modular::SETTLEMENT_TYPE['软文模式']:
+                        $P = 'floor_price';
+                        break;
+                }
+
+                foreach ($priceArr as $priceclassify_id => $price) {
+                    $PriceclassifyInfo = Priceclassify::wherePriceclassifyId($priceclassify_id)->first();
+                    GoodsPrice::create([
+                        'goods_id'           => $goodsId,
+                        'priceclassify_id'   => $priceclassify_id,
+                        'priceclassify_name' => $PriceclassifyInfo->priceclassify_name,
+                        'tag'                => $PriceclassifyInfo->tag,
+                        $P                   => $price
+                    ]);
+                }
+            } catch (\Exception $e) {
+                Log::error('【商品】 修改失败，' . $e->getMessage());
+                throw new Exception('保存失败');
+            }
+        });
+    }
+
     // 获取用户商品
     public static function getUserGoods()
     {
@@ -374,7 +426,12 @@ class Goods extends Model
             ->get();
     }
 
-    // 获取商品
+    /**
+     * 获取商品
+     * @param mixed $request 筛选条件
+     * @param array $whereInGoodsIdArr 限制商品范围id数组
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public static function getGoods($request, $whereInGoodsIdArr)
     {
         $query = self::with('goods_price')
@@ -436,7 +493,10 @@ class Goods extends Model
         return $query->paginate();
     }
 
-    // 下架
+    /**
+     * 下架
+     * @param mixed $goods 商品信息对象
+     */
     public static function down($goods)
     {
         $goods->verify_status = self::VERIFY_STATUS['待审核'];
@@ -444,11 +504,13 @@ class Goods extends Model
         $re                   = $goods->save();
         if (!$re)
             throw new Exception('操作失败');
-
-        return true;
     }
 
-    // 添加微信基础数据
+    /**
+     * 添加微信基础数据
+     * @param string $goodsId 商品id
+     * @param string $weixin_ID 微信号
+     */
     public static function addWeiXinBasicData($goodsId, $weixin_ID)
     {
         // 查询自库数据
@@ -468,7 +530,11 @@ class Goods extends Model
 
     }
 
-    // 添加微博基础数据
+    /**
+     * 添加微博基础数据
+     * @param string $goodsId 商品id
+     * @param string $link 微博链接
+     */
     public static function addWeiBoBasicData($goodsId, $link)
     {
         // 截取链接最后数组ID
@@ -497,9 +563,12 @@ class Goods extends Model
 
     }
 
-    /*
-     *  删除初始商品[微信公众号][微博][短视频小红书]
-     *  初始创造的一批商品,当用户录入商品后，判断初始商品中是否有重复的，有则删除初始商品
+    /**
+     * 删除初始商品
+     *  1.包括 微信公众号 / 微博 / 短视频小红书
+     *  2.初始创造的一批商品,当用户录入商品后，判断初始商品中是否有重复的，有则删除初始商品
+     * @param string $goodsId 商品id
+     * @throws \Exception
      */
     public static function delSelfCreateGoods($goodsId)
     {

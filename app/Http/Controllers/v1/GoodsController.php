@@ -87,6 +87,29 @@ class GoodsController extends BaseController
     }
 
     /**
+     * 修改商品
+     */
+    public function updateGoods(GoodsRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        // 商品信息
+        $Goods = Goods::whereGoodsNum($request->goods_num)->first();
+        // 组装数组
+        $arr = Goods::assembleArr($request, $request->goods_num, $Goods->created_at);
+        // 价格数据
+        $priceArr = json_decode($request->price_json, true);
+        // 检测价格数据合法性
+        GoodsPrice::checkPrice($priceArr);
+        // 修改
+        Goods::updateOP($Goods->goods_id, $arr, $priceArr);
+        // 添加基础数据，删除制造商品
+        GoodsCreatedOP::dispatch($Goods->goods_id, $arr)->onQueue('GoodsCreatedOP');
+
+        return $this->success();
+    }
+
+    /**
      * 获取自己商品
      * @return mixed
      */

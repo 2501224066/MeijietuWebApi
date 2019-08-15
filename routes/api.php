@@ -131,11 +131,12 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
         // 商品
         //  创建商品
         $api->post('createGoods', 'GoodsController@createGoods');
+        //  修改商品
+        $api->post('updateGoods', 'GoodsController@updateGoods');
         //  获取自己商品
         $api->post('goodsBelongSelf', 'GoodsController@goodsBelongSelf');
         //  商品下架
         $api->post('goodsDown', 'GoodsController@goodsDown');
-
 
         // 收藏
         //  收藏商品
