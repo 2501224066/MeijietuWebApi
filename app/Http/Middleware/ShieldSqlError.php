@@ -19,7 +19,7 @@ class ShieldSqlError
 
             return response()->json(['status_code' => 500,
                               'message'     => '服务异常',
-                              'data'        => []]);
+                              'data'        => []],500);
         }
 
         return $response;
