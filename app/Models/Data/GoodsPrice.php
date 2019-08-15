@@ -34,6 +34,8 @@ class GoodsPrice extends Model
 {
     protected $table = 'data_goods_price';
 
+    protected $primaryKey = 'goods_price_id';
+
     protected $guarded = [];
 
     public $timestamps = false;
