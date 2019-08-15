@@ -244,17 +244,20 @@ class Salesman
     // 设置软文价格操作
     public static function setPriceOP($goodsNum, $price)
     {
-        $goods = Goods::whereGoodsNum($goodsNum)->first();
+        $goods      = Goods::whereGoodsNum($goodsNum)->first();
+        $goodsPrice = GoodsPrice::whereGoodsId($goods->goods_id)->first();
 
         Pub::checkParm($goods->verify_status, Goods::VERIFY_STATUS['待审核'], '商品状态非法');
 
         if ((Modular::whereModularId($goods->modular_id)->value('tag') != Modular::TAG['软文营销'])
             || (GoodsPrice::whereGoodsId($goods->goods_id)->value('price') * 1 != 0)
-            || ($price <= 0))
+            || ($price <= 0)
+            || ($price <= $goodsPrice->floor_price)
+            || ($goodsPrice->floor_price <= 0))
             throw new Exception('非法操作');
 
-        $re = GoodsPrice::whereGoodsId($goods->goods_id)->update(['price' => $price]);
-        if (!$re)
+        $goodsPrice->price = $price;
+        if (!$goodsPrice->save())
             throw new Exception('操作失败');
 
         Log::info('【商品】 ' . $goodsNum . '设置软文价格完成');
