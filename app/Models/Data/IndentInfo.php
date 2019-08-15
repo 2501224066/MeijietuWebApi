@@ -96,12 +96,6 @@ class IndentInfo extends Model
         '已删除' => 1
     ];
 
-    // 无需赔偿保证费模块
-    const NO_COMPENSATE_FEE_MODULAR_TAG = [
-        Modular::TAG['软文营销'],
-        Modular::TAG['自身业务']
-    ];
-
     public function indent_item(): HasOne
     {
         return $this->hasOne(IndentItem::class, 'indent_id', 'indent_id');
@@ -209,7 +203,7 @@ class IndentInfo extends Model
 
     /**
      * 计算赔偿保证费
-     *  1.部分模块无需赔偿保证费
+     *  1.软文模式/自身模式 无需赔偿保证费
      * @param float $indentPrice 订单价格
      * @param int $modularId 模块id
      * @return float
@@ -220,9 +214,9 @@ class IndentInfo extends Model
         $compensateFeeRatio = Setting::whereSettingName('compensate_fee_ratio')->value('value');
         // 赔偿保证费
         $compensateFee = floor($indentPrice * $compensateFeeRatio);
-        // 部分模块无需赔偿保证费
-        $tag = Modular::whereModularId($modularId)->value('tag');
-        if (in_array($tag, self::NO_COMPENSATE_FEE_MODULAR_TAG))
+        // 软文模式/自身模式 无需赔偿保证费
+        $t = Modular::whereModularId($modularId)->value('settlement_type');
+        if (in_array($t, [Modular::SETTLEMENT_TYPE['软文模式'], Modular::SETTLEMENT_TYPE['自身模式']]))
             $compensateFee = 0;
 
         return $compensateFee;
@@ -230,6 +224,9 @@ class IndentInfo extends Model
 
     /**
      * 不同模式下卖家收入与议价状态
+     *  1.标准模式下卖家收入默认为 订单价格*（1-服务费率） 仍需议价
+     *  2.软文模式下卖家收入为商品底价 无需议价
+     *  3.自身模式下卖家(平台自己)收入订单价格 无需议价
      * @param float $indentPrice 订单价格
      * @param int $modularId 模块id
      * @param float $indentFloorPrice 订单底价
