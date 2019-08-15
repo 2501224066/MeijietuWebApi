@@ -111,7 +111,7 @@ class Salesman
             $query->where('user_num', 'like', '%' . $input->user_num . '%');
 
         if ($input->phone != null)
-            $query->where('user_num', $input->phone);
+            $query->where('phone', $input->phone);
 
         if ($input->nickname != null)
             $query->where('nickname', 'like', '%' . $input->nickname . '%');

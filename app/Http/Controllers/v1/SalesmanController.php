@@ -24,6 +24,7 @@ class SalesmanController extends BaseController
         User::checkIdentity(User::IDENTIDY['业务员']);
         // 服务用户
         $re = Salesman::serveUser($request);
+
         return $this->success($re);
     }
 
