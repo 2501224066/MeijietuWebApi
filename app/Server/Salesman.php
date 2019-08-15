@@ -144,7 +144,7 @@ class Salesman
             $item->user_nickname           = $user->nickname;
             $item->user_phone              = $user->phone;
             $item->user_num                = $user->user_num;
-            $item->modular_settlement_type = Modular::where($item->modular_id)->value('settlement_type');
+            $item->modular_settlement_type = Modular::whereModularId($item->modular_id)->value('settlement_type');
         }
 
         return $data;
