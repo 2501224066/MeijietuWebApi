@@ -340,7 +340,7 @@ class Goods extends Model
                         $P = 'price';
                         break;
 
-                    // 软文模式卖家输入的为低价
+                    // 软文模式卖家输入的为底价
                     case Modular::SETTLEMENT_TYPE['软文模式']:
                         $P = 'floor_price';
                         break;

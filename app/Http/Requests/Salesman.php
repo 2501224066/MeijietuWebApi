@@ -60,7 +60,7 @@ class Salesman extends Base
                 break;
 
             // 软文商品设置价格
-            case 'setSoftArticlePrice':
+            case 'setPrice':
                 $rules['goods_num'] = ['required', new SpecialChar];
                 $rules['price']     = ['required', new SpecialChar, 'numeric'];
                 break;

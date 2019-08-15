@@ -132,7 +132,7 @@ class Salesman
             $query->where('uid', User::whereUserNum($input->user_num)->value('uid'));
 
         if ($input->goods_num != null)
-            $query->where('goods_num', 'like',  '%'.$input->goods_num.'%');
+            $query->where('goods_num', 'like', '%' . $input->goods_num . '%');
 
         if ($input->verify_status != null)
             $query->where('verify_status', $input->verify_status);
@@ -140,10 +140,11 @@ class Salesman
         $data = $query->paginate();
 
         foreach ($data->items() as &$item) {
-            $user                = User::whereUid($item->uid)->first();
-            $item->user_nickname = $user->nickname;
-            $item->user_phone    = $user->phone;
-            $item->user_num      = $user->user_num;
+            $user                          = User::whereUid($item->uid)->first();
+            $item->user_nickname           = $user->nickname;
+            $item->user_phone              = $user->phone;
+            $item->user_num                = $user->user_num;
+            $item->modular_settlement_type = Modular::where($item->modular_id)->value('settlement_type');
         }
 
         return $data;
@@ -204,7 +205,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        Log::info('【商品】 '.$goodsNum.'审核通过');
+        Log::info('【商品】 ' . $goodsNum . '审核通过');
     }
 
     // 未通过审核
@@ -220,7 +221,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        Log::info('【商品】 '.$goodsNum.'审核不通过');
+        Log::info('【商品】 ' . $goodsNum . '审核不通过');
     }
 
     // 议价操作
@@ -237,7 +238,7 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        Log::info('【订单】 '.$indentNum.'议价完成');
+        Log::info('【订单】 ' . $indentNum . '议价完成');
     }
 
     // 设置软文价格操作
@@ -256,6 +257,6 @@ class Salesman
         if (!$re)
             throw new Exception('操作失败');
 
-        Log::info('【商品】 '.$goodsNum.'设置软文价格完成');
+        Log::info('【商品】 ' . $goodsNum . '设置软文价格完成');
     }
 }

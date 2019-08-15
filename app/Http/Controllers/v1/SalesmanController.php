@@ -94,7 +94,7 @@ class SalesmanController extends BaseController
     }
 
     /**
-     * 软文商品设置价格
+     * 软文模式设置价格
      * @param SalesmanRequests $request
      * @return mixed
      */
@@ -102,7 +102,7 @@ class SalesmanController extends BaseController
     {
         // 身份必须为业务员
         User::checkIdentity(User::IDENTIDY['业务员']);
-        // 设置软文价格操作
+        // 设置价格
         Salesman::setSoftArticlePriceOP($request->goods_num, htmlspecialchars($request->price));
 
         return $this->success();
