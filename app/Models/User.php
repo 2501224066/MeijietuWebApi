@@ -141,7 +141,7 @@ class User extends Authenticatable implements JWTSubject
     {
         // 代理身份
         $agent_id = null;
-        if ($request->agent_domain != null) {
+        if ($request->agent_domain !== null) {
             $agent_id = User::where('domain', 'like', '%' . $request . '%')->value('uid');
         }
 

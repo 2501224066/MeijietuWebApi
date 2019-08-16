@@ -16,7 +16,7 @@ class InformationController extends BaseController
      */
     public function information(InformationRequests $request)
     {
-        if ($request->information_id != null) {
+        if ($request->information_id !== null) {
 
             // 增加阅读量
             Information::addReadNum($request->information_id);

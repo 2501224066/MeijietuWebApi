@@ -302,15 +302,15 @@ class IndentInfo extends Model
     // 修改订单信息
     public static function updateIndent($indentData, $status, $pay_amount = null, $cancel_cause = null)
     {
-        if ($status != null)
+        if ($status !== null)
             $indentData->status = $status;
 
-        if ($pay_amount != null) {
+        if ($pay_amount !== null) {
             $indentData->pay_amount = $pay_amount;
             $indentData->pay_time   = date('Y-m-d H:i:s');
         }
 
-        if ($cancel_cause != null)
+        if ($cancel_cause !== null)
             $indentData->cancel_cause = $cancel_cause;
 
         if (!$indentData->save()) {

@@ -6,7 +6,6 @@ use App\Jobs\RegisteredOP;
 use App\Models\Log\LogLogin;
 use App\Models\Data\Collection;
 use App\Models\Data\Shopcart;
-use App\Models\Data\News;
 use App\Models\Data\NewsUser;
 use App\Models\Realname\RealnamePeople;
 use App\Models\User;
@@ -14,7 +13,6 @@ use App\Http\Requests\Auth as AuthRequests;
 use App\Server\Captcha;
 use App\Server\Pub;
 use Dingo\Api\Routing\Helpers;
-use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends BaseController

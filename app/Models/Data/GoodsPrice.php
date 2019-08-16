@@ -47,13 +47,13 @@ class GoodsPrice extends Model
         if (!$request->priceclassify_id)
             return false;
 
-        if ($request->priceclassify_id != null)
+        if ($request->priceclassify_id !== null)
             $query = self::where('priceclassify_id', $request->priceclassify_id);
 
-        if ($request->pricelevel_min != null)
+        if ($request->pricelevel_min !== null)
             $query->where('price', '>', $request->pricelevel_min);
 
-        if ($request->pricelevel_max != null)
+        if ($request->pricelevel_max !== null)
             $query->where('price', '<=', $request->pricelevel_max);
 
         return $query->groupBy('goods_id')->pluck('goods_id');

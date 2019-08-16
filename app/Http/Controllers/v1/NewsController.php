@@ -22,7 +22,7 @@ class NewsController extends BaseController
         $uid = JWTAuth::user()->uid;
 
         $query = NewsUser::whereUid($uid);
-        if ($request->read_status != null)
+        if ($request->read_status !== null)
             $query->where('read_status', $request->read_status);
 
         $newsIdArr = $query->pluck('news_id');

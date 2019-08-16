@@ -104,16 +104,16 @@ class Salesman
             ->with('wallet:uid,available_money,status,remark')
             ->select(['uid', 'user_num', 'phone', 'nickname', 'sex', 'created_at', 'identity', 'realname_status', 'status']);
 
-        if ($input->identity != null)
+        if ($input->identity !== null)
             $query->where('identity', $input->identity);
 
-        if ($input->user_num != null)
+        if ($input->user_num !== null)
             $query->where('user_num', 'like', '%' . $input->user_num . '%');
 
-        if ($input->phone != null)
+        if ($input->phone !== null)
             $query->where('phone', $input->phone);
 
-        if ($input->nickname != null)
+        if ($input->nickname !== null)
             $query->where('nickname', 'like', '%' . $input->nickname . '%');
 
         return $query->paginate();
@@ -128,13 +128,13 @@ class Salesman
             ->where('delete_status', Goods::DELETE_STATUS['未删除'])
             ->orderBy('created_at', 'DESC');
 
-        if ($input->user_num != null)
+        if ($input->user_num !== null)
             $query->where('uid', User::whereUserNum($input->user_num)->value('uid'));
 
-        if ($input->goods_num != null)
+        if ($input->goods_num !== null)
             $query->where('goods_num', 'like', '%' . $input->goods_num . '%');
 
-        if ($input->verify_status != null)
+        if ($input->verify_status !== null)
             $query->where('verify_status', $input->verify_status);
 
         $data = $query->paginate();
