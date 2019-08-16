@@ -499,7 +499,6 @@ class Goods extends Model
      */
     public static function down($goods)
     {
-        $goods->verify_status = self::VERIFY_STATUS['待审核'];
         $goods->status        = self::STATUS['下架'];
         $re                   = $goods->save();
         if (!$re)
