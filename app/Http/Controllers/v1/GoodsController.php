@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Server\Pub;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Goods as GoodsRequests;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class GoodsController extends BaseController
@@ -91,10 +92,11 @@ class GoodsController extends BaseController
      */
     public function updateGoods(GoodsRequests $request)
     {
-        // 检查身份
-        User::checkIdentity(User::IDENTIDY['媒体主']);
         // 商品信息
         $Goods = Goods::whereGoodsNum($request->goods_num)->first();
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        Pub::checkParm($Goods->uid, JWTAuth::user()->uid, '非法');
         // 组装数组
         $arr = Goods::assembleArr($request, $request->goods_num, $Goods->created_at);
         // 价格数据

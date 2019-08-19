@@ -188,8 +188,10 @@ return [
         Mrgoon\AliSms\ServiceProvider::class,
         // LogViewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
-        //AliOSS
+        // AliOSS
         Jacobcyl\AliOSS\AliOssServiceProvider::class,
+        // Mongodb
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
     ],
 
     /*
