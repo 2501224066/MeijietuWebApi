@@ -241,7 +241,7 @@ class Salesman
         Log::info('【订单】 ' . $indentNum . '议价完成');
     }
 
-    // 设置软文价格操作
+    // 软文模式-设置价格操作
     public static function setPriceOP($goodsNum, $price)
     {
         $goods      = Goods::whereGoodsNum($goodsNum)->first();
@@ -249,7 +249,7 @@ class Salesman
 
         Pub::checkParm($goods->verify_status, Goods::VERIFY_STATUS['待审核'], '商品状态非法');
 
-        if ((Modular::whereModularId($goods->modular_id)->value('tag') != Modular::TAG['软文营销'])
+        if ((Modular::whereModularId($goods->modular_id)->value('settlement_type') != Modular::SETTLEMENT_TYPE['软文模式'])
             || (GoodsPrice::whereGoodsId($goods->goods_id)->value('price') * 1 != 0)
             || ($price <= 0)
             || ($price <= $goodsPrice->floor_price)

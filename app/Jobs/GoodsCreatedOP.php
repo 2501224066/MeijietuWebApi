@@ -25,11 +25,6 @@ class GoodsCreatedOP implements ShouldQueue
         $this->arr     = $arr;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         $goodsId = $this->goodsId;
