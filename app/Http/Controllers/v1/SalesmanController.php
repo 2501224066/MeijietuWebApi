@@ -70,8 +70,10 @@ class SalesmanController extends BaseController
         // 身份必须为业务员
         User::checkIdentity(User::IDENTIDY['业务员']);
         // 通过审核
-        if ($request->verify_status == Goods::VERIFY_STATUS['已通过'])
+        if ($request->verify_status == Goods::VERIFY_STATUS['已通过']) {
             Salesman::verifySuccess($request->goods_num);
+            pushToBaidu($request->goods_num);
+        }
         // 未通过审核
         if ($request->verify_status == Goods::VERIFY_STATUS['未通过'])
             Salesman::verifyFail($request->goods_num, htmlspecialchars($request->verify_cause));
