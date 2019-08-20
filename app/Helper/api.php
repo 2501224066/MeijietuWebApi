@@ -124,6 +124,6 @@ function pushToBaidu($goodsNum)
     $url   = $host . $path . "?" . $querys;
 
     $re =  API_CURL($host, $url, $method, $headers, $bodys);
-    \Illuminate\Support\Facades\Log::info('【百度推送】'.$goodsNum);
+    \Illuminate\Support\Facades\Log::info('【百度推送】'.$goodsNum.$re);
     return $re;
 }
