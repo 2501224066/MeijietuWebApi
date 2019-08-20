@@ -123,5 +123,7 @@ function pushToBaidu($goodsNum)
     $bodys = $mjtUrl . '/goods/' . $goodsNum;
     $url   = $host . $path . "?" . $querys;
 
-    return API_CURL($host, $url, $method, $headers, $bodys);
+    $re =  API_CURL($host, $url, $method, $headers, $bodys);
+    \Illuminate\Support\Facades\Log::info('【百度推送】'.$goodsNum);
+    return $re;
 }
