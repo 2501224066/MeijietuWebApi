@@ -499,8 +499,8 @@ class Goods extends Model
      */
     public static function down($goods)
     {
-        $goods->status        = self::STATUS['下架'];
-        $re                   = $goods->save();
+        $goods->status = self::STATUS['下架'];
+        $re            = $goods->save();
         if (!$re)
             throw new Exception('操作失败');
     }
@@ -563,48 +563,83 @@ class Goods extends Model
     }
 
     /**
-     * 删除初始商品
+     * 添加小红书基础数据
+     * @param string $goodsId 商品id
+     * @param string $room_ID 小红书id
+     */
+    public static function addXiaoHongShuBasicData($goodsId, $room_ID)
+    {
+        // 查询自库数据
+        $re = DB::connection('xiaohongshu_mongodb')
+            ->collection('XiaoHongShu_Analysis')
+            ->where('BasicInfo.XiaoHongShu_Id', $room_ID)
+            ->first();
+
+        // 存入商品表中
+        if ($re)
+            self::whereGoodsId($goodsId)->update([
+                'fans_num'        => $re['Estimated_Fans_Num'],
+                'avg_read_num'    => $re['Avg_Read_Num_Top'],
+                'max_read_num'    => $re['Max_Read_Num_Top'],
+                'avg_like_num'    => $re['Avg_Like_Num_Top'],
+                'max_like_num'    => $re['Max_Like_Num_Top'],
+                'avg_comment_num' => $re['Avg_Comment_Num_Top'],
+                'max_comment_num' => $re['Max_Comment_Num_Top']
+            ]);
+    }
+
+    /**
+     * 删除微信初始商品
      *  1.包括 微信公众号 / 微博 / 短视频小红书
      *  2.初始创造的一批商品,当用户录入商品后，判断初始商品中是否有重复的，有则删除初始商品
      * @param string $goodsId 商品id
+     * @param int $type 类型
      * @return bool
      * @throws \Exception
      */
-    public static function delSelfCreateGoods($goodsId)
+    public static function delSelfCreateGoods($goodsId, $type)
     {
         // 商品数据
-        $goods  = DB::table('data_goods')->where('goods_id', $goodsId)->first();
+        $goods = DB::table('data_goods')->where('goods_id', $goodsId)->first();
         if (!$goods) return false;
         $delArr = [];
 
-        // 微信公众号
-        if ($goods->weixin_ID) {
-            $delArr = DB::table('data_goods')
-                ->where('uid', User::GF_SELLER)
-                ->where('modular_name', '微信营销')
-                ->where('theme_name', '公众号')
-                ->where('weixin_ID', $goods->weixin_ID)
-                ->pluck('goods_id');
-        }
+        switch ($type) {
+            // 微信
+            case 1:
+                if ($goods->weixin_ID) {
+                    $delArr = DB::table('data_goods')
+                        ->where('uid', User::GF_SELLER)
+                        ->where('modular_name', '微信营销')
+                        ->where('theme_name', '公众号')
+                        ->where('weixin_ID', $goods->weixin_ID)
+                        ->pluck('goods_id');
+                }
+                break;
 
-        // 微博
-        if ($goods->link) {
-            $delArr = DB::table('data_goods')
-                ->where('uid', User::GF_SELLER)
-                ->where('modular_name', '微博营销')
-                ->where('link', $goods->link)
-                ->pluck('goods_id');
-        }
+            // 微博
+            case 2:
+                if ($goods->link) {
+                    $delArr = DB::table('data_goods')
+                        ->where('uid', User::GF_SELLER)
+                        ->where('modular_name', '微博营销')
+                        ->where('link', $goods->link)
+                        ->pluck('goods_id');
+                }
+                break;
 
-        // 小红书
-        if ($goods->room_ID) {
-            $delArr = DB::table('data_goods')
-                ->where('uid', User::GF_SELLER)
-                ->where('modular_name', '视频营销')
-                ->where('theme_name', '短视频')
-                ->where('platform_name', '小红书')
-                ->where('room_ID', $goods->room_ID)
-                ->pluck('goods_id');
+            // 小红书
+            case 3:
+                if ($goods->room_ID) {
+                    $delArr = DB::table('data_goods')
+                        ->where('uid', User::GF_SELLER)
+                        ->where('modular_name', '视频营销')
+                        ->where('theme_name', '短视频')
+                        ->where('platform_name', '小红书')
+                        ->where('room_ID', $goods->room_ID)
+                        ->pluck('goods_id');
+                }
+                break;
         }
 
         // 删除初始商品
