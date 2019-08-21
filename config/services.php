@@ -39,6 +39,14 @@ return [
         'template_code_a' => env('ALIYUN_SMS_TEMPLATE_CODE_A'),
         'template_code_b' => env('ALIYUN_SMS_TEMPLATE_CODE_B'),
         'template_code_c' => env('ALIYUN_SMS_TEMPLATE_CODE_C'),
+    ],
+
+    'wallet' => [
+        'salt' => env('WALLET_SALT')
+    ],
+
+    'yunshichang' => [
+        'app_code' => env('YUNSHICHANG_APP_CODE')
     ]
 
 ];

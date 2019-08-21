@@ -41,7 +41,7 @@ function todayCount($key): string
  */
 function createWalletChangeLock($uid, $avaiable_money, $time): string
 {
-    return md5($uid . substr(env('WALLET_SALT'), 13, 28) . substr(env('WALLET_SALT'), 45, 51) . $avaiable_money * 1 . $time);
+    return md5($uid . substr(config('services.wallet.salt'), 13, 28) . substr(config('services.wallet.salt'), 45, 51) . $avaiable_money * 1 . $time);
 }
 
 /**

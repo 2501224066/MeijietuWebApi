@@ -13,7 +13,7 @@ class ShieldSqlError
     {
         $response = $next($request);
 
-        if ((!env('API_DEBUG'))
+        if ((!config('api.debug'))
             && isset($response->original['message'])
             && strstr($response->original['message'], 'SQLSTATE')) {
 

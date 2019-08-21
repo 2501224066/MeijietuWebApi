@@ -51,7 +51,7 @@ function BankInfo_API($acct_name, $acct_pan, $cert_id, $phone_num, $cert_type = 
     $host    = "https://ali-bankcard4.showapi.com";
     $path    = "/bank4";
     $method  = "GET";
-    $appcode = env('YUNSHICHANG_APP_CODE');
+    $appcode = config('services.yunshichang.app_code');
     $headers = array();
     array_push($headers, "Authorization:APPCODE " . $appcode);
     $querys = "acct_name=" . $acct_name . "&acct_pan=" . $acct_pan . "&cert_id=" . $cert_id . "&cert_type=" . $cert_type . "&needBelongArea=" . $needBelongArea . "&phone_num=" . $phone_num;
@@ -72,7 +72,7 @@ function IDcard_API($img_base64, $typeId = 2): array
     $host    = "http://ocrapi.sinosecu.com.cn";
     $path    = "/api/recogliu.do";
     $method  = "POST";
-    $appcode = env('YUNSHICHANG_APP_CODE');
+    $appcode = config('services.yunshichang.app_code');
     $headers = array();
     array_push($headers, "Authorization:APPCODE " . $appcode);
     //根据API的要求，定义相对应的Content-Type
@@ -94,7 +94,7 @@ function businessLicense_API($img_base64): array
     $host    = "http://yingye.market.alicloudapi.com";
     $path    = "/CreditValid";
     $method  = "POST";
-    $appcode = env('YUNSHICHANG_APP_CODE');
+    $appcode = config('services.yunshichang.app_code');
     $headers = array();
     array_push($headers, "Authorization:APPCODE " . $appcode);
     //根据API的要求，定义相对应的Content-Type
