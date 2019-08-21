@@ -567,12 +567,14 @@ class Goods extends Model
      *  1.包括 微信公众号 / 微博 / 短视频小红书
      *  2.初始创造的一批商品,当用户录入商品后，判断初始商品中是否有重复的，有则删除初始商品
      * @param string $goodsId 商品id
+     * @return bool
      * @throws \Exception
      */
     public static function delSelfCreateGoods($goodsId)
     {
         // 商品数据
         $goods  = DB::table('data_goods')->where('goods_id', $goodsId)->first();
+        if (!$goods) return false;
         $delArr = [];
 
         // 微信公众号
@@ -610,5 +612,7 @@ class Goods extends Model
             Goods::whereGoodsId($goods_id)->delete();
             GoodsPrice::whereGoodsId($goods_id)->delete();
         }
+
+        return true;
     }
 }
