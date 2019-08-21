@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'sms' => [
+        'template_code_a' => env('ALIYUN_SMS_TEMPLATE_CODE_A'),
+        'template_code_b' => env('ALIYUN_SMS_TEMPLATE_CODE_B'),
+        'template_code_c' => env('ALIYUN_SMS_TEMPLATE_CODE_C'),
+    ]
+
 ];

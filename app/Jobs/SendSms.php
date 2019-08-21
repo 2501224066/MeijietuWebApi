@@ -44,14 +44,14 @@ class SendSms implements ShouldQueue
             case Captcha::TYPE['验证码']:
                 $ali_sms = new AliSms();
                 $ali_sms->sendSms($phone,
-                    env('ALIYUN_SMS_TEMPLATE_CODE_A'),
+                    config('services.sms.template_code_a'),
                     ['code' => $contentArr['code']]);
                 break;
 
             case Captcha::TYPE['订单通知']:
                 $ali_sms = new AliSms();
                 $ali_sms->sendSms($phone,
-                    env('ALIYUN_SMS_TEMPLATE_CODE_B'),
+                    config('services.sms.template_code_b'),
                     [
                         'name'       => $contentArr['name'],
                         'indent_num' => $contentArr['indent_num'],
@@ -62,7 +62,7 @@ class SendSms implements ShouldQueue
             case Captcha::TYPE['资金变动']:
                 $ali_sms = new AliSms();
                 $ali_sms->sendSms($phone,
-                    env('ALIYUN_SMS_TEMPLATE_CODE_C'),
+                    config('services.sms.template_code_c'),
                     [
                         'name'      => $contentArr['name'],
                         'money'     => $contentArr['money'],
