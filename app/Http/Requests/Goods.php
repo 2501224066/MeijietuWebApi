@@ -61,6 +61,8 @@ class Goods extends Base
                         break;
 
                     case Modular::TAG['自媒体营销']:
+                        $rules['link']           = ['nullable', 'present', 'active_url'];
+                        $rules['case_link']      = ['required', 'active_url'];
                         $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
                         $rules['platform_id']    = ['required', new SpecialChar, 'numeric', 'exists:attr_platform,platform_id'];
                         $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:attr_region,region_id'];
