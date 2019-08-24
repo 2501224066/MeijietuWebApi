@@ -189,19 +189,19 @@ class  GoodsBatchAdd implements ShouldQueue
                             $arr['pc_weightlevel_img'] = 'images/currency_weightlevel_img/9e3e77fa9c6a959927876103c725991b.png';
                         }
 
-                        $arr['news_source_status'] = htmlspecialchars($rowArr['12']) == '是' ? 1 : 0;
+                        $arr['news_source_status'] = htmlspecialchars($rowArr[12]) == '是' ? 1 : 0;
 
-                        $arr['link_type'] = htmlspecialchars($rowArr['13']) == '是' ? 1 : 0;
+                        $arr['link_type'] = htmlspecialchars($rowArr[13]) == '是' ? 1 : 0;
 
-                        $arr['weekend_status'] = htmlspecialchars($rowArr['14']) == '是' ? 1 : 0;
+                        $arr['weekend_status'] = htmlspecialchars($rowArr[14]) == '是' ? 1 : 0;
 
-                        $arr['max_title_long'] = htmlspecialchars($rowArr['15']);
+                        $arr['max_title_long'] = htmlspecialchars($rowArr[15]);
 
-                        $arr['link'] = htmlspecialchars($rowArr['16']);
+                        $arr['link'] = htmlspecialchars($rowArr[16]);
 
-                        $arr['case_link'] = htmlspecialchars($rowArr['17']);
+                        $arr['case_link'] = htmlspecialchars($rowArr[17]);
 
-                        $arr['remarks'] = htmlspecialchars($rowArr['18']);
+                        $arr['remarks'] = empty($rowArr[18]) ? null : htmlspecialchars($rowArr[18]);
 
                         $arr['avatar_url'] = User::whereUid($uid)->value('head_portrait');
 
