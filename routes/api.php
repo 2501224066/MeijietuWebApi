@@ -12,6 +12,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
     $api->get('randomSalesman', 'OpenParamController@randomSalesman');
     //---- banner
     $api->get('banner', 'OpenParamController@banner');
+    //---- 软文批量上传模板
+    $api->get('softArticleBatchExcel', 'OpenParamController@softArticleBatchExcel');
 
     // 充值回调
     //---- 连连充值回调

@@ -47,10 +47,21 @@ class OpenParamController extends BaseController
         if (Cache::has('banner'))
             return $this->success(json_decode(Cache::get('banner')));
 
-        $re =  Setting::banner();
+        $re = Setting::banner();
 
         Cache::put('banner', json_encode($re), 60 * 12);
 
         return $this->success($re);
+    }
+
+    /**
+     * 软文批量上传模板
+     * @return mixed
+     */
+    public function softArticleBatchExcel()
+    {
+        return $this->success([
+            'path' => Setting::whereSettingName('softArticle_batchAdd_excel')->value('value')
+        ]);
     }
 }
