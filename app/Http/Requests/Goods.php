@@ -176,6 +176,13 @@ class Goods extends Base
             case 'goodsDown':
                 $rules['goods_num'] = ['required', new SpecialChar, 'exists:data_goods,goods_num'];
                 break;
+
+            // 批量入驻
+            case 'goodsBatchAdd':
+                $rules['excel_path'] = ['required'];
+                $rules['modular_id'] = ['required', new SpecialChar, 'numeric', 'exists:attr_modular,modular_id'];
+                $rules['theme_id']   = ['required', new SpecialChar, 'numeric', 'exists:attr_theme,theme_id'];
+                break;
         }
 
         return $rules;

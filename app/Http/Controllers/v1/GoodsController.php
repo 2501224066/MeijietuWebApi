@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Jobs\GoodsBatchAdd;
 use App\Jobs\GoodsCreatedOP;
 use App\Models\Data\Goods;
 use App\Models\Data\GoodsPrice;
@@ -11,8 +12,9 @@ use App\Models\User;
 use App\Server\Pub;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Goods as GoodsRequests;
+use Illuminate\Support\Facades\Storage;
+use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
 
 class GoodsController extends BaseController
 {
@@ -168,6 +170,27 @@ class GoodsController extends BaseController
         Pub::checkParm($goods->status, Goods::STATUS['上架'], '商品未上架');
         // 下架
         Goods::down($goods);
+
+        return $this->success();
+    }
+
+    /**
+     * 商品批量入驻
+     * @param GoodsRequests $request
+     * @return mixed
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function goodsBatchAdd(GoodsRequests $request)
+    {
+        // 检查身份
+        User::checkIdentity(User::IDENTIDY['媒体主']);
+        // 判断文件格式
+        Pub::checkParm(strstr($request->excel_path, '.'), '.xlsx', '文件格式非法');
+        // 判断文件是否存在
+        if (!Storage::exists($request->excel_path))
+            throw new Exception('文件未找到');
+        // 传入队列操作
+        GoodsBatchAdd::dispatch(JWTAuth::user()->uid, $request->excel_path, $request->modular_id, $request->theme_id)->onQueue('GoodsBatchAdd');
 
         return $this->success();
     }

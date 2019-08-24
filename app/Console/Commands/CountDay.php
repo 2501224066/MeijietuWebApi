@@ -24,7 +24,7 @@ class CountDay extends Command
 
     public function handle()
     {
-        $t = date("Y-m-d", strtotime("-1 day"));
+        $t = date("Y-m-d");
 
         $c['register'] = User::where('created_at', 'like', '%' . $t . '%')->count();
         $c['goods']    = Goods::where('created_at', 'like', '%' . $t . '%')->count();

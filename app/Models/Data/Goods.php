@@ -238,8 +238,7 @@ class Goods extends Model
         $arr['title_about']  = htmlspecialchars($request->title_about);
         $arr['qq_ID']        = htmlspecialchars($request->qq_ID);
         $arr['modular_id']   = htmlspecialchars($request->modular_id);
-        $modualrData         = Modular::whereModularId($request->modular_id)->first();
-        $arr['modular_name'] = $modualrData->modular_name;
+        $arr['modular_name'] = Modular::whereModularId($request->modular_id)->value('modular_name');
         $arr['theme_id']     = htmlspecialchars($request->theme_id);
         $arr['theme_name']   = Theme::whereThemeId($request->theme_id)->value('theme_name');
         $arr['filed_id']     = htmlspecialchars($request->filed_id);

@@ -22,7 +22,8 @@ class Pub
         '身份证'  => 'ID_card',
         '营业执照' => 'business_license',
         '头像'   => 'head_portrait',
-        '订单文档' => 'indent_word'
+        '订单文档' => 'indent_word',
+        '商品批量文档' => 'goods_batch'
     ];
 
     // 判断

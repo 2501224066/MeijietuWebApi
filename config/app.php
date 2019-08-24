@@ -1,8 +1,6 @@
 
 <?php
 
-use Jacobcyl\AliOSS\AliOssServiceProvider;
-
 return [
 
     /*
