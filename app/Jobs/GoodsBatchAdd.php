@@ -71,16 +71,16 @@ class  GoodsBatchAdd implements ShouldQueue
                         continue;
                     }
 
-                    foreach ($sheet->getRowIterator() as $k => $row) {
+                    foreach ($sheet->getRowIterator() as $kk => $row) {
                         $rowArr = $row->toArray();
 
                         // 从第四行开始读取
-                        if ($k < 4) {
+                        if ($kk < 4) {
                             continue;
                         }
 
                         // 超出504行停止
-                        if ($k > 504) {
+                        if ($kk > 504) {
                             $reader->close(); // 释放内存
                             unlink($path); //删除文件
                             return true;
