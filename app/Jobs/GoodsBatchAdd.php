@@ -128,7 +128,7 @@ class  GoodsBatchAdd implements ShouldQueue
                         }
 
                         $filed = Filed::whereFiledName(htmlspecialchars($rowArr[5]))->first();
-                        if ($region) {
+                        if ($filed) {
                             $arr['filed_id']   = $filed->filed_id;
                             $arr['filed_name'] = $filed->filed_name;
                         } else {
