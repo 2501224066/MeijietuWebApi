@@ -50,24 +50,23 @@ class  GoodsBatchAdd implements ShouldQueue
         $modular_id = $this->modular_id;
         $theme_id   = $this->theme_id;
 
-        try {
+        // 转存在本地
+        $arr  = explode('/', $excel_path);
+        $name = $arr[count($arr) - 1];
+        Storage::disk('public')->put($name, Storage::get($excel_path));
+        $path = storage_path('app/public/') . $name;
 
-            // 转存在本地
-            $arr  = explode('/', $excel_path);
-            $name = $arr[count($arr) - 1];
-            Storage::disk('public')->put($name, Storage::get($excel_path));
-            $path = storage_path('app/public/') . $name;
+        // 软文批量入驻
+        if ((Modular::whereModularId($modular_id)->value('modular_name') == '软文营销')
+            && (Theme::whereThemeId($theme_id)->value('theme_name') == '软文')) {
 
-            // 软文批量入驻
-            if ((Modular::whereModularId($modular_id)->value('modular_name') == '软文营销')
-                && (Theme::whereThemeId($theme_id)->value('theme_name') == '软文')) {
-
-                // 解析Excel
-                $reader = ReaderEntityFactory::createXLSXReader();
-                $reader->open($path);
+            // 解析Excel
+            $reader = ReaderEntityFactory::createXLSXReader();
+            $reader->open($path);
+            try {
                 foreach ($reader->getSheetIterator() as $k => $sheet) {
                     // 只解析第一张表
-                    if($k != 1){
+                    if ($k != 1) {
                         continue;
                     }
 
@@ -214,14 +213,14 @@ class  GoodsBatchAdd implements ShouldQueue
                         Goods::add($arr, $priceArr);
                     }
                 }
-                
-                $reader->close(); // 释放内存
-            }
-        } catch (Exception $e) {
-            Log::info('【商品】 批量入驻错误 ' . $e->getMessage());
-        }
 
-        unlink($path); //删除文件
+            } catch (Exception $e) {
+                Log::info('【商品】 批量入驻错误 ' . $e->getMessage());
+            }
+
+            $reader->close(); // 释放内存
+            unlink($path); //删除文件
+        }
         return true;
     }
 }
