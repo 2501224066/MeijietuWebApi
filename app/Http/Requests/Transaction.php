@@ -35,8 +35,12 @@ class Transaction extends Base
 
             // 买家添加需求文档
             case 'addDemandFile':
-                $rules['indent_num']  = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
-                $rules['demand_file'] = ['required', new SpecialChar];
+                $rules['indent_num']    = ['required', new SpecialChar, 'exists:data_indent_info,indent_num'];
+                $rules['demand_file']   = ['nullable', 'present', new SpecialChar];
+                $rules['demand_name']   = ['required', 'present', new SpecialChar];
+                $rules['demand_title']  = ['required', new SpecialChar];
+                $rules['demand_link']   = ['nullable', 'present', 'active_url'];
+                $rules['demand_remark'] = ['nullable', 'present', new SpecialChar];
                 break;
 
             // 待接单取消订单
@@ -89,7 +93,10 @@ class Transaction extends Base
             'indent_num.exists'          => '订单不存在',
             'demand_file.required'       => '需求文档不得为空',
             'achievements_file.required' => '成果文档不得为空',
-            'cancel_cause.required'      => '取消原因不得为空'
+            'cancel_cause.required'      => '取消原因不得为空',
+
+            'demand_name.required'  => '客户名称不得为空',
+            'demand_title.required' => '标题不得为空'
         ];
     }
 }

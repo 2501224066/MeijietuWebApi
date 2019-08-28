@@ -32,13 +32,17 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @property float $seller_income 卖家收入 默认=订单价格 *（1 - 服务费率）
  * @property float $bargaining_reduce 议价节省 客服议价价差
  * @property int $bargaining_status 议价状态 0=未完成 1=已完成
- * @property int $status 交易状态 0=待付款 1=已付款待接单 2=待接单买家取消订单 3=卖家拒单  4=交易中 5=交易中买家取消订单 6=交易中卖家取消订单 7=卖方完成 8=全部完成 9=已结算
  * @property string|null $create_time
- * @property string|null $cancel_cause 取消原因
- * @property string|null $demand_file 需求文档
- * @property string|null $achievements_file 成果文档
+ * @property int $status 交易状态 0=待付款 1=已付款待接单 2=待接单买家取消订单 3=卖家拒单  4=交易中 5=交易中买家取消订单 6=交易中卖家取消订单 7=卖方完成 8=全部完成 9=已结算
  * @property int $delete_status 删除状态 0=未删除 1=删除
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Data\IndentItem[] $indent_item
+ * @property string|null $demand_file 需求文档
+ * @property string|null $demand_name 客户名称
+ * @property string|null $demand_title 转载标题
+ * @property string|null $demand_link 转载链接
+ * @property string|null $demand_remark 需求备注
+ * @property string|null $achievements_file 成果文档
+ * @property string|null $cancel_cause 取消原因
+ * @property-read \App\Models\Data\IndentItem $indent_item
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo query()
@@ -51,6 +55,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereCreateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereDeleteStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereDemandFile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereDemandLink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereDemandName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereDemandRemark($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereDemandTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereIndentAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereIndentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Data\IndentInfo whereIndentNum($value)
