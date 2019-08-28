@@ -190,8 +190,6 @@ return [
         Jacobcyl\AliOSS\AliOssServiceProvider::class,
         // Mongodb
         Jenssegers\Mongodb\MongodbServiceProvider::class,
-        // Excel
-        Box\Spout\Reader\Common\Creator\ReaderFactory::class
     ],
 
     /*
