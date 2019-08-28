@@ -141,14 +141,15 @@ class Runwater extends Model
      */
     public static function extractOP($uid, $money)
     {
+        // 校验钱包状态
+        Wallet::checkStatus($uid, Wallet::STATUS['启用']);
+        // 校验修改校验锁
+        Wallet::checkChangLock($uid);
+        // 钱包余额是够足够
+        Wallet::hasEnoughMoney($money);
+
         DB::transaction(function () use ($uid, $money) {
             try {
-                // 校验钱包状态
-                Wallet::checkStatus($uid, Wallet::STATUS['启用']);
-                // 校验修改校验锁
-                Wallet::checkChangLock($uid);
-                // 钱包余额是够足够
-                Wallet::hasEnoughMoney($money);
                 // 用户资金减少
                 Wallet::updateWallet($uid, $money, Wallet::UP_OR_DOWN['减少']);
                 // 生成交易流水
@@ -161,8 +162,7 @@ class Runwater extends Model
                     Runwater::STATUS['进行中']
                 );
             } catch (\Exception $e) {
-                Log::info('【提现】 失败, uid' . $uid . ' error ' . $e->getMessage());
-                throw new Exception('操作失败');
+                throw new Exception('操作失败,检查资金状态或联系客服');
             }
         });
     }

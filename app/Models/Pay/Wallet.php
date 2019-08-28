@@ -110,12 +110,13 @@ class Wallet extends Model
     {
         $wallet = self::whereUid($uid)->first();
         if (createWalletChangeLock($uid, $wallet->available_money, $wallet->time) != $wallet->change_lock) {
-            $wallet->status = self::STATUS['禁用'];
-            $wallet->remark = '校验修改校验锁失败, 禁用钱包';
-            $wallet->save();
+            Wallet::whereWalletId($wallet->wallet_id)->update([
+                'status' => self::STATUS['禁用'],
+                'remark' => '校验修改校验锁失败, 禁用钱包'
+            ]);
 
-            Log::notice('【资金】 用户 ' . User::whereUid($uid)->value('nickname') . ' 校验修改校验锁失败, 禁用钱包');
-            throw new Exception('校验修改校验锁失败, 禁用钱包, 请联系客服');
+            Log::notice( '【资金】 用户 ' . User::whereUid($uid)->value('nickname') . ' 资金钱包异常，校验修改校验锁失败');
+            throw new Exception('资金钱包异常，校验修改校验锁失败');
         }
     }
 
