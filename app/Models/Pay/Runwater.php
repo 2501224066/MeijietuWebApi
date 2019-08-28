@@ -7,9 +7,9 @@ namespace App\Models\Pay;
 use App\Models\Data\IndentInfo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
 
 
 /**
@@ -69,7 +69,7 @@ class Runwater extends Model
         '支付赔偿保证费'   => 4,
         '取消订单全额退款'  => 5,
         '取消订单非全额退款' => 6,
-        '取消订单退款加补偿'  => 7,
+        '取消订单退款加补偿' => 7,
         '订单完成结算'    => 8,
         '需求结算'      => 9
     ];
@@ -161,6 +161,7 @@ class Runwater extends Model
                     Runwater::STATUS['进行中']
                 );
             } catch (\Exception $e) {
+                Log::info('【提现】 失败, uid' . $uid . ' error ' . $e->getMessage());
                 throw new Exception('操作失败');
             }
         });

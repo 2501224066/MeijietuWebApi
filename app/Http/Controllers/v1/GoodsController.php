@@ -151,6 +151,9 @@ class GoodsController extends BaseController
     {
         $goodsId = Goods::whereGoodsNum($request->goods_num)->value('goods_id');
         $re      = Goods::getGoods($request, [$goodsId]);
+        $re = $re[0];
+        // 查询文章数据
+
 
         return $this->success($re);
     }
