@@ -35,7 +35,7 @@ class GoodsCreatedOP implements ShouldQueue
         switch (Modular::whereModularId($arr['modular_id'])->value('tag')) {
             // 微信基础数据
             case Modular::TAG['微信营销']:
-                Goods::addWeiXinBasicData($goodsId, $arr['weixin_ID']);
+                Goods::addWeiXinBasicData($goodsId, $arr['title']);
                 Goods::delSelfCreateGoods($goodsId, 1); // 消除初始商品
                 break;
 

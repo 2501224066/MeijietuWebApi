@@ -63,16 +63,16 @@ class  GoodsBatchAdd implements ShouldQueue
             // 解析Excel
             $reader = ReaderEntityFactory::createXLSXReader();
             $reader->open($path);
-            try {
-                foreach ($reader->getSheetIterator() as $k => $sheet) {
-                    // 只解析第一张表
-                    if ($k != 1) {
-                        continue;
-                    }
+            foreach ($reader->getSheetIterator() as $k => $sheet) {
+                // 只解析第一张表
+                if ($k != 1) {
+                    continue;
+                }
 
-                    foreach ($sheet->getRowIterator() as $kk => $row) {
-                        $rowArr = $row->toArray();
+                foreach ($sheet->getRowIterator() as $kk => $row) {
+                    $rowArr = $row->toArray();
 
+                    try {
                         // 从第四行开始读取
                         if ($kk < 4) {
                             continue;
@@ -86,7 +86,8 @@ class  GoodsBatchAdd implements ShouldQueue
                         }
 
                         // 必填项目为空则跳过
-                        if (!(($rowArr[0] !== null)
+                        if (!((count($rowArr) >= 17)
+                            && ($rowArr[0] !== null)
                             && ($rowArr[1] !== null)
                             && ($rowArr[2] !== null)
                             && ($rowArr[3] !== null)
@@ -105,6 +106,9 @@ class  GoodsBatchAdd implements ShouldQueue
                             && ($rowArr[17] !== null))) {
                             continue;
                         }
+
+                        // 检查商品重复性
+                        Goods::banRepeatGoods($arr['title']);
 
                         // 组装数据
                         $arr                 = [];
@@ -211,11 +215,12 @@ class  GoodsBatchAdd implements ShouldQueue
                         $priceArr = ['26' => htmlspecialchars($rowArr[2])];
 
                         Goods::add($arr, $priceArr);
+
+                    } catch (Exception $e) {
+                        Log::info('【商品】 批量入驻错误 ' . $e->getMessage());
+                        continue;
                     }
                 }
-
-            } catch (Exception $e) {
-                Log::info('【商品】 批量入驻错误 ' . $e->getMessage());
             }
 
             $reader->close(); // 释放内存

@@ -507,14 +507,14 @@ class Goods extends Model
     /**
      * 添加微信基础数据
      * @param string $goodsId 商品id
-     * @param string $weixin_ID 微信号
+     * @param string $title 公众号名称
      */
-    public static function addWeiXinBasicData($goodsId, $weixin_ID)
+    public static function addWeiXinBasicData($goodsId, $title)
     {
         // 查询自库数据
         $re = DB::connection('weixin_mongodb')
             ->collection('WeiXin_OfficialAccount_Analysis')
-            ->where('OfficialAccount_ID', $weixin_ID)
+            ->where('OfficialAccount_Name', $title)
             ->first();
 
         // 存入商品表中
@@ -604,14 +604,14 @@ class Goods extends Model
         $delArr = [];
 
         switch ($type) {
-            // 微信
+            // 微信公众号
             case 1:
                 if ($goods->weixin_ID) {
                     $delArr = DB::table('data_goods')
                         ->where('uid', User::GF_SELLER)
                         ->where('modular_name', '微信营销')
                         ->where('theme_name', '公众号')
-                        ->where('weixin_ID', $goods->weixin_ID)
+                        ->where('title', $goods->title)
                         ->pluck('goods_id');
                 }
                 break;
@@ -648,5 +648,18 @@ class Goods extends Model
         }
 
         return true;
+    }
+
+    // 禁止重复商品
+    public static function banRepeatGoods($goods_title)
+    {
+         $query = self::whereTitle($goods_title)
+             ->where('status', self::STATUS['上架']);
+
+         // 屏蔽假数据
+         $query->whereNotIn('uid', [User::GF_SELLER]);
+
+         if($query->count())
+             throw new Exception('已存在此商品名称');
     }
 }

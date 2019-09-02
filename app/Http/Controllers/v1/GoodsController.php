@@ -10,6 +10,7 @@ use App\Models\Data\GoodsPrice;
 use App\Models\Attr\Modular;
 use App\Models\User;
 use App\Server\Pub;
+use App\Server\WeixinOfficialAccount;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Goods as GoodsRequests;
 use Illuminate\Support\Facades\Storage;
@@ -81,9 +82,11 @@ class GoodsController extends BaseController
         $priceArr = json_decode($request->price_json, true);
         // 检测价格数据合法性
         GoodsPrice::checkPrice($priceArr);
+        // 检查商品重复性
+        Goods::banRepeatGoods($arr['title']);
         // 添加商品
         $goodsId = Goods::add($arr, $priceArr);
-        // 添加基础数据，删除制造商品
+        // 添加基础数据，删除假数据
         GoodsCreatedOP::dispatch($goodsId, $arr)->onQueue('GoodsCreatedOP');
 
         return $this->success();
@@ -105,9 +108,11 @@ class GoodsController extends BaseController
         $priceArr = json_decode($request->price_json, true);
         // 检测价格数据合法性
         GoodsPrice::checkPrice($priceArr);
-        // 修改
+        // 检查商品重复性
+        Goods::banRepeatGoods($arr['title']);
+        // 修改商品
         Goods::updateOP($Goods->goods_id, $arr, $priceArr);
-        // 添加基础数据，删除制造商品
+        // 添加基础数据，删除假数据
         GoodsCreatedOP::dispatch($Goods->goods_id, $arr)->onQueue('GoodsCreatedOP');
 
         return $this->success();
@@ -151,9 +156,12 @@ class GoodsController extends BaseController
     {
         $goodsId = Goods::whereGoodsNum($request->goods_num)->value('goods_id');
         $re      = Goods::getGoods($request, [$goodsId]);
-        $re = $re[0];
-        // 查询文章数据
+        //$re = $re[0];
 
+        // 微信公众号文章数据
+        /*if($re->theme_id == 1){
+            $re->attach_weixinOfficialAccountArticleData = WeixinOfficialAccount::articleData($re->title);
+        }*/
 
         return $this->success($re);
     }
