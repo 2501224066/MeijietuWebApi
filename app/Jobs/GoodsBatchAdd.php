@@ -108,7 +108,7 @@ class  GoodsBatchAdd implements ShouldQueue
                         }
 
                         // 检查商品重复性
-                        Goods::banRepeatGoods($arr['title']);
+                        Goods::banRepeatGoods($rowArr[0]);
 
                         // 组装数据
                         $arr                 = [];
