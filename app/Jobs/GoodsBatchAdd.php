@@ -85,29 +85,31 @@ class  GoodsBatchAdd implements ShouldQueue
                             return true;
                         }
 
-                        // 必填项目为空则跳过
-                        if (!((count($rowArr) >= 17)
-                            && (! empty($rowArr[0]))
-                            && (! empty($rowArr[1]))
-                            && (! empty($rowArr[2]))
-                            && (! empty($rowArr[3]))
-                            && (! empty($rowArr[4]))
-                            && (! empty($rowArr[5]))
-                            && (! empty($rowArr[6]))
-                            && (! empty($rowArr[7]))
-                            && (! empty($rowArr[8]))
-                            && (! empty($rowArr[9]))
-                            && (! empty($rowArr[10]))
-                            && (! empty($rowArr[11]))
-                            && (! empty($rowArr[12]))
-                            && (! empty($rowArr[13]))
-                            && (! empty($rowArr[14]))
-                            && (! empty($rowArr[15]))
-                            && (! empty($rowArr[17])))) {
+                        // 所有项目必填
+                        if ((count($rowArr) != 18)
+                            && (empty($rowArr[0]))
+                            && (empty($rowArr[1]))
+                            && (empty($rowArr[2]))
+                            && (empty($rowArr[3]))
+                            && (empty($rowArr[4]))
+                            && (empty($rowArr[5]))
+                            && (empty($rowArr[6]))
+                            && (empty($rowArr[7]))
+                            && (empty($rowArr[8]))
+                            && (empty($rowArr[9]))
+                            && (empty($rowArr[10]))
+                            && (empty($rowArr[11]))
+                            && (empty($rowArr[12]))
+                            && (empty($rowArr[13]))
+                            && (empty($rowArr[14]))
+                            && (empty($rowArr[15]))
+                            && (empty($rowArr[16]))
+                            && (empty($rowArr[17]))
+                            && (empty($rowArr[18]))) {
                             continue;
                         }
 
-                        // 检查商品重复性
+                        // 根据标题检查商品重复性
                         Goods::banRepeatGoods($rowArr[0]);
 
                         // 组装数据
@@ -203,7 +205,7 @@ class  GoodsBatchAdd implements ShouldQueue
                         if (strpos($rowArr[16], 'http')) {
                             $arr['link'] = htmlspecialchars($rowArr[16]);
                         } else {
-                            $arr['link'] = "";
+                            continue;
                         }
 
                         if (strpos($rowArr[17], 'http')) {
