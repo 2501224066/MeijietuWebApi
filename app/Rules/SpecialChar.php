@@ -36,6 +36,6 @@ class SpecialChar implements Rule
      */
     public function message()
     {
-        return '非法：不得传入特殊字符';
+        return '非法：不得传入特殊字符，例如 * # - ~ . 等等';
     }
 }
