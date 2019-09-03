@@ -87,23 +87,23 @@ class  GoodsBatchAdd implements ShouldQueue
 
                         // 必填项目为空则跳过
                         if (!((count($rowArr) >= 17)
-                            && ($rowArr[0] !== null)
-                            && ($rowArr[1] !== null)
-                            && ($rowArr[2] !== null)
-                            && ($rowArr[3] !== null)
-                            && ($rowArr[4] !== null)
-                            && ($rowArr[5] !== null)
-                            && ($rowArr[6] !== null)
-                            && ($rowArr[7] !== null)
-                            && ($rowArr[8] !== null)
-                            && ($rowArr[9] !== null)
-                            && ($rowArr[10] !== null)
-                            && ($rowArr[11] !== null)
-                            && ($rowArr[12] !== null)
-                            && ($rowArr[13] !== null)
-                            && ($rowArr[14] !== null)
-                            && ($rowArr[15] !== null)
-                            && ($rowArr[17] !== null))) {
+                            && (! empty($rowArr[0]))
+                            && (! empty($rowArr[1]))
+                            && (! empty($rowArr[2]))
+                            && (! empty($rowArr[3]))
+                            && (! empty($rowArr[4]))
+                            && (! empty($rowArr[5]))
+                            && (! empty($rowArr[6]))
+                            && (! empty($rowArr[7]))
+                            && (! empty($rowArr[8]))
+                            && (! empty($rowArr[9]))
+                            && (! empty($rowArr[10]))
+                            && (! empty($rowArr[11]))
+                            && (! empty($rowArr[12]))
+                            && (! empty($rowArr[13]))
+                            && (! empty($rowArr[14]))
+                            && (! empty($rowArr[15]))
+                            && (! empty($rowArr[17])))) {
                             continue;
                         }
 
