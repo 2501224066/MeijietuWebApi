@@ -198,19 +198,19 @@ class  GoodsBatchAdd implements ShouldQueue
 
                         $arr['weekend_status'] = htmlspecialchars($rowArr[14]) == '是' ? 1 : 0;
 
-                        if (is_int(htmlspecialchars($rowArr[15]) * 1)) {
+                        if (is_int($rowArr[15])) {
                             $arr['max_title_long'] = htmlspecialchars($rowArr[15]);
                         } else {
                             $arr['max_title_long'] = 30;
                         }
 
-                        if (strpos(htmlspecialchars($rowArr[16]), 'http')) {
+                        if (strpos($rowArr[16], 'http')) {
                             $arr['link'] = htmlspecialchars($rowArr[16]);
                         } else {
                             $arr['link'] = "";
                         }
 
-                        if (strpos(htmlspecialchars($rowArr[17]), 'http')) {
+                        if (strpos($rowArr[17], 'http')) {
                             $arr['case_link'] = htmlspecialchars($rowArr[17]);
                         } else {
                             continue;
