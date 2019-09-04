@@ -55,7 +55,7 @@ class SoftArticleImport
                 try {
                     // 验证标签值
                     if (($kk == 1) && (empty($rowArr[1])) && ($rowArr[1] != 'TOKEN-MJT')) {
-                        Log::info('【批量入驻】 '.$excel_path.'非模板文件');
+                        Log::info('【批量入驻】 ' . $excel_path . '非模板文件');
                         break;
                     }
 
@@ -186,13 +186,13 @@ class SoftArticleImport
 
                     $arr['max_title_long'] = htmlspecialchars($rowArr[15]);
 
-                    if (strpos($rowArr[16], 'http')) {
+                    if (strpos($rowArr[16], 'http') == 0) {
                         $arr['link'] = htmlspecialchars($rowArr[16]);
                     } else {
                         continue;
                     }
 
-                    if (strpos($rowArr[17], 'http')) {
+                    if (strpos($rowArr[17], 'http') == 0) {
                         $arr['case_link'] = htmlspecialchars($rowArr[17]);
                     } else {
                         continue;

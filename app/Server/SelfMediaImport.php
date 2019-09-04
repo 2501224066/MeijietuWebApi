@@ -43,7 +43,7 @@ class SelfMediaImport
                 try {
                     // 验证标签值
                     if (($kk == 1) && (empty($rowArr[1])) ($rowArr[2] != 'TOKEN-MJT')) {
-                        Log::info('【批量入驻】 '.$excel_path.'非模板文件');
+                        Log::info('【批量入驻】 ' . $excel_path . '非模板文件');
                         break;
                     }
 
@@ -125,13 +125,13 @@ class SelfMediaImport
 
                     $arr['reserve_status'] = htmlspecialchars($rowArr[9]) == '是' ? 1 : 0;
 
-                    if (strpos($rowArr[10], 'http')) {
+                    if (strpos($rowArr[10], 'http') == 0) {
                         $arr['link'] = htmlspecialchars($rowArr[10]);
                     } else {
                         continue;
                     }
 
-                    if (strpos($rowArr[11], 'http')) {
+                    if (strpos($rowArr[11], 'http') == 0) {
                         $arr['case_link'] = htmlspecialchars($rowArr[11]);
                     } else {
                         continue;
