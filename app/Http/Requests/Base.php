@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Server\Pub;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Base extends FormRequest
@@ -31,9 +32,6 @@ class Base extends FormRequest
      */
     public function getFunName() :string
     {
-        $controller = Request()->route()->action['controller'];
-        $arr = explode('@', $controller);
-        return $arr[1];
-
+       return Pub::routerToFunc();
     }
 }

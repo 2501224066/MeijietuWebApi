@@ -17,9 +17,10 @@ class ShieldSqlError
             && isset($response->original['message'])
             && strstr($response->original['message'], 'SQLSTATE')) {
 
-            return response()->json(['status_code' => 500,
-                              'message'     => '服务异常',
-                              'data'        => []],500);
+            return response()->json([
+                'status_code' => 500,
+                'message'     => '服务异常',
+                'data'        => []], 500);
         }
 
         return $response;

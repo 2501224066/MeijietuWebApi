@@ -47,6 +47,5 @@ return [
 
     'yunshichang' => [
         'app_code' => env('YUNSHICHANG_APP_CODE')
-    ]
-
+    ],
 ];

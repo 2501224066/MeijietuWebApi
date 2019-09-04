@@ -3,6 +3,7 @@
 
 namespace App\Server;
 
+use Illuminate\Support\Facades\Request;
 use Mockery\Exception;
 
 class Pub
@@ -33,5 +34,13 @@ class Pub
             throw new Exception($errStr);
 
         return true;
+    }
+
+    // 当前路由指向方法
+    public static function routerToFunc()
+    {
+        $path = Request::getPathInfo();
+        $path_arr = explode('/', $path);
+        return $path_arr[count($path_arr)-1];
     }
 }
