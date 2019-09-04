@@ -64,4 +64,15 @@ class OpenParamController extends BaseController
             'path' => Setting::whereSettingName('softArticle_batchAdd_excel')->value('value')
         ]);
     }
+
+    /**
+     * 软文批量上传模板
+     * @return mixed
+     */
+    public function selfMediaBatchExcel()
+    {
+        return $this->success([
+            'path' => Setting::whereSettingName('selfMedia_batchAdd_excel')->value('value')
+        ]);
+    }
 }

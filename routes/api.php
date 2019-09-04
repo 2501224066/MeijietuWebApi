@@ -14,6 +14,8 @@ $api->version('v1', ['namespace' => '\App\Http\Controllers\v1'], function ($api)
     $api->get('banner', 'OpenParamController@banner');
     //---- 软文批量上传模板
     $api->get('softArticleBatchExcel', 'OpenParamController@softArticleBatchExcel');
+    //---- 软文批量上传模板
+    $api->get('selfMediaBatchExcel', 'OpenParamController@selfMediaBatchExcel');
 
     // 充值回调
     //---- 连连充值回调
