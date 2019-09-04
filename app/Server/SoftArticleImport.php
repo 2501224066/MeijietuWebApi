@@ -50,7 +50,8 @@ class SoftArticleImport
             }
 
             // 验证标签值
-            if ((count($sheet->getRowIterator()[1]) < 2) && ($sheet->getRowIterator()[1][1] != 'TOKEN-MJT')) {
+            $sheet_arr = $sheet->getRowIterator()->toArray();
+            if (($sheet_arr < 2) && ($sheet_arr[1][1] != 'TOKEN-MJT')) {
                 Log::info('【批量入驻】 ' . $excel_path . '非模板文件');
                 break;
             }
