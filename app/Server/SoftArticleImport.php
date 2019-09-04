@@ -49,17 +49,14 @@ class SoftArticleImport
                 continue;
             }
 
-            // 验证标签值
-            $sheet_arr = $sheet->getRowIterator()->toArray();
-            if (($sheet_arr < 2) && ($sheet_arr[1][1] != 'TOKEN-MJT')) {
-                Log::info('【批量入驻】 ' . $excel_path . '非模板文件');
-                break;
-            }
-
             foreach ($sheet->getRowIterator() as $kk => $row) {
                 $rowArr = $row->toArray();
 
                 try {
+
+                    if ($kk == 1) {
+                        Log::info(json_encode($rowArr));
+                    }
 
                     // 从第四行开始读取
                     if ($kk < 4) {
