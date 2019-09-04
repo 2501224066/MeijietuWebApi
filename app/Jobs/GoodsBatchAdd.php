@@ -86,7 +86,7 @@ class  GoodsBatchAdd implements ShouldQueue
                         }
 
                         // 所有项目必填
-                        if ((count($rowArr) != 18)
+                        if ((count($rowArr) != 19)
                             && (empty($rowArr[0]))
                             && (empty($rowArr[1]))
                             && (empty($rowArr[2]))
