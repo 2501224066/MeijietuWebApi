@@ -37,17 +37,17 @@ class SelfMediaImport
                 continue;
             }
 
-            // 验证标签值
-            $sheet_arr = $sheet->getRowIterator()->toArray();
-            if (($sheet_arr < 2) && ($sheet_arr[1][1] != 'TOKEN-MJT')) {
-                Log::info('【批量入驻】 ' . $excel_path . '非模板文件');
-                break;
-            }
-
             foreach ($sheet->getRowIterator() as $kk => $row) {
                 $rowArr = $row->toArray();
 
                 try {
+
+                    // 标签值验证
+                    if ($kk == 1) {
+                        if ((count($rowArr) < 2) || ($rowArr[1] != 'TOKEN-MJT')) {
+                            Log::info('【批量入驻】 ' . $excel_path . '非模板文档');
+                        }
+                    }
 
                     // 从第四行开始读取
                     if ($kk < 4) {
@@ -152,7 +152,7 @@ class SelfMediaImport
                     Goods::add($arr, $priceArr);
 
                 } catch (Exception $e) {
-                    Log::info('【商品】 批量入驻错误 ' . $e->getMessage());
+                    Log::info('【批量入驻】 错误 ' . $e->getMessage());
                     continue;
                 }
 

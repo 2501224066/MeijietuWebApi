@@ -54,8 +54,11 @@ class SoftArticleImport
 
                 try {
 
+                    // 标签值验证
                     if ($kk == 1) {
-                        Log::info(json_encode($rowArr));
+                        if ((count($rowArr) < 2) || ($rowArr[1] != 'TOKEN-MJT')) {
+                            Log::info('【批量入驻】 ' . $excel_path . '非模板文档');
+                        }
                     }
 
                     // 从第四行开始读取
@@ -210,7 +213,7 @@ class SoftArticleImport
                     Goods::add($arr, $priceArr);
 
                 } catch (Exception $e) {
-                    Log::info('【商品】 批量入驻错误 ' . $e->getMessage());
+                    Log::info('【批量入驻】 错误 ' . $e->getMessage());
                     continue;
                 }
 
