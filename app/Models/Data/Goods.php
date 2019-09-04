@@ -654,7 +654,7 @@ class Goods extends Model
     public static function banRepeatGoods($goods_title)
     {
          $query = self::whereTitle($goods_title)
-             ->where('status', self::STATUS['上架']);
+             ->where('delete_status', self::DELETE_STATUS['未删除']);
 
          // 屏蔽假数据
          $query->whereNotIn('uid', [User::GF_SELLER]);
