@@ -41,6 +41,13 @@ class SelfMediaImport
                 $rowArr = $row->toArray();
 
                 try {
+                    // 验证标签值
+                    if (($kk == 1) && ($rowArr[2] != 'TOKEN-MJT')) {
+                        $reader->close(); // 释放内存
+                        unlink($path); //删除文件
+                        return false;
+                    }
+
                     // 从第四行开始读取
                     if ($kk < 4) {
                         continue;

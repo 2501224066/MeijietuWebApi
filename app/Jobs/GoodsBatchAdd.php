@@ -3,27 +3,15 @@
 
 namespace App\Jobs;
 
-
-use App\Models\Attr\Filed;
-use App\Models\Attr\Industry;
 use App\Models\Attr\Modular;
-use App\Models\Attr\Platform;
-use App\Models\Attr\Region;
 use App\Models\Attr\Theme;
-use App\Models\Attr\Weightlevel;
-use App\Models\Data\Goods;
-use App\Models\User;
 use App\Server\SelfMediaImport;
 use App\Server\SoftArticleImport;
-use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Mockery\Exception;
 
 class  GoodsBatchAdd implements ShouldQueue
 {

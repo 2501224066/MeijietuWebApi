@@ -9,7 +9,7 @@ use Closure;
 class BanRouter
 {
     /**
-     * 禁用路由
+     * 禁用接口
      */
     public function handle($request, Closure $next)
     {
