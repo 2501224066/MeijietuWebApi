@@ -42,7 +42,7 @@ class SelfMediaImport
 
                 try {
                     // 验证标签值
-                    if (($kk == 1) && (isset($rowArr[1])) ($rowArr[2] != 'TOKEN-MJT')) {
+                    if (($kk == 1) && (!isset($rowArr[1])) ($rowArr[2] != 'TOKEN-MJT')) {
                         Log::info('【批量入驻】 ' . $excel_path . '非模板文件');
                         break;
                     }
