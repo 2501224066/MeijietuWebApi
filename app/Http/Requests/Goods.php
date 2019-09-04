@@ -63,6 +63,7 @@ class Goods extends Base
                     case Modular::TAG['自媒体营销']:
                         $rules['link']           = ['nullable', 'present', 'active_url'];
                         $rules['case_link']      = ['required', 'active_url'];
+                        $rules['fans_num']       = ['required', 'numeric'];
                         $rules['reserve_status'] = ['required', new SpecialChar, 'numeric'];
                         $rules['platform_id']    = ['required', new SpecialChar, 'numeric', 'exists:attr_platform,platform_id'];
                         $rules['region_id']      = ['required', new SpecialChar, 'numeric', 'exists:attr_region,region_id'];
@@ -182,8 +183,8 @@ class Goods extends Base
             // 批量入驻
             case 'goodsBatchAdd':
                 $rules['excel_path'] = ['required'];
-                $rules['modular_id'] = ['required', new SpecialChar, 'numeric', 'exists:attr_modular,modular_id'];
-                $rules['theme_id']   = ['required', new SpecialChar, 'numeric', 'exists:attr_theme,theme_id'];
+                $rules['modular_id'] = ['required', 'numeric', 'exists:attr_modular,modular_id'];
+                $rules['theme_id']   = ['nullable', 'present', 'numeric', 'exists:attr_theme,theme_id'];
                 break;
         }
 
