@@ -52,6 +52,7 @@ class SoftArticleImport
             foreach ($sheet->getRowIterator() as $kk => $row) {
                 $rowArr = $row->toArray();
 
+                print_r($rowArr);
                 try {
                     // 验证标签值
                     if (($kk == 1) && (!isset($rowArr[1])) && ($rowArr[1] != 'TOKEN-MJT')) {
