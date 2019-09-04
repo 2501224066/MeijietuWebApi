@@ -42,7 +42,7 @@ class SelfMediaImport
 
                 try {
                     // 验证标签值
-                    if (($kk == 1) && (!empty($rowArr[1])) ($rowArr[2] != 'TOKEN-MJT')) {
+                    if (($kk == 1) && (empty($rowArr[1])) ($rowArr[2] != 'TOKEN-MJT')) {
                         $reader->close(); // 释放内存
                         unlink($path); //删除文件
                         return false;
