@@ -54,7 +54,7 @@ class SoftArticleImport
 
                 try {
                     // 验证标签值
-                    if (($kk == 1) && (empty($rowArr[1])) && ($rowArr[1] != 'TOKEN-MJT')) {
+                    if (($kk == 1) && (isset($rowArr[1])) && ($rowArr[1] != 'TOKEN-MJT')) {
                         Log::info('【批量入驻】 ' . $excel_path . '非模板文件');
                         break;
                     }
@@ -71,25 +71,25 @@ class SoftArticleImport
 
                     // 所有项目必填
                     if ((count($rowArr) != 19)
-                        && (empty($rowArr[0]))
-                        && (empty($rowArr[1]))
-                        && (empty($rowArr[2]))
-                        && (empty($rowArr[3]))
-                        && (empty($rowArr[4]))
-                        && (empty($rowArr[5]))
-                        && (empty($rowArr[6]))
-                        && (empty($rowArr[7]))
-                        && (empty($rowArr[8]))
-                        && (empty($rowArr[9]))
-                        && (empty($rowArr[10]))
-                        && (empty($rowArr[11]))
-                        && (empty($rowArr[12]))
-                        && (empty($rowArr[13]))
-                        && (empty($rowArr[14]))
-                        && (empty($rowArr[15]))
-                        && (empty($rowArr[16]))
-                        && (empty($rowArr[17]))
-                        && (empty($rowArr[18]))) {
+                        && (isset($rowArr[0]))
+                        && (isset($rowArr[1]))
+                        && (isset($rowArr[2]))
+                        && (isset($rowArr[3]))
+                        && (isset($rowArr[4]))
+                        && (isset($rowArr[5]))
+                        && (isset($rowArr[6]))
+                        && (isset($rowArr[7]))
+                        && (isset($rowArr[8]))
+                        && (isset($rowArr[9]))
+                        && (isset($rowArr[10]))
+                        && (isset($rowArr[11]))
+                        && (isset($rowArr[12]))
+                        && (isset($rowArr[13]))
+                        && (isset($rowArr[14]))
+                        && (isset($rowArr[15]))
+                        && (isset($rowArr[16]))
+                        && (isset($rowArr[17]))
+                        && (isset($rowArr[18]))) {
                         continue;
                     }
 
