@@ -58,6 +58,7 @@ class SoftArticleImport
                     if ($kk == 1) {
                         if ((count($rowArr) < 2) || ($rowArr[1] != 'TOKEN-MJT')) {
                             Log::info('【批量入驻】 ' . $excel_path . '非模板文档');
+                            break;
                         }
                     }
 
