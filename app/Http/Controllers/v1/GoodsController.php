@@ -108,8 +108,6 @@ class GoodsController extends BaseController
         $priceArr = json_decode($request->price_json, true);
         // 检测价格数据合法性
         GoodsPrice::checkPrice($priceArr);
-        // 检查商品重复性
-        Goods::banRepeatGoods($arr['title']);
         // 修改商品
         Goods::updateOP($Goods->goods_id, $arr, $priceArr);
         // 添加基础数据，删除假数据
